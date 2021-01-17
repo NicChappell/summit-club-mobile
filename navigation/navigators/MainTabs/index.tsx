@@ -1,23 +1,24 @@
 import * as React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import SettingsStack from './SettingsStack';
-import HomeTabs from './HomeTabs';
+import SettingsStack from '../SettingsStack';
+import HomeTabs from '../HomeTabs';
 import {
     // HomeScreen,
     MapScreen,
     SummitsScreen
-} from '../../screens';
+} from '../../../screens';
+import { MainTabsParamList } from './types';
 
 // new bottom tab navigator
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<MainTabsParamList>();
 
 const MainTabs = () => {
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
-                    let iconName;
+                    let iconName = '';
 
                     if (route.name === 'Home') {
                         iconName = focused

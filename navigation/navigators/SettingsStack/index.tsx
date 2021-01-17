@@ -5,10 +5,11 @@ import {
     LandmarksScreen,
     ProfileScreen,
     ResetPasswordScreen
-} from '../../screens';
+} from '../../../screens';
+import { SettingsStackParamList } from './types';
 
 // new stack navigator
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<SettingsStackParamList>();
 
 const SettingsStack = () => {
     return (

@@ -4,10 +4,11 @@ import {
     ForgotPasswordScreen,
     SignInScreen,
     SignUpScreen
-} from '../../screens';
+} from '../../../screens';
+import { AuthStackParamList } from './types';
 
 // new stack navigator
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<AuthStackParamList>();
 
 const AuthStack = () => {
     return (

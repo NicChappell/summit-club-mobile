@@ -3,7 +3,7 @@ import {
     HomeScreenRouteProp
 } from './types';
 
-interface IHomeScreen {
+export interface IHomeScreen {
     /** TODO */
     navigation: HomeScreenNavigationProp;
     /** TODO */

@@ -2,10 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
 import * as actions from '../../actions';
+import { RootState } from '../../reducers';
+import { ISignInScreen } from './interfaces';
 
-const SignInScreen = ({ signIn, navigation }) => {
+type Props = PropsFromRedux & ISignInScreen;
+
+const SignInScreen = ({ navigation, route, signIn }: Props) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text>This is top text.</Text>
@@ -29,13 +33,20 @@ const SignInScreen = ({ signIn, navigation }) => {
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
     return {};
 };
 
 const mapDispatchToProps = { signIn: actions.signIn };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen);
+const connector = connect(
+    mapStateToProps,
+    mapDispatchToProps
+);
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(SignInScreen);
 
 const styles = StyleSheet.create({
     container: {

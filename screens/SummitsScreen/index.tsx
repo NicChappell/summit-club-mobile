@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ISummitsScreen } from './interfaces';
 
-const SummitsScreen = ({ navigation }) => {
+const SummitsScreen = ({ navigation, route }: ISummitsScreen) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text>This is top text.</Text>

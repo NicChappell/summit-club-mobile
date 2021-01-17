@@ -11,8 +11,9 @@ import MapView from 'react-native-maps';
 import {
     SafeAreaView
 } from 'react-native-safe-area-context';
+import { IMapScreen } from './interfaces';
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({ navigation, route }: IMapScreen) => {
     // state hooks
     const [isMapReady, setIsMapReady] = useState(false);
 

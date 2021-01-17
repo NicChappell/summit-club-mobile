@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { IProfileScreen } from './interfaces';
 
-const ProfileScreen = ({ navigation }) => {
+const ProfileScreen = ({ navigation, route }: IProfileScreen) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text>This is top text.</Text>

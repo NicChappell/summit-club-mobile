@@ -1,23 +1,21 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { connect } from 'react-redux';
-import * as actions from '../../actions';
-import { RootState } from '../../reducers'
+import { connect, ConnectedProps } from 'react-redux';
+import * as actions from '../../../actions';
+import { RootState } from '../../../reducers'
 import {
     HomeScreen,
     SplashScreen,
     TourScreen
-} from '../../screens';
+} from '../../../screens';
+import { HomeTabsParamList } from './types';
 
-export type HomeTabsParamList = {
-    Home: undefined;
-    Tour: undefined;
-};
+type Props = PropsFromRedux & HomeTabsParamList;
 
 // new bottom tab navigator
 const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
-const HomeTabs = ({ account, checkTour }) => {
+const HomeTabs = ({ account, checkTour }: Props) => {
     // destructure account
     const { skipTour } = account;
     console.log(skipTour);
@@ -45,6 +43,15 @@ const mapStateToProps = ({ account }: RootState) => {
     return { account };
 };
 
-const mapDispatchToProps = { checkTour: actions.checkTour };
+const mapDispatchToProps = {
+    checkTour: actions.checkTour
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeTabs);
+const connector = connect(
+    mapStateToProps,
+    mapDispatchToProps
+);
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(HomeTabs);

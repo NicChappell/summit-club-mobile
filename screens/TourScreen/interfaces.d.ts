@@ -20,3 +20,10 @@ export interface ITourSlide {
     /** TODO */
     color: string;
 };
+
+export interface ITourSlides {
+    /** TODO */
+    data: ITourSlide[];
+    /** TODO */
+    onComplete: () => void;
+};

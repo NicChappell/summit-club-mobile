@@ -1,35 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { connect } from 'react-redux';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RouteProp } from '@react-navigation/native';
+import { connect, ConnectedProps } from 'react-redux';
 import * as actions from '../../actions';
-import { HomeTabsParamList } from '../../navigation/navigators/HomeTabs';
 import { RootState } from '../../reducers';
+import { IHomeScreen } from './interfaces';
 
-type HomeScreenNavigationProp = BottomTabNavigationProp<
-    HomeTabsParamList,
-    'Home'
->;
-type HomeScreenRouteProp = RouteProp<HomeTabsParamList, 'Home'>;
+type Props = PropsFromRedux & IHomeScreen;
 
-interface IHomeScreen {
-    /** TODO */
-    navigation: HomeScreenNavigationProp;
-    /** TODO */
-    resetTour: () => void;
-    /** TODO */
-    route: HomeScreenRouteProp;
-    /** TODO */
-    signOut: () => void;
-};
-
-// import { AuthContext } from '../App';
-
-const HomeScreen = ({ navigation, resetTour, route, signOut }: IHomeScreen) => {
-    // const { signOut } = React.useContext(AuthContext);
-
+const HomeScreen = ({ navigation, resetTour, route, signOut }: Props) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text>This is top text.</Text>
@@ -52,7 +31,14 @@ const mapDispatchToProps = {
     signOut: actions.signOut
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+const connector = connect(
+    mapStateToProps,
+    mapDispatchToProps
+);
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(HomeScreen);
 
 const styles = StyleSheet.create({
     container: {

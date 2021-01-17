@@ -2,12 +2,10 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const SplashScreen = ({ navigation }) => {
+const SplashScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
-            <Text>This is top text.</Text>
             <Text>Loading...</Text>
-            <Text>This is bottom text.</Text>
         </SafeAreaView>
     );
 };
@@ -19,6 +17,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         flex: 1,
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
 });

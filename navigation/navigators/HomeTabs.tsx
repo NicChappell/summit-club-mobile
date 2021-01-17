@@ -8,8 +8,13 @@ import {
     TourScreen
 } from '../../screens';
 
+export type HomeTabsParamList = {
+    Home: undefined;
+    Tour: undefined;
+};
+
 // new bottom tab navigator
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<HomeTabsParamList>();
 
 const HomeTabs = ({ account, checkTour }) => {
     // destructure account
@@ -29,8 +34,8 @@ const HomeTabs = ({ account, checkTour }) => {
             {skipTour ? (
                 <Tab.Screen name="Home" component={HomeScreen} />
             ) : (
-                <Tab.Screen name="Tour" component={TourScreen} />
-            )}
+                    <Tab.Screen name="Tour" component={TourScreen} />
+                )}
         </Tab.Navigator >
     )
 }

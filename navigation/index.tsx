@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { connect } from 'react-redux';
+import { connect, ConnectedProps } from 'react-redux';
+import { RootState } from '../reducers';
 import {
     AuthStack,
     MainTabs
 } from './navigators';
 
-const Navigation = ({ auth }) => {
+const Navigation = ({ auth }: PropsFromRedux) => {
     // destructure auth
     const { authToken } = auth;
 
@@ -24,10 +25,17 @@ const Navigation = ({ auth }) => {
     )
 }
 
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth }: RootState) => {
     return { auth };
 };
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+const connector = connect(
+    mapStateToProps,
+    mapDispatchToProps
+);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(Navigation);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { connect, ConnectedProps } from 'react-redux';
 import * as actions from '../../../actions';
-import { RootState } from '../../../reducers'
+import { RootState } from '../../../reducers';
 import {
     HomeScreen,
     SplashScreen,
@@ -52,6 +52,6 @@ const connector = connect(
     mapDispatchToProps
 );
 
-type PropsFromRedux = ConnectedProps<typeof connector>
+type PropsFromRedux = ConnectedProps<typeof connector>;
 
 export default connector(HomeTabs);

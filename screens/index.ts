@@ -1,4 +1,3 @@
-export { default as AuthScreen } from './AuthScreen';
 export { default as DeckScreen } from './DeckScreen';
 export { default as ForgotPasswordScreen } from './ForgotPasswordScreen';
 export { default as HomeScreen } from './HomeScreen';

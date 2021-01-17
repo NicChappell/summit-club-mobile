@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../../actions';
 
 const SignInScreen = ({ signIn, navigation }) => {
     return (

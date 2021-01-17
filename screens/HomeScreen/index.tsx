@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../../actions';
 
 // import { AuthContext } from '../App';
 

@@ -5,17 +5,16 @@ import { connect } from 'react-redux';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import * as actions from '../../actions';
-import { HomeTabsParamList } from '../../navigation/navigators/HomeTabs'
+import { HomeTabsParamList } from '../../navigation/navigators/HomeTabs';
+import { RootState } from '../../reducers';
 
-type HomeScreenRouteProp = RouteProp<HomeTabsParamList, 'Home'>;
 type HomeScreenNavigationProp = BottomTabNavigationProp<
     HomeTabsParamList,
     'Home'
 >;
+type HomeScreenRouteProp = RouteProp<HomeTabsParamList, 'Home'>;
 
-// import { AuthContext } from '../App';
-
-interface IHomeScreenProps {
+interface IHomeScreen {
     /** TODO */
     navigation: HomeScreenNavigationProp;
     /** TODO */
@@ -24,9 +23,11 @@ interface IHomeScreenProps {
     route: HomeScreenRouteProp;
     /** TODO */
     signOut: () => void;
-}
+};
 
-const HomeScreen = ({ navigation, resetTour, route, signOut }: IHomeScreenProps) => {
+// import { AuthContext } from '../App';
+
+const HomeScreen = ({ navigation, resetTour, route, signOut }: IHomeScreen) => {
     // const { signOut } = React.useContext(AuthContext);
 
     return (
@@ -42,7 +43,7 @@ const HomeScreen = ({ navigation, resetTour, route, signOut }: IHomeScreenProps)
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
     return {};
 };
 

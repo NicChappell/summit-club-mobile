@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, Dimensions } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
+import { ITourSlides } from './interfaces';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const Slides = ({ data, onComplete }) => {
-    const next = (index) => {
+const TourSlides = ({ data, onComplete }: ITourSlides) => {
+    const next = (index: number) => {
         if (index === data.length - 1) {
             return (
                 <Button
@@ -42,7 +43,7 @@ const Slides = ({ data, onComplete }) => {
     );
 }
 
-const styles = {
+const styles = StyleSheet.create({
     slideStyle: {
         flex: 1,
         justifyContent: 'center',
@@ -58,6 +59,6 @@ const styles = {
         backgroundColor: '#0288D1',
         marginTop: 15
     }
-};
+});
 
-export default Slides;
+export default TourSlides;

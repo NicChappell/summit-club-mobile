@@ -4,7 +4,9 @@ import {
     authReducer
 } from './children';
 
-export default combineReducers({
+export const rootReducer = combineReducers({
     account: accountReducer,
     auth: authReducer
 });
+
+export type RootState = ReturnType<typeof rootReducer>

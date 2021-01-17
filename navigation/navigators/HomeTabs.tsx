@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import { RootState } from '../../reducers'
 import {
     HomeScreen,
     SplashScreen,
@@ -34,13 +35,13 @@ const HomeTabs = ({ account, checkTour }) => {
             {skipTour ? (
                 <Tab.Screen name="Home" component={HomeScreen} />
             ) : (
-                    <Tab.Screen name="Tour" component={TourScreen} />
-                )}
+                <Tab.Screen name="Tour" component={TourScreen} />
+            )}
         </Tab.Navigator >
     )
 }
 
-const mapStateToProps = ({ account }) => {
+const mapStateToProps = ({ account }: RootState) => {
     return { account };
 };
 

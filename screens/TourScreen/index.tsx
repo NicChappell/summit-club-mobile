@@ -1,20 +1,22 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import Slides from './components/Slides';
+import { RootState } from '../../reducers'
+import TourSlides from './components/TourSlides';
+import { ITourScreen, ITourSlide } from './interfaces';
 
-const SLIDE_DATA = [
-    { text: 'Welcome to Summit Club', color: '#03A9F4' },
-    { text: 'Hit the trails', color: '#009688' },
-    { text: 'Adventure awaits', color: '#9F403A' }
+const SLIDE_DATA: ITourSlide[] = [
+    { id: 0, text: 'Welcome to Summit Club', color: '#03A9F4' },
+    { id: 1, text: 'Hit the trails', color: '#009688' },
+    { id: 2, text: 'Adventure awaits', color: '#9F403A' }
 ];
 
-const TourScreen = ({ completeTour }) => {
+const TourScreen = ({ completeTour, navigation, route }: ITourScreen) => {
     return (
         <SafeAreaView style={styles.container}>
-            <Slides
+            <TourSlides
                 data={SLIDE_DATA}
                 onComplete={completeTour}
             />
@@ -22,7 +24,7 @@ const TourScreen = ({ completeTour }) => {
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
     return {};
 };
 

@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppThunk } from '../../reducers';
 import {
     COMPLETE_TOUR,
     DO_TOUR,
@@ -6,15 +7,7 @@ import {
     SKIP_TOUR
 } from './types';
 
-// *********************
-// *********************
-// THIS SHOULD BE MOVED TO AN ACCOUNT CONTEXT -- NOT NEEDED ACROSS ENTIRE APP
-// *********************
-// *********************
-
-// tourStatus: null | 'incomplete' | 'complete'
-
-export const checkTour = () => async dispatch => {
+export const checkTour = (): AppThunk => async dispatch => {
     // retrieve tour status from async storage
     const tourStatus = await AsyncStorage.getItem('tourStatus');
 
@@ -27,7 +20,7 @@ export const checkTour = () => async dispatch => {
     }
 }
 
-export const completeTour = () => async dispatch => {
+export const completeTour = (): AppThunk => async dispatch => {
     // update tour status in async storage
     await AsyncStorage.setItem('tourStatus', 'complete');
 
@@ -35,7 +28,7 @@ export const completeTour = () => async dispatch => {
     dispatch({ type: COMPLETE_TOUR, payload: { skipTour: true } })
 };
 
-export const resetTour = () => async dispatch => {
+export const resetTour = (): AppThunk => async dispatch => {
     // update tour status in async storage
     await AsyncStorage.setItem('tourStatus', 'incomplete');
 

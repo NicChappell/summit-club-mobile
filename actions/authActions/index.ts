@@ -1,11 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppThunk } from '../../reducers';
 import {
     SIGN_IN_SUCCESS,
     SIGN_OUT_SUCCESS
 } from './types';
 import { doSignIn } from './helpers';
 
-export const signIn = () => async dispatch => {
+
+export const signIn = (): AppThunk => async dispatch => {
     // retrieve auth token from async storage
     const authToken = await AsyncStorage.getItem('authToken');
 
@@ -18,7 +20,7 @@ export const signIn = () => async dispatch => {
     }
 }
 
-export const signOut = () => async dispatch => {
+export const signOut = (): AppThunk => async dispatch => {
     try {
         // delete auth token from async storage
         await AsyncStorage.removeItem('authToken');

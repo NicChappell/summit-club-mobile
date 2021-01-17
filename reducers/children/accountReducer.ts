@@ -6,8 +6,6 @@ import {
 } from '../../actions/accountActions/types';
 import { IAction } from '.'
 
-type skipTour = boolean | undefined;
-
 const initState = {
     skipTour: undefined
 }

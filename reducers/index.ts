@@ -1,4 +1,5 @@
-import { combineReducers } from 'redux';
+import { Action, combineReducers } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 import {
     accountReducer,
     authReducer
@@ -9,4 +10,11 @@ export const rootReducer = combineReducers({
     auth: authReducer
 });
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+    ReturnType,
+    RootState,
+    unknown,
+    Action<string>
+>;

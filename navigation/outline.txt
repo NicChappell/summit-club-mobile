@@ -1,0 +1,49 @@
+- AuthStack
+    authToken
+        ? - Main: MainScreen
+        : - SignIn: SignInScreen
+          - SignUp: SignUpScreen
+          - ForgotPassword: ForgotPasswordScreen
+
+- MainTabs
+    - Tour: TourScreen
+    - Auth: AuthStack
+
+- SettingsStack
+    - Profile: ProfileScreen
+    - Landmarks: LandmarksScreen
+    - ResetPassword: ResetPasswordScreen
+
+- root
+    - Main: MainTabs
+    - Map: MapScreen
+    - Summits: SummitsScreen
+    - Settings: SettingsStack
+
+-------------------------
+
+- AuthStack
+    - SignIn: SignInScreen
+    - SignUp: SignUpScreen
+    - ForgotPassword: ForgotPasswordScreen
+
+- HomeTabs
+    skipTour
+        ? - HomeScreen
+        : -TourScreen
+
+- MainTabs
+    - Home: HomeTabs
+    - Map: MapScreen
+    - Summits: SummitsScreen
+    - Settings: SettingsStack
+
+- SettingsStack
+    - Profile: ProfileScreen
+    - Landmarks: LandmarksScreen
+    - ResetPassword: ResetPasswordScreen
+
+- root
+    authToken
+        ? - Main: MainTabs
+        : - Auth: AuthStack

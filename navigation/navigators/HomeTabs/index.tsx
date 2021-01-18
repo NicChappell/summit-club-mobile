@@ -18,7 +18,6 @@ const Tab = createBottomTabNavigator<HomeTabsParamList>();
 const HomeTabs = ({ account, checkTour }: Props) => {
     // destructure account
     const { skipTour } = account;
-    console.log(skipTour);
 
     React.useEffect(() => {
         checkTour();

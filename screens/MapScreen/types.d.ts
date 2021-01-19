@@ -10,10 +10,10 @@ export type MapScreenNavigationProp = BottomTabNavigationProp<
 export type MapScreenRouteProp = RouteProp<MainTabsParamList, 'Map'>;
 
 export type Region = {
-    latitude: Number,
-    longitude: Number,
-    latitudeDelta: Number,
-    longitudeDelta: Number
+    latitude: number,
+    longitude: number,
+    latitudeDelta: number,
+    longitudeDelta: number
 };
 
 export type Camera = {
@@ -32,30 +32,30 @@ export type Camera = {
 };
 
 export type LatLng = {
-    latitude: Number,
-    longitude: Number
+    latitude: number,
+    longitude: number
 };
 
 export type Location = {
-    latitude: Number,
-    longitude: Number,
-    altitude: Number,
-    timestamp: Number, //Milliseconds since Unix epoch
-    accuracy: Number,
-    altitudeAccuracy: Number,
-    speed: Number
+    latitude: number,
+    longitude: number,
+    altitude: number,
+    timestamp: number, //Milliseconds since Unix epoch
+    accuracy: number,
+    altitudeAccuracy: number,
+    speed: number
 };
 
 export type Point = {
-    x: Number,
-    y: Number,
+    x: number,
+    y: number,
 };
 
 export type Frame = {
-    x: Number,
-    y: Number,
-    width: Number,
-    height: Number
+    x: number,
+    y: number,
+    width: number,
+    height: number
 };
 
 export enum MapType {
@@ -66,24 +66,24 @@ export enum MapType {
 };
 
 export type EdgePadding = {
-    top: Number,
-    right: Number,
-    bottom: Number,
-    left: Number
+    top: number,
+    right: number,
+    bottom: number,
+    left: number
 };
 
 export type EdgeInsets = {
-    top: Number,
-    left: Number,
-    bottom: Number,
-    right: Number
+    top: number,
+    left: number,
+    bottom: number,
+    right: number
 };
 
 export type Marker = {
-    id: String,
+    id: string,
     coordinate: LatLng,
-    title: String,
-    description: String
+    title: string,
+    description: string
 };
 
 export type KmlContainer = {
@@ -92,12 +92,12 @@ export type KmlContainer = {
 
 export type IndoorBuilding = {
     underground: boolean,
-    activeLevelIndex: Number,
+    activeLevelIndex: number,
     levels: Array<IndoorLevel>
 };
 
 export type IndoorLevel = {
-    index: Number,
-    name: String,
-    shortName: String
+    index: number,
+    name: string,
+    shortName: string
 };

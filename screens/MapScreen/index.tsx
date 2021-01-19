@@ -12,20 +12,25 @@ import {
     SafeAreaView
 } from 'react-native-safe-area-context';
 import * as SQLite from 'expo-sqlite';
-import * as FileSystem from "expo-file-system";
-import { Asset } from "expo-asset";
+import * as FileSystem from 'expo-file-system';
+import { Asset } from 'expo-asset';
 import { IMapScreen } from './interfaces';
+
+import * as helpers from '@turf/helpers';
 
 // filepath to SQLite database asset
 const db = require('./data/fourteeners.db');
 
 // MapView types
 import { Region } from './types';
+import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 
 const MapScreen = ({ navigation, route }: IMapScreen) => {
     // state hooks
     const [database, setDatabase] = useState<SQLite.WebSQLDatabase | undefined>(undefined);
-    const [region, setRegion] = useState<Region | undefined>({
+    const [featureCollection, setFeatureCollection] = useState<FeatureCollection | undefined>(undefined);
+    console.log(featureCollection);
+    const [region, setRegion] = useState<Region>({
         latitude: 39.113014,
         longitude: -105.358887,
         latitudeDelta: 5,
@@ -65,8 +70,24 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
 
     const processResultSet = (ResultSet: SQLite.SQLResultSet) => {
         // destructure ResultSet
-        const { _array: data } = ResultSet.rows;
-        console.log(data);
+        const { _array } = ResultSet.rows;
+
+        const features = _array.map(result => {
+            const geometry: Geometry = {
+                "type": "Point",
+                "coordinates": [result.longitude, result.latitude]
+            };
+
+            const properties: GeoJsonProperties = { ...result };
+
+            const feature: Feature = helpers.feature(geometry, properties);
+
+            return feature;
+        })
+
+        const featureCollection: FeatureCollection = helpers.featureCollection(features);
+
+        setFeatureCollection(featureCollection);
     };
 
     return (

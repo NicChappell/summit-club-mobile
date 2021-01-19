@@ -11,19 +11,26 @@ import MapView from 'react-native-maps';
 import {
     SafeAreaView
 } from 'react-native-safe-area-context';
-import { IMapScreen } from './interfaces';
-
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
+import { IMapScreen } from './interfaces';
 
+// filepath to SQLite database asset
 const db = require('./data/fourteeners.db');
+
+// MapView types
+import { Region } from './types';
 
 const MapScreen = ({ navigation, route }: IMapScreen) => {
     // state hooks
-    const [isMapReady, setIsMapReady] = useState<boolean>(false);
     const [database, setDatabase] = useState<SQLite.WebSQLDatabase | undefined>(undefined);
-    console.log(database);
+    const [region, setRegion] = useState<Region | undefined>({
+        latitude: 39.113014,
+        longitude: -105.358887,
+        latitudeDelta: 5,
+        longitudeDelta: 5
+    });
 
     // effect hooks
     useEffect(() => {
@@ -36,13 +43,15 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
                 tx.executeSql(
                     `SELECT * FROM fourteeners;`,
                     [],
-                    (_, { rows: { _array } }) => console.log(_array)
+                    (_: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => processResultSet(ResultSet)
                 );
             });
         }
     }, [database]);
 
-    async function openDatabase() {
+    const handleRegionChange = (region: Region) => setRegion(region);
+
+    const openDatabase = async () => {
         if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
             await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
         }
@@ -52,22 +61,19 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
         );
         const database = SQLite.openDatabase('summits.db');
         setDatabase(database);
-    }
+    };
 
-    const handleMapReady = () => setIsMapReady(true);
-
-    if (!isMapReady) {
-        return (
-            <SafeAreaView style={styles.container}>
-                <ActivityIndicator />
-            </SafeAreaView>
-        );
-    }
+    const processResultSet = (ResultSet: SQLite.SQLResultSet) => {
+        // destructure ResultSet
+        const { _array: data } = ResultSet.rows;
+        console.log(data);
+    };
 
     return (
         <SafeAreaView style={styles.container}>
             <MapView
-                onMapReady={handleMapReady}
+                onRegionChange={handleRegionChange}
+                region={region}
                 style={styles.map}
             />
         </SafeAreaView>

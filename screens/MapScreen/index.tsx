@@ -7,19 +7,17 @@ import {
     Dimensions,
     StyleSheet
 } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import {
     SafeAreaView
 } from 'react-native-safe-area-context';
 import * as SQLite from 'expo-sqlite';
-import * as FileSystem from 'expo-file-system';
-import { Asset } from 'expo-asset';
-import { IMapScreen } from './interfaces';
+import { IMapScreen, ISQLResult } from './interfaces';
 
+import { openDatabase } from './helpers';
 import * as helpers from '@turf/helpers';
 
-// filepath to SQLite database asset
-const db = require('./data/fourteeners.db');
+import { Markers } from './components';
 
 // MapView types
 import { Region } from './types';
@@ -29,7 +27,6 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
     // state hooks
     const [database, setDatabase] = useState<SQLite.WebSQLDatabase | undefined>(undefined);
     const [featureCollection, setFeatureCollection] = useState<FeatureCollection | undefined>(undefined);
-    console.log(featureCollection);
     const [region, setRegion] = useState<Region>({
         latitude: 39.113014,
         longitude: -105.358887,
@@ -40,6 +37,12 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
     // effect hooks
     useEffect(() => {
         openDatabase()
+            .then(database => {
+                setDatabase(database);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }, []);
 
     useEffect(() => {
@@ -56,23 +59,11 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
 
     const handleRegionChange = (region: Region) => setRegion(region);
 
-    const openDatabase = async () => {
-        if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
-            await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
-        }
-        await FileSystem.downloadAsync(
-            Asset.fromModule(db).uri,
-            FileSystem.documentDirectory + 'SQLite/summits.db'
-        );
-        const database = SQLite.openDatabase('summits.db');
-        setDatabase(database);
-    };
-
     const processResultSet = (ResultSet: SQLite.SQLResultSet) => {
         // destructure ResultSet
         const { _array } = ResultSet.rows;
 
-        const features = _array.map(result => {
+        const features = _array.map((result: ISQLResult) => {
             const geometry: Geometry = {
                 "type": "Point",
                 "coordinates": [result.longitude, result.latitude]
@@ -83,7 +74,7 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
             const feature: Feature = helpers.feature(geometry, properties);
 
             return feature;
-        })
+        });
 
         const featureCollection: FeatureCollection = helpers.featureCollection(features);
 
@@ -93,10 +84,12 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
     return (
         <SafeAreaView style={styles.container}>
             <MapView
-                onRegionChange={handleRegionChange}
+                // onRegionChange={handleRegionChange}
                 region={region}
                 style={styles.map}
-            />
+            >
+                <Markers featureCollection={featureCollection} />
+            </MapView>
         </SafeAreaView>
     );
 };

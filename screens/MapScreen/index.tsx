@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import MapView from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SQLite from "expo-sqlite";
@@ -17,6 +17,7 @@ import {
   FeatureCollection,
   Geometry,
   GeoJsonProperties,
+  Point,
 } from "geojson";
 
 const MapScreen = ({ navigation, route }: IMapScreen) => {
@@ -58,7 +59,7 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
     }
   }, [database]);
 
-//   const handleRegionChangeComplete = (region: Region) => setRegion(region);
+  //   const handleRegionChangeComplete = (region: Region) => setRegion(region);
 
   const processResultSet = (ResultSet: SQLite.SQLResultSet) => {
     // destructure ResultSet
@@ -67,7 +68,10 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
     const features = _array.map((result: ISQLResult) => {
       const geometry: Geometry = {
         type: "Point",
-        coordinates: [result.longitude, result.latitude],
+        coordinates: [
+          parseFloat(result.longitude),
+          parseFloat(result.latitude),
+        ],
       };
 
       const properties: GeoJsonProperties = { ...result };
@@ -77,7 +81,7 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
       return feature;
     });
 
-    const featureCollection: FeatureCollection = helpers.featureCollection(
+    const featureCollection: FeatureCollection<Point> = helpers.featureCollection(
       features
     );
 
@@ -91,7 +95,7 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
         region={region}
         style={styles.map}
       >
-        <Markers featureCollection={featureCollection} />
+        {featureCollection && <Markers featureCollection={featureCollection} />}
       </MapView>
     </SafeAreaView>
   );

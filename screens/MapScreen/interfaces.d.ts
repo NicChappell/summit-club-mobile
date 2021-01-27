@@ -20,17 +20,17 @@ export interface ISQLResult {
     /** TODO */
     difficulty: string;
     /** TODO */
-    distanceMiles: number;
+    distanceMiles: string;
     /** TODO */
-    elevationFeet: number;
+    elevationFeet: string;
     /** TODO */
-    elevationGainFeet: number;
+    elevationGainFeet: string;
     /** TODO */
     fourteener: boolean;
     /** TODO */
-    latitude: number;
+    latitude: string;
     /** TODO */
-    longitude: number;
+    longitude: string;
     /** TODO */
     mountainPeak: string;
     /** TODO */

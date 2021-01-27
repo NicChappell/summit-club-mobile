@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const CustomMarkerView = () => {
+const CustomCalloutView = () => {
   return (
     <View style={styles.circle}>
       <Text style={styles.pinText}>14er</Text>
@@ -9,7 +9,7 @@ const CustomMarkerView = () => {
   );
 };
 
-export default CustomMarkerView;
+export default CustomCalloutView;
 
 const styles = StyleSheet.create({
   circle: {

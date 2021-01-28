@@ -1,5 +1,8 @@
 import React from "react";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
+
+const CONTENT_HEIGHT = 112.5;
+const CONTENT_WIDTH = 150;
 
 const CustomMarkerView = ({ properties }) => {
   console.log(properties);
@@ -11,9 +14,10 @@ const CustomMarkerView = ({ properties }) => {
       <ImageBackground source={image} style={styles.imageBackground}>
         <View style={styles.caption}>
           <Text style={styles.text}>{properties?.mountainPeak}</Text>
-          <Text style={styles.text}>{properties?.elevationFeet}</Text>
+          <Text style={styles.text}>
+            {parseInt(properties?.elevationFeet).toLocaleString()} ft
+          </Text>
         </View>
-        {/* <Image style={styles.image} source={{ uri: properties?.photo }} /> */}
       </ImageBackground>
     </View>
   );
@@ -23,28 +27,28 @@ export default CustomMarkerView;
 
 const styles = StyleSheet.create({
   caption: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  container: {
     alignItems: "flex-end",
     display: "flex",
     flex: 1,
     flexDirection: "column",
     justifyContent: "flex-end",
+    padding: 8,
   },
-  //   image: {
-  //     width: 40,
-  //     height: 40,
-  //   },
+  container: {},
   imageBackground: {
     flex: 1,
     resizeMode: "cover",
-    height: 112.5,
+    height: CONTENT_HEIGHT,
     justifyContent: "center",
-    width: 150,
+    width: CONTENT_WIDTH,
   },
   text: {
-    color: "#ffffff"
+    color: "white",
+    textShadowColor: "black",
+    textShadowOffset: {
+      width: -1,
+      height: 1,
+    },
+    textShadowRadius: 1,
   },
 });

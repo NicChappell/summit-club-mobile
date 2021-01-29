@@ -32,9 +32,13 @@
         ? - HomeScreen
         : -TourScreen
 
+- MapStack
+    - Map: MapScreen
+    - Feature: FeatureScreen
+
 - MainTabs
     - Home: HomeTabs
-    - Map: MapScreen
+    - Map: MapStack
     - Summits: SummitsScreen
     - Settings: SettingsStack
 

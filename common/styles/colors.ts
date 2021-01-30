@@ -6,6 +6,8 @@ const COLORS = {
   pistachio: "rgba(144, 190, 109, 1)", // #90be6d
   zomp: "rgba(67, 170, 139, 1)", //  #43aa8b
   queenBlue: "rgba(87, 117, 144, 1)", // #577590
+  black: "rgba(0, 0, 0, 1)", // #000000
+  white: "rgba(255, 255, 255, 1)", // #ffffff
 };
 
 export default COLORS;

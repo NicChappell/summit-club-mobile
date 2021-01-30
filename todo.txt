@@ -1,0 +1,15 @@
+Create new firebase project under nwc@nicchappell.com
+    - use itinerant consulting as payment account for blaze plan
+    - figure out how to do a bulk import
+    - use the geojson peaks github repo to upload peaks data for everything in that repo
+        - start with Colorado, but organize to upload literally everything
+            - collections organized from Continent > Country > State(/Province)
+    - add firebase to my react native expo project
+    - query firebase on successful login
+        - show splash screen while waiting for data to return from server and save data into database
+            - bonus points if able to get snapshots of progress
+    - refactor map so that it queries from new database that's populated at time of app login
+        - work toward some logic that takes zoom level into account so that it returns a max number of markers
+        - limit data returned to just the basic info needed for each pin
+        - can also add filters to the screen to query just 14ers or 13ers or whatever
+    - feature screen will also query that database to return it's full details using the id passed as a route param

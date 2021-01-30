@@ -1,4 +1,5 @@
 import * as React from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SummitsScreen } from "../../../screens";
@@ -6,7 +7,46 @@ import COLORS from "../../../common/styles/colors";
 import SettingsStack from "../SettingsStack";
 import MapStack from "../MapStack";
 import HomeTabs from "../HomeTabs";
+import { IMainTabBar } from "./interfaces";
 import { MainTabsParamList } from "./types";
+
+const MainTabBar = ({ descriptors, navigation, state }: IMainTabBar) => (
+  <View style={styles.container}>
+    {state.routes.map((route: any, index: number) => {
+      // destructure route options
+      const { options } = descriptors[route.key];
+
+      // determine current route
+      const isFocused = state.index === index;
+
+      // get route icon
+      const icon = options.tabBarIcon({
+        focused: isFocused,
+        color: isFocused ? COLORS.zomp : COLORS.queenBlue,
+        size: 24,
+      });
+
+      const onPress = () => {
+        // define custom event
+        const event = navigation.emit({
+          type: "tabPress",
+          target: route.key,
+        });
+
+        // reroute if eligible
+        if (!isFocused && !event.defaultPrevented) {
+          navigation.navigate(route.name);
+        }
+      };
+
+      return (
+        <TouchableOpacity onPress={onPress} style={styles.button}>
+          {icon}
+        </TouchableOpacity>
+      );
+    })}
+  </View>
+);
 
 // new bottom tab navigator
 const Tab = createBottomTabNavigator<MainTabsParamList>();
@@ -31,10 +71,7 @@ const MainTabs = () => {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
-      tabBarOptions={{
-        activeTintColor: COLORS.zomp,
-        inactiveTintColor: COLORS.queenBlue,
-      }}
+      tabBar={(props) => <MainTabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeTabs} />
       <Tab.Screen name="Map" component={MapStack} />
@@ -45,3 +82,22 @@ const MainTabs = () => {
 };
 
 export default MainTabs;
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    display: "flex",
+    flex: 1,
+    justifyContent: "center",
+  },
+  container: {
+    alignItems: "center",
+    backgroundColor: COLORS.white,
+    borderTopColor: COLORS.queenBlue,
+    borderTopWidth: 1,
+    display: "flex",
+    height: 64,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+});

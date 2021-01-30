@@ -6,7 +6,7 @@ import { IMarkers } from "../../interfaces";
 import { LatLng } from "../../types";
 import { CustomCalloutView, CustomMarkerView } from "./components";
 
-const Markers = ({ featureCollection }: IMarkers) => {
+const Markers = ({ featureCollection, navigation }: IMarkers) => {
   // destructure props
   const { features } = featureCollection!;
 
@@ -28,13 +28,21 @@ const Markers = ({ featureCollection }: IMarkers) => {
     return (
       <Marker key={index} coordinate={coordinate}>
         <CustomMarkerView />
-        <Callout>
+        <Callout
+          onPress={() =>
+            navigation.navigate("Feature", { id: properties?.slug })
+          }
+        >
           <CustomCalloutView properties={properties} />
         </Callout>
       </Marker>
     );
   });
 
+  // TODO: not a fan of this return statement
+  //       might make sense to move MapView component
+  //       into a child component of the screen component
+  //       and move this map function as a child of MapView
   return <>{markers}</>;
 };
 

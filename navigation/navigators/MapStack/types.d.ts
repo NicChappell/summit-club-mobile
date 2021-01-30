@@ -1,4 +1,4 @@
 export type MapStackParamList = {
   Map: undefined;
-  Feature: undefined;
+  Feature: { id: string };
 };

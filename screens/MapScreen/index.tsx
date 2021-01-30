@@ -92,10 +92,16 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
     <SafeAreaView style={styles.container}>
       <MapView
         // onRegionChangeComplete={handleRegionChangeComplete}
+        provider={"google"}
         region={region}
         style={styles.map}
       >
-        {featureCollection && <Markers featureCollection={featureCollection} />}
+        {featureCollection && (
+          <Markers
+            featureCollection={featureCollection}
+            navigation={navigation}
+          />
+        )}
       </MapView>
     </SafeAreaView>
   );

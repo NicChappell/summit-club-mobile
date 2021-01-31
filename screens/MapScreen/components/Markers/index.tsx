@@ -2,8 +2,8 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Callout, Marker } from "react-native-maps";
 import { Point } from "geojson";
+import { LatLng } from "../../../../common/types";
 import { IMarkers } from "../../interfaces";
-import { LatLng } from "../../types";
 import { CustomCalloutView, CustomMarkerView } from "./components";
 
 const Markers = ({ featureCollection, navigation }: IMarkers) => {
@@ -18,7 +18,7 @@ const Markers = ({ featureCollection, navigation }: IMarkers) => {
     // destructure geometry
     const coordinates = (geometry as Point).coordinates;
 
-    // format coordinate param
+    // format marker coordinate param
     const coordinate: LatLng = {
       latitude: coordinates[1],
       longitude: coordinates[0],

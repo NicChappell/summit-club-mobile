@@ -1,4 +1,4 @@
-const COLORS = {
+export const colors = {
   redSalsa: "rgba(249, 65, 68, 1)", // #f94144
   orangeRed: "rgba(243, 114, 44, 1)", // #f3722c
   yellowOrange: "rgba(248, 150, 30, 1)", // #f8961e
@@ -9,5 +9,3 @@ const COLORS = {
   black: "rgba(0, 0, 0, 1)", // #000000
   white: "rgba(255, 255, 255, 1)", // #ffffff
 };
-
-export default COLORS;

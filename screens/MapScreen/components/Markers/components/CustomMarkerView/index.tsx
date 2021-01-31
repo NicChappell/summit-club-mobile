@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import COLORS from "../../../../../../common/styles/colors";
+import { colors } from "../../../../../../common/styles";
 
 const CustomCalloutView = () => {
   return (
@@ -15,12 +15,12 @@ export default CustomCalloutView;
 const styles = StyleSheet.create({
   circle: {
     borderRadius: 32 / 2,
-    backgroundColor: COLORS.queenBlue,
+    backgroundColor: colors.queenBlue,
     height: 32,
     width: 32,
   },
   pinText: {
-    color: COLORS.white,
+    color: colors.white,
     fontFamily: "NunitoSans_700Bold",
     fontSize: 12,
     fontWeight: "600",

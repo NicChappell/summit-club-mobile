@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SummitsScreen } from "../../../screens";
-import COLORS from "../../../common/styles/colors";
+import { colors } from "../../../common/styles";
 import SettingsStack from "../SettingsStack";
 import MapStack from "../MapStack";
 import HomeTabs from "../HomeTabs";
@@ -22,7 +22,7 @@ const MainTabBar = ({ descriptors, navigation, state }: IMainTabBar) => (
       // get route icon
       const icon = options.tabBarIcon({
         focused: isFocused,
-        color: isFocused ? COLORS.zomp : COLORS.queenBlue,
+        color: isFocused ? colors.zomp : colors.queenBlue,
         size: 24,
       });
 
@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
-    backgroundColor: COLORS.white,
-    borderTopColor: COLORS.queenBlue,
+    backgroundColor: colors.white,
+    borderTopColor: colors.queenBlue,
     borderTopWidth: 1,
     display: "flex",
     height: 64,

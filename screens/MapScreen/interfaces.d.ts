@@ -1,3 +1,4 @@
+import { WebSQLDatabase } from "expo-sqlite";
 import { FeatureCollection } from "geojson";
 import { MapScreenNavigationProp, MapScreenRouteProp } from "./types";
 
@@ -13,27 +14,4 @@ export interface IMarkers {
   featureCollection: FeatureCollection | undefined;
   /** TODO */
   navigation: MapScreenNavigationProp;
-}
-
-export interface ISQLResult {
-  /** TODO */
-  difficulty: string;
-  /** TODO */
-  distanceMiles: string;
-  /** TODO */
-  elevationFeet: string;
-  /** TODO */
-  elevationGainFeet: string;
-  /** TODO */
-  fourteener: boolean;
-  /** TODO */
-  latitude: string;
-  /** TODO */
-  longitude: string;
-  /** TODO */
-  mountainPeak: string;
-  /** TODO */
-  mountainRange: string;
-  /** TODO */
-  photo: string;
 }

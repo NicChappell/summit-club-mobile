@@ -4,8 +4,7 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 const CONTENT_HEIGHT = 112.5;
 const CONTENT_WIDTH = 150;
 
-const CustomMarkerView = ({ properties }) => {
-  console.log(properties);
+const CustomMarkerView = ({ properties }: any) => {
 
   const image = { uri: properties?.photo };
 

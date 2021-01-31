@@ -1,30 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import MapView from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SQLite from "expo-sqlite";
-import { IMapScreen, ISQLResult } from "./interfaces";
-
-import { openDatabase } from "./helpers";
-import * as helpers from "@turf/helpers";
-
+import { FeatureCollection } from "geojson";
+import { MapContext } from "../../contexts";
 import { Markers } from "./components";
-
-// MapView types
+import { processFeatureCollection } from "./helpers";
+import { IMapScreen } from "./interfaces";
 import { Region } from "./types";
-import {
-  Feature,
-  FeatureCollection,
-  Geometry,
-  GeoJsonProperties,
-  Point,
-} from "geojson";
 
 const MapScreen = ({ navigation, route }: IMapScreen) => {
   // state hooks
-  const [database, setDatabase] = useState<SQLite.WebSQLDatabase | undefined>(
-    undefined
-  );
   const [featureCollection, setFeatureCollection] = useState<
     FeatureCollection | undefined
   >(undefined);
@@ -34,6 +21,9 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
     latitudeDelta: 5,
     longitudeDelta: 5,
   });
+
+  // context hooks
+  const { database, openDatabase, setDatabase } = useContext(MapContext);
 
   // effect hooks
   useEffect(() => {
@@ -48,54 +38,27 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
 
   useEffect(() => {
     if (database) {
+      // new database transaction
       database.transaction((tx) => {
+        // execute sql statement
         tx.executeSql(
           `SELECT * FROM fourteeners;`,
           [],
-          (_: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) =>
-            processResultSet(ResultSet)
+          (_: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
+            // convert ResultSet into GeoJSON FeatureCollection
+            const featureCollection = processFeatureCollection(ResultSet);
+
+            // update state
+            setFeatureCollection(featureCollection);
+          }
         );
       });
     }
   }, [database]);
 
-  //   const handleRegionChangeComplete = (region: Region) => setRegion(region);
-
-  const processResultSet = (ResultSet: SQLite.SQLResultSet) => {
-    // destructure ResultSet
-    const { _array } = ResultSet.rows;
-
-    const features = _array.map((result: ISQLResult) => {
-      const geometry: Geometry = {
-        type: "Point",
-        coordinates: [
-          parseFloat(result.longitude),
-          parseFloat(result.latitude),
-        ],
-      };
-
-      const properties: GeoJsonProperties = { ...result };
-
-      const feature: Feature = helpers.feature(geometry, properties);
-
-      return feature;
-    });
-
-    const featureCollection: FeatureCollection<Point> = helpers.featureCollection(
-      features
-    );
-
-    setFeatureCollection(featureCollection);
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <MapView
-        // onRegionChangeComplete={handleRegionChangeComplete}
-        provider={"google"}
-        region={region}
-        style={styles.map}
-      >
+      <MapView provider={"google"} region={region} style={styles.map}>
         {featureCollection && (
           <Markers
             featureCollection={featureCollection}

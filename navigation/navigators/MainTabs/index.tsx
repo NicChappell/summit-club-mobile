@@ -40,7 +40,11 @@ const MainTabBar = ({ descriptors, navigation, state }: IMainTabBar) => (
       };
 
       return (
-        <TouchableOpacity onPress={onPress} style={styles.button}>
+        <TouchableOpacity
+          key={route.key}
+          onPress={onPress}
+          style={styles.button}
+        >
           {icon}
         </TouchableOpacity>
       );

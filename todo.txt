@@ -1,3 +1,11 @@
+CREATE A CONTEXT FOR THE MAPSTACK
+    - the database should be openeed and stored in the context
+        - the database is accessible then to all children in the stack
+        - might require adding methods to the context object that are imported into the componetns
+            - e.g. a function to query all features, and a function to query a single feature
+
+
+
 Create new firebase project under nwc@nicchappell.com
     - use itinerant consulting as payment account for blaze plan
     - figure out how to do a bulk import

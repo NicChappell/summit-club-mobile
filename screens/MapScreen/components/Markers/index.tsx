@@ -13,13 +13,12 @@ const Markers = ({ featureCollection, navigation }: IMarkers) => {
   const markers = features.map((feature, index) => {
     // destructure feature
     const geometry = feature.geometry;
-    // console.log(geometry);
     const properties = feature.properties;
-    // console.log(properties);
 
     // destructure geometry
     const coordinates = (geometry as Point).coordinates;
 
+    // format coordinate param
     const coordinate: LatLng = {
       latitude: coordinates[1],
       longitude: coordinates[0],
@@ -30,7 +29,7 @@ const Markers = ({ featureCollection, navigation }: IMarkers) => {
         <CustomMarkerView />
         <Callout
           onPress={() =>
-            navigation.navigate("Feature", { id: properties?.slug })
+            navigation.navigate("Feature", { slug: properties?.slug })
           }
         >
           <CustomCalloutView properties={properties} />

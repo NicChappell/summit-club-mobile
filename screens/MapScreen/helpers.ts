@@ -1,21 +1,39 @@
-import * as SQLite from 'expo-sqlite';
-import * as FileSystem from "expo-file-system";
-import { Asset } from "expo-asset";
+import * as SQLite from "expo-sqlite";
+import {
+  Feature,
+  FeatureCollection,
+  Geometry,
+  GeoJsonProperties,
+  Point,
+} from "geojson";
+import * as helpers from "@turf/helpers";
+import { ISQLResult } from "../../common/interfaces";
 
-// filepath to SQLite database asset
-const db = require('./data/fourteeners.db');
+export const processFeatureCollection = (ResultSet: SQLite.SQLResultSet) => {
+  // destructure ResultSet
+  const { _array }: any = ResultSet.rows;
 
-export const openDatabase = async () => {
-    if (!(await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'SQLite')).exists) {
-        await FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'SQLite');
-    }
+  // convert ResultSet _array into GeoJSON Features
+  const features = _array.map((result: ISQLResult) => {
+    // create a GeoJSON Geometry from result coordinates
+    const geometry: Geometry = {
+      type: "Point",
+      coordinates: [parseFloat(result.longitude), parseFloat(result.latitude)],
+    };
 
-    await FileSystem.downloadAsync(
-        Asset.fromModule(db).uri,
-        FileSystem.documentDirectory + 'SQLite/summits.db'
-    );
+    // create a GeoJSON properties object from result properties
+    const properties: GeoJsonProperties = { ...result };
 
-    const database = SQLite.openDatabase('summits.db');
+    // create a GeoJSON Feature
+    const feature: Feature = helpers.feature(geometry, properties);
 
-    return database;
+    return feature;
+  });
+
+  // create GeoJSON FeatureCollection from GeoJSON Features
+  const featureCollection: FeatureCollection<Point> = helpers.featureCollection(
+    features
+  );
+
+  return featureCollection;
 };

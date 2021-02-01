@@ -9,7 +9,7 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
         <SafeAreaView style={styles.container}>
             <Text>This is top text.</Text>
             <View>
-                <Text>SignUpScreen</Text>
+                <Text>Join Summit Club (SignUpScreen)</Text>
                 <Button
                     title="Go back to Sign In"
                     onPress={() => navigation.goBack()}

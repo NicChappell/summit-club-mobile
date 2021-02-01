@@ -9,3 +9,7 @@ export const colors = {
   black: "rgba(0, 0, 0, 1)", // #000000
   white: "rgba(255, 255, 255, 1)", // #ffffff
 };
+
+export const sizes = {
+  icon: 24,
+};

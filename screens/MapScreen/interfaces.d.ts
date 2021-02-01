@@ -8,10 +8,3 @@ export interface IMapScreen {
   /** TODO */
   route: MapScreenRouteProp;
 }
-
-export interface IMarkers {
-  /** TODO */
-  featureCollection: FeatureCollection | undefined;
-  /** TODO */
-  navigation: MapScreenNavigationProp;
-}

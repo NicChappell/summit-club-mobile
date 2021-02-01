@@ -1,11 +1,11 @@
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { ICalloutView } from "./interfaces";
 
 const CONTENT_HEIGHT = 112.5;
 const CONTENT_WIDTH = 150;
 
-const CustomMarkerView = ({ properties }: any) => {
-
+const CalloutView = ({ properties }: ICalloutView) => {
   const image = { uri: properties?.photo };
 
   return (
@@ -22,7 +22,7 @@ const CustomMarkerView = ({ properties }: any) => {
   );
 };
 
-export default CustomMarkerView;
+export default CalloutView;
 
 const styles = StyleSheet.create({
   caption: {

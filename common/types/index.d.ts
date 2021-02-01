@@ -5,15 +5,15 @@ export type Region = {
   longitudeDelta: number;
 };
 
-export type Camera = {
-  center?: {
-    latitude: number;
-    longitude: number;
-  };
-  pitch?: number;
-  heading?: number;
-  zoom?: number;
-};
+// export type Camera = {
+//   center?: {
+//     latitude: number;
+//     longitude: number;
+//   };
+//   pitch?: number;
+//   heading?: number;
+//   zoom?: number;
+// };
 
 export type LatLng = {
   latitude: number;

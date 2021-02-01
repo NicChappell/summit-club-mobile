@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
-import MapView from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SQLite from "expo-sqlite";
-import { FeatureCollection } from "geojson";
+import { FeatureCollection, Point } from "geojson";
 import { colors } from "../../common/styles";
-import { Region } from "../../common/types";
+import { LatLng, Region } from "../../common/types";
 import { MapContext } from "../../contexts";
-import { Markers } from "./components";
+import { CalloutView, MarkerView } from "./components";
 import { processFeatureCollection } from "./helpers";
 import { IMapScreen } from "./interfaces";
 
@@ -61,12 +61,33 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
   return (
     <SafeAreaView style={styles.container}>
       <MapView provider={"google"} region={initRegion} style={styles.map}>
-        {featureCollection && (
-          <Markers
-            featureCollection={featureCollection}
-            navigation={navigation}
-          />
-        )}
+        {featureCollection?.features.map((feature, index) => {
+          // destructure feature
+          const geometry = feature.geometry;
+          const properties = feature.properties;
+
+          // destructure geometry
+          const coordinates = (geometry as Point).coordinates;
+
+          // format marker coordinate
+          const coordinate: LatLng = {
+            latitude: coordinates[1],
+            longitude: coordinates[0],
+          };
+
+          return (
+            <Marker key={index} coordinate={coordinate}>
+              <MarkerView />
+              <Callout
+                onPress={() =>
+                  navigation.navigate("Feature", { slug: properties?.slug })
+                }
+              >
+                <CalloutView properties={properties} />
+              </Callout>
+            </Marker>
+          );
+        })}
       </MapView>
     </SafeAreaView>
   );

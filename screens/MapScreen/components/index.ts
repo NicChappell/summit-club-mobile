@@ -1,1 +1,2 @@
-export { default as Markers } from './Markers';
+export { default as CalloutView } from './CalloutView';
+export { default as MarkerView } from './MarkerView';

@@ -1,14 +1,32 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text } from "react-native";
 import { Button, Card, CheckBox, Input } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import firebase from "firebase/app";
+import "firebase/auth";
 import { colors, sizes } from "../../common/styles";
 import { ISignUpScreen } from "./interfaces";
 
 const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
   // state hooks
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+
+  // effect hooks
+  useEffect(() => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword("test@test.test", "test1234")
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.log(error);
+      });
+  });
 
   return (
     <SafeAreaView style={styles.container}>

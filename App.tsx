@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import AppLoading from "expo-app-loading";
+import firebase from "firebase/app";
 import {
   useFonts,
   Montserrat_100Thin,
@@ -42,6 +42,22 @@ import {
 } from "@expo-google-fonts/nunito-sans";
 import Navigation from "./navigation";
 import store from "./store";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBfH1uBfoEZYkcVBCogobRYFFf_Azr6a2s",
+  authDomain: "summit-club-4025491056160.firebaseapp.com",
+  databaseURL: "https://summit-club-4025491056160-default-rtdb.firebaseio.com/",
+  projectId: "summit-club-4025491056160",
+  storageBucket: "summit-club-4025491056160.appspot.com",
+  messagingSenderId: "861512527851",
+  appId: "1:861512527851:web:565d19e044e1b91999f3ae",
+  measurementId: "G-2V2X0Y8DEG",
+};
+
+// initialize firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -90,12 +106,3 @@ export default function App() {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

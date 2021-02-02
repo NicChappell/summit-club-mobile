@@ -5,12 +5,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import firebase from "firebase/app";
 import "firebase/auth";
+import { Formik } from "formik";
+import { signUpSchema } from "../../common/schemas";
 import { colors, sizes } from "../../common/styles";
 import { ISignUpScreen } from "./interfaces";
 
 const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
   // state hooks
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+  const [email, setEmail] = useState<string>("");
+  console.log(email);
+  const [password, setPassword] = useState<string>("");
+  console.log(password);
 
   // effect hooks
   useEffect(() => {
@@ -24,50 +30,77 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(error);
+        console.log(errorCode);
+        console.log(errorMessage);
       });
-  });
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
         <Card.Title>Adventure Awaits</Card.Title>
         <Card.Divider />
-        <Text>First Name</Text>
-        <Input
-          placeholder="first name"
-          errorStyle={{ color: colors.orangeRed }}
-          errorMessage="First name is required"
-        />
-        <Text>Last Name</Text>
-        <Input
-          placeholder="last name"
-          errorStyle={{ color: colors.orangeRed }}
-          errorMessage="Last name is required"
-        />
-        <Text>Email</Text>
-        <Input
-          placeholder="email"
-          errorStyle={{ color: colors.orangeRed }}
-          errorMessage="Email is required | Enter a valid email"
-        />
-        <Text>Password</Text>
-        <Input
-          placeholder="password"
-          errorStyle={{ color: colors.orangeRed }}
-          errorMessage="Password is required | Enter a valid password"
-          rightIcon={
-            <Ionicons
-              name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
-              size={sizes.icon}
-              color={colors.black}
-              onPress={() => setSecureTextEntry(!secureTextEntry)}
-            />
-          }
-          secureTextEntry={secureTextEntry}
-        />
-        <CheckBox title="I agree to the terms and conditions" checked={true} />
-        <Button title="Create Account" onPress={() => {}} />
+        <Formik
+          validationSchema={signUpSchema}
+          initialValues={{ email: "", password: "", terms: true }}
+          onSubmit={(values) => console.log(values)}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            errors,
+            isValid,
+            touched,
+            values,
+          }) => {
+            console.log(values);
+            return (
+              <>
+                <Input
+                  errorMessage={
+                    errors.email && touched.email ? errors.email : undefined
+                  }
+                  errorStyle={{ color: colors.orangeRed }}
+                  keyboardType="email-address"
+                  label="Email"
+                  onBlur={handleBlur("email")}
+                  onChangeText={handleChange("email")}
+                  value={values.email}
+                />
+                <Input
+                  errorMessage={
+                    errors.password && touched.password ? errors.password : undefined
+                  }
+                  errorStyle={{ color: colors.orangeRed }}
+                  keyboardType="default"
+                  label="Password"
+                  onBlur={handleBlur("password")}
+                  onChangeText={handleChange("password")}
+                  rightIcon={
+                    <Ionicons
+                      name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
+                      size={sizes.icon}
+                      color={colors.black}
+                      onPress={() => setSecureTextEntry(!secureTextEntry)}
+                    />
+                  }
+                  secureTextEntry={secureTextEntry}
+                  value={values.password}
+                />
+                <CheckBox
+                  title="I agree to the terms and conditions"
+                  checked={values.terms}
+                />
+                <Button
+                  disabled={!isValid}
+                  title="Create Account"
+                  onPress={() => {}}
+                />
+              </>
+            );
+          }}
+        </Formik>
       </Card>
       <Button title="Go back to Sign In" onPress={() => navigation.goBack()} />
     </SafeAreaView>

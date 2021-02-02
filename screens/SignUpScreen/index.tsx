@@ -42,15 +42,16 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
         <Card.Divider />
         <Formik
           validationSchema={signUpSchema}
-          initialValues={{ email: "", password: "", terms: true }}
+          initialValues={{ email: "", password: "", terms: false }}
           onSubmit={(values) => console.log(values)}
         >
           {({
+            errors,
             handleChange,
             handleBlur,
             handleSubmit,
-            errors,
             isValid,
+            setFieldValue,
             touched,
             values,
           }) => {
@@ -70,7 +71,9 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
                 />
                 <Input
                   errorMessage={
-                    errors.password && touched.password ? errors.password : undefined
+                    errors.password && touched.password
+                      ? errors.password
+                      : undefined
                   }
                   errorStyle={{ color: colors.orangeRed }}
                   keyboardType="default"
@@ -91,6 +94,7 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
                 <CheckBox
                   title="I agree to the terms and conditions"
                   checked={values.terms}
+                  onIconPress={() => setFieldValue('terms', !values.terms)}
                 />
                 <Button
                   disabled={!isValid}

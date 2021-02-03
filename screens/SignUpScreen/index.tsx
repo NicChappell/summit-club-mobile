@@ -3,107 +3,120 @@ import { StyleSheet } from "react-native";
 import { Button, Card, CheckBox, Input } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import firebase from "firebase/app";
-import "firebase/auth";
+import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
+import * as actions from "../../actions";
+import { DismissKeyboard } from "../../common/components";
+import { IAuthCredentials } from "../../common/interfaces";
 import { signUpSchema } from "../../common/schemas";
 import { colors, sizes } from "../../common/styles";
+import { RootState } from "../../reducers";
 import { ISignUpScreen } from "./interfaces";
 
-const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
+type Props = PropsFromRedux & ISignUpScreen;
+
+const SignUpScreen = ({ navigation, route, signUp }: Props) => {
   // state hooks
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
 
-  const handleSubmit = ({ email, password }) => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-      });
+  const handleSubmit = async (authCredentials: IAuthCredentials) => {
+    // start loading animation
+    setIsLoading(true);
+
+    // submit auth credentials
+    signUp(authCredentials);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Card containerStyle={styles.cardContainer}>
-        <Card.Title>Adventure Awaits</Card.Title>
-        <Card.Divider />
-        <Formik
-          validationSchema={signUpSchema}
-          initialValues={{ email: "", password: "", terms: false }}
-          onSubmit={handleSubmit}
-        >
-          {({
-            dirty,
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isValid,
-            setFieldValue,
-            touched,
-            values,
-          }) => (
-            <>
-              <Input
-                errorMessage={
-                  errors.email && touched.email ? errors.email : undefined
-                }
-                errorStyle={{ color: colors.orangeRed }}
-                keyboardType="email-address"
-                label="Email"
-                onBlur={handleBlur("email")}
-                onChangeText={handleChange("email")}
-                value={values.email}
-              />
-              <Input
-                errorMessage={
-                  errors.password && touched.password
-                    ? errors.password
-                    : undefined
-                }
-                errorStyle={{ color: colors.orangeRed }}
-                keyboardType="default"
-                label="Password"
-                onBlur={handleBlur("password")}
-                onChangeText={handleChange("password")}
-                rightIcon={
-                  <Ionicons
-                    name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
-                    size={sizes.icon}
-                    color={colors.black}
-                    onPress={() => setSecureTextEntry(!secureTextEntry)}
-                  />
-                }
-                secureTextEntry={secureTextEntry}
-                value={values.password}
-              />
-              <CheckBox
-                title="I agree to the terms and conditions"
-                checked={values.terms}
-                onIconPress={() => setFieldValue("terms", !values.terms)}
-              />
-              <Button
-                disabled={!isValid || !dirty}
-                title="Create Account"
-                onPress={handleSubmit as any}
-              />
-            </>
-          )}
-        </Formik>
-      </Card>
+      <DismissKeyboard>
+        <Card containerStyle={styles.cardContainer}>
+          <Card.Title>Adventure Awaits</Card.Title>
+          <Card.Divider />
+          <Formik
+            validationSchema={signUpSchema}
+            initialValues={{ email: "", password: "", terms: false }}
+            onSubmit={handleSubmit}
+          >
+            {({
+              dirty,
+              errors,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isValid,
+              setFieldValue,
+              touched,
+              values,
+            }) => (
+              <>
+                <Input
+                  autoCapitalize="none"
+                  errorMessage={
+                    errors.email && touched.email ? errors.email : undefined
+                  }
+                  errorStyle={{ color: colors.orangeRed }}
+                  keyboardType="email-address"
+                  label="Email"
+                  onBlur={handleBlur("email")}
+                  onChangeText={handleChange("email")}
+                  value={values.email}
+                />
+                <Input
+                  autoCapitalize="none"
+                  errorMessage={
+                    errors.password && touched.password
+                      ? errors.password
+                      : undefined
+                  }
+                  errorStyle={{ color: colors.orangeRed }}
+                  keyboardType="default"
+                  label="Password"
+                  onBlur={handleBlur("password")}
+                  onChangeText={handleChange("password")}
+                  rightIcon={
+                    <Ionicons
+                      name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
+                      size={sizes.icon}
+                      color={colors.black}
+                      onPress={() => setSecureTextEntry(!secureTextEntry)}
+                    />
+                  }
+                  secureTextEntry={secureTextEntry}
+                  value={values.password}
+                />
+                <CheckBox
+                  title="I agree to the terms and conditions"
+                  checked={values.terms}
+                  onIconPress={() => setFieldValue("terms", !values.terms)}
+                />
+                <Button
+                  disabled={!isValid || !dirty}
+                  title="Create Account"
+                  loading={isLoading}
+                  onPress={handleSubmit as any}
+                />
+              </>
+            )}
+          </Formik>
+        </Card>
+      </DismissKeyboard>
     </SafeAreaView>
   );
 };
 
-export default SignUpScreen;
+const mapStateToProps = (state: RootState) => {
+  return {};
+};
+
+const mapDispatchToProps = { signUp: actions.signUp };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(SignUpScreen);
 
 const styles = StyleSheet.create({
   container: {

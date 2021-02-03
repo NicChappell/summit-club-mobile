@@ -1,3 +1,10 @@
+export interface IAuthCredentials {
+  /** TODO */
+  email: string;
+  /** TODO */
+  password: string;
+}
+
 export interface ISQLResult {
   /** TODO */
   difficulty: string;

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 import { Button, Card, CheckBox, Input } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -13,16 +13,11 @@ import { ISignUpScreen } from "./interfaces";
 const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
   // state hooks
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
-  const [email, setEmail] = useState<string>("");
-  console.log(email);
-  const [password, setPassword] = useState<string>("");
-  console.log(password);
 
-  // effect hooks
-  useEffect(() => {
+  const handleSubmit = ({ email, password }) => {
     firebase
       .auth()
-      .createUserWithEmailAndPassword("test@test.test", "test1234")
+      .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
@@ -33,7 +28,7 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
         console.log(errorCode);
         console.log(errorMessage);
       });
-  }, []);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,9 +38,10 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
         <Formik
           validationSchema={signUpSchema}
           initialValues={{ email: "", password: "", terms: false }}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={handleSubmit}
         >
           {({
+            dirty,
             errors,
             handleChange,
             handleBlur,
@@ -54,59 +50,55 @@ const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
             setFieldValue,
             touched,
             values,
-          }) => {
-            console.log(values);
-            return (
-              <>
-                <Input
-                  errorMessage={
-                    errors.email && touched.email ? errors.email : undefined
-                  }
-                  errorStyle={{ color: colors.orangeRed }}
-                  keyboardType="email-address"
-                  label="Email"
-                  onBlur={handleBlur("email")}
-                  onChangeText={handleChange("email")}
-                  value={values.email}
-                />
-                <Input
-                  errorMessage={
-                    errors.password && touched.password
-                      ? errors.password
-                      : undefined
-                  }
-                  errorStyle={{ color: colors.orangeRed }}
-                  keyboardType="default"
-                  label="Password"
-                  onBlur={handleBlur("password")}
-                  onChangeText={handleChange("password")}
-                  rightIcon={
-                    <Ionicons
-                      name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
-                      size={sizes.icon}
-                      color={colors.black}
-                      onPress={() => setSecureTextEntry(!secureTextEntry)}
-                    />
-                  }
-                  secureTextEntry={secureTextEntry}
-                  value={values.password}
-                />
-                <CheckBox
-                  title="I agree to the terms and conditions"
-                  checked={values.terms}
-                  onIconPress={() => setFieldValue('terms', !values.terms)}
-                />
-                <Button
-                  disabled={!isValid}
-                  title="Create Account"
-                  onPress={() => {}}
-                />
-              </>
-            );
-          }}
+          }) => (
+            <>
+              <Input
+                errorMessage={
+                  errors.email && touched.email ? errors.email : undefined
+                }
+                errorStyle={{ color: colors.orangeRed }}
+                keyboardType="email-address"
+                label="Email"
+                onBlur={handleBlur("email")}
+                onChangeText={handleChange("email")}
+                value={values.email}
+              />
+              <Input
+                errorMessage={
+                  errors.password && touched.password
+                    ? errors.password
+                    : undefined
+                }
+                errorStyle={{ color: colors.orangeRed }}
+                keyboardType="default"
+                label="Password"
+                onBlur={handleBlur("password")}
+                onChangeText={handleChange("password")}
+                rightIcon={
+                  <Ionicons
+                    name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
+                    size={sizes.icon}
+                    color={colors.black}
+                    onPress={() => setSecureTextEntry(!secureTextEntry)}
+                  />
+                }
+                secureTextEntry={secureTextEntry}
+                value={values.password}
+              />
+              <CheckBox
+                title="I agree to the terms and conditions"
+                checked={values.terms}
+                onIconPress={() => setFieldValue("terms", !values.terms)}
+              />
+              <Button
+                disabled={!isValid || !dirty}
+                title="Create Account"
+                onPress={handleSubmit as any}
+              />
+            </>
+          )}
         </Formik>
       </Card>
-      <Button title="Go back to Sign In" onPress={() => navigation.goBack()} />
     </SafeAreaView>
   );
 };
@@ -123,5 +115,4 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignSelf: "stretch",
   },
-  inputContainer: {},
 });

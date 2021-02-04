@@ -6,7 +6,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
 import * as actions from "../../actions";
-import { DismissKeyboard } from "../../common/components";
+import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { IAuthCredentials } from "../../common/interfaces";
 import { signUpSchema } from "../../common/schemas";
 import { colors, sizes } from "../../common/styles";
@@ -30,6 +30,7 @@ const SignUpScreen = ({ navigation, route, signUp }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ErrorOverlay />
       <DismissKeyboard>
         <Card containerStyle={styles.cardContainer}>
           <Card.Title>Adventure Awaits</Card.Title>

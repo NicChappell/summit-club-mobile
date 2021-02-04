@@ -49,7 +49,7 @@ export const signUp = (authCredentials: IAuthCredentials): AppThunk => async (
 ) => {
   try {
     // await user credentials from server
-    const { user } = await firebase
+    const response: firebase.auth.UserCredential = await firebase
       .auth()
       .createUserWithEmailAndPassword(
         authCredentials.email,
@@ -57,6 +57,8 @@ export const signUp = (authCredentials: IAuthCredentials): AppThunk => async (
       );
 
     // TODO: GET THE DAMN AUTH TOKEN FROM THE USER OBJECT
+    console.log(response.user);
+    console.log(response.user.getIdToken());
 
     // // authenticate user
     // dispatch({ type: SIGN_UP_SUCCESS, payload: { authToken: undefined } });

@@ -27,6 +27,8 @@
     "expo-file-system": "~9.3.0",
     "expo-font": "~8.4.0",
     "expo-sqlite": "~8.5.0",
+    "firebase": "7.9.0",
+    "formik": "^2.2.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
@@ -41,7 +43,7 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "firebase": "7.9.0"
+    "yup": "^0.32.8"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

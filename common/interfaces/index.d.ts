@@ -1,3 +1,22 @@
+export interface IAction {
+  /** TODO */
+  type: string;
+  /** TODO */
+  payload: any;
+}
+
+export interface IAuthCredentials {
+  /** TODO */
+  email: string;
+  /** TODO */
+  password: string;
+}
+
+export interface IError {
+  code?: string;
+  message?: string;
+}
+
 export interface ISQLResult {
   /** TODO */
   difficulty: string;
@@ -21,4 +40,9 @@ export interface ISQLResult {
   photo: string;
   /** TODO */
   slug: string;
+}
+
+export interface IUserIdToken {
+  /** TODO */
+  idToken?: string;
 }

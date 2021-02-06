@@ -1,50 +1,157 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-elements";
+import React, { useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
+import { Button, Card, CheckBox, Input } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
-import firebase from "firebase/app";
-import "firebase/auth";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { connect, ConnectedProps } from "react-redux";
+import { Formik } from "formik";
+import * as actions from "../../actions";
+import {
+  DismissKeyboard,
+  ErrorOverlay,
+  TermsAndConditions,
+} from "../../common/components";
+import { IAuthCredentials } from "../../common/interfaces";
+import { signUpSchema } from "../../common/schemas";
+import { colors, sizes } from "../../common/styles";
+import { RootState } from "../../reducers";
+import { CheckBoxTitle } from "./components";
 import { ISignUpScreen } from "./interfaces";
 
-const SignUpScreen = ({ navigation, route }: ISignUpScreen) => {
+type Props = PropsFromRedux & ISignUpScreen;
+
+const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
+  // state hooks
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [
+    isTermsAndConditionsVisible,
+    setIsTermsAndConditionsVisible,
+  ] = useState<boolean>(false);
+  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+
   // effect hooks
   useEffect(() => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword("test@test.test", "test1234")
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.log(error);
-      });
-  });
+    if (error) {
+      // stop loading animation
+      setIsLoading(false);
+    }
+  }, [error]);
+
+  const handleSubmit = async (authCredentials: IAuthCredentials) => {
+    // start loading animation
+    setIsLoading(true);
+
+    // submit auth credentials
+    signUp(authCredentials);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>This is top text.</Text>
-      <View>
-        <Text>Join Summit Club (SignUpScreen)</Text>
-        <Button
-          title="Go back to Sign In"
-          onPress={() => navigation.goBack()}
-        />
-      </View>
-      <Text>This is bottom text.</Text>
+      <ErrorOverlay error={error} />
+      <TermsAndConditions
+        visible={isTermsAndConditionsVisible}
+        setVisible={setIsTermsAndConditionsVisible}
+      />
+      <DismissKeyboard>
+        <Card containerStyle={styles.cardContainer}>
+          <Formik
+            validationSchema={signUpSchema}
+            initialValues={{ email: "", password: "", terms: false }}
+            onSubmit={handleSubmit}
+          >
+            {({
+              dirty,
+              errors,
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              isValid,
+              setFieldValue,
+              touched,
+              values,
+            }) => (
+              <>
+                <Input
+                  autoCapitalize="none"
+                  errorMessage={
+                    errors.email && touched.email ? errors.email : undefined
+                  }
+                  errorStyle={{ color: colors.orangeRed }}
+                  keyboardType="email-address"
+                  label="Email"
+                  onBlur={handleBlur("email")}
+                  onChangeText={handleChange("email")}
+                  value={values.email}
+                />
+                <Input
+                  autoCapitalize="none"
+                  errorMessage={
+                    errors.password && touched.password
+                      ? errors.password
+                      : undefined
+                  }
+                  errorStyle={{ color: colors.orangeRed }}
+                  keyboardType="default"
+                  label="Password"
+                  onBlur={handleBlur("password")}
+                  onChangeText={handleChange("password")}
+                  rightIcon={
+                    <Ionicons
+                      name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
+                      size={sizes.icon}
+                      color={colors.black}
+                      onPress={() => setSecureTextEntry(!secureTextEntry)}
+                    />
+                  }
+                  secureTextEntry={secureTextEntry}
+                  value={values.password}
+                />
+                <CheckBox
+                  title={
+                    <CheckBoxTitle
+                      setVisible={setIsTermsAndConditionsVisible}
+                    />
+                  }
+                  checked={values.terms}
+                  onIconPress={() => setFieldValue("terms", !values.terms)}
+                />
+                <Button
+                  disabled={!isValid || !dirty}
+                  title="Create Account"
+                  loading={isLoading}
+                  onPress={handleSubmit as any}
+                />
+              </>
+            )}
+          </Formik>
+        </Card>
+      </DismissKeyboard>
     </SafeAreaView>
   );
 };
 
-export default SignUpScreen;
+const mapStateToProps = (state: RootState) => {
+  return {
+    error: state.error,
+  };
+};
+
+const mapDispatchToProps = { signUp: actions.signUp };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(SignUpScreen);
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: colors.white,
     flex: 1,
     justifyContent: "space-between",
+  },
+  cardContainer: {
+    alignSelf: "stretch",
   },
 });

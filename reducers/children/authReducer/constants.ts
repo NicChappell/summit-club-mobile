@@ -1,5 +1,5 @@
-import { IUserIdToken } from "../../../common/interfaces";
+import { IAuthState } from "./interfaces";
 
-export const initState: IUserIdToken = {
-  idToken: undefined,
+export const initState: IAuthState = {
+  uid: undefined,
 };

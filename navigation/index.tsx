@@ -1,15 +1,21 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { connect, ConnectedProps } from "react-redux";
+import * as actions from "../actions";
 import { RootState } from "../reducers";
 import { AuthStack, MainTabs } from "./navigators";
 
-const Navigation = ({ auth }: PropsFromRedux) => {
+const Navigation = ({ checkAuthentication, auth }: PropsFromRedux) => {
   // destructure auth
-  const { idToken } = auth;
+  const { uid } = auth;
+
+  // effect hooks
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
 
   let navigator;
-  if (idToken) {
+  if (uid) {
     navigator = <MainTabs />;
   } else {
     navigator = <AuthStack />;
@@ -22,7 +28,7 @@ const mapStateToProps = ({ auth }: RootState) => {
   return { auth };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { checkAuthentication: actions.checkAuthentication };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

@@ -1,6 +1,3 @@
-]
-
-
 Create new firebase project under nic.chappell@gmail.com account
     - I think firestore is going to be the solution I should go with
       instead of the realtime database
@@ -22,8 +19,6 @@ Create new firebase project under nic.chappell@gmail.com account
     - feature screen will also query that database to return it's full details using the id passed as a route param
 
 
-
-Update actions and reducers so they are modularized with corresponding types and interfaces organized together.
 
 
 

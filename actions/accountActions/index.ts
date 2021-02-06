@@ -1,17 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppThunk } from "../../reducers";
-import { COMPLETE_TOUR, DO_TOUR, RESET_TOUR, SKIP_TOUR } from "./types";
+import { COMPLETE_TOUR, RESET_TOUR, SKIP_TOUR } from "./types";
 
 export const checkTour = (): AppThunk => async (dispatch) => {
   // retrieve tour status from async storage
   const tourStatus = await AsyncStorage.getItem("tourStatus");
 
-  if (tourStatus === "complete") {
+  if (tourStatus) {
     // update state to render home screen
-    dispatch({ type: SKIP_TOUR, payload: { skipTour: true } });
-  } else {
-    // update state to render tour screen
-    dispatch({ type: DO_TOUR, payload: { skipTour: false } });
+    dispatch({ type: SKIP_TOUR, payload: { tourStatus: "complete" } });
   }
 };
 
@@ -20,13 +17,13 @@ export const completeTour = (): AppThunk => async (dispatch) => {
   await AsyncStorage.setItem("tourStatus", "complete");
 
   // update state to render home screen
-  dispatch({ type: COMPLETE_TOUR, payload: { skipTour: true } });
+  dispatch({ type: COMPLETE_TOUR, payload: { tourStatus: "complete" } });
 };
 
 export const resetTour = (): AppThunk => async (dispatch) => {
-  // update tour status in async storage
-  await AsyncStorage.setItem("tourStatus", "incomplete");
+  // remove tour status from async storage
+  await AsyncStorage.removeItem("tourStatus");
 
   // update state to render tour screen
-  dispatch({ type: RESET_TOUR, payload: { skipTour: false } });
+  dispatch({ type: RESET_TOUR, payload: { tourStatus: undefined } });
 };

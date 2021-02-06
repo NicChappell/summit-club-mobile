@@ -1,7 +1,9 @@
 import { SignUpScreenNavigationProp, SignUpScreenRouteProp } from "./types";
-import { IAuthCredentials } from "../../common/interfaces";
+import { IAuthCredentials, IError } from "../../common/interfaces";
 
 export interface ISignUpScreen {
+  /** TODO */
+  error: IError;
   /** TODO */
   navigation: SignUpScreenNavigationProp;
   /** TODO */

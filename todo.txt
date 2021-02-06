@@ -1,12 +1,7 @@
-CREATE A CONTEXT FOR THE MAPSTACK
-    - the database should be openeed and stored in the context
-        - the database is accessible then to all children in the stack
-        - might require adding methods to the context object that are imported into the componetns
-            - e.g. a function to query all features, and a function to query a single feature
+]
 
 
-
-Create new firebase project under nwc@nicchappell.com
+Create new firebase project under nic.chappell@gmail.com account
     - I think firestore is going to be the solution I should go with
       instead of the realtime database
         - peak data makes more sense to store in the firestore structure
@@ -17,7 +12,6 @@ Create new firebase project under nwc@nicchappell.com
     - use the geojson peaks github repo to upload peaks data for everything in that repo
         - start with Colorado, but organize to upload literally everything
             - collections organized from Continent > Country > State(/Province)
-    - add firebase to my react native expo project
     - query firebase on successful login
         - show splash screen while waiting for data to return from server and save data into database
             - bonus points if able to get snapshots of progress

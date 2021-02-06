@@ -4,7 +4,7 @@ import {
   RESET_TOUR,
   SKIP_TOUR,
 } from "../../actions/accountActions/types";
-import { IAction } from "../interfaces";
+import { IAction } from "../../common/interfaces";
 
 const initState = {
   skipTour: undefined,

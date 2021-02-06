@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Button, Card, CheckBox, Input } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -6,20 +6,36 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
 import * as actions from "../../actions";
-import { DismissKeyboard, ErrorOverlay } from "../../common/components";
+import {
+  DismissKeyboard,
+  ErrorOverlay,
+  TermsAndConditions,
+} from "../../common/components";
 import { IAuthCredentials } from "../../common/interfaces";
 import { signUpSchema } from "../../common/schemas";
 import { colors, sizes } from "../../common/styles";
 import { RootState } from "../../reducers";
+import { CheckBoxTitle } from "./components";
 import { ISignUpScreen } from "./interfaces";
 
 type Props = PropsFromRedux & ISignUpScreen;
 
 const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
-  console.log(error);
   // state hooks
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [
+    isTermsAndConditionsVisible,
+    setIsTermsAndConditionsVisible,
+  ] = useState<boolean>(false);
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+
+  // effect hooks
+  useEffect(() => {
+    if (error) {
+      // stop loading animation
+      setIsLoading(false);
+    }
+  }, [error]);
 
   const handleSubmit = async (authCredentials: IAuthCredentials) => {
     // start loading animation
@@ -32,10 +48,12 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ErrorOverlay error={error} />
+      <TermsAndConditions
+        visible={isTermsAndConditionsVisible}
+        setVisible={setIsTermsAndConditionsVisible}
+      />
       <DismissKeyboard>
         <Card containerStyle={styles.cardContainer}>
-          <Card.Title>Adventure Awaits</Card.Title>
-          <Card.Divider />
           <Formik
             validationSchema={signUpSchema}
             initialValues={{ email: "", password: "", terms: false }}
@@ -89,7 +107,11 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
                   value={values.password}
                 />
                 <CheckBox
-                  title="I agree to the terms and conditions"
+                  title={
+                    <CheckBoxTitle
+                      setVisible={setIsTermsAndConditionsVisible}
+                    />
+                  }
                   checked={values.terms}
                   onIconPress={() => setFieldValue("terms", !values.terms)}
                 />

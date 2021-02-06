@@ -26,15 +26,11 @@ const ErrorOverlay = ({ error, clearError }: Props) => {
     setVisible(false);
   };
 
-  const toggleOverlay = () => {
-    setVisible(false);
-  };
-
   return (
     <Overlay
       backdropStyle={styles.backdrop}
       isVisible={visible}
-      onBackdropPress={toggleOverlay}
+      onBackdropPress={closeOverlay}
       overlayStyle={styles.overlay}
     >
       <View style={styles.container}>

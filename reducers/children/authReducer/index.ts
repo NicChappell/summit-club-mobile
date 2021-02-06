@@ -2,12 +2,9 @@ import {
   SIGN_IN_SUCCESS,
   SIGN_OUT_SUCCESS,
   SIGN_UP_SUCCESS,
-} from "../../actions/authActions/types";
-import { IAction } from "../interfaces";
-
-const initState = {
-  authToken: undefined,
-};
+} from "../../../actions/authActions/types";
+import { IAction } from "../../../common/interfaces";
+import { initState } from "./constants";
 
 const authReducer = (state = initState, action: IAction) => {
   // destructure action
@@ -17,17 +14,17 @@ const authReducer = (state = initState, action: IAction) => {
     case SIGN_IN_SUCCESS:
       return {
         ...state,
-        authToken: payload.authToken,
+        idToken: payload.idToken,
       };
     case SIGN_OUT_SUCCESS:
       return {
         ...state,
-        authToken: payload.authToken,
+        idToken: payload.idToken,
       };
     case SIGN_UP_SUCCESS:
       return {
         ...state,
-        authToken: payload.authToken,
+        idToken: payload.idToken,
       };
     default:
       return state;

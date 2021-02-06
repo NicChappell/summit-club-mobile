@@ -7,41 +7,48 @@ import { SET_ERROR } from "../errorActions/types";
 import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SIGN_UP_SUCCESS } from "./types";
 
 export const signIn = (): AppThunk => async (dispatch) => {
-  // retrieve auth token from async storage
-  const authToken = await AsyncStorage.getItem("authToken");
+  // retrieve id token from async storage
+  const idToken = await AsyncStorage.getItem("idToken");
 
-  if (authToken) {
+  if (idToken) {
     // user already authenticated
-    dispatch({ type: SIGN_IN_SUCCESS, payload: { authToken } });
+    dispatch({ type: SIGN_IN_SUCCESS, payload: { idToken } });
   } else {
     // user needs to authenticate
     try {
-      // await auth token from server
-      // TODO
+      // TODO: firebase authentication
 
       // set auth token to async storage
-      const authToken = "authenticated";
-      await AsyncStorage.setItem("authToken", authToken);
+      const idToken = "authenticated";
+      await AsyncStorage.setItem("idToken", idToken);
 
       // sign in if authentication successful
-      dispatch({ type: SIGN_IN_SUCCESS, payload: { authToken } });
+      dispatch({ type: SIGN_IN_SUCCESS, payload: { idToken } });
     } catch (error) {
-      // TODO: handle sign in error
-      console.log(error);
+      const payload: IError = {
+        code: "TODO: HANDLE THIS ERROR",
+        message: "TODO: HANDLE THIS ERROR",
+      };
+
+      dispatch({ type: SET_ERROR, payload });
     }
   }
 };
 
 export const signOut = (): AppThunk => async (dispatch) => {
   try {
-    // delete auth token from async storage
-    await AsyncStorage.removeItem("authToken");
+    // remove id token from async storage
+    await AsyncStorage.removeItem("idToken");
 
     // sign out user
-    dispatch({ type: SIGN_OUT_SUCCESS, payload: { authToken: undefined } });
+    dispatch({ type: SIGN_OUT_SUCCESS, payload: { idToken: undefined } });
   } catch (error) {
-    // TODO: handle sign out error
-    console.log(error);
+    const payload: IError = {
+      code: "TODO: HANDLE THIS ERROR",
+      message: "TODO: HANDLE THIS ERROR",
+    };
+
+    dispatch({ type: SET_ERROR, payload });
   }
 };
 
@@ -59,10 +66,16 @@ export const signUp = (authCredentials: IAuthCredentials): AppThunk => async (
         authCredentials.password
       );
 
-    console.log(user!.uid);
+    // get id token from user
+    const idToken = await user?.getIdToken();
 
-    // // authenticate user
-    // dispatch({ type: SIGN_UP_SUCCESS, payload: { uid: user.uid } });
+    if (idToken) {
+      // set id token to async storage
+      await AsyncStorage.setItem("idToken", idToken);
+
+      // sign in if authentication successful
+      dispatch({ type: SIGN_UP_SUCCESS, payload: { idToken } });
+    }
   } catch (error) {
     const payload: IError = {
       code: error.code,

@@ -1,3 +1,10 @@
+export interface IAction {
+  /** TODO */
+  type: string;
+  /** TODO */
+  payload: any;
+}
+
 export interface IAuthCredentials {
   /** TODO */
   email: string;
@@ -33,4 +40,9 @@ export interface ISQLResult {
   photo: string;
   /** TODO */
   slug: string;
+}
+
+export interface IUserIdToken {
+  /** TODO */
+  idToken?: string;
 }

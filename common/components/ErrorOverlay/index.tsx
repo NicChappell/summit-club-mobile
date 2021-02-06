@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { connect, ConnectedProps } from "react-redux";
+import * as actions from "../../../actions";
+import { RootState } from "../../../reducers";
 import { colors } from "../../styles";
 import { IErrorOverlay } from "./interfaces";
 
-const ErrorOverlay = ({}: IErrorOverlay) => {
+type Props = PropsFromRedux & IErrorOverlay;
+
+const ErrorOverlay = ({ error, clearError }: Props) => {
   // state hooks
-  const [visible, setVisible] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
+
+  // effect hooks
+  useEffect(() => {
+    if (error.code || error.message) {
+      setVisible(true);
+    }
+  }, [error]);
+
+  const closeOverlay = () => {
+    clearError();
+    setVisible(false);
+  };
 
   const toggleOverlay = () => {
-    setVisible(!visible);
+    setVisible(false);
   };
 
   return (
@@ -25,15 +42,26 @@ const ErrorOverlay = ({}: IErrorOverlay) => {
           buttonStyle={styles.button}
           containerStyle={styles.buttonContainer}
           icon={<Ionicons name={"close"} size={24} color={colors.black} />}
-          onPress={toggleOverlay}
+          onPress={closeOverlay}
         />
-        <Text style={styles.message}>There was an error</Text>
+        <Text style={styles.message}>{error.code}</Text>
+        <Text style={styles.message}>{error.message}</Text>
       </View>
     </Overlay>
   );
 };
 
-export default ErrorOverlay;
+const mapStateToProps = (state: RootState) => {
+  return {};
+};
+
+const mapDispatchToProps = { clearError: actions.clearError };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(ErrorOverlay);
 
 const styles = StyleSheet.create({
   backdrop: {
@@ -47,7 +75,6 @@ const styles = StyleSheet.create({
   button: {
     alignItems: "center",
     backgroundColor: "transparent",
-    // backgroundColor: colors.redSalsa,
     height: 32,
     justifyContent: "center",
     padding: 0,

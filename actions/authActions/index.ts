@@ -1,8 +1,9 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { IAuthCredentials } from "../../common/interfaces";
+import { IAuthCredentials, IError } from "../../common/interfaces";
 import { AppThunk } from "../../reducers";
+import { SET_ERROR } from "../errorActions/types";
 import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SIGN_UP_SUCCESS } from "./types";
 
 export const signIn = (): AppThunk => async (dispatch) => {
@@ -48,25 +49,26 @@ export const signUp = (authCredentials: IAuthCredentials): AppThunk => async (
   dispatch
 ) => {
   try {
-    // await user credentials from server
-    const response: firebase.auth.UserCredential = await firebase
+    // use credentials to create new user
+    const {
+      user,
+    }: firebase.auth.UserCredential = await firebase
       .auth()
       .createUserWithEmailAndPassword(
         authCredentials.email,
         authCredentials.password
       );
 
-    // TODO: GET THE DAMN AUTH TOKEN FROM THE USER OBJECT
-    console.log(response.user);
-    console.log(response.user.getIdToken());
+    console.log(user!.uid);
 
     // // authenticate user
-    // dispatch({ type: SIGN_UP_SUCCESS, payload: { authToken: undefined } });
+    // dispatch({ type: SIGN_UP_SUCCESS, payload: { uid: user.uid } });
   } catch (error) {
-    // TODO: handle sign up error
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorCode);
-    console.log(errorMessage);
+    const payload: IError = {
+      code: error.code,
+      message: error.message,
+    };
+
+    dispatch({ type: SET_ERROR, payload });
   }
 };

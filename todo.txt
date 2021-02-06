@@ -7,7 +7,12 @@ CREATE A CONTEXT FOR THE MAPSTACK
 
 
 Create new firebase project under nwc@nicchappell.com
-    - use itinerant consulting as payment account for blaze plan
+    - I think firestore is going to be the solution I should go with
+      instead of the realtime database
+        - peak data makes more sense to store in the firestore structure
+        - users and corresponding data might make sense to to use realtime database,
+          but if it's too much overhead to use both I think a flatter firestore structure could work
+          for use data too
     - figure out how to do a bulk import
     - use the geojson peaks github repo to upload peaks data for everything in that repo
         - start with Colorado, but organize to upload literally everything
@@ -21,3 +26,17 @@ Create new firebase project under nwc@nicchappell.com
         - limit data returned to just the basic info needed for each pin
         - can also add filters to the screen to query just 14ers or 13ers or whatever
     - feature screen will also query that database to return it's full details using the id passed as a route param
+
+
+
+Update actions and reducers so they are modularized with corresponding types and interfaces organized together.
+
+
+
+I'll just need to watch a tutorial for firebase auth for offline apps,
+but I think what I need to do is setup the auth change listener that
+either wraps the entire app somehow, or maybe just attach it to the signout
+method. In the interim, I think I can move forward by just storing the uid, and
+use that as the thing my app uses to check if a user is authenticated.
+    - could be something like is the uid i have stored in async storage match
+      the current user firebase says is logged into my app.

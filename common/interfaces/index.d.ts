@@ -5,6 +5,11 @@ export interface IAuthCredentials {
   password: string;
 }
 
+export interface IError {
+  code?: string;
+  message?: string;
+}
+
 export interface ISQLResult {
   /** TODO */
   difficulty: string;

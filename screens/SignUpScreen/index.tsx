@@ -15,7 +15,8 @@ import { ISignUpScreen } from "./interfaces";
 
 type Props = PropsFromRedux & ISignUpScreen;
 
-const SignUpScreen = ({ navigation, route, signUp }: Props) => {
+const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
+  console.log(error);
   // state hooks
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
@@ -30,7 +31,7 @@ const SignUpScreen = ({ navigation, route, signUp }: Props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ErrorOverlay />
+      <ErrorOverlay error={error} />
       <DismissKeyboard>
         <Card containerStyle={styles.cardContainer}>
           <Card.Title>Adventure Awaits</Card.Title>
@@ -108,7 +109,9 @@ const SignUpScreen = ({ navigation, route, signUp }: Props) => {
 };
 
 const mapStateToProps = (state: RootState) => {
-  return {};
+  return {
+    error: state.error,
+  };
 };
 
 const mapDispatchToProps = { signUp: actions.signUp };

@@ -3,7 +3,7 @@ import {
   SIGN_OUT_SUCCESS,
   SIGN_UP_SUCCESS,
 } from "../../actions/authActions/types";
-import { IAction } from ".";
+import { IAction } from "../interfaces";
 
 const initState = {
   authToken: undefined,

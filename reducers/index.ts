@@ -1,10 +1,11 @@
 import { Action, combineReducers } from "redux";
 import { ThunkAction } from "redux-thunk";
-import { accountReducer, authReducer } from "./children";
+import { accountReducer, authReducer, errorReducer } from "./children";
 
 export const rootReducer = combineReducers({
   account: accountReducer,
   auth: authReducer,
+  error: errorReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -10,7 +10,7 @@ import { MapStackParamList } from "./types";
 // new stack navigator
 const Stack = createStackNavigator<MapStackParamList>();
 
-const AuthStack = () => {
+const MapStack = () => {
   // state hooks
   const [database, setDatabase] = React.useState<WebSQLDatabase | undefined>(
     undefined
@@ -38,4 +38,4 @@ const AuthStack = () => {
   );
 };
 
-export default AuthStack;
+export default MapStack;

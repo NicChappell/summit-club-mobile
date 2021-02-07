@@ -11,13 +11,16 @@ const Navigation = ({ checkAuthentication, auth }: PropsFromRedux) => {
 
   // effect hooks
   useEffect(() => {
+    // check if user is already authenticated
     checkAuthentication();
   }, []);
 
   let navigator;
   if (uid) {
+    // authenticated navigator
     navigator = <MainTabs />;
   } else {
+    // unauthenticated navigator
     navigator = <AuthStack />;
   }
 

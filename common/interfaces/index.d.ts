@@ -14,7 +14,7 @@ export interface IAuthCredentials {
 
 export interface IError {
   /** error code */
-  code?: string;
+  code?: number | string;
   /** error message */
   message?: string;
 }

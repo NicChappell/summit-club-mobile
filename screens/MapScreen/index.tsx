@@ -6,11 +6,15 @@ import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { FeatureCollection, Point } from "geojson";
+import { connect, ConnectedProps } from "react-redux";
+import * as actions from "../../actions";
+import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
 import { LatLng, Region } from "../../common/types";
 import { MapContext } from "../../contexts";
+import { RootState } from "../../reducers";
 import { CalloutView, MarkerView } from "./components";
-// import { processFeatureCollection } from "./helpers";
+import { processFeatureCollection } from "./helpers";
 import { IMapScreen } from "./interfaces";
 
 const initRegion: Region = {
@@ -20,292 +24,219 @@ const initRegion: Region = {
   longitudeDelta: 5,
 };
 
-const MapScreen = ({ navigation, route }: IMapScreen) => {
+type Props = PropsFromRedux & IMapScreen;
+
+const MapScreen = ({ error, navigation, route, setError }: Props) => {
   // context hooks
-  const { database, openDatabase, setDatabase } = useContext(MapContext);
+  const {
+    database,
+    feature,
+    features,
+    featuresRef,
+    setFeature,
+    setFeatures,
+  } = useContext(MapContext);
 
   // state hooks
   const [featureCollection, setFeatureCollection] = useState<
     FeatureCollection | undefined
   >(undefined);
 
-  // open (or create) features database
-  const db = SQLite.openDatabase("features");
-
-  const populateFeaturesTable = () => {
-    // first need to query firestore and get results
-    const firestore = firebase.firestore();
-
-    const featuresRef = firestore.collection("features");
-
-    featuresRef
-      .where("properties.states", "array-contains-any", ["Colorado"])
-      .get()
-      .then((snapshot) => {
-        console.log(snapshot.docs.length);
-
-        // then need to create new array formatted for use in sql instert statement
-        snapshot.forEach((doc) => {
-          const { properties } = doc.data();
-
-          const continent = properties.continent;
-          const countries = properties.countries.toString();
-          const feet = properties.feet;
-          const latitude = properties.latitude;
-          const longitude = properties.longitude;
-          const marker_size = properties["marker-size"];
-          const marker_symbol = properties["marker-symbol"];
-          const meters = properties.meters;
-          const name = properties.name;
-          const regions = properties.regions
-            ? properties.regions.toString()
-            : null;
-          const states = properties.states
-            ? properties.states.toString()
-            : null;
-
-          const array = [
-            continent,
-            countries,
-            feet,
-            latitude,
-            longitude,
-            marker_size,
-            marker_symbol,
-            meters,
-            name,
-            regions,
-            states,
-          ];
-
-          console.log(array);
-
-          // then need to create a new db transaction for each reacord
-
-          // new database transaction
-          db.transaction((tx) => {
-            // execute sql statement
-            tx.executeSql(
-              // sql query
-              `INSERT INTO features (
-                continent,
-                countries,
-                feet,
-                latitude,
-                longitude,
-                marker_size,
-                marker_symbol,
-                meters,
-                name,
-                regions,
-                states
-              ) VALUES (
-                "${continent}",
-                "${countries}",
-                ${feet},
-                ${latitude},
-                ${longitude},
-                "${marker_size}",
-                "${marker_symbol}",
-                ${meters},
-                "${name}",
-                "${regions}",
-                "${states}"
-              );`,
-              // substitution variables
-              [],
-              // success callback
-              (_tx: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-                console.log("Document successfully written!");
-              },
-              // error callback
-              (_tx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
-                console.error("Error writing document: ", error.message);
-                return true;
-              }
-            );
-          });
-        });
-      });
-  };
-
-  const dropFeaturesTable = () => {
-    // new database transaction
-    db.transaction((tx) => {
-      // execute sql statement
-      tx.executeSql(
-        // sql query
-        `DROP TABLE IF EXISTS features;`,
-        // substitution variables
-        [],
-        // success callback
-        (_tx: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-          console.log(ResultSet);
-        },
-        // error callback
-        (_tx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
-          console.log(error.code);
-          console.log(error.message);
-          return true;
-        }
-      );
-    });
-  };
-
-  const createFeaturesTable = () => {
-    // new database transaction
-    db.transaction((tx) => {
-      // execute sql statement
-      tx.executeSql(
-        // sql query
-        `CREATE TABLE IF NOT EXISTS features (
-          continent TEXT NOT NULL,
-          countries TEXT NOT NULL,
-          feet INTEGER NOT NULL,
-          latitude REAL NOT NULL,
-          longitude REAL NOT NULL,
-          marker_size TEXT NOT NULL,
-          marker_symbol TEXT NOT NULL,
-          meters INTEGER NOT NULL,
-          name TEXT NOT NULL,
-          regions TEXT,
-          states TEXT
-        );`,
-        // substitution variables
-        [],
-        // success callback
-        (_tx: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-          console.log(ResultSet);
-          populateFeaturesTable();
-        },
-        // error callback
-        (_tx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
-          console.log(error.code);
-          console.log(error.message);
-          return true;
-        }
-      );
-    });
-  };
-
   // effect hooks
   useEffect(() => {
-    // new database transaction
-    db.transaction((tx) => {
-      // execute sql statement
-      tx.executeSql(
-        // sql query
-        `SELECT * FROM features;`,
-        // substitution variables
-        [],
-        // success callback
-        (_tx: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-          console.log(ResultSet.rows._array.length);
-          // dropFeaturesTable();
+    if (database && featuresRef) {
+      queryFeaturesTable(database, featuresRef);
+    }
+  }, [database, featuresRef]);
+
+  // asynchronous sqlite transaction wrapper function
+  const executeSql = async (
+    database: SQLite.WebSQLDatabase,
+    sqlStatement: string,
+    args: string[] = []
+  ) => {
+    return new Promise((resolve, reject) => {
+      // new database transaction
+      database.transaction(
+        (tx) => {
+          // execute sql statement
+          tx.executeSql(
+            // sql statement
+            sqlStatement,
+            // arguments
+            [...args],
+            // success callback
+            (_tx: SQLite.SQLTransaction, resultSet: SQLite.SQLResultSet) => {
+              resolve(resultSet);
+            },
+            // error callback
+            (_tx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
+              reject(error);
+
+              // typescript expects a return boolean
+              return true;
+            }
+          );
         },
         // error callback
-        (_tx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
-          console.log(error.code);
-          console.log(error.message);
-          createFeaturesTable();
-          return true;
-        }
+        (_error: SQLite.SQLError) => {},
+        // success callback
+        () => {}
       );
     });
-  }, []);
+  };
 
-  // useEffect(() => {
-  //   // COULD SET THIS REF IN STATE?
-  //   // OR DO I HAVE TO DO THIS IN ANY
-  //   // FILE I NEED TO QUERY THE DB?
-  //   const db = firebase.firestore();
+  const createFeaturesTable = async (
+    database: SQLite.WebSQLDatabase,
+    featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
+  ) => {
+    try {
+      const sqlStatement = `
+        CREATE TABLE IF NOT EXISTS features (
+          continent TEXT,
+          countries TEXT,
+          feet INTEGER,
+          latitude REAL,
+          longitude REAL,
+          marker_size TEXT,
+          marker_symbol TEXT,
+          meters INTEGER,
+          name TEXT,
+          regions TEXT,
+          states TEXT
+        );
+      `;
+      await executeSql(database, sqlStatement, []);
 
-  //   const featuresRef = db.collection("features");
+      populateFeaturesTable(database, featuresRef);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+  };
 
-  //   featuresRef
-  //     .where("properties.states", "array-contains-any", ["Colorado"])
-  //     .get()
-  //     .then((snapshot) => {
-  //       // console.log(snapshot.docs.length);
-  //       // snapshot.forEach((doc) => {
-  //       //   console.log(doc.id, "=>", doc.data());
-  //       // });
+  const dropFeaturesTable = async (database: SQLite.WebSQLDatabase) => {
+    try {
+      await executeSql(database, `DROP TABLE IF EXISTS features;`, []);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+  };
 
-  //       // open (or create) features database
-  //       const database = SQLite.openDatabase("features");
-  //       // console.log(database);
+  const populateFeaturesTable = async (
+    database: SQLite.WebSQLDatabase,
+    featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
+  ) => {
+    try {
+      // retrieve data from firestore
+      const snapshot = await featuresRef
+        .where("properties.states", "array-contains-any", ["Colorado"])
+        .get();
 
-  //       // new database transaction
-  //       database.transaction((tx) => {
-  //         // execute sql statement
-  //         tx.executeSql(
-  //           // sql query
-  //           `SELECT * FROM features;`,
-  //           // substitution variables
-  //           [],
-  //           // success callback
-  //           (_tx: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-  //             console.log(ResultSet.rows._array.length);
-  //           },
-  //           // error callback
-  //           (_tx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
-  //             console.log(error.code);
-  //             console.log(error.message);
-  //             return true;
-  //           }
-  //         );
-  //       });
-  //     });
-  // }, []);
+      // collect firestore documents
+      const documents: firebase.firestore.DocumentData[] = [];
+      snapshot.forEach((doc) => {
+        // retrieve all document fields as an object
+        // NOTE: data object is equivalent to a GeoJSON Feature object
+        const document = doc.data();
 
-  // useEffect(() => {
-  //   if (database) {
-  //     // new database transaction
-  //     database.transaction((tx) => {
-  //       // execute sql statement
-  //       tx.executeSql(
-  //         `SELECT * FROM fourteeners;`,
-  //         [],
-  //         (_: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-  //           console.log(ResultSet.rows._array.length);
-  //         }
-  //       );
-  //     });
-  //   }
-  // }, [database]);
+        // push document into documents array
+        documents.push(document);
+      });
 
-  // useEffect(() => {
-  //   openDatabase()
-  //     .then((database) => {
-  //       setDatabase(database);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+      // wait for all database transactions to finish
+      const sqlStatement = `
+        INSERT INTO features (
+          continent,
+          countries,
+          feet,
+          latitude,
+          longitude,
+          marker_size,
+          marker_symbol,
+          meters,
+          name,
+          regions,
+          states
+        ) VALUES (
+          ?,?,?,?,?,?,?,?,?,?,?
+        );
+      `;
+      for (const document of documents) {
+        // destructure properties from document
+        const { properties } = document;
 
-  // useEffect(() => {
-  //   if (database) {
-  //     // new database transaction
-  //     database.transaction((tx) => {
-  //       // execute sql statement
-  //       tx.executeSql(
-  //         `SELECT * FROM fourteeners;`,
-  //         [],
-  //         (_: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-  //           // convert ResultSet into GeoJSON FeatureCollection
-  //           const featureCollection = processFeatureCollection(ResultSet);
+        // format arguments
+        const args = [
+          properties.continent,
+          properties.countries ? properties.countries.toString() : null,
+          properties.feet,
+          properties.latitude,
+          properties.longitude,
+          properties["marker-size"],
+          properties["marker-symbol"],
+          properties.meters,
+          properties.name,
+          properties.regions ? properties.regions.toString() : null,
+          properties.states ? properties.states.toString() : null,
+        ];
 
-  //           // update state
-  //           setFeatureCollection(featureCollection);
-  //         }
-  //       );
-  //     });
-  //   }
-  // }, [database]);
+        await executeSql(database, sqlStatement, args);
+      }
+
+      const resultSet: any = await executeSql(
+        database,
+        `SELECT * FROM features;`,
+        []
+      );
+      console.log(resultSet.rows._array.length);
+
+      // convert resultSet into GeoJSON FeatureCollection
+      const featureCollection = processFeatureCollection(resultSet);
+
+      // update state
+      setFeatureCollection(featureCollection);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+  };
+
+  const queryFeaturesTable = async (
+    database: SQLite.WebSQLDatabase,
+    featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
+  ) => {
+    try {
+      const resultSet: any = await executeSql(
+        database,
+        `SELECT * FROM features;`,
+        []
+      );
+      console.log(resultSet.rows._array.length);
+
+      // update state eventually, but keep dropping while developing
+      dropFeaturesTable(database);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+
+      // (re-)create features table if query error
+      createFeaturesTable(database, featuresRef);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
+      <ErrorOverlay error={error} />
       <MapView provider={"google"} region={initRegion} style={styles.map}>
         {featureCollection?.features.map((feature, index) => {
           // destructure feature
@@ -339,7 +270,19 @@ const MapScreen = ({ navigation, route }: IMapScreen) => {
   );
 };
 
-export default MapScreen;
+const mapStateToProps = (state: RootState) => {
+  return {
+    error: state.error,
+  };
+};
+
+const mapDispatchToProps = { setError: actions.setError };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(MapScreen);
 
 const styles = StyleSheet.create({
   container: {

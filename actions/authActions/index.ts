@@ -4,44 +4,59 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IAuthCredentials, IError } from "../../common/interfaces";
 import { AppThunk } from "../../reducers";
 import { SET_ERROR } from "../errorActions/types";
-import { SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, SIGN_UP_SUCCESS } from "./types";
+import { SIGN_IN, SIGN_OUT, SIGN_UP } from "./types";
 
-export const signIn = (): AppThunk => async (dispatch) => {
-  // retrieve id token from async storage
-  const idToken = await AsyncStorage.getItem("idToken");
+export const checkAuthentication = (): AppThunk => async (dispatch) => {
+  // retrieve uid from async storage
+  const uid = await AsyncStorage.getItem("uid");
 
-  if (idToken) {
-    // user already authenticated
-    dispatch({ type: SIGN_IN_SUCCESS, payload: { idToken } });
-  } else {
-    // user needs to authenticate
-    try {
-      // TODO: firebase authentication
+  if (uid) {
+    // authenticate user
+    dispatch({ type: SIGN_IN, payload: { uid } });
+  }
+};
 
-      // set auth token to async storage
-      const idToken = "authenticated";
-      await AsyncStorage.setItem("idToken", idToken);
+export const signIn = (authCredentials: IAuthCredentials): AppThunk => async (
+  dispatch
+) => {
+  try {
+    // submit credentials to authenticate user
+    const {
+      user,
+    }: firebase.auth.UserCredential = await firebase
+      .auth()
+      .signInWithEmailAndPassword(
+        authCredentials.email,
+        authCredentials.password
+      );
 
-      // sign in if authentication successful
-      dispatch({ type: SIGN_IN_SUCCESS, payload: { idToken } });
-    } catch (error) {
-      const payload: IError = {
-        code: "TODO: HANDLE THIS ERROR",
-        message: "TODO: HANDLE THIS ERROR",
-      };
+    if (user) {
+      // set uid in async storage
+      await AsyncStorage.setItem("uid", user.uid);
 
-      dispatch({ type: SET_ERROR, payload });
+      // authenticate user
+      dispatch({ type: SIGN_UP, payload: { uid: user.uid } });
     }
+  } catch (error) {
+    const payload: IError = {
+      code: error.code,
+      message: error.message,
+    };
+
+    dispatch({ type: SET_ERROR, payload });
   }
 };
 
 export const signOut = (): AppThunk => async (dispatch) => {
   try {
-    // remove id token from async storage
-    await AsyncStorage.removeItem("idToken");
+    // sign out from firebase
+    firebase.auth().signOut();
 
-    // sign out user
-    dispatch({ type: SIGN_OUT_SUCCESS, payload: { idToken: undefined } });
+    // remove id token from async storage
+    await AsyncStorage.removeItem("uid");
+
+    // void user
+    dispatch({ type: SIGN_OUT, payload: { uid: undefined } });
   } catch (error) {
     const payload: IError = {
       code: "TODO: HANDLE THIS ERROR",
@@ -56,7 +71,7 @@ export const signUp = (authCredentials: IAuthCredentials): AppThunk => async (
   dispatch
 ) => {
   try {
-    // use credentials to create new user
+    // submit credentials to create new user
     const {
       user,
     }: firebase.auth.UserCredential = await firebase
@@ -66,15 +81,12 @@ export const signUp = (authCredentials: IAuthCredentials): AppThunk => async (
         authCredentials.password
       );
 
-    // get id token from user
-    const idToken = await user?.getIdToken();
+    if (user) {
+      // set uid in async storage
+      await AsyncStorage.setItem("uid", user.uid);
 
-    if (idToken) {
-      // set id token to async storage
-      await AsyncStorage.setItem("idToken", idToken);
-
-      // sign in if authentication successful
-      dispatch({ type: SIGN_UP_SUCCESS, payload: { idToken } });
+      // authenticate user
+      dispatch({ type: SIGN_UP, payload: { uid: user.uid } });
     }
   } catch (error) {
     const payload: IError = {

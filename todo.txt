@@ -1,6 +1,3 @@
-]
-
-
 Create new firebase project under nic.chappell@gmail.com account
     - I think firestore is going to be the solution I should go with
       instead of the realtime database
@@ -23,8 +20,6 @@ Create new firebase project under nic.chappell@gmail.com account
 
 
 
-Update actions and reducers so they are modularized with corresponding types and interfaces organized together.
-
 
 
 I'll just need to watch a tutorial for firebase auth for offline apps,
@@ -34,3 +29,16 @@ method. In the interim, I think I can move forward by just storing the uid, and
 use that as the thing my app uses to check if a user is authenticated.
     - could be something like is the uid i have stored in async storage match
       the current user firebase says is logged into my app.
+
+
+
+
+Maybe in Redux, but if not there than a Context, but add a reference to the firestore db,
+and later the realtime db if i add it, so that i can access and make queries from anywhere in the app
+without having to re-establish a connection everytime
+
+
+
+Should do the load of data during first app load.
+like after sign up or something.
+get the time suck out of the way.

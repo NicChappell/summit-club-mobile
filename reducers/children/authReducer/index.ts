@@ -1,7 +1,7 @@
 import {
-  SIGN_IN_SUCCESS,
-  SIGN_OUT_SUCCESS,
-  SIGN_UP_SUCCESS,
+  SIGN_IN,
+  SIGN_OUT,
+  SIGN_UP,
 } from "../../../actions/authActions/types";
 import { IAction } from "../../../common/interfaces";
 import { initState } from "./constants";
@@ -11,20 +11,20 @@ const authReducer = (state = initState, action: IAction) => {
   const { type, payload } = action;
 
   switch (type) {
-    case SIGN_IN_SUCCESS:
+    case SIGN_IN:
       return {
         ...state,
-        idToken: payload.idToken,
+        uid: payload.uid,
       };
-    case SIGN_OUT_SUCCESS:
+    case SIGN_OUT:
       return {
         ...state,
-        idToken: payload.idToken,
+        uid: payload.uid,
       };
-    case SIGN_UP_SUCCESS:
+    case SIGN_UP:
       return {
         ...state,
-        idToken: payload.idToken,
+        uid: payload.uid,
       };
     default:
       return state;

@@ -1,11 +1,29 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../common/styles";
+import { IMarkerView } from "./interfaces";
 
-const MarkerView = () => {
+const MarkerView = ({ properties }: IMarkerView) => {
+  // destructure feature properties
+  const {
+    continent,
+    countries,
+    feet,
+    latitude,
+    longitude,
+    marker_size: markerSize,
+    marker_symbol: markerSymbol,
+    meters,
+    name,
+    regions,
+    states,
+  } = properties!;
+
+  let label = feet.toString().slice(0, -3);
+
   return (
     <View style={styles.circle}>
-      <Text style={styles.pinText}>14er</Text>
+      <Text style={styles.pinText}>{label}k</Text>
     </View>
   );
 };
@@ -14,8 +32,8 @@ export default MarkerView;
 
 const styles = StyleSheet.create({
   circle: {
+    backgroundColor: colors.pistachio,
     borderRadius: 32 / 2,
-    backgroundColor: colors.queenBlue,
     height: 32,
     width: 32,
   },

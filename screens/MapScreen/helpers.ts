@@ -9,16 +9,16 @@ import {
 import * as helpers from "@turf/helpers";
 import { ISQLResult } from "../../common/interfaces";
 
-export const processFeatureCollection = (ResultSet: SQLite.SQLResultSet) => {
-  // destructure ResultSet
-  const { _array }: any = ResultSet.rows;
+export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
+  // destructure result set
+  const { _array }: any = resultSet.rows;
 
-  // convert ResultSet _array into GeoJSON Features
+  // convert result set array into GeoJSON Features
   const features = _array.map((result: ISQLResult) => {
     // create a GeoJSON Geometry from result coordinates
     const geometry: Geometry = {
       type: "Point",
-      coordinates: [parseFloat(result.longitude), parseFloat(result.latitude)],
+      coordinates: [result.longitude, result.latitude],
     };
 
     // create a GeoJSON properties object from result properties

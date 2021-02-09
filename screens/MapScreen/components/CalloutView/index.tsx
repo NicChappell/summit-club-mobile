@@ -1,23 +1,33 @@
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { colors } from "../../../../common/styles";
 import { ICalloutView } from "./interfaces";
 
 const CONTENT_HEIGHT = 112.5;
 const CONTENT_WIDTH = 150;
 
-const CalloutView = ({ properties }: ICalloutView) => {
-  const image = { uri: properties?.photo };
+const CalloutView = ({ index, properties }: ICalloutView) => {
+  // destructure feature properties
+  const {
+    continent,
+    countries,
+    feet,
+    latitude,
+    longitude,
+    marker_size: markerSize,
+    marker_symbol: markerSymbol,
+    meters,
+    name,
+    regions,
+    states,
+  } = properties!;
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={image} style={styles.imageBackground}>
-        <View style={styles.caption}>
-          <Text style={styles.text}>{properties?.mountainPeak}</Text>
-          <Text style={styles.text}>
-            {parseInt(properties?.elevationFeet).toLocaleString()} ft
-          </Text>
-        </View>
-      </ImageBackground>
+      <Text style={styles.text}>{name}</Text>
+      <Text style={styles.text}>{feet.toLocaleString()} ft</Text>
+      <Text style={styles.text}>{meters.toLocaleString()} m</Text>
+      <Text style={styles.text}>Index: {index}</Text>
     </View>
   );
 };
@@ -25,29 +35,15 @@ const CalloutView = ({ properties }: ICalloutView) => {
 export default CalloutView;
 
 const styles = StyleSheet.create({
-  caption: {
-    alignItems: "flex-end",
-    display: "flex",
+  container: {
+    alignItems: "center",
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    padding: 8,
-  },
-  container: {},
-  imageBackground: {
-    flex: 1,
-    resizeMode: "cover",
     height: CONTENT_HEIGHT,
     justifyContent: "center",
+    padding: 8,
     width: CONTENT_WIDTH,
   },
   text: {
-    color: "white",
-    textShadowColor: "black",
-    textShadowOffset: {
-      width: -1,
-      height: 1,
-    },
-    textShadowRadius: 1,
+    color: colors.black,
   },
 });

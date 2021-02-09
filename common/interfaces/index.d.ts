@@ -19,9 +19,9 @@ export interface IError {
   message?: string;
 }
 
-// small	< 600m
-// medium	< 4200m
-// large	> 4200m
+// "small"	< 600m
+// "medium"	< 4200m
+// "large"	> 4200m
 export type MarkerSize = "small" | "medium" | "large";
 export type MarkerSymbol = "triangle";
 

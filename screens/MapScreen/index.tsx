@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { FeatureCollection, Point } from "geojson";
+import { Point } from "geojson";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../actions";
 import { ErrorOverlay } from "../../common/components";
@@ -14,7 +14,7 @@ import { LatLng, Region } from "../../common/types";
 import { MapContext } from "../../contexts";
 import { RootState } from "../../reducers";
 import { CalloutView, MarkerView } from "./components";
-import { processFeatureCollection } from "./helpers";
+import { processResultSet } from "./helpers";
 import { IMapScreen } from "./interfaces";
 
 const initRegion: Region = {
@@ -36,19 +36,14 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     setFeature,
     setFeatures,
   } = useContext(MapContext);
-
-  // state hooks
-  const [featureCollection, setFeatureCollection] = useState<
-    FeatureCollection | undefined
-  >(undefined);
-  console.log(featureCollection);
+  console.log(features?.length);
 
   // effect hooks
   useEffect(() => {
     if (database && featuresRef) {
       queryFeaturesTable(database, featuresRef);
     }
-  }, [database, featuresRef]);
+  }, []);
 
   // asynchronous sqlite transaction wrapper function
   const executeSql = async (
@@ -190,7 +185,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         await executeSql(database, sqlStatement, args);
       }
 
-      // re-query features table
+      // query features table
       queryFeaturesTable(database, featuresRef);
     } catch (error) {
       setError({
@@ -210,16 +205,15 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         FROM features
         WHERE states LIKE '%Colorado%'
         ORDER BY meters DESC
-        LIMIT 100;
+        LIMIT 200;
       `;
       const resultSet: any = await executeSql(database, sqlStatement, []);
-      console.log(resultSet.rows._array.length);
 
       // convert resultSet into GeoJSON FeatureCollection
-      const featureCollection = processFeatureCollection(resultSet);
+      const { features } = processResultSet(resultSet);
 
       // update state
-      setFeatureCollection(featureCollection);
+      setFeatures(features);
 
       // // update state eventually, but keep dropping while developing
       // dropFeaturesTable(database);
@@ -238,7 +232,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     <SafeAreaView style={styles.container}>
       <ErrorOverlay error={error} />
       <MapView provider={"google"} region={initRegion} style={styles.map}>
-        {featureCollection?.features.map((feature, index) => {
+        {features?.map((feature, index) => {
           // destructure feature
           const geometry = feature.geometry;
           const properties = feature.properties;
@@ -254,13 +248,13 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
           return (
             <Marker key={index} coordinate={coordinate}>
-              <MarkerView />
+              <MarkerView properties={properties} />
               <Callout
                 onPress={() =>
                   navigation.navigate("Feature", { slug: properties?.slug })
                 }
               >
-                <CalloutView properties={properties} />
+                <CalloutView index={index} properties={properties} />
               </Callout>
             </Marker>
           );

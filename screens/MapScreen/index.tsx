@@ -41,6 +41,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   const [featureCollection, setFeatureCollection] = useState<
     FeatureCollection | undefined
   >(undefined);
+  console.log(featureCollection);
 
   // effect hooks
   useEffect(() => {
@@ -135,7 +136,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     try {
       // retrieve data from firestore
       const snapshot = await featuresRef
-        .where("properties.states", "array-contains-any", ["Colorado"])
+        // .where("properties.states", "array-contains-any", ["Colorado"])
         .get();
 
       // collect firestore documents
@@ -189,18 +190,8 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         await executeSql(database, sqlStatement, args);
       }
 
-      const resultSet: any = await executeSql(
-        database,
-        `SELECT * FROM features;`,
-        []
-      );
-      console.log(resultSet.rows._array.length);
-
-      // convert resultSet into GeoJSON FeatureCollection
-      const featureCollection = processFeatureCollection(resultSet);
-
-      // update state
-      setFeatureCollection(featureCollection);
+      // re-query features table
+      queryFeaturesTable(database, featuresRef);
     } catch (error) {
       setError({
         code: error.code,
@@ -214,15 +205,24 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
   ) => {
     try {
-      const resultSet: any = await executeSql(
-        database,
-        `SELECT * FROM features;`,
-        []
-      );
+      const sqlStatement = `
+        SELECT *
+        FROM features
+        WHERE states LIKE '%Colorado%'
+        ORDER BY meters DESC
+        LIMIT 100;
+      `;
+      const resultSet: any = await executeSql(database, sqlStatement, []);
       console.log(resultSet.rows._array.length);
 
-      // update state eventually, but keep dropping while developing
-      dropFeaturesTable(database);
+      // convert resultSet into GeoJSON FeatureCollection
+      const featureCollection = processFeatureCollection(resultSet);
+
+      // update state
+      setFeatureCollection(featureCollection);
+
+      // // update state eventually, but keep dropping while developing
+      // dropFeaturesTable(database);
     } catch (error) {
       setError({
         code: error.code,

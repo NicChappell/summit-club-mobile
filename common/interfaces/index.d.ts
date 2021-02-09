@@ -19,27 +19,33 @@ export interface IError {
   message?: string;
 }
 
+// small	< 600m
+// medium	< 4200m
+// large	> 4200m
+export type MarkerSize = "small" | "medium" | "large";
+export type MarkerSymbol = "triangle";
+
 export interface ISQLResult {
-  /** TODO */
-  difficulty: string;
-  /** TODO */
-  distanceMiles: string;
-  /** TODO */
-  elevationFeet: string;
-  /** TODO */
-  elevationGainFeet: string;
-  /** TODO */
-  fourteener: boolean;
-  /** TODO */
-  latitude: string;
-  /** TODO */
-  longitude: string;
-  /** TODO */
-  mountainPeak: string;
-  /** TODO */
-  mountainRange: string;
-  /** TODO */
-  photo: string;
-  /** TODO */
-  slug: string;
+  /** continent where feature is located */
+  continent: string;
+  /** list of countries where feature is located */
+  countries: string;
+  /** elevation of feature measured in feet */
+  feet: number;
+  /** latitude of the feature */
+  latitude: number;
+  /** longitude of the feature */
+  longitude: number;
+  /** size of feature marker */
+  marker_size: MarkerSize;
+  /** type of feature marker */
+  marker_symbol: MarkerSymbol;
+  /** elevation of feature measured in meters */
+  meters: number;
+  /** name of the feature */
+  name: string;
+  /** list of regions where feature is located */
+  regions: string;
+  /** list of states where feature is located */
+  states: string;
 }

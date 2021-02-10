@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -30,13 +30,13 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   // context hooks
   const {
     database,
+    executeSql,
     feature,
     features,
     featuresRef,
     setFeature,
     setFeatures,
   } = useContext(MapContext);
-  console.log(features?.length);
 
   // effect hooks
   useEffect(() => {
@@ -45,42 +45,12 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     }
   }, []);
 
-  // asynchronous sqlite transaction wrapper function
-  const executeSql = async (
-    database: SQLite.WebSQLDatabase,
-    sqlStatement: string,
-    args: string[] = []
-  ) => {
-    return new Promise((resolve, reject) => {
-      // new database transaction
-      database.transaction(
-        (tx) => {
-          // execute sql statement
-          tx.executeSql(
-            // sql statement
-            sqlStatement,
-            // arguments
-            [...args],
-            // success callback
-            (_tx: SQLite.SQLTransaction, resultSet: SQLite.SQLResultSet) => {
-              resolve(resultSet);
-            },
-            // error callback
-            (_tx: SQLite.SQLTransaction, error: SQLite.SQLError) => {
-              reject(error);
-
-              // typescript expects a return boolean
-              return true;
-            }
-          );
-        },
-        // error callback
-        (_error: SQLite.SQLError) => {},
-        // success callback
-        () => {}
-      );
-    });
-  };
+  // // effect hooks
+  // useEffect(() => {
+  //   if (database) {
+  //     dropFeaturesTable(database);
+  //   }
+  // }, []);
 
   const createFeaturesTable = async (
     database: SQLite.WebSQLDatabase,
@@ -204,26 +174,25 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         SELECT *
         FROM features
         WHERE states LIKE '%Colorado%'
-        ORDER BY meters DESC
-        LIMIT 200;
+        ORDER BY meters DESC;
       `;
-      const resultSet: any = await executeSql(database, sqlStatement, []);
+      const resultSet: any = await executeSql!(database, sqlStatement, []);
+      console.log("resultSet.rows._array.length", resultSet.rows._array.length);
 
       // convert resultSet into GeoJSON FeatureCollection
       const { features } = processResultSet(resultSet);
+      console.log("features.length", features.length);
 
       // update state
       setFeatures(features);
-
-      // // update state eventually, but keep dropping while developing
-      // dropFeaturesTable(database);
     } catch (error) {
       setError({
         code: error.code,
         message: error.message,
       });
 
-      // (re-)create features table if query error
+      // drop and create features table if query error
+      dropFeaturesTable(database);
       createFeaturesTable(database, featuresRef);
     }
   };
@@ -231,7 +200,13 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <ErrorOverlay error={error} />
-      <MapView provider={"google"} region={initRegion} style={styles.map}>
+      <MapView
+        loadingEnabled={true}
+        pitchEnabled={false}
+        provider={"google"}
+        region={initRegion}
+        style={styles.map}
+      >
         {features?.map((feature, index) => {
           // destructure feature
           const geometry = feature.geometry;
@@ -245,16 +220,21 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
             latitude: coordinates[1],
             longitude: coordinates[0],
           };
+          console.log(index);
 
           return (
-            <Marker key={index} coordinate={coordinate}>
+            <Marker
+              key={index}
+              coordinate={coordinate}
+              tracksViewChanges={false}
+            >
               <MarkerView properties={properties} />
               <Callout
                 onPress={() =>
-                  navigation.navigate("Feature", { slug: properties?.slug })
+                  navigation.navigate("Feature", { name: properties?.name })
                 }
               >
-                <CalloutView index={index} properties={properties} />
+                <CalloutView properties={properties} />
               </Callout>
             </Marker>
           );
@@ -281,7 +261,7 @@ export default connector(MapScreen);
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: colors.white,
+    backgroundColor: colors.pistachio,
     flex: 1,
     justifyContent: "center",
   },

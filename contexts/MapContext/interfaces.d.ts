@@ -6,6 +6,12 @@ import { ISQLResult } from "../../../common/interfaces";
 export interface IMapContext {
   /** SQLite Database */
   database?: SQLite.WebSQLDatabase;
+  /** Asynchronous SQLite transaction wrapper function */
+  executeSql?: (
+    database: SQLite.WebSQLDatabase,
+    sqlStatement: string,
+    args: string[] = []
+  ) => Promise;
   /** Selected feature data */
   feature?: ISQLResult;
   /** Currently available features */

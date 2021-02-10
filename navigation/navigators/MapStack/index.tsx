@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { ISQLResult } from "../../../common/interfaces";
 import { MapContext } from "../../../contexts";
 import { FeatureScreen, MapScreen } from "../../../screens";
+import { executeSql } from "./helpers";
 import { MapStackParamList } from "./types";
 
 // new stack navigator
@@ -22,6 +23,7 @@ const MapStack = () => {
   // context provider value
   const value = {
     database,
+    executeSql,
     feature,
     features,
     featuresRef,

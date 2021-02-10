@@ -13,14 +13,15 @@ import { IFeatureScreen } from "./interfaces";
 
 const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   // destructure route params
-  const { slug } = route.params;
+  const { name } = route.params;
 
   // context hooks
-  const { database, feature, setFeature } = useContext(MapContext);
+  const { database, executeSql, feature, setFeature } = useContext(MapContext);
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
   const [region, setRegion] = useState<Region | undefined>(undefined);
+  console.log(coordinate, region);
 
   // ref hooks
   const mapRef: React.MutableRefObject<MapView | null> = useRef(null);
@@ -55,27 +56,29 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
 
   useEffect(() => {
     if (database) {
-      // new database transaction
-      database.transaction((tx) => {
-        // execute sql statement
-        tx.executeSql(
-          `SELECT * FROM fourteeners WHERE slug = '${slug}';`,
-          [],
-          (_: SQLite.SQLTransaction, ResultSet: SQLite.SQLResultSet) => {
-            // convert ResultSet into GeoJSON Feature
-            const feature = processFeature(ResultSet);
-
-            // update context
-            setFeature(feature);
-          }
-        );
-      });
+      const sqlStatement = `
+        SELECT *
+        FROM features
+        WHERE states LIKE '%Colorado%'
+        AND name = '${name}';
+      `;
+      executeSql!(database, sqlStatement, [])
+        .then((resultSet: any) => {
+          console.log(
+            "resultSet.rows._array.length",
+            resultSet.rows._array.length
+          );
+          console.log("resultSet.rows._array[0]", resultSet.rows._array[0]);
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
     }
-  }, [slug]);
+  }, [name]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mapContainer}>
+      <View pointerEvents={"none"} style={styles.mapContainer}>
         {coordinate && region && (
           <MapView
             provider={"google"}
@@ -91,7 +94,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
       </View>
       <Text>This is top text.</Text>
       <Text>FeatureScreen</Text>
-      <Text>{slug}</Text>
+      <Text>{name}</Text>
       <Text>This is bottom text.</Text>
     </SafeAreaView>
   );
@@ -107,7 +110,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   mapContainer: {
-    backgroundColor: colors.orangeRed,
     width: "100%",
     height: "50%",
   },

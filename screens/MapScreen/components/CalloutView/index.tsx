@@ -1,12 +1,12 @@
 import React from "react";
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../common/styles";
 import { ICalloutView } from "./interfaces";
 
 const CONTENT_HEIGHT = 112.5;
 const CONTENT_WIDTH = 150;
 
-const CalloutView = ({ index, properties }: ICalloutView) => {
+const CalloutView = ({ properties }: ICalloutView) => {
   // destructure feature properties
   const {
     continent,
@@ -27,7 +27,6 @@ const CalloutView = ({ index, properties }: ICalloutView) => {
       <Text style={styles.text}>{name}</Text>
       <Text style={styles.text}>{feet.toLocaleString()} ft</Text>
       <Text style={styles.text}>{meters.toLocaleString()} m</Text>
-      <Text style={styles.text}>Index: {index}</Text>
     </View>
   );
 };

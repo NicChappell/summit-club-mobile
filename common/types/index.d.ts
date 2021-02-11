@@ -1,7 +1,11 @@
 export type Region = {
+  /** The center point latitude coordinate of the new region */
   latitude: number;
+  /** The center point longitude coordinate of the new region */
   longitude: number;
+  /** The amount of north-to-south distance (measured in degrees) to display on the map */
   latitudeDelta: number;
+  /** The amount of east-to-west distance (measured in degrees) to display on the map */
   longitudeDelta: number;
 };
 
@@ -16,7 +20,9 @@ export type Region = {
 // };
 
 export type LatLng = {
+  /** The latitude coordinate for a map marker */
   latitude: number;
+  /** The longitude coordinate for a map marker */
   longitude: number;
 };
 

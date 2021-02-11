@@ -72,7 +72,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           states TEXT
         );
       `;
-      await executeSql(database, sqlStatement, []);
+      await executeSql!(database, sqlStatement, []);
 
       populateFeaturesTable(database, featuresRef);
     } catch (error) {
@@ -85,7 +85,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
   const dropFeaturesTable = async (database: SQLite.WebSQLDatabase) => {
     try {
-      await executeSql(database, `DROP TABLE IF EXISTS features;`, []);
+      await executeSql!(database, `DROP TABLE IF EXISTS features;`, []);
     } catch (error) {
       setError({
         code: error.code,
@@ -152,7 +152,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           properties.states ? properties.states.toString() : null,
         ];
 
-        await executeSql(database, sqlStatement, args);
+        await executeSql!(database, sqlStatement, args);
       }
 
       // query features table

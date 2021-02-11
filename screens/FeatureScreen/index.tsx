@@ -28,6 +28,11 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
 
   // effect hooks
   useEffect(() => {
+    // reset the selected feature data
+    return () => setFeature(undefined);
+  }, []);
+
+  useEffect(() => {
     if (feature) {
       // destructure feature
       const geometry = feature.geometry;
@@ -41,6 +46,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
         longitude: coordinates[0],
       };
 
+      // format map region
       const region: Region = {
         latitude: coordinates[1],
         longitude: coordinates[0],
@@ -64,11 +70,8 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
       `;
       executeSql!(database, sqlStatement, [])
         .then((resultSet: any) => {
-          console.log(
-            "resultSet.rows._array.length",
-            resultSet.rows._array.length
-          );
-          console.log("resultSet.rows._array[0]", resultSet.rows._array[0]);
+          const feature = processFeature(resultSet);
+          setFeature(feature);
         })
         .catch((error: any) => {
           console.log(error);

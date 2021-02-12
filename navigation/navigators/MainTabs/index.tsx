@@ -72,7 +72,7 @@ const MainTabs = () => {
           } else if (route.name === "Summits") {
             iconName = focused ? "ios-flag" : "ios-flag-outline";
           } else if (route.name === "Settings") {
-            iconName = focused ? "ios-list" : "ios-list-outline";
+            iconName = focused ? "ios-person" : "ios-person-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;

@@ -34,8 +34,16 @@ const MapStack = () => {
   return (
     <MapContext.Provider value={value}>
       <Stack.Navigator initialRouteName="Map">
-        <Stack.Screen name="Map" component={MapScreen} />
-        <Stack.Screen name="Feature" component={FeatureScreen} />
+        <Stack.Screen
+          component={MapScreen}
+          name="Map"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          component={FeatureScreen}
+          name="Feature"
+          options={({ route }) => ({ title: route.params.name })}
+        />
       </Stack.Navigator>
     </MapContext.Provider>
   );

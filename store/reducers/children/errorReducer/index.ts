@@ -1,5 +1,5 @@
 import { CLEAR_ERROR, SET_ERROR } from "../../../actions/errorActions/types";
-import { IAction } from "../../../common/interfaces";
+import { IAction } from "../../../../common/interfaces";
 import { initState } from "./constants";
 
 const errorReducer = (state = initState, action: IAction) => {

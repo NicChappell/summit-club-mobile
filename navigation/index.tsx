@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { connect, ConnectedProps } from "react-redux";
-import * as actions from "../actions";
-import { RootState } from "../reducers";
+import * as actions from "../store/actions";
+import { RootState } from "../store/reducers";
 import { AuthStack, MainTabs } from "./navigators";
 
 const Navigation = ({ checkAuthentication, auth }: PropsFromRedux) => {

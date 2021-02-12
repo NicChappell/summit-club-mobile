@@ -1,4 +1,4 @@
-import { IError } from "../../../common/interfaces";
+import { IError } from "../../../../common/interfaces";
 
 export const initState: IError = {
   code: undefined,

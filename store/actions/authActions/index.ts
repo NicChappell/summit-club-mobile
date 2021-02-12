@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { IAuthCredentials, IError } from "../../common/interfaces";
+import { IAuthCredentials, IError } from "../../../common/interfaces";
 import { AppThunk } from "../../reducers";
 import { SET_ERROR } from "../errorActions/types";
 import { SIGN_IN, SIGN_OUT, SIGN_UP } from "./types";

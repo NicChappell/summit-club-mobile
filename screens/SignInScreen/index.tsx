@@ -5,12 +5,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
-import * as actions from "../../actions";
+import * as actions from "../../store/actions";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { IAuthCredentials } from "../../common/interfaces";
 import { signInSchema } from "../../common/schemas";
 import { colors, sizes } from "../../common/styles";
-import { RootState } from "../../reducers";
+import { RootState } from "../../store/reducers";
 import { ISignInScreen } from "./interfaces";
 
 type Props = PropsFromRedux & ISignInScreen;

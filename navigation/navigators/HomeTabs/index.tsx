@@ -1,8 +1,8 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { connect, ConnectedProps } from "react-redux";
-import * as actions from "../../../actions";
-import { RootState } from "../../../reducers";
+import * as actions from "../../../store/actions";
+import { RootState } from "../../../store/reducers";
 import { HomeScreen, TourScreen } from "../../../screens";
 import { HomeTabsParamList } from "./types";
 

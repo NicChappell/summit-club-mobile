@@ -1,9 +1,9 @@
 import {
-  COMPLETE_TOUR,
-  RESET_TOUR,
-  SKIP_TOUR,
-} from "../../../actions/accountActions/types";
-import { IAction } from "../../../common/interfaces";
+  SIGN_IN,
+  SIGN_OUT,
+  SIGN_UP,
+} from "../../../actions/authActions/types";
+import { IAction } from "../../../../common/interfaces";
 import { initState } from "./constants";
 
 const authReducer = (state = initState, action: IAction) => {
@@ -11,20 +11,20 @@ const authReducer = (state = initState, action: IAction) => {
   const { type, payload } = action;
 
   switch (type) {
-    case COMPLETE_TOUR:
+    case SIGN_IN:
       return {
         ...state,
-        tourStatus: payload.tourStatus,
+        uid: payload.uid,
       };
-    case RESET_TOUR:
+    case SIGN_OUT:
       return {
         ...state,
-        tourStatus: payload.tourStatus,
+        uid: payload.uid,
       };
-    case SKIP_TOUR:
+    case SIGN_UP:
       return {
         ...state,
-        tourStatus: payload.tourStatus,
+        uid: payload.uid,
       };
     default:
       return state;

@@ -1,4 +1,4 @@
-import { IError } from "../../common/interfaces";
+import { IError } from "../../../common/interfaces";
 import { AppThunk } from "../../reducers";
 import { initState } from "../../reducers/children/errorReducer/constants";
 import { CLEAR_ERROR, SET_ERROR } from "./types";

@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
-import * as actions from "../../actions";
+import * as actions from "../../store/actions";
 import {
   DismissKeyboard,
   ErrorOverlay,
@@ -14,7 +14,7 @@ import {
 import { IAuthCredentials } from "../../common/interfaces";
 import { signUpSchema } from "../../common/schemas";
 import { colors, sizes } from "../../common/styles";
-import { RootState } from "../../reducers";
+import { RootState } from "../../store/reducers";
 import { CheckBoxTitle } from "./components";
 import { ISignUpScreen } from "./interfaces";
 

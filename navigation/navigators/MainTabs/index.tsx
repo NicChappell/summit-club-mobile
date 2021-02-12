@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SummitsScreen } from "../../../screens";
@@ -11,9 +11,11 @@ import HomeTabs from "../HomeTabs";
 import { IMainTabBar } from "./interfaces";
 import { MainTabsParamList } from "./types";
 
-const MainTabBar = ({ descriptors, navigation, state }: IMainTabBar) => (
-  <SafeAreaView>
-    <View style={styles.container}>
+const MainTabBar = ({ descriptors, navigation, state }: IMainTabBar) => {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       {state.routes.map((route: any, index: number) => {
         // destructure route options
         const { options } = descriptors[route.key];
@@ -52,8 +54,8 @@ const MainTabBar = ({ descriptors, navigation, state }: IMainTabBar) => (
         );
       })}
     </View>
-  </SafeAreaView>
-);
+  );
+};
 
 // new bottom tab navigator
 const Tab = createBottomTabNavigator<MainTabsParamList>();
@@ -96,14 +98,13 @@ const styles = StyleSheet.create({
     display: "flex",
     flex: 1,
     justifyContent: "center",
+    paddingVertical: 16,
   },
   container: {
     alignItems: "center",
     backgroundColor: colors.white,
     borderTopColor: colors.queenBlue,
     borderTopWidth: 1,
-    display: "flex",
-    height: 56,
     flexDirection: "row",
     justifyContent: "space-evenly",
   },

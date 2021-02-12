@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
-import { SafeAreaView } from "react-native-safe-area-context";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -198,7 +197,8 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
       <ErrorOverlay error={error} />
       <MapView
         loadingEnabled={true}
@@ -240,7 +240,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           );
         })}
       </MapView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -260,10 +260,7 @@ export default connector(MapScreen);
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
-    backgroundColor: colors.pistachio,
-    flex: 1,
-    justifyContent: "center",
+    flex: 1
   },
   map: {
     width: Dimensions.get("window").width,

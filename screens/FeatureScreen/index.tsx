@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-import { SafeAreaView } from "react-native-safe-area-context";
-import * as SQLite from "expo-sqlite";
-import { Point } from "geojson";
+import MapView, { Circle } from "react-native-maps";
+import { GeoJsonProperties, Point } from "geojson";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/noto-sans-jp";
+import { NunitoSans_400Regular } from "@expo-google-fonts/nunito-sans";
 import { colors } from "../../common/styles";
 import { LatLng, Region } from "../../common/types";
 import { MapContext } from "../../contexts";
-import { MarkerView } from "./components";
 import { processFeature } from "./helpers";
 import { IFeatureScreen } from "./interfaces";
 
@@ -20,6 +19,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
+  const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
   const [region, setRegion] = useState<Region | undefined>(undefined);
   console.log(coordinate, region);
 
@@ -35,7 +35,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   useEffect(() => {
     if (feature) {
       // destructure feature
-      const geometry = feature.geometry;
+      const { geometry, properties } = feature;
 
       // destructure geometry
       const coordinates = (geometry as Point).coordinates;
@@ -56,6 +56,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
 
       // update state
       setCoordinate(coordinate);
+      setProperties(properties);
       setRegion(region);
     }
   }, [feature]);
@@ -79,8 +80,14 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
     }
   }, [name]);
 
+  // font hooks
+  useFonts({
+    NotoSansJP_700Bold,
+    NunitoSans_400Regular,
+  });
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View pointerEvents={"none"} style={styles.mapContainer}>
         {coordinate && region && (
           <MapView
@@ -89,17 +96,44 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
             region={region}
             style={styles.map}
           >
-            <Marker coordinate={coordinate}>
-              <MarkerView />
-            </Marker>
+            <Circle
+              center={coordinate}
+              fillColor={colors.queenBlue50}
+              radius={500}
+              strokeColor={colors.queenBlue}
+              strokeWidth={2.5}
+            />
           </MapView>
         )}
       </View>
-      <Text>This is top text.</Text>
-      <Text>FeatureScreen</Text>
-      <Text>{name}</Text>
-      <Text>This is bottom text.</Text>
-    </SafeAreaView>
+      <View style={styles.featurePropertiesContainer}>
+        <Text style={styles.name}>{properties?.name}</Text>
+        <Text style={styles.hierarchy}>
+          {properties?.regions.length
+            ? `${properties?.regions.split(",")[0]}, `
+            : null}
+          {properties?.states.length
+            ? `${properties?.states.split(",")[0]}`
+            : null}
+        </Text>
+        <Text style={styles.hierarchy}>
+          {properties?.countries.length
+            ? `${properties?.countries.split(",")[0]}, `
+            : null}
+          {properties?.continent ? properties?.continent : null}
+        </Text>
+        <Text style={styles.elevation}>
+          {`${properties?.feet.toLocaleString()} ft / ${properties?.meters.toLocaleString()} m`}
+        </Text>
+        <Text style={styles.coordinate}>
+          {`${coordinate?.latitude}° ${
+            coordinate?.latitude >= 0 ? "N" : "S"
+          }, ${coordinate?.longitude}° ${
+            coordinate?.longitude >= 0 ? "E" : "W"
+          }`}
+        </Text>
+      </View>
+    </View>
   );
 };
 
@@ -108,9 +142,24 @@ export default FeatureScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    backgroundColor: colors.pistachio,
     flex: 1,
     justifyContent: "flex-start",
+  },
+  coordinate: {
+    fontFamily: "NunitoSans_400Regular",
+  },
+  elevation: {
+    fontFamily: "NunitoSans_400Regular",
+  },
+  featurePropertiesContainer: {
+    alignItems: "flex-start",
+    alignSelf: "stretch",
+    flex: 1,
+    padding: 16,
+    justifyContent: "flex-start",
+  },
+  hierarchy: {
+    fontFamily: "NunitoSans_400Regular",
   },
   mapContainer: {
     width: "100%",
@@ -118,5 +167,9 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  name: {
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 30,
   },
 });

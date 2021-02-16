@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect, ConnectedProps } from 'react-redux';
-import * as actions from '../../store/actions';
-import { RootState } from '../../store/reducers'
+import * as actions from '../../redux/actions';
+import { RootState } from '../../redux/reducers'
 import TourSlides from './components/TourSlides';
 import { ITourScreen, ITourSlide } from './interfaces';
 

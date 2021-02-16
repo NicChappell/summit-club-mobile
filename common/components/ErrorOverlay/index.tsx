@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
-import * as actions from "../../../store/actions";
-import { RootState } from "../../../store/reducers";
+import * as actions from "../../../redux/actions";
+import { RootState } from "../../../redux/reducers";
 import { colors } from "../../styles";
 import { IErrorOverlay } from "./interfaces";
 

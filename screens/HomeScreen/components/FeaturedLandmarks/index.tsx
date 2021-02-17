@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
   cardContainerStyle: {
     margin: 0,
     padding: 0,
+    width: 128,
   },
   cardImageStyle: {
     alignItems: "flex-end",
@@ -50,9 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     width: "100%",
   },
-  cardWrapperStyle: {
-    width: 128,
-  },
+  cardWrapperStyle: {},
   separator: {
     width: 16,
   },

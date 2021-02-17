@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-elements";
+import { StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { connect, ConnectedProps } from "react-redux";
+import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/noto-sans-jp";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -20,6 +21,9 @@ const SLIDE_DATA: IFeaturedLandmarkSlide[] = [
 ];
 
 const HomeScreen = ({ navigation, resetTour, route, signOut }: Props) => {
+  // font hooks
+  useFonts({ NotoSansJP_700Bold });
+
   return (
     <SafeAreaView style={styles.container}>
       <Text>This is top text.</Text>
@@ -28,8 +32,13 @@ const HomeScreen = ({ navigation, resetTour, route, signOut }: Props) => {
         <Button title="Reset tour" onPress={resetTour} />
         <Button title="Sign out" onPress={signOut} />
       </View>
-      <View style={styles.featuredLandmarks}>
-        <FeaturedLandmarks data={SLIDE_DATA} />
+      <View style={styles.section}>
+        <Text h3 style={styles.sectionTitle}>
+          Featured Landmarks
+        </Text>
+        <View style={styles.featuredLandmarks}>
+          <FeaturedLandmarks data={SLIDE_DATA} />
+        </View>
       </View>
       <Text>This is bottom text.</Text>
     </SafeAreaView>
@@ -59,7 +68,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   featuredLandmarks: {
-    height: 144,
+    height: 128,
+  },
+  section: {
     padding: 8,
+  },
+  sectionTitle: {
+    fontFamily: "NotoSansJP_700Bold",
   },
 });

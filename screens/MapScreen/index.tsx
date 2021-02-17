@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Dimensions, StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
+import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { Point } from "geojson";
-import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
@@ -260,7 +260,7 @@ export default connector(MapScreen);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   map: {
     width: Dimensions.get("window").width,

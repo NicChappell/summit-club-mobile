@@ -1,7 +1,8 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-elements";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
+import { Button, Input, Text } from "react-native-elements";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/noto-sans-jp";
 import { colors } from "../../common/styles";
@@ -24,8 +25,28 @@ const HomeScreen = ({ navigation, resetTour, route, signOut }: Props) => {
   // font hooks
   useFonts({ NotoSansJP_700Bold });
 
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={[styles.container]}>
+      <StatusBar barStyle="light-content" />
+      <View style={styles.heroContainer}>
+        <ImageBackground
+          source={{ uri: "https://picsum.photos/1024" }}
+          style={[styles.heroImageBackground, { paddingTop: insets.top }]}
+        >
+          <Text h3 style={styles.heroTitle}>
+            Find your next adventure
+          </Text>
+          <Input
+            inputContainerStyle={styles.heroInputContainer}
+            leftIcon={
+              <Ionicons name={"ios-search"} size={24} color={colors.black} />
+            }
+            placeholder="Search landmarks"
+          />
+        </ImageBackground>
+      </View>
       <Text>This is top text.</Text>
       <View>
         <Text>HomeScreen</Text>
@@ -34,14 +55,14 @@ const HomeScreen = ({ navigation, resetTour, route, signOut }: Props) => {
       </View>
       <View style={styles.section}>
         <Text h3 style={styles.sectionTitle}>
-          Featured Landmarks
+          Featured landmarks
         </Text>
         <View style={styles.featuredLandmarks}>
           <FeaturedLandmarks data={SLIDE_DATA} />
         </View>
       </View>
       <Text>This is bottom text.</Text>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -69,6 +90,42 @@ const styles = StyleSheet.create({
   },
   featuredLandmarks: {
     height: 128,
+  },
+  heroContainer: {
+    height: 192,
+    marginBottom: 24,
+    width: "100%",
+  },
+  heroInputContainer: {
+    backgroundColor: colors.white,
+    borderRadius: 4,
+    height: 48,
+    paddingHorizontal: 4,
+    marginBottom: -48,
+    shadowColor: colors.black,
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    shadowOffset: {
+      height: 1,
+      width: -1,
+    },
+  },
+  heroImageBackground: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent: "space-between",
+  },
+  heroTitle: {
+    color: colors.white,
+    fontFamily: "NotoSansJP_700Bold",
+    paddingHorizontal: 8,
+    shadowColor: colors.black,
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    shadowOffset: {
+      height: 1,
+      width: -1,
+    },
   },
   section: {
     padding: 8,

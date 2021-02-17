@@ -67,9 +67,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    textShadowColor: colors.black,
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 1,
+    shadowColor: colors.black,
+    shadowOpacity: 0.5,
+    shadowRadius: 1,
+    shadowOffset: {
+      height: 1,
+      width: -1,
+    },
   },
 });
 

@@ -1,3 +1,10 @@
+export const cardContainer = {
+  borderRadius: 4,
+  borderWidth: 0,
+  margin: 0,
+  padding: 0,
+};
+
 export const colors = {
   redSalsa: "rgba(249, 65, 68, 1)", // #f94144
   orangeRed: "rgba(243, 114, 44, 1)", // #f3722c
@@ -11,6 +18,23 @@ export const colors = {
   queenBlue25: "rgba(87, 117, 144, 0.25)",
   black: "rgba(0, 0, 0, 1)", // #000000
   white: "rgba(255, 255, 255, 1)", // #ffffff
+};
+
+export const input = {
+  backgroundColor: colors.white,
+  borderRadius: 4,
+  height: 48,
+  paddingHorizontal: 8,
+};
+
+export const shadow = {
+  shadowColor: colors.black,
+  shadowOpacity: 0.5,
+  shadowRadius: 1,
+  shadowOffset: {
+    height: 1,
+    width: -1,
+  },
 };
 
 export const sizes = {

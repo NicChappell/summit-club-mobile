@@ -5,7 +5,7 @@ import {
   useFonts,
   NunitoSans_600SemiBold,
 } from "@expo-google-fonts/nunito-sans";
-import { colors } from "../../../../common/styles";
+import { cardContainer, colors, shadow } from "../../../../common/styles";
 import { IFeaturedLandmarks } from "./interfaces";
 
 const FeaturedLandmarks = ({ data }: IFeaturedLandmarks) => {
@@ -41,12 +41,16 @@ const FeaturedLandmarks = ({ data }: IFeaturedLandmarks) => {
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
-    margin: 0,
-    padding: 0,
-    width: 128,
+    ...cardContainer,
+    ...shadow,
+    height: 124,
+    margin: 2,
+    width: 124,
   },
   cardImageStyle: {
     alignItems: "flex-end",
+    borderRadius: 4,
+    borderWidth: 0,
     height: "100%",
     justifyContent: "flex-end",
     width: "100%",

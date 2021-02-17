@@ -37,10 +37,10 @@ const SignInScreen = ({ error, navigation, route, signIn }: Props) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ErrorOverlay error={error} />
-      <Text>This is top text.</Text>
-      <DismissKeyboard>
+    <DismissKeyboard>
+      <SafeAreaView style={styles.container}>
+        <ErrorOverlay error={error} />
+        <Text>This is top text.</Text>
         <Card containerStyle={styles.cardContainer}>
           <Formik
             validationSchema={signInSchema}
@@ -103,19 +103,19 @@ const SignInScreen = ({ error, navigation, route, signIn }: Props) => {
             )}
           </Formik>
         </Card>
-      </DismissKeyboard>
-      <View>
-        <Button
-          title="Go to Sign Up"
-          onPress={() => navigation.navigate("SignUp")}
-        />
-        <Button
-          title="Go to Forgot Password"
-          onPress={() => navigation.navigate("ForgotPassword")}
-        />
-      </View>
-      <Text>This is bottom text.</Text>
-    </SafeAreaView>
+        <View>
+          <Button
+            title="Go to Sign Up"
+            onPress={() => navigation.navigate("SignUp")}
+          />
+          <Button
+            title="Go to Forgot Password"
+            onPress={() => navigation.navigate("ForgotPassword")}
+          />
+        </View>
+        <Text>This is bottom text.</Text>
+      </SafeAreaView>
+    </DismissKeyboard>
   );
 };
 

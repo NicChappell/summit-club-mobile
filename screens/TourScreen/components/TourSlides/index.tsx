@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { ITourSlides } from '../../interfaces';
+import { ITourSlides } from './interfaces';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 

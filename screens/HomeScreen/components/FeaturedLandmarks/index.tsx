@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import {
@@ -6,9 +6,27 @@ import {
   NunitoSans_600SemiBold,
 } from "@expo-google-fonts/nunito-sans";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
-import { IFeaturedLandmarks } from "./interfaces";
+import { IFeaturedLandmarkCard } from "./interfaces";
 
-const FeaturedLandmarks = ({ data }: IFeaturedLandmarks) => {
+const DATA: IFeaturedLandmarkCard[] = [
+  { id: "0", title: "Mt Lorem", image: "https://picsum.photos/512" },
+  { id: "1", title: "Mt Ipsum", image: "https://picsum.photos/512" },
+  { id: "2", title: "Mt Dolar", image: "https://picsum.photos/512" },
+  { id: "3", title: "Mt Sit", image: "https://picsum.photos/512" },
+  { id: "4", title: "Mt Amet", image: "https://picsum.photos/512" },
+];
+
+const FeaturedLandmarks = () => {
+  // state hooks
+  const [data, setData] = useState<IFeaturedLandmarkCard[] | undefined>(
+    undefined
+  );
+
+  // effect hooks
+  useEffect(() => {
+    setData(DATA);
+  }, []);
+
   // font hooks
   useFonts({ NunitoSans_600SemiBold });
 

@@ -1,26 +1,25 @@
 import React from "react";
-import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/noto-sans-jp";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
+import { HERO_IMAGE } from "../../common/images";
 import { colors, input, shadow } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { FeaturedLandmarks } from "./components";
-import { IHomeScreen, IFeaturedLandmarkSlide } from "./interfaces";
+import { FeaturedLandmarks, RecentCheckIns } from "./components";
+import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
-
-const SLIDE_DATA: IFeaturedLandmarkSlide[] = [
-  { id: "0", title: "Mt Lorem", image: "https://picsum.photos/512" },
-  { id: "1", title: "Mt Ipsum", image: "https://picsum.photos/512" },
-  { id: "2", title: "Mt Dolar", image: "https://picsum.photos/512" },
-  { id: "3", title: "Mt Sit", image: "https://picsum.photos/512" },
-  { id: "4", title: "Mt Amet", image: "https://picsum.photos/512" },
-];
 
 const HomeScreen = ({
   error,
@@ -36,13 +35,13 @@ const HomeScreen = ({
 
   return (
     <DismissKeyboard>
-      <View style={[styles.container]}>
-        <StatusBar barStyle="light-content" />
+      <ScrollView style={[styles.container]}>
+        <StatusBar barStyle="dark-content" />
         <ErrorOverlay error={error} />
 
         <View style={styles.heroContainer}>
           <ImageBackground
-            source={{ uri: "https://picsum.photos/1024" }}
+            source={HERO_IMAGE}
             style={[styles.heroImageBackground, { paddingTop: insets.top }]}
           >
             <Text h3 style={styles.heroTitle}>
@@ -63,7 +62,15 @@ const HomeScreen = ({
             Featured landmarks
           </Text>
           <View style={styles.featuredLandmarks}>
-            <FeaturedLandmarks data={SLIDE_DATA} />
+            <FeaturedLandmarks />
+          </View>
+        </View>
+        <View style={styles.section}>
+          <Text h4 style={styles.sectionTitle}>
+            Check-ins
+          </Text>
+          <View style={styles.recentCheckIns}>
+            <RecentCheckIns />
           </View>
         </View>
         <Text>This is top text.</Text>
@@ -73,7 +80,7 @@ const HomeScreen = ({
           <Button title="Sign out" onPress={signOut} />
         </View>
         <Text>This is bottom text.</Text>
-      </View>
+      </ScrollView>
     </DismissKeyboard>
   );
 };
@@ -97,10 +104,8 @@ export default connector(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     backgroundColor: colors.white,
     flex: 1,
-    justifyContent: "space-between",
   },
   featuredLandmarks: {
     height: 128,
@@ -131,6 +136,9 @@ const styles = StyleSheet.create({
       height: 1,
       width: -1,
     },
+  },
+  recentCheckIns: {
+    height: 192,
   },
   section: {
     padding: 8,

@@ -1,6 +1,8 @@
-import { IFeaturedLandmarkSlide } from "../../interfaces";
-
-export interface IFeaturedLandmarks {
+export interface IFeaturedLandmarkCard {
   /** TODO */
-  data: IFeaturedLandmarkSlide[];
+  id: string;
+  /** TODO */
+  title: string;
+  /** TODO */
+  image: string;
 }

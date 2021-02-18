@@ -10,12 +10,3 @@ export interface IHomeScreen {
   /** TODO */
   signOut: () => void;
 }
-
-export interface IFeaturedLandmarkSlide {
-  /** TODO */
-  id: string;
-  /** TODO */
-  title: string;
-  /** TODO */
-  image: string;
-}

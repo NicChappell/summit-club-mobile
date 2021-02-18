@@ -49,3 +49,26 @@ export interface ISQLResult {
   /** list of states where feature is located */
   states: string;
 }
+
+export interface IUser {
+  /** user's first name */
+  firstName?: string;
+  /** user's last name */
+  lastName?: string;
+  /** user's email address */
+  email?: string;
+  /** user's phone's country code */
+  countryCode?: string;
+  /** user's phone number */
+  phone?: string;
+  /** user's street address */
+  streetAddress1?: string;
+  /** user's street address */
+  streetAddress2?: string;
+  /** user's city */
+  city?: string;
+  /** user's state */
+  state?: string;
+  /** user's postal code */
+  postalCode?: string;
+}

@@ -7,7 +7,7 @@ const SummitsScreen = ({ navigation, route }: ISummitsScreen) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text>This is top text.</Text>
-            <Text>SummitsScreen</Text>
+            <Text>TODO: CHANGE THIS TO LANDMARKS</Text>
             <Text>This is bottom text.</Text>
         </SafeAreaView>
     );

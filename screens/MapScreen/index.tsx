@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Dimensions, StatusBar, StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Callout, Marker } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
@@ -8,7 +8,6 @@ import "firebase/firestore";
 import { Point } from "geojson";
 import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
-import { colors } from "../../common/styles";
 import { LatLng, Region } from "../../common/types";
 import { MapContext } from "../../contexts";
 import { RootState } from "../../redux/reducers";
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    width: "100%",
+    height: "100%",
   },
 });

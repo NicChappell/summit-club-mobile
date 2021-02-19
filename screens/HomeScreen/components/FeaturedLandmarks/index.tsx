@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
-import {
-  useFonts,
-  NunitoSans_600SemiBold,
-} from "@expo-google-fonts/nunito-sans";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
 import { IFeaturedLandmarkCard } from "./interfaces";
 
@@ -27,9 +23,6 @@ const FeaturedLandmarks = () => {
     setData(DATA);
   }, []);
 
-  // font hooks
-  useFonts({ NunitoSans_600SemiBold });
-
   return (
     <FlatList
       ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -48,7 +41,7 @@ const FeaturedLandmarks = () => {
               source={{ uri: item.image }}
               style={styles.cardImageStyle}
             >
-              <Text style={styles.textStyle}>{item.title}</Text>
+              <Text style={styles.cardImageTextStyle}>{item.title}</Text>
             </Card.Image>
           </Card>
         </TouchableOpacity>
@@ -56,6 +49,8 @@ const FeaturedLandmarks = () => {
     />
   );
 };
+
+export default FeaturedLandmarks;
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
@@ -73,17 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     width: "100%",
   },
-  cardWrapperStyle: {},
-  separator: {
-    width: 16,
-  },
-  slideStyle: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 0,
-  },
-  textStyle: {
+  cardImageTextStyle: {
     color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
@@ -97,6 +82,14 @@ const styles = StyleSheet.create({
       width: -1,
     },
   },
+  cardWrapperStyle: {},
+  separator: {
+    width: 16,
+  },
+  slideStyle: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 0,
+  },
 });
-
-export default FeaturedLandmarks;

@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Circle } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
-import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/noto-sans-jp";
-import { NunitoSans_400Regular } from "@expo-google-fonts/nunito-sans";
 import { colors } from "../../common/styles";
 import { LatLng, Region } from "../../common/types";
 import { MapContext } from "../../contexts";
@@ -79,12 +77,6 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
         });
     }
   }, [name]);
-
-  // font hooks
-  useFonts({
-    NotoSansJP_700Bold,
-    NunitoSans_400Regular,
-  });
 
   return (
     <View style={styles.container}>

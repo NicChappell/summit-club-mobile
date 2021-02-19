@@ -10,13 +10,16 @@ import { Button, Input, Text } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
-import { useFonts, NotoSansJP_700Bold } from "@expo-google-fonts/noto-sans-jp";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { HERO_IMAGE } from "../../common/images";
 import { colors, input, shadow } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { FeaturedLandmarks, RecentCheckIns } from "./components";
+import {
+  FeaturedLandmarks,
+  PopularLandmarks,
+  RecentCheckIns,
+} from "./components";
 import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
@@ -28,15 +31,12 @@ const HomeScreen = ({
   route,
   signOut,
 }: Props) => {
-  // font hooks
-  useFonts({ NotoSansJP_700Bold });
-
   const insets = useSafeAreaInsets();
 
   return (
     <DismissKeyboard>
       <ScrollView style={[styles.container]}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" />
         <ErrorOverlay error={error} />
 
         <View style={styles.heroContainer}>
@@ -71,6 +71,14 @@ const HomeScreen = ({
           </Text>
           <View style={styles.recentCheckIns}>
             <RecentCheckIns />
+          </View>
+        </View>
+        <View style={styles.section}>
+          <Text h4 style={styles.sectionTitle}>
+            Popular landmarks
+          </Text>
+          <View style={styles.recentCheckIns}>
+            <PopularLandmarks />
           </View>
         </View>
         <Text>This is top text.</Text>
@@ -138,7 +146,8 @@ const styles = StyleSheet.create({
     },
   },
   recentCheckIns: {
-    height: 192,
+    // height: 224,
+    // overflow: "hidden",
   },
   section: {
     padding: 8,

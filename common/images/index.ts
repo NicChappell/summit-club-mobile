@@ -1,1 +1,1 @@
-export const HERO_IMAGE = require("./istockphoto-1043959780-1024x1024.jpg");
+export const HERO_IMAGE = require("./stock-photo-sleeping-under-a-star-filled-sky-in-the-rocky-mountains-of-colorado-1508252813.jpg");

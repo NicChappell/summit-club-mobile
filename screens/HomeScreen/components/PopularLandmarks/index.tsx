@@ -42,57 +42,69 @@ const PopularLandmarks = () => {
 
   return (
     <View style={styles.container}>
-      {data?.map((landmark, index) => (
-        <Card
-          containerStyle={styles.cardContainerStyle}
-          key={index}
-          wrapperStyle={styles.cardWrapperStyle}
-        >
-          <Card.Image
-            source={{ uri: "https://picsum.photos/800/450" }}
-            style={styles.cardImageStyle}
-          >
-            <Text style={styles.cardImageTextStyle}>
-              {landmark.feature.properties?.name}
+      {data?.map((landmark, index) => {
+        const countyState =
+          landmark.feature.properties?.county &&
+          landmark.feature.properties?.state ? (
+            <Text style={styles.featureHierarchy}>
+              {`${landmark.feature.properties?.county} County, ${landmark.feature.properties?.state}`}
             </Text>
-          </Card.Image>
-          <View style={styles.cardContent}>
-            <View style={styles.featureDetails}>
-              <Text style={styles.featureHierarchy}>
-                {landmark.feature.properties?.regions.length
-                  ? `${landmark.feature.properties?.regions[0]}, `
-                  : null}
-                {landmark.feature.properties?.states.length
-                  ? `${landmark.feature.properties?.states[0]}`
-                  : null}
+          ) : null;
+
+        const countryContinent =
+          landmark.feature.properties?.country &&
+          landmark.feature.properties?.continent ? (
+            <Text style={styles.featureHierarchy}>
+              {`${landmark.feature.properties?.country}, ${landmark.feature.properties?.continent}`}
+            </Text>
+          ) : null;
+
+        const coordinate = (
+          <Text style={styles.featureCoordinate}>
+            {`${landmark.feature.properties?.latitude}° ${
+              landmark.feature.properties?.latitude >= 0 ? "N" : "S"
+            }, ${landmark.feature.properties?.longitude}° ${
+              landmark.feature.properties?.longitude >= 0 ? "E" : "W"
+            }`}
+          </Text>
+        );
+
+        const elevation = (
+          <Text style={styles.featureElevation}>
+            {`${landmark.feature.properties?.feet.toLocaleString()} ft / ${landmark.feature.properties?.meters.toLocaleString()} m`}
+          </Text>
+        );
+
+        return (
+          <Card
+            containerStyle={styles.cardContainerStyle}
+            key={index}
+            wrapperStyle={styles.cardWrapperStyle}
+          >
+            <Card.Image
+              source={{ uri: "https://picsum.photos/800/450" }}
+              style={styles.cardImageStyle}
+            >
+              <Text style={styles.cardImageTextStyle}>
+                {landmark.feature.properties?.name}
               </Text>
-              <Text style={styles.featureHierarchy}>
-                {landmark.feature.properties?.countries.length
-                  ? `${landmark.feature.properties?.countries[0]}, `
-                  : null}
-                {landmark.feature.properties?.continent
-                  ? landmark.feature.properties?.continent
-                  : null}
-              </Text>
-              <Text style={styles.featureElevation}>
-                {`${landmark.feature.properties?.feet.toLocaleString()} ft / ${landmark.feature.properties?.meters.toLocaleString()} m`}
-              </Text>
-              <Text style={styles.featureCoordinate}>
-                {`${landmark.feature.properties?.latitude}° ${
-                  landmark.feature.properties?.latitude >= 0 ? "N" : "S"
-                }, ${landmark.feature.properties?.longitude}° ${
-                  landmark.feature.properties?.longitude >= 0 ? "E" : "W"
-                }`}
-              </Text>
+            </Card.Image>
+            <View style={styles.cardContent}>
+              <View style={styles.featureDetails}>
+                {countyState}
+                {countryContinent}
+                {elevation}
+                {coordinate}
+              </View>
+              <View style={styles.checkInDetails}>
+                <Text style={styles.checkInCount}>
+                  {landmark.checkInsLastWeek}
+                </Text>
+              </View>
             </View>
-            <View style={styles.checkInDetails}>
-              <Text style={styles.checkInCount}>
-                {landmark.checkInsLastWeek}
-              </Text>
-            </View>
-          </View>
-        </Card>
-      ))}
+          </Card>
+        );
+      })}
     </View>
   );
 };

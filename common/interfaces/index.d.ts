@@ -19,35 +19,27 @@ export interface IError {
   message?: string;
 }
 
-// "small"	< 600m
-// "medium"	< 4200m
-// "large"	> 4200m
-export type MarkerSize = "small" | "medium" | "large";
-export type MarkerSymbol = "triangle";
-
 export interface ISQLResult {
+  /** classification of the feature */
+  class: string;
   /** continent where feature is located */
   continent: string;
-  /** list of countries where feature is located */
-  countries: string;
+  /** country where feature is located */
+  country: string;
+  /** county where feature is located */
+  county: string;
   /** elevation of feature measured in feet */
   feet: number;
   /** latitude of the feature */
   latitude: number;
   /** longitude of the feature */
   longitude: number;
-  /** size of feature marker */
-  marker_size: MarkerSize;
-  /** type of feature marker */
-  marker_symbol: MarkerSymbol;
   /** elevation of feature measured in meters */
   meters: number;
   /** name of the feature */
   name: string;
-  /** list of regions where feature is located */
-  regions: string;
-  /** list of states where feature is located */
-  states: string;
+  /** state where feature is located */
+  state: string;
 }
 
 export interface IUser {

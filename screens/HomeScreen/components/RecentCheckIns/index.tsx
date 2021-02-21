@@ -23,52 +23,72 @@ const RecentCheckIns = () => {
 
   return (
     <View style={styles.container}>
-      {data?.map((checkIn) => (
-        <Card
-          containerStyle={styles.cardContainerStyle}
-          key={checkIn.id}
-          wrapperStyle={styles.cardWrapperStyle}
-        >
-          <Image
-            source={{ uri: "https://picsum.photos/512" }}
-            style={styles.featureImage}
-          />
-          <View style={styles.checkInDetails}>
-            <Text style={styles.userName}>
-              {`${checkIn.user.firstName} ${checkIn.user.lastName}`}
-            </Text>
-            <Text style={styles.featureName}>
-              {checkIn.feature.properties?.name}
-            </Text>
+      {data?.map((checkIn, index) => {
+        const coordinate = (
+          <Text style={styles.featureCoordinate}>
+            {`${checkIn.feature.properties?.latitude}° ${
+              checkIn.feature.properties?.latitude >= 0 ? "N" : "S"
+            }, ${checkIn.feature.properties?.longitude}° ${
+              checkIn.feature.properties?.longitude >= 0 ? "E" : "W"
+            }`}
+          </Text>
+        );
+
+        const countyState =
+          checkIn.feature.properties?.county &&
+          checkIn.feature.properties?.state ? (
             <Text style={styles.featureHierarchy}>
-              {checkIn.feature.properties?.regions.length
-                ? `${checkIn.feature.properties?.regions[0]}, `
-                : null}
-              {checkIn.feature.properties?.states.length
-                ? `${checkIn.feature.properties?.states[0]}`
-                : null}
+              {`${checkIn.feature.properties?.county} County, ${checkIn.feature.properties?.state}`}
             </Text>
+          ) : null;
+
+        const countryContinent =
+          checkIn.feature.properties?.country &&
+          checkIn.feature.properties?.continent ? (
             <Text style={styles.featureHierarchy}>
-              {checkIn.feature.properties?.countries.length
-                ? `${checkIn.feature.properties?.countries[0]}, `
-                : null}
-              {checkIn.feature.properties?.continent
-                ? checkIn.feature.properties?.continent
-                : null}
+              {`${checkIn.feature.properties?.country}, ${checkIn.feature.properties?.continent}`}
             </Text>
-            <Text style={styles.featureElevation}>
-              {`${checkIn.feature.properties?.feet.toLocaleString()} ft / ${checkIn.feature.properties?.meters.toLocaleString()} m`}
-            </Text>
-            <Text style={styles.featureCoordinate}>
-              {`${checkIn.feature.properties?.latitude}° ${
-                checkIn.feature.properties?.latitude >= 0 ? "N" : "S"
-              }, ${checkIn.feature.properties?.longitude}° ${
-                checkIn.feature.properties?.longitude >= 0 ? "E" : "W"
-              }`}
-            </Text>
-          </View>
-        </Card>
-      ))}
+          ) : null;
+
+        const elevation = (
+          <Text style={styles.featureElevation}>
+            {`${checkIn.feature.properties?.feet.toLocaleString()} ft / ${checkIn.feature.properties?.meters.toLocaleString()} m`}
+          </Text>
+        );
+
+        const featureName = (
+          <Text style={styles.featureName}>
+            {checkIn.feature.properties?.name}
+          </Text>
+        );
+
+        const userName = (
+          <Text style={styles.userName}>
+            {`${checkIn.user.firstName} ${checkIn.user.lastName}`}
+          </Text>
+        );
+
+        return (
+          <Card
+            containerStyle={styles.cardContainerStyle}
+            key={checkIn.id}
+            wrapperStyle={styles.cardWrapperStyle}
+          >
+            <Image
+              source={{ uri: "https://picsum.photos/512" }}
+              style={styles.featureImage}
+            />
+            <View style={styles.checkInDetails}>
+              {userName}
+              {featureName}
+              {countyState}
+              {countryContinent}
+              {elevation}
+              {coordinate}
+            </View>
+          </Card>
+        );
+      })}
     </View>
   );
 };
@@ -91,6 +111,10 @@ const styles = StyleSheet.create({
   checkInDetails: {
     alignSelf: "stretch",
     padding: 8,
+  },
+  even: {
+    flexDirection: "row-reverse",
+    backgroundColor: "red",
   },
   featureCoordinate: {
     color: colors.black,
@@ -116,6 +140,9 @@ const styles = StyleSheet.create({
   featureName: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+  },
+  odd: {
+    backgroundColor: "blue",
   },
   separator: {
     height: 16,

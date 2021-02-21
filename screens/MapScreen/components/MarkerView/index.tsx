@@ -6,17 +6,16 @@ import { IMarkerView } from "./interfaces";
 const MarkerView = ({ properties }: IMarkerView) => {
   // destructure feature properties
   const {
+    class: classification,
     continent,
-    countries,
+    country,
+    county,
     feet,
     latitude,
     longitude,
-    marker_size: markerSize,
-    marker_symbol: markerSymbol,
     meters,
     name,
-    regions,
-    states,
+    state,
   } = properties!;
 
   let label = feet.toString().slice(0, -3);

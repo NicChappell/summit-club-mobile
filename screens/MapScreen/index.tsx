@@ -57,17 +57,16 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     try {
       const sqlStatement = `
         CREATE TABLE IF NOT EXISTS features (
+          class TEXT,
           continent TEXT,
-          countries TEXT,
+          country TEXT,
+          county TEXT,
           feet INTEGER,
           latitude REAL,
           longitude REAL,
-          marker_size TEXT,
-          marker_symbol TEXT,
           meters INTEGER,
           name TEXT,
-          regions TEXT,
-          states TEXT
+          state TEXT
         );
       `;
       await executeSql!(database, sqlStatement, []);
@@ -99,7 +98,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     try {
       // retrieve data from firestore
       const snapshot = await featuresRef
-        // .where("properties.states", "array-contains-any", ["Colorado"])
+        .where("properties.class", "==", "Summit")
         .get();
 
       // collect firestore documents
@@ -116,19 +115,18 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       // wait for all database transactions to finish
       const sqlStatement = `
         INSERT INTO features (
+          class,
           continent,
-          countries,
+          country,
+          county,
           feet,
           latitude,
           longitude,
-          marker_size,
-          marker_symbol,
           meters,
           name,
-          regions,
-          states
+          state
         ) VALUES (
-          ?,?,?,?,?,?,?,?,?,?,?
+          ?,?,?,?,?,?,?,?,?,?
         );
       `;
       for (const document of documents) {
@@ -137,17 +135,16 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
         // format arguments
         const args = [
+          properties.class,
           properties.continent,
-          properties.countries ? properties.countries.toString() : null,
+          properties.country,
+          properties.county,
           properties.feet,
           properties.latitude,
           properties.longitude,
-          properties["marker-size"],
-          properties["marker-symbol"],
           properties.meters,
           properties.name,
-          properties.regions ? properties.regions.toString() : null,
-          properties.states ? properties.states.toString() : null,
+          properties.state,
         ];
 
         await executeSql!(database, sqlStatement, args);
@@ -171,8 +168,8 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       const sqlStatement = `
         SELECT *
         FROM features
-        WHERE states LIKE '%Colorado%'
-        ORDER BY meters DESC;
+        ORDER BY meters DESC
+        LIMIT 500;
       `;
       const resultSet: any = await executeSql!(database, sqlStatement, []);
       console.log("resultSet.rows._array.length", resultSet.rows._array.length);

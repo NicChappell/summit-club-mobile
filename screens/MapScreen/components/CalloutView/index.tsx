@@ -9,17 +9,16 @@ const CONTENT_WIDTH = 150;
 const CalloutView = ({ properties }: ICalloutView) => {
   // destructure feature properties
   const {
+    class: classification,
     continent,
-    countries,
+    country,
+    county,
     feet,
     latitude,
     longitude,
-    marker_size: markerSize,
-    marker_symbol: markerSymbol,
     meters,
     name,
-    regions,
-    states,
+    state,
   } = properties!;
 
   return (

@@ -14,9 +14,11 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
 
   // context hooks
   const { database, executeSql, feature, setFeature } = useContext(MapContext);
+  console.log(feature);
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
+  const [latLng, setLatLng] = useState<string | undefined>(undefined);
   const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
   const [region, setRegion] = useState<Region | undefined>(undefined);
   console.log(coordinate, region);
@@ -29,6 +31,17 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
     // reset the selected feature data
     return () => setFeature(undefined);
   }, []);
+
+  useEffect(() => {
+    if (coordinate) {
+      const { latitude, longitude } = coordinate;
+
+      const xCardinal = longitude >= 0 ? "E" : "W";
+      const yCardinal = latitude >= 0 ? "N" : "S";
+
+      setLatLng(`${latitude}° ${yCardinal}, ${longitude}° ${xCardinal}`);
+    }
+  }, [coordinate]);
 
   useEffect(() => {
     if (feature) {
@@ -64,8 +77,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
       const sqlStatement = `
         SELECT *
         FROM features
-        WHERE states LIKE '%Colorado%'
-        AND name = '${name}';
+        WHERE name = '${name}';
       `;
       executeSql!(database, sqlStatement, [])
         .then((resultSet: any) => {
@@ -77,6 +89,28 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
         });
     }
   }, [name]);
+
+  const countyState =
+    properties?.county && properties?.state ? (
+      <Text style={styles.hierarchy}>
+        {`${properties?.county} County, ${properties?.state}`}
+      </Text>
+    ) : null;
+
+  const countryContinent =
+    properties?.country && properties?.continent ? (
+      <Text style={styles.hierarchy}>
+        {`${properties?.country}, ${properties?.continent}`}
+      </Text>
+    ) : null;
+
+  const elevation = (
+    <Text style={styles.elevation}>
+      {`${properties?.feet.toLocaleString()} ft / ${properties?.meters.toLocaleString()} m`}
+    </Text>
+  );
+
+  const featureName = <Text style={styles.name}>{properties?.name}</Text>;
 
   return (
     <View style={styles.container}>
@@ -99,31 +133,11 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
         )}
       </View>
       <View style={styles.featurePropertiesContainer}>
-        <Text style={styles.name}>{properties?.name}</Text>
-        <Text style={styles.hierarchy}>
-          {properties?.regions.length
-            ? `${properties?.regions.split(",")[0]}, `
-            : null}
-          {properties?.states.length
-            ? `${properties?.states.split(",")[0]}`
-            : null}
-        </Text>
-        <Text style={styles.hierarchy}>
-          {properties?.countries.length
-            ? `${properties?.countries.split(",")[0]}, `
-            : null}
-          {properties?.continent ? properties?.continent : null}
-        </Text>
-        <Text style={styles.elevation}>
-          {`${properties?.feet.toLocaleString()} ft / ${properties?.meters.toLocaleString()} m`}
-        </Text>
-        <Text style={styles.coordinate}>
-          {`${coordinate?.latitude}° ${
-            coordinate?.latitude >= 0 ? "N" : "S"
-          }, ${coordinate?.longitude}° ${
-            coordinate?.longitude >= 0 ? "E" : "W"
-          }`}
-        </Text>
+        {featureName}
+        {countyState}
+        {countryContinent}
+        {elevation}
+        <Text style={styles.coordinate}>{latLng}</Text>
       </View>
     </View>
   );

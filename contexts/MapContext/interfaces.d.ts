@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { ISQLResult } from "../../../common/interfaces";
+import { Feature } from "geojson";
 
 export interface IMapContext {
   /** SQLite Database */
@@ -13,13 +13,13 @@ export interface IMapContext {
     args: string[] = []
   ) => Promise;
   /** Selected feature data */
-  feature?: ISQLResult;
+  feature?: Feature;
   /** Currently available features */
-  features?: ISQLResult[];
+  features?: Feature[];
   /** Firestore collection reference */
   featuresRef?: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>;
   /** Function that updates feature value */
-  setFeature: (feature: ISQLResult) => void;
+  setFeature: (feature?: Feature) => void;
   /** Function that updates features value */
-  setFeatures: (features: ISQLResult[]) => void;
+  setFeatures: (features?: Feature[]) => void;
 }

@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import MapView, { Circle } from "react-native-maps";
+import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
 import { colors } from "../../common/styles";
-import { LatLng, Region } from "../../common/types";
 import { MapContext } from "../../contexts";
 import { processFeature } from "./helpers";
 import { IFeatureScreen } from "./interfaces";

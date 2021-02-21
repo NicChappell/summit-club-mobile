@@ -1,6 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
-import MapView, { Callout, Marker } from "react-native-maps";
+import MapView, {
+  Callout,
+  Camera,
+  LatLng,
+  Marker,
+  Region,
+} from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
@@ -8,23 +14,25 @@ import "firebase/firestore";
 import { Point } from "geojson";
 import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
-import { LatLng, Region } from "../../common/types";
+import { IMapBoundaries } from "../../common/interfaces";
 import { MapContext } from "../../contexts";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
+import { initialRegion } from "./constants";
 import { processResultSet } from "./helpers";
 import { IMapScreen } from "./interfaces";
-
-const initRegion: Region = {
-  latitude: 39.113014,
-  longitude: -105.358887,
-  latitudeDelta: 5,
-  longitudeDelta: 5,
-};
 
 type Props = PropsFromRedux & IMapScreen;
 
 const MapScreen = ({ error, navigation, route, setError }: Props) => {
+  // state hooks
+  const [cameraConfig, setCameraConfig] = useState<Camera | undefined>(
+    undefined
+  );
+  const [mapBoundaries, setMapBoundaries] = useState<
+    IMapBoundaries | undefined
+  >(undefined);
+
   // context hooks
   const {
     database,
@@ -36,12 +44,8 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     setFeatures,
   } = useContext(MapContext);
 
-  // effect hooks
-  useEffect(() => {
-    if (database && featuresRef) {
-      queryFeaturesTable(database, featuresRef);
-    }
-  }, []);
+  // ref hooks
+  const mapRef = useRef<MapView>(null);
 
   // // effect hooks
   // useEffect(() => {
@@ -49,6 +53,50 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   //     dropFeaturesTable(database);
   //   }
   // }, []);
+
+  useEffect(() => {
+    // return early if cameraConfig is undefined
+    if (cameraConfig) return;
+
+    // TODO: DO SOMETHING WITH THE CAMERA CONFIGURATION?
+  }, [cameraConfig]);
+
+  useEffect(() => {
+    // return early if database, featuresRef or mapBoundaries is undefined
+    if (!database || !featuresRef || !mapBoundaries) return;
+
+    // reset state
+    setFeatures(undefined);
+
+    // query new features whenever map boundaries change
+    queryFeaturesTable(database, featuresRef);
+  }, [mapBoundaries]);
+
+  useEffect(() => {
+    // return early if mapRef is null
+    if (!mapRef.current) return;
+
+    // set current camera config
+    mapRef.current.getCamera().then((cameraConfig) => {
+      setCameraConfig(cameraConfig);
+    });
+
+    // set current map boundaries
+    mapRef.current.getMapBoundaries().then((mapBoundaries) => {
+      setMapBoundaries(mapBoundaries);
+    });
+  }, [mapRef]);
+
+  const handleRegionChange = (region: Region) => {
+    // TODO: DO SOMETHING WHENEVER THE REGION CHANGES?
+  };
+
+  const handleRegionChangeComplete = (region: Region) => {
+    // set current map boundaries
+    mapRef.current?.getMapBoundaries().then((mapBoundaries) => {
+      setMapBoundaries(mapBoundaries);
+    });
+  };
 
   const createFeaturesTable = async (
     database: SQLite.WebSQLDatabase,
@@ -165,18 +213,33 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
   ) => {
     try {
+      // destructure map boundaries
+      const northEast = mapBoundaries?.northEast;
+      const southWest = mapBoundaries?.southWest;
+
+      // destructure northeast coordinates
+      const neLat = northEast?.latitude;
+      const neLng = northEast?.longitude;
+
+      // destructure southwest coordinates
+      const swLat = southWest?.latitude;
+      const swLng = southWest?.longitude;
+
       const sqlStatement = `
         SELECT *
         FROM features
+        WHERE latitude < ${neLat ? neLat : 90.0}
+        AND longitude < ${neLng ? neLng : 180.0}
+        AND latitude > ${swLat ? swLat : -90.0}
+        AND longitude > ${swLng ? swLng : -180.0}
         ORDER BY meters DESC
-        LIMIT 500;
+        LIMIT 64;
       `;
       const resultSet: any = await executeSql!(database, sqlStatement, []);
       console.log("resultSet.rows._array.length", resultSet.rows._array.length);
 
       // convert resultSet into GeoJSON FeatureCollection
       const { features } = processResultSet(resultSet);
-      console.log("features.length", features.length);
 
       // update state
       setFeatures(features);
@@ -186,6 +249,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         message: error.message,
       });
 
+      // TODO: FIND BETTER SOLUTION TO ENSURE DATA QUALITY
       // drop and create features table if query error
       dropFeaturesTable(database);
       createFeaturesTable(database, featuresRef);
@@ -197,10 +261,13 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       <StatusBar barStyle="dark-content" />
       <ErrorOverlay error={error} />
       <MapView
+        initialRegion={initialRegion}
         loadingEnabled={true}
+        onRegionChange={handleRegionChange}
+        onRegionChangeComplete={handleRegionChangeComplete}
         pitchEnabled={false}
         provider={"google"}
-        region={initRegion}
+        ref={mapRef}
         style={styles.map}
       >
         {features?.map((feature, index) => {
@@ -216,7 +283,6 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
             latitude: coordinates[1],
             longitude: coordinates[0],
           };
-          console.log(index);
 
           return (
             <Marker

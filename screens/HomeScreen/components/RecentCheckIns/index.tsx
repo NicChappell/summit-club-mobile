@@ -68,15 +68,23 @@ const RecentCheckIns = () => {
           </Text>
         );
 
+        const isEven = index % 2 === 0;
+
         return (
           <Card
             containerStyle={styles.cardContainerStyle}
             key={checkIn.id}
-            wrapperStyle={styles.cardWrapperStyle}
+            wrapperStyle={[
+              isEven ? styles.evenIndexCard : styles.oddIndexCard,
+              styles.cardWrapperStyle,
+            ]}
           >
             <Image
               source={{ uri: "https://picsum.photos/512" }}
-              style={styles.featureImage}
+              style={[
+                isEven ? styles.evenIndexImage : styles.oddIndexImage,
+                styles.featureImage,
+              ]}
             />
             <View style={styles.checkInDetails}>
               {userName}
@@ -106,32 +114,36 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   cardWrapperStyle: {
-    flexDirection: "row",
+    justifyContent: "space-between",
   },
   checkInDetails: {
-    alignSelf: "stretch",
+    flex: 1,
     padding: 8,
   },
-  even: {
-    flexDirection: "row-reverse",
-    backgroundColor: "red",
+  evenIndexCard: {
+    flexDirection: "row",
+  },
+  evenIndexImage: {
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
   },
   featureCoordinate: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+    fontSize: 12,
   },
   featureElevation: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+    fontSize: 12,
   },
   featureHierarchy: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+    fontSize: 12,
   },
   featureImage: {
     alignItems: "flex-end",
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
     borderWidth: 0,
     height: 128,
     justifyContent: "flex-end",
@@ -140,9 +152,14 @@ const styles = StyleSheet.create({
   featureName: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+    fontSize: 12,
   },
-  odd: {
-    backgroundColor: "blue",
+  oddIndexCard: {
+    flexDirection: "row-reverse",
+  },
+  oddIndexImage: {
+    borderBottomRightRadius: 4,
+    borderTopRightRadius: 4,
   },
   separator: {
     height: 16,

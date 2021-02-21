@@ -1,44 +1,54 @@
+import { Classification } from "../types";
+import { LatLng } from "react-native-maps";
+
 export interface IAction {
-  /** action type */
+  /** Action type */
   type: string;
-  /** action payload */
+  /** Action payload */
   payload: any;
 }
 
 export interface IAuthCredentials {
-  /** user provided email */
+  /** User provided email */
   email: string;
-  /** user provided password */
+  /** User provided password */
   password: string;
 }
 
 export interface IError {
-  /** error code */
+  /** Error code */
   code?: number | string;
-  /** error message */
+  /** Error message */
   message?: string;
 }
 
+export interface IMapBoundaries {
+  /** Northeast map boundary coordinate */
+  northEast: LatLng;
+  /** Southwest map boundary coordinate */
+  southWest: LatLng;
+}
+
 export interface ISQLResult {
-  /** classification of the feature */
-  class: string;
-  /** continent where feature is located */
-  continent: string;
-  /** country where feature is located */
-  country: string;
-  /** county where feature is located */
+  /** Feature class definition */
+  class: Classification;
+  /** Name of a continent */
+  continent: "North America";
+  /** Name of a country */
+  country: "United States";
+  /** The name for a county or county equivalent  */
   county: string;
-  /** elevation of feature measured in feet */
+  /** Elevation in feet above (-below) sea level of the feature at the primary coordinates */
   feet: number;
-  /** latitude of the feature */
+  /** The official latitude coordinate of the feature location */
   latitude: number;
-  /** longitude of the feature */
+  /** The official longitude coordinate of the feature location */
   longitude: number;
-  /** elevation of feature measured in meters */
+  /** Elevation in meters above (-below) sea level of the feature at the primary coordinates */
   meters: number;
-  /** name of the feature */
+  /** Permanent, official feature name */
   name: string;
-  /** state where feature is located */
+  /** The unique two letter alphabetic code for a US State */
   state: string;
 }
 

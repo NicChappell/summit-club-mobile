@@ -69,7 +69,21 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     setFeatures(undefined);
 
     // query new features whenever map boundaries change
-    queryFeaturesTable(database, featuresRef);
+    //
+    // TODO: - TRACK ZOOM LEVEL
+    //       - IF ZOOM LEVEL DOESN'T CHANGE --> DON'T CLEAR FEATURES,
+    //                                          RE-QUERY NEW FEATURE RESULT SET, AND
+    //                                          MERGE WITH EXISTING FEATURES ARRAY
+    //       - IF ZOOM LEVEL DOES CHANGE --> CLEAR FEATURES, AND
+    //                                       RE-QUERY FEATURE RESULT SET
+    //
+    // NOTE: WILL NEED ANOTHER FUNCTION FOR QUERYING WITHOUT RESETTING FEATURES
+    // NOTE: PROBABLY TIME TO MOVE THESE SQLITE FUNCTIONS TO A HELPERS FILE
+    //
+    queryFeaturesTable(database, featuresRef).then((features) => {
+      // update state
+      setFeatures(features);
+    });
   }, [mapBoundaries]);
 
   useEffect(() => {
@@ -81,10 +95,10 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       setCameraConfig(cameraConfig);
     });
 
-    // set current map boundaries
-    mapRef.current.getMapBoundaries().then((mapBoundaries) => {
-      setMapBoundaries(mapBoundaries);
-    });
+    // // set current map boundaries
+    // mapRef.current.getMapBoundaries().then((mapBoundaries) => {
+    //   setMapBoundaries(mapBoundaries);
+    // });
   }, [mapRef]);
 
   const handleRegionChange = (region: Region) => {
@@ -92,9 +106,17 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   };
 
   const handleRegionChangeComplete = (region: Region) => {
-    // set current map boundaries
-    mapRef.current?.getMapBoundaries().then((mapBoundaries) => {
-      setMapBoundaries(mapBoundaries);
+    const prevCameraConfig = cameraConfig;
+
+    // set current camera config
+    mapRef.current?.getCamera().then((newCameraConfig) => {
+      if (prevCameraConfig?.zoom === newCameraConfig.zoom) {
+        // merge feature query result sets
+      } else {
+        // reset and requery features
+      }
+
+      setCameraConfig(newCameraConfig);
     });
   };
 
@@ -241,8 +263,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       // convert resultSet into GeoJSON FeatureCollection
       const { features } = processResultSet(resultSet);
 
-      // update state
-      setFeatures(features);
+      return features;
     } catch (error) {
       setError({
         code: error.code,
@@ -255,6 +276,10 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       createFeaturesTable(database, featuresRef);
     }
   };
+
+  const mergeResultSet = (prevCameraConfig, newCameraConfig) => {};
+
+  const resetResultSet = (newCameraConfig) => {};
 
   return (
     <View style={styles.container}>

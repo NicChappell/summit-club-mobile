@@ -2,7 +2,7 @@ export interface IFeaturedLandmarkCard {
   /** TODO */
   id: string;
   /** TODO */
-  title: string;
+  name: string;
   /** TODO */
   image: string;
 }

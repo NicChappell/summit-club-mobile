@@ -17,6 +17,9 @@ export const colors = {
   queenBlue50: "rgba(87, 117, 144, 0.5)",
   queenBlue25: "rgba(87, 117, 144, 0.25)",
   black: "rgba(0, 0, 0, 1)", // #000000
+  black75: "rgba(0, 0, 0, 0.75)",
+  black50: "rgba(0, 0, 0, 0.5)",
+  black25: "rgba(0, 0, 0, 0.25)",
   white: "rgba(255, 255, 255, 1)", // #ffffff
 };
 

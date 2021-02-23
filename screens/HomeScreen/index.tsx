@@ -11,7 +11,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
-import { HERO_IMAGE } from "../../common/images";
 import { colors, input, shadow } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -20,6 +19,7 @@ import {
   PopularLandmarks,
   RecentCheckIns,
 } from "./components";
+import { HERO_IMAGE } from "./images";
 import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
@@ -32,6 +32,7 @@ const HomeScreen = ({
   signOut,
 }: Props) => {
   const insets = useSafeAreaInsets();
+  console.log(HERO_IMAGE);
 
   return (
     <DismissKeyboard>

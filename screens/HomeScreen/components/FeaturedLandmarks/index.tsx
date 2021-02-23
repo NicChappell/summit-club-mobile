@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
+import { featurePhotos } from "../../images/features";
 import { IFeaturedLandmarkCard } from "./interfaces";
 
 const DATA: IFeaturedLandmarkCard[] = [
-  { id: "0", title: "Mt Lorem", image: "https://picsum.photos/512" },
-  { id: "1", title: "Mt Ipsum", image: "https://picsum.photos/512" },
-  { id: "2", title: "Mt Dolar", image: "https://picsum.photos/512" },
-  { id: "3", title: "Mt Sit", image: "https://picsum.photos/512" },
-  { id: "4", title: "Mt Amet", image: "https://picsum.photos/512" },
+  { id: "0", name: "Conundrum Peak", image: "https://picsum.photos/512" },
+  { id: "1", name: "El Diente Peak", image: "https://picsum.photos/512" },
+  { id: "2", name: "Grays Peak", image: "https://picsum.photos/512" },
+  { id: "3", name: "Kit Carson Peak", image: "https://picsum.photos/512" },
+  { id: "4", name: "Maroon Peak", image: "https://picsum.photos/512" },
+  { id: "5", name: "Mt. Belford", image: "https://picsum.photos/512" },
+  { id: "6", name: "Mt. Mrah", image: "https://picsum.photos/512" },
 ];
 
 const FeaturedLandmarks = () => {
@@ -22,6 +25,21 @@ const FeaturedLandmarks = () => {
   useEffect(() => {
     setData(DATA);
   }, []);
+
+  const getFeaturePhoto = (name: string) => {
+    // find target feature in collection of selected features with photos
+    const feature = Object.values(featurePhotos).find(
+      (feature) => feature.name === name
+    );
+
+    if (feature) {
+      // return feature photo if available
+      return feature.photo;
+    } else {
+      // else return placeholder image
+      return { uri: "https://picsum.photos/1760/880" };
+    }
+  };
 
   return (
     <FlatList
@@ -38,10 +56,12 @@ const FeaturedLandmarks = () => {
             wrapperStyle={styles.cardWrapperStyle}
           >
             <Card.Image
-              source={{ uri: item.image }}
+              source={getFeaturePhoto(item.name)}
               style={styles.cardImageStyle}
             >
-              <Text style={styles.cardImageTextStyle}>{item.title}</Text>
+              <View style={styles.cardImageViewStyle}>
+                <Text style={styles.cardImageTextStyle}>{item.name}</Text>
+              </View>
             </Card.Image>
           </Card>
         </TouchableOpacity>
@@ -71,7 +91,7 @@ const styles = StyleSheet.create({
   cardImageTextStyle: {
     color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
+    fontSize: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
     shadowColor: colors.black,
@@ -81,6 +101,11 @@ const styles = StyleSheet.create({
       height: 1,
       width: -1,
     },
+  },
+  cardImageViewStyle: {
+    backgroundColor: colors.black50,
+    borderBottomRightRadius: 4,
+    borderTopLeftRadius: 4,
   },
   cardWrapperStyle: {},
   separator: {

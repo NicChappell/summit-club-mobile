@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
-import { featurePhotos } from "../../images/features";
+import { getFeaturePhoto } from "../../helpers";
 import { IFeaturedLandmarkCard } from "./interfaces";
 
 const DATA: IFeaturedLandmarkCard[] = [
@@ -25,21 +25,6 @@ const FeaturedLandmarks = () => {
   useEffect(() => {
     setData(DATA);
   }, []);
-
-  const getFeaturePhoto = (name: string) => {
-    // find target feature in collection of selected features with photos
-    const feature = Object.values(featurePhotos).find(
-      (feature) => feature.name === name
-    );
-
-    if (feature) {
-      // return feature photo if available
-      return feature.photo;
-    } else {
-      // else return placeholder image
-      return { uri: "https://picsum.photos/1760/880" };
-    }
-  };
 
   return (
     <FlatList

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
+import { getFeaturePhoto } from "../../helpers";
 import { IPopularLandmarkCard } from "./interfaces";
 
 import { MockFeature } from "../../../../data/mocks/features";
@@ -18,14 +19,50 @@ const DATA: IPopularLandmarkCard[] = [
     checkInsLastMonth: 234,
     checkInsLastYear: 345,
     checkInsAllTime: 456,
-    feature: MockFeature,
+    feature: {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-107.0664035, 39.1186541],
+      },
+      properties: {
+        feet: 14107,
+        meters: 4300,
+        latitude: 39.1186541,
+        longitude: -107.0664035,
+        name: "Snowmass Mountain",
+        class: "Summit",
+        county: "Gunnison",
+        state: "CO",
+        country: "United States",
+        continent: "North America",
+      },
+    },
   },
   {
     checkInsLastWeek: 123,
     checkInsLastMonth: 234,
     checkInsLastYear: 345,
     checkInsAllTime: 456,
-    feature: MockFeature,
+    feature: {
+      type: "Feature",
+      geometry: {
+        type: "Point",
+        coordinates: [-106.9870852, 39.076094],
+      },
+      properties: {
+        feet: 14016,
+        meters: 4272,
+        latitude: 39.076094,
+        longitude: -106.9870852,
+        name: "North Maroon Peak",
+        class: "Summit",
+        county: "Pitkin",
+        state: "CO",
+        country: "United States",
+        continent: "North America",
+      },
+    },
   },
 ];
 
@@ -82,7 +119,7 @@ const PopularLandmarks = () => {
             wrapperStyle={styles.cardWrapperStyle}
           >
             <Card.Image
-              source={{ uri: "https://picsum.photos/800/450" }}
+              source={getFeaturePhoto(landmark.feature.properties?.name)}
               style={styles.cardImageStyle}
             >
               <Text style={styles.cardImageTextStyle}>
@@ -130,6 +167,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     borderWidth: 0,
+    height: 256,
     justifyContent: "flex-end",
     width: "100%",
   },

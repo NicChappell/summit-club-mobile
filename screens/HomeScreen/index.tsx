@@ -15,8 +15,8 @@ import { colors, input, shadow } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import {
-  FeaturedLandmarks,
-  PopularLandmarks,
+  FeaturedPlaces,
+  PopularPlaces,
   RecentCheckIns,
 } from "./components";
 import { HERO_IMAGE } from "./images";
@@ -32,14 +32,12 @@ const HomeScreen = ({
   signOut,
 }: Props) => {
   const insets = useSafeAreaInsets();
-  console.log(HERO_IMAGE);
 
   return (
     <DismissKeyboard>
       <ScrollView style={[styles.container]}>
         <StatusBar barStyle="light-content" />
         <ErrorOverlay error={error} />
-
         <View style={styles.heroContainer}>
           <ImageBackground
             source={HERO_IMAGE}
@@ -54,21 +52,21 @@ const HomeScreen = ({
               leftIcon={
                 <Ionicons name={"ios-search"} size={24} color={colors.black} />
               }
-              placeholder="Search landmarks"
+              placeholder="Search places"
             />
           </ImageBackground>
         </View>
         <View style={styles.section}>
           <Text h4 style={styles.sectionTitle}>
-            Featured landmarks
+            Featured places
           </Text>
-          <View style={styles.featuredLandmarks}>
-            <FeaturedLandmarks />
+          <View style={styles.featuredPlaces}>
+            <FeaturedPlaces />
           </View>
         </View>
         <View style={styles.section}>
           <Text h4 style={styles.sectionTitle}>
-            Check-ins
+            Recent check-ins
           </Text>
           <View style={styles.recentCheckIns}>
             <RecentCheckIns />
@@ -76,10 +74,10 @@ const HomeScreen = ({
         </View>
         <View style={styles.section}>
           <Text h4 style={styles.sectionTitle}>
-            Popular landmarks
+            Popular places
           </Text>
           <View style={styles.recentCheckIns}>
-            <PopularLandmarks />
+            <PopularPlaces />
           </View>
         </View>
         <Text>This is top text.</Text>
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
   },
-  featuredLandmarks: {
+  featuredPlaces: {
     height: 128,
   },
   heroContainer: {

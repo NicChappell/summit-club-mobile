@@ -11,10 +11,6 @@ const ProfileScreen = ({ navigation, route }: IProfileScreen) => {
             <View>
                 <Text>ProfileScreen</Text>
                 <Button
-                    title="Go to Landmarks"
-                    onPress={() => navigation.navigate('Landmarks')}
-                />
-                <Button
                     title="Go to Reset Password"
                     onPress={() => navigation.navigate('ResetPassword')}
                 />

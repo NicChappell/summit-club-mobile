@@ -2,113 +2,58 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
+import { Places, IPopularPlaces } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
-import { IPopularLandmarkCard } from "./interfaces";
 
-import { MockFeature } from "../../../../data/mocks/features";
-const DATA: IPopularLandmarkCard[] = [
-  {
-    checkInsLastWeek: 123,
-    checkInsLastMonth: 234,
-    checkInsLastYear: 345,
-    checkInsAllTime: 456,
-    feature: MockFeature,
-  },
-  {
-    checkInsLastWeek: 123,
-    checkInsLastMonth: 234,
-    checkInsLastYear: 345,
-    checkInsAllTime: 456,
-    feature: {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-107.0664035, 39.1186541],
-      },
-      properties: {
-        feet: 14107,
-        meters: 4300,
-        latitude: 39.1186541,
-        longitude: -107.0664035,
-        name: "Snowmass Mountain",
-        class: "Summit",
-        county: "Gunnison",
-        state: "CO",
-        country: "United States",
-        continent: "North America",
-      },
-    },
-  },
-  {
-    checkInsLastWeek: 123,
-    checkInsLastMonth: 234,
-    checkInsLastYear: 345,
-    checkInsAllTime: 456,
-    feature: {
-      type: "Feature",
-      geometry: {
-        type: "Point",
-        coordinates: [-106.9870852, 39.076094],
-      },
-      properties: {
-        feet: 14016,
-        meters: 4272,
-        latitude: 39.076094,
-        longitude: -106.9870852,
-        name: "North Maroon Peak",
-        class: "Summit",
-        county: "Pitkin",
-        state: "CO",
-        country: "United States",
-        continent: "North America",
-      },
-    },
-  },
-];
-
-const PopularLandmarks = () => {
+const PopularPlaces = () => {
   // state hooks
-  const [data, setData] = useState<IPopularLandmarkCard[] | undefined>(
-    undefined
-  );
+  const [popularPlaces, setPopularPlaces] = useState<
+    IPopularPlaces[] | undefined
+  >(undefined);
 
   // effect hooks
   useEffect(() => {
-    setData(DATA);
+    Places.getPopularPlaces()
+      .then((popularPlaces) => {
+        setPopularPlaces(popularPlaces);
+      })
+      .catch((error) => {
+        // TODO: HANDLE THE ERROR -- DISPATCH ERROR ACTION
+      });
   }, []);
 
   return (
     <View style={styles.container}>
-      {data?.map((landmark, index) => {
+      {popularPlaces?.map((place, index) => {
         const countyState =
-          landmark.feature.properties?.county &&
-          landmark.feature.properties?.state ? (
+          place.feature.properties?.county &&
+          place.feature.properties?.state ? (
             <Text style={styles.featureHierarchy}>
-              {`${landmark.feature.properties?.county} County, ${landmark.feature.properties?.state}`}
+              {`${place.feature.properties?.county} County, ${place.feature.properties?.state}`}
             </Text>
           ) : null;
 
         const countryContinent =
-          landmark.feature.properties?.country &&
-          landmark.feature.properties?.continent ? (
+          place.feature.properties?.country &&
+          place.feature.properties?.continent ? (
             <Text style={styles.featureHierarchy}>
-              {`${landmark.feature.properties?.country}, ${landmark.feature.properties?.continent}`}
+              {`${place.feature.properties?.country}, ${place.feature.properties?.continent}`}
             </Text>
           ) : null;
 
         const coordinate = (
           <Text style={styles.featureCoordinate}>
-            {`${landmark.feature.properties?.latitude}° ${
-              landmark.feature.properties?.latitude >= 0 ? "N" : "S"
-            }, ${landmark.feature.properties?.longitude}° ${
-              landmark.feature.properties?.longitude >= 0 ? "E" : "W"
+            {`${place.feature.properties?.latitude}° ${
+              place.feature.properties?.latitude >= 0 ? "N" : "S"
+            }, ${place.feature.properties?.longitude}° ${
+              place.feature.properties?.longitude >= 0 ? "E" : "W"
             }`}
           </Text>
         );
 
         const elevation = (
           <Text style={styles.featureElevation}>
-            {`${landmark.feature.properties?.feet.toLocaleString()} ft / ${landmark.feature.properties?.meters.toLocaleString()} m`}
+            {`${place.feature.properties?.feet.toLocaleString()} ft / ${place.feature.properties?.meters.toLocaleString()} m`}
           </Text>
         );
 
@@ -119,11 +64,11 @@ const PopularLandmarks = () => {
             wrapperStyle={styles.cardWrapperStyle}
           >
             <Card.Image
-              source={getFeaturePhoto(landmark.feature.properties?.name)}
+              source={getFeaturePhoto(place.feature.properties?.name)}
               style={styles.cardImageStyle}
             >
               <Text style={styles.cardImageTextStyle}>
-                {landmark.feature.properties?.name}
+                {place.feature.properties?.name}
               </Text>
             </Card.Image>
             <View style={styles.cardContent}>
@@ -135,7 +80,7 @@ const PopularLandmarks = () => {
               </View>
               <View style={styles.checkInDetails}>
                 <Text style={styles.checkInCount}>
-                  {landmark.checkInsLastWeek}
+                  {place.checkInsLastWeek}
                 </Text>
               </View>
             </View>
@@ -146,7 +91,7 @@ const PopularLandmarks = () => {
   );
 };
 
-export default PopularLandmarks;
+export default PopularPlaces;
 
 const styles = StyleSheet.create({
   container: {},

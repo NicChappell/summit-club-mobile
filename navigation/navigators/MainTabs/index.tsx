@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { SummitsScreen } from "../../../screens";
+import { PlacesScreen } from "../../../screens";
 import { colors } from "../../../common/styles";
 import SettingsStack from "../SettingsStack";
 import MapStack from "../MapStack";
@@ -71,7 +71,7 @@ const MainTabs = () => {
             iconName = focused ? "ios-home" : "ios-home-outline";
           } else if (route.name === "Map") {
             iconName = focused ? "ios-map" : "ios-map-outline";
-          } else if (route.name === "Summits") {
+          } else if (route.name === "Places") {
             iconName = focused ? "ios-flag" : "ios-flag-outline";
           } else if (route.name === "Settings") {
             iconName = focused ? "ios-person" : "ios-person-outline";
@@ -84,7 +84,7 @@ const MainTabs = () => {
     >
       <Tab.Screen name="Home" component={HomeTabs} />
       <Tab.Screen name="Map" component={MapStack} />
-      <Tab.Screen name="Summits" component={SummitsScreen} />
+      <Tab.Screen name="Places" component={PlacesScreen} />
       <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>
   );

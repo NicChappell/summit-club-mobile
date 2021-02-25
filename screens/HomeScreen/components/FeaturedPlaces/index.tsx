@@ -2,34 +2,30 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
+import { Places, IFeaturedPlaces } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
-import { IFeaturedLandmarkCard } from "./interfaces";
 
-const DATA: IFeaturedLandmarkCard[] = [
-  { id: "0", name: "Conundrum Peak", image: "https://picsum.photos/512" },
-  { id: "1", name: "El Diente Peak", image: "https://picsum.photos/512" },
-  { id: "2", name: "Grays Peak", image: "https://picsum.photos/512" },
-  { id: "3", name: "Kit Carson Peak", image: "https://picsum.photos/512" },
-  { id: "4", name: "Maroon Peak", image: "https://picsum.photos/512" },
-  { id: "5", name: "Mt. Belford", image: "https://picsum.photos/512" },
-  { id: "6", name: "Mt. Mrah", image: "https://picsum.photos/512" },
-];
-
-const FeaturedLandmarks = () => {
+const FeaturedPlaces = () => {
   // state hooks
-  const [data, setData] = useState<IFeaturedLandmarkCard[] | undefined>(
-    undefined
-  );
+  const [featuredPlaces, setFeaturedPlaces] = useState<
+    IFeaturedPlaces[] | undefined
+  >(undefined);
 
   // effect hooks
   useEffect(() => {
-    setData(DATA);
+    Places.getFeaturedPlaces()
+      .then((featuredPlaces) => {
+        setFeaturedPlaces(featuredPlaces);
+      })
+      .catch((error) => {
+        // TODO: HANDLE THE ERROR -- DISPATCH ERROR ACTION
+      });
   }, []);
 
   return (
     <FlatList
       ItemSeparatorComponent={() => <View style={styles.separator} />}
-      data={data}
+      data={featuredPlaces}
       horizontal
       renderItem={({ item }) => (
         <TouchableOpacity
@@ -55,7 +51,7 @@ const FeaturedLandmarks = () => {
   );
 };
 
-export default FeaturedLandmarks;
+export default FeaturedPlaces;
 
 const styles = StyleSheet.create({
   cardContainerStyle: {

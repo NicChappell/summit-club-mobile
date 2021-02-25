@@ -2,9 +2,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { SettingsStackParamList } from '../../navigation/navigators/SettingsStack/types';
 
-export type LandmarksScreenNavigationProp = BottomTabNavigationProp<
+export type PlacesScreenNavigationProp = BottomTabNavigationProp<
 SettingsStackParamList,
-    'Landmarks'
+    'Places'
 >;
 
-export type LandmarksScreenRouteProp = RouteProp<SettingsStackParamList, 'Landmarks'>;
+export type PlacesScreenRouteProp = RouteProp<SettingsStackParamList, 'Places'>;

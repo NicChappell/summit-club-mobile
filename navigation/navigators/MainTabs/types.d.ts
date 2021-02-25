@@ -1,6 +1,6 @@
 export type MainTabsParamList = {
     Home: undefined;
     Map: undefined;
-    Summits: undefined;
+    Places: undefined;
     Settings: undefined;
 };

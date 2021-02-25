@@ -15,12 +15,11 @@
 - MainTabs
     - Home: HomeTabs
     - Map: MapStack
-    - Summits: SummitsScreen
+    - Places: PlacesScreen
     - Settings: SettingsStack
 
 - SettingsStack
     - Profile: ProfileScreen
-    - Landmarks: LandmarksScreen
     - ResetPassword: ResetPasswordScreen
 
 - root

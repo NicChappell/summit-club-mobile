@@ -6,31 +6,20 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import { Button, Input, Text } from "react-native-elements";
+import { Input, Text } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { colors, input, shadow } from "../../common/styles";
-import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import {
-  FeaturedPlaces,
-  PopularPlaces,
-  RecentCheckIns,
-} from "./components";
+import { FeaturedPlaces, PopularPlaces, RecentCheckIns } from "./components";
 import { HERO_IMAGE } from "./images";
 import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
 
-const HomeScreen = ({
-  error,
-  navigation,
-  resetTour,
-  route,
-  signOut,
-}: Props) => {
+const HomeScreen = ({ error, navigation, route }: Props) => {
   const insets = useSafeAreaInsets();
 
   return (
@@ -43,7 +32,7 @@ const HomeScreen = ({
             source={HERO_IMAGE}
             style={[styles.heroImageBackground, { paddingTop: insets.top }]}
           >
-            <Text h3 style={styles.heroTitle}>
+            <Text style={styles.heroTitle}>
               Find your{"\n"}
               next adventure
             </Text>
@@ -57,36 +46,17 @@ const HomeScreen = ({
           </ImageBackground>
         </View>
         <View style={styles.section}>
-          <Text h4 style={styles.sectionTitle}>
-            Featured places
-          </Text>
-          <View style={styles.featuredPlaces}>
-            <FeaturedPlaces />
-          </View>
+          <Text style={styles.sectionTitle}>Featured places</Text>
+          <FeaturedPlaces />
         </View>
         <View style={styles.section}>
-          <Text h4 style={styles.sectionTitle}>
-            Recent check-ins
-          </Text>
-          <View style={styles.recentCheckIns}>
-            <RecentCheckIns />
-          </View>
+          <Text style={styles.sectionTitle}>Recent check-ins</Text>
+          <RecentCheckIns />
         </View>
         <View style={styles.section}>
-          <Text h4 style={styles.sectionTitle}>
-            Popular places
-          </Text>
-          <View style={styles.recentCheckIns}>
-            <PopularPlaces />
-          </View>
+          <Text style={styles.sectionTitle}>Popular places</Text>
+          <PopularPlaces />
         </View>
-        <Text>This is top text.</Text>
-        <View>
-          <Text>HomeScreen</Text>
-          <Button title="Reset tour" onPress={resetTour} />
-          <Button title="Sign out" onPress={signOut} />
-        </View>
-        <Text>This is bottom text.</Text>
       </ScrollView>
     </DismissKeyboard>
   );
@@ -98,10 +68,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = {
-  resetTour: actions.resetTour,
-  signOut: actions.signOut,
-};
+const mapDispatchToProps = {};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -114,12 +81,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
   },
-  featuredPlaces: {
-    height: 128,
-  },
   heroContainer: {
-    height: 192,
-    marginBottom: 24,
+    height: 224,
+    marginBottom: 56,
     width: "100%",
   },
   heroInputContainer: {
@@ -135,6 +99,7 @@ const styles = StyleSheet.create({
   heroTitle: {
     color: colors.white,
     fontFamily: "NotoSansJP_700Bold",
+    fontSize: 32,
     padding: 8,
     shadowColor: colors.black,
     shadowOpacity: 0.5,
@@ -144,14 +109,12 @@ const styles = StyleSheet.create({
       width: -1,
     },
   },
-  recentCheckIns: {
-    // height: 224,
-    // overflow: "hidden",
-  },
   section: {
+    marginBottom: 24,
     padding: 8,
   },
   sectionTitle: {
     fontFamily: "NotoSansJP_700Bold",
+    fontSize: 24,
   },
 });

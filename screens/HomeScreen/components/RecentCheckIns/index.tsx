@@ -1,29 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
+import { connect, ConnectedProps } from "react-redux";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
-import { ICheckIn } from "./interfaces";
+import * as actions from "../../../../redux/actions";
+import { CheckIn, ICheckIn } from "../../../../services";
 
-import { MockFeature } from "../../../../data/mocks/features";
-import { MockUser } from "../../../../data/mocks/users";
-const DATA: ICheckIn[] = [
-  { id: "0", user: MockUser, feature: MockFeature, date: new Date() },
-  { id: "1", user: MockUser, feature: MockFeature, date: new Date() },
-  { id: "2", user: MockUser, feature: MockFeature, date: new Date() },
-];
+type Props = PropsFromRedux;
 
-const RecentCheckIns = () => {
+const RecentCheckIns = ({ setError }: Props) => {
   // state hooks
-  const [data, setData] = useState<ICheckIn[] | undefined>(undefined);
+  const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[] | undefined>(
+    undefined
+  );
 
   // effect hooks
   useEffect(() => {
-    setData(DATA);
+    CheckIn.getRecentCheckIns()
+      .then((recentCheckIns) => {
+        setRecentCheckIns(recentCheckIns);
+      })
+      .catch((error) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
   }, []);
 
   return (
     <View style={styles.container}>
-      {data?.map((checkIn, index) => {
+      {recentCheckIns?.map((checkIn, index) => {
         const coordinate = (
           <Text style={styles.featureCoordinate}>
             {`${checkIn.feature.properties?.latitude}° ${
@@ -101,7 +108,15 @@ const RecentCheckIns = () => {
   );
 };
 
-export default RecentCheckIns;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = { setError: actions.setError };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(RecentCheckIns);
 
 const styles = StyleSheet.create({
   container: {},
@@ -110,7 +125,7 @@ const styles = StyleSheet.create({
     ...shadow,
     alignSelf: "stretch",
     height: 128,
-    marginBottom: 32,
+    marginTop: 24,
     marginHorizontal: 2,
   },
   cardWrapperStyle: {
@@ -160,9 +175,6 @@ const styles = StyleSheet.create({
   oddIndexImage: {
     borderBottomRightRadius: 4,
     borderTopRightRadius: 4,
-  },
-  separator: {
-    height: 16,
   },
   userName: {
     color: colors.black,

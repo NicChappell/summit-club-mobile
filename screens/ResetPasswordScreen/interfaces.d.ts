@@ -1,11 +1,11 @@
 import {
-    ResetPasswordScreenNavigationProp,
-    ResetPasswordScreenRouteProp
-} from './types';
+  ResetPasswordScreenNavigationProp,
+  ResetPasswordScreenRouteProp,
+} from "./types";
 
 export interface IResetPasswordScreen {
-    /** TODO */
-    navigation: ResetPasswordScreenNavigationProp;
-    /** TODO */
-    route: ResetPasswordScreenRouteProp;
-};
+  /** TODO */
+  navigation: ResetPasswordScreenNavigationProp;
+  /** TODO */
+  route: ResetPasswordScreenRouteProp;
+}

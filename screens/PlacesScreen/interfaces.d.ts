@@ -1,11 +1,8 @@
-import {
-    PlacesScreenNavigationProp,
-    PlacesScreenRouteProp
-} from './types';
+import { PlacesScreenNavigationProp, PlacesScreenRouteProp } from "./types";
 
 export interface IPlacesScreen {
-    /** TODO */
-    navigation: PlacesScreenNavigationProp;
-    /** TODO */
-    route: PlacesScreenRouteProp;
-};
+  /** TODO */
+  navigation: PlacesScreenNavigationProp;
+  /** TODO */
+  route: PlacesScreenRouteProp;
+}

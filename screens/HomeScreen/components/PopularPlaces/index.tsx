@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
+import { connect, ConnectedProps } from "react-redux";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
+import * as actions from "../../../../redux/actions";
 import { Places, IPopularPlaces } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
 
-const PopularPlaces = () => {
+type Props = PropsFromRedux;
+
+const PopularPlaces = ({ setError }: Props) => {
   // state hooks
   const [popularPlaces, setPopularPlaces] = useState<
     IPopularPlaces[] | undefined
@@ -18,7 +22,10 @@ const PopularPlaces = () => {
         setPopularPlaces(popularPlaces);
       })
       .catch((error) => {
-        // TODO: HANDLE THE ERROR -- DISPATCH ERROR ACTION
+        setError({
+          code: error.code,
+          message: error.message,
+        });
       });
   }, []);
 
@@ -91,7 +98,15 @@ const PopularPlaces = () => {
   );
 };
 
-export default PopularPlaces;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = { setError: actions.setError };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(PopularPlaces);
 
 const styles = StyleSheet.create({
   container: {},
@@ -99,7 +114,7 @@ const styles = StyleSheet.create({
     ...cardContainer,
     ...shadow,
     alignSelf: "stretch",
-    marginBottom: 32,
+    marginTop: 24,
     marginHorizontal: 2,
   },
   cardContent: {

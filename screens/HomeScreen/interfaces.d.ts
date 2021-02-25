@@ -4,9 +4,5 @@ export interface IHomeScreen {
   /** TODO */
   navigation: HomeScreenNavigationProp;
   /** TODO */
-  resetTour: () => void;
-  /** TODO */
   route: HomeScreenRouteProp;
-  /** TODO */
-  signOut: () => void;
 }

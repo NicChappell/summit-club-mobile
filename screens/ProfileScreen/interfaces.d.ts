@@ -1,11 +1,8 @@
-import {
-    ProfileScreenNavigationProp,
-    ProfileScreenRouteProp
-} from './types';
+import { ProfileScreenNavigationProp, ProfileScreenRouteProp } from "./types";
 
 export interface IProfileScreen {
-    /** TODO */
-    navigation: ProfileScreenNavigationProp;
-    /** TODO */
-    route: ProfileScreenRouteProp;
-};
+  /** TODO */
+  navigation: ProfileScreenNavigationProp;
+  /** TODO */
+  route: ProfileScreenRouteProp;
+}

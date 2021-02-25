@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
+import { connect, ConnectedProps } from "react-redux";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
+import * as actions from "../../../../redux/actions";
 import { Places, IFeaturedPlaces } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
 
-const FeaturedPlaces = () => {
+type Props = PropsFromRedux;
+
+const FeaturedPlaces = ({ setError }: Props) => {
   // state hooks
   const [featuredPlaces, setFeaturedPlaces] = useState<
     IFeaturedPlaces[] | undefined
@@ -18,40 +22,53 @@ const FeaturedPlaces = () => {
         setFeaturedPlaces(featuredPlaces);
       })
       .catch((error) => {
-        // TODO: HANDLE THE ERROR -- DISPATCH ERROR ACTION
+        setError({
+          code: error.code,
+          message: error.message,
+        });
       });
   }, []);
 
   return (
-    <FlatList
-      ItemSeparatorComponent={() => <View style={styles.separator} />}
-      data={featuredPlaces}
-      horizontal
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          key={item.id}
-          onPress={() => console.log("TODO: HANDLE PRESS")}
-        >
-          <Card
-            containerStyle={styles.cardContainerStyle}
-            wrapperStyle={styles.cardWrapperStyle}
+    <View style={styles.container}>
+      <FlatList
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
+        data={featuredPlaces}
+        horizontal
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => console.log("TODO: HANDLE PRESS")}
           >
-            <Card.Image
-              source={getFeaturePhoto(item.name)}
-              style={styles.cardImageStyle}
+            <Card
+              containerStyle={styles.cardContainerStyle}
+              wrapperStyle={styles.cardWrapperStyle}
             >
-              <View style={styles.cardImageViewStyle}>
-                <Text style={styles.cardImageTextStyle}>{item.name}</Text>
-              </View>
-            </Card.Image>
-          </Card>
-        </TouchableOpacity>
-      )}
-    />
+              <Card.Image
+                source={getFeaturePhoto(item.name)}
+                style={styles.cardImageStyle}
+              >
+                <View style={styles.cardImageViewStyle}>
+                  <Text style={styles.cardImageTextStyle}>{item.name}</Text>
+                </View>
+              </Card.Image>
+            </Card>
+          </TouchableOpacity>
+        )}
+      />
+    </View>
   );
 };
 
-export default FeaturedPlaces;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = { setError: actions.setError };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(FeaturedPlaces);
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
@@ -89,6 +106,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 4,
   },
   cardWrapperStyle: {},
+  container: { marginTop: 24 },
   separator: {
     width: 16,
   },

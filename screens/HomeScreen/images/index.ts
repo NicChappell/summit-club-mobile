@@ -1,1 +1,1 @@
-export const HERO_IMAGE = require("./stock-photo-milky-way-reflection-on-maroon-bells-during-winter-nights-in-aspen-colorado-usa-753674854.jpg");
+export const HERO_IMAGE = require("./stock-photo-sleeping-under-a-star-filled-sky-in-the-rocky-mountains-of-colorado-1508252813.jpg");

@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { StatusBar, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StatusBar, StyleSheet, View } from "react-native";
 import MapView, {
   Callout,
   Camera,
   LatLng,
+  MapEvent,
   Marker,
   Region,
 } from "react-native-maps";
@@ -11,14 +12,15 @@ import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { Point } from "geojson";
+import { Feature, GeoJsonProperties, Point } from "geojson";
 import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
+import { colors, customMapStyle } from "../../common/styles";
 import { IMapBoundaries } from "../../common/interfaces";
 import { MapContext } from "../../contexts";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
-import { initialRegion } from "./constants";
+import { initialMapBoundaries, initialRegion } from "./constants";
 import { processResultSet } from "./helpers";
 import { IMapScreen } from "./interfaces";
 
@@ -29,17 +31,18 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   const [cameraConfig, setCameraConfig] = useState<Camera | undefined>(
     undefined
   );
-  const [mapBoundaries, setMapBoundaries] = useState<
-    IMapBoundaries | undefined
-  >(undefined);
+  const [isWaiting, setIsWaiting] = useState<boolean>(false);
+  const [mapBoundaries, setMapBoundaries] = useState<IMapBoundaries>(
+    initialMapBoundaries
+  );
 
   // context hooks
   const {
-    database,
+    featuresDatabase,
     executeSql,
     feature,
     features,
-    featuresRef,
+    featuresCollectionRef,
     setFeature,
     setFeatures,
   } = useContext(MapContext);
@@ -47,82 +50,101 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   // ref hooks
   const mapRef = useRef<MapView>(null);
 
-  // // effect hooks
-  // useEffect(() => {
-  //   if (database) {
-  //     dropFeaturesTable(database);
-  //   }
-  // }, []);
-
+  // effect hooks
   useEffect(() => {
     // return early if cameraConfig is undefined
-    if (cameraConfig) return;
+    if (!cameraConfig) return;
 
     // TODO: DO SOMETHING WITH THE CAMERA CONFIGURATION?
   }, [cameraConfig]);
 
   useEffect(() => {
-    // return early if database, featuresRef or mapBoundaries is undefined
-    if (!database || !featuresRef || !mapBoundaries) return;
+    // return early if mapBoundaries is undefined
+    if (!mapBoundaries) return;
 
-    // reset state
-    setFeatures(undefined);
-
-    // query new features whenever map boundaries change
-    //
-    // TODO: - TRACK ZOOM LEVEL
-    //       - IF ZOOM LEVEL DOESN'T CHANGE --> DON'T CLEAR FEATURES,
-    //                                          RE-QUERY NEW FEATURE RESULT SET, AND
-    //                                          MERGE WITH EXISTING FEATURES ARRAY
-    //       - IF ZOOM LEVEL DOES CHANGE --> CLEAR FEATURES, AND
-    //                                       RE-QUERY FEATURE RESULT SET
-    //
-    // NOTE: WILL NEED ANOTHER FUNCTION FOR QUERYING WITHOUT RESETTING FEATURES
-    // NOTE: PROBABLY TIME TO MOVE THESE SQLITE FUNCTIONS TO A HELPERS FILE
-    //
-    queryFeaturesTable(database, featuresRef).then((features) => {
-      // update state
-      setFeatures(features);
-    });
+    // TODO: DO SOMETHING WITH THE MAP BOUNDARIES?
   }, [mapBoundaries]);
 
   useEffect(() => {
     // return early if mapRef is null
-    if (!mapRef.current) return;
+    if (!mapRef) return;
 
     // set current camera config
-    mapRef.current.getCamera().then((cameraConfig) => {
-      setCameraConfig(cameraConfig);
-    });
+    mapRef.current
+      ?.getCamera()
+      .then((cameraConfig) => {
+        setCameraConfig(cameraConfig);
 
-    // // set current map boundaries
-    // mapRef.current.getMapBoundaries().then((mapBoundaries) => {
-    //   setMapBoundaries(mapBoundaries);
-    // });
+        queryFeaturesTable(featuresDatabase!, mapBoundaries).then(
+          (features) => {
+            // update state
+            setFeatures(features);
+          }
+        );
+      })
+      .catch((error) => {
+        // TODO: HANDLE THIS ERroR
+        console.log(error);
+      });
+
+    // set current map boundaries
+    mapRef.current?.getMapBoundaries().then((mapBoundaries) => {
+      setMapBoundaries(mapBoundaries);
+    });
   }, [mapRef]);
+
+  // useEffect(() => {
+  //   if (featuresDatabase && featuresCollectionRef) {
+  //     dropFeaturesTable(featuresDatabase);
+  //     createFeaturesTable(featuresDatabase, featuresCollectionRef);
+  //   }
+  // }, []);
+
+  const handleMarkerPress = (event: MapEvent) => {
+    // destructure event
+    const {
+      nativeEvent: { coordinate },
+    } = event;
+
+    // animate map to coordinate
+    mapRef.current?.animateCamera({ center: coordinate }, { duration: 250 });
+  };
 
   const handleRegionChange = (region: Region) => {
     // TODO: DO SOMETHING WHENEVER THE REGION CHANGES?
   };
 
-  const handleRegionChangeComplete = (region: Region) => {
+  const handleRegionChangeComplete = async (region: Region) => {
+    // get previous camera config
     const prevCameraConfig = cameraConfig;
 
-    // set current camera config
-    mapRef.current?.getCamera().then((newCameraConfig) => {
-      if (prevCameraConfig?.zoom === newCameraConfig.zoom) {
-        // merge feature query result sets
-      } else {
-        // reset and requery features
-      }
+    // get current camera config
+    const currentCameraConfig = await mapRef.current?.getCamera();
 
-      setCameraConfig(newCameraConfig);
-    });
+    // update state
+    setCameraConfig(currentCameraConfig);
+
+    // get current map boundaries
+    const currentMapBoundaries = await mapRef.current?.getMapBoundaries();
+
+    // update state
+    setMapBoundaries(currentMapBoundaries!);
+
+    // query database
+    const newFeatures = await queryFeaturesTable(
+      featuresDatabase!,
+      currentMapBoundaries
+    );
+
+    // compare zoom levels and requery database
+    prevCameraConfig?.zoom === currentCameraConfig?.zoom
+      ? mergeResultSet(newFeatures!)
+      : resetResultSet(newFeatures!);
   };
 
   const createFeaturesTable = async (
-    database: SQLite.WebSQLDatabase,
-    featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
+    featuresDatabase: SQLite.WebSQLDatabase,
+    featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
   ) => {
     try {
       const sqlStatement = `
@@ -132,6 +154,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           country TEXT,
           county TEXT,
           feet INTEGER,
+          id INTEGER,
           latitude REAL,
           longitude REAL,
           meters INTEGER,
@@ -139,9 +162,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           state TEXT
         );
       `;
-      await executeSql!(database, sqlStatement, []);
+      await executeSql!(featuresDatabase, sqlStatement, []);
 
-      populateFeaturesTable(database, featuresRef);
+      populateFeaturesTable(featuresDatabase, featuresCollectionRef);
     } catch (error) {
       setError({
         code: error.code,
@@ -150,9 +173,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     }
   };
 
-  const dropFeaturesTable = async (database: SQLite.WebSQLDatabase) => {
+  const dropFeaturesTable = async (featuresDatabase: SQLite.WebSQLDatabase) => {
     try {
-      await executeSql!(database, `DROP TABLE IF EXISTS features;`, []);
+      await executeSql!(featuresDatabase, `DROP TABLE IF EXISTS features;`, []);
     } catch (error) {
       setError({
         code: error.code,
@@ -162,12 +185,12 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   };
 
   const populateFeaturesTable = async (
-    database: SQLite.WebSQLDatabase,
-    featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
+    featuresDatabase: SQLite.WebSQLDatabase,
+    featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
   ) => {
     try {
       // retrieve data from firestore
-      const snapshot = await featuresRef
+      const snapshot = await featuresCollectionRef
         .where("properties.class", "==", "Summit")
         .get();
 
@@ -177,6 +200,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         // retrieve all document fields as an object
         // NOTE: data object is equivalent to a GeoJSON Feature object
         const document = doc.data();
+
+        // add document id to feature properties
+        document.properties.id = doc.id;
 
         // push document into documents array
         documents.push(document);
@@ -190,13 +216,14 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           country,
           county,
           feet,
+          id,
           latitude,
           longitude,
           meters,
           name,
           state
         ) VALUES (
-          ?,?,?,?,?,?,?,?,?,?
+          ?,?,?,?,?,?,?,?,?,?,?
         );
       `;
       for (const document of documents) {
@@ -210,6 +237,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           properties.country,
           properties.county,
           properties.feet,
+          properties.id,
           properties.latitude,
           properties.longitude,
           properties.meters,
@@ -217,11 +245,11 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
           properties.state,
         ];
 
-        await executeSql!(database, sqlStatement, args);
+        await executeSql!(featuresDatabase, sqlStatement, args);
       }
 
       // query features table
-      queryFeaturesTable(database, featuresRef);
+      queryFeaturesTable(featuresDatabase, mapBoundaries);
     } catch (error) {
       setError({
         code: error.code,
@@ -231,13 +259,16 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   };
 
   const queryFeaturesTable = async (
-    database: SQLite.WebSQLDatabase,
-    featuresRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
+    featuresDatabase: SQLite.WebSQLDatabase,
+    mapBoundaries: IMapBoundaries = initialMapBoundaries
   ) => {
     try {
+      // start activity indicator
+      setIsWaiting(true);
+
       // destructure map boundaries
-      const northEast = mapBoundaries?.northEast;
-      const southWest = mapBoundaries?.southWest;
+      const northEast = mapBoundaries.northEast;
+      const southWest = mapBoundaries.southWest;
 
       // destructure northeast coordinates
       const neLat = northEast?.latitude;
@@ -250,42 +281,77 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       const sqlStatement = `
         SELECT *
         FROM features
-        WHERE latitude < ${neLat ? neLat : 90.0}
-        AND longitude < ${neLng ? neLng : 180.0}
-        AND latitude > ${swLat ? swLat : -90.0}
-        AND longitude > ${swLng ? swLng : -180.0}
+        WHERE latitude < ${neLat}
+        AND longitude < ${neLng}
+        AND latitude > ${swLat}
+        AND longitude > ${swLng}
         ORDER BY meters DESC
         LIMIT 64;
       `;
-      const resultSet: any = await executeSql!(database, sqlStatement, []);
+      const resultSet: any = await executeSql!(
+        featuresDatabase,
+        sqlStatement,
+        []
+      );
       console.log("resultSet.rows._array.length", resultSet.rows._array.length);
 
       // convert resultSet into GeoJSON FeatureCollection
       const { features } = processResultSet(resultSet);
 
+      // stop activity indicator
+      setIsWaiting(false);
+
       return features;
     } catch (error) {
+      // stop activity indicator
+      setIsWaiting(false);
+
       setError({
         code: error.code,
         message: error.message,
       });
-
-      // TODO: FIND BETTER SOLUTION TO ENSURE DATA QUALITY
-      // drop and create features table if query error
-      dropFeaturesTable(database);
-      createFeaturesTable(database, featuresRef);
     }
   };
 
-  const mergeResultSet = (prevCameraConfig, newCameraConfig) => {};
+  const mergeResultSet = (newFeatures: Feature<Point, GeoJsonProperties>[]) => {
+    // get previous features
+    const prevFeatures = features;
 
-  const resetResultSet = (newCameraConfig) => {};
+    // create new Set of feature ids
+    const prevFeatureIds = new Set(
+      prevFeatures?.map((feature) => feature.properties?.id)
+    );
+
+    // merge and dedupe feature arrays
+    const mergedFeatures = [
+      ...prevFeatures!,
+      ...newFeatures.filter(
+        (feature) => !prevFeatureIds.has(feature.properties?.id)
+      ),
+    ];
+
+    // update state
+    setFeatures(mergedFeatures);
+  };
+
+  const resetResultSet = (newFeatures: Feature<Point, GeoJsonProperties>[]) => {
+    // update state
+    setFeatures(newFeatures);
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <ErrorOverlay error={error} />
+      {isWaiting && (
+        <ActivityIndicator
+          color={colors.black25}
+          size="large"
+          style={styles.activityIndicator}
+        />
+      )}
       <MapView
+        customMapStyle={customMapStyle}
         initialRegion={initialRegion}
         loadingEnabled={true}
         onRegionChange={handleRegionChange}
@@ -295,7 +361,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         ref={mapRef}
         style={styles.map}
       >
-        {features?.map((feature, index) => {
+        {features?.map((feature) => {
           // destructure feature
           const geometry = feature.geometry;
           const properties = feature.properties;
@@ -311,8 +377,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
           return (
             <Marker
-              key={index}
+              key={properties!.id}
               coordinate={coordinate}
+              onPress={handleMarkerPress}
               tracksViewChanges={false}
             >
               <MarkerView properties={properties} />
@@ -346,8 +413,14 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(MapScreen);
 
 const styles = StyleSheet.create({
+  activityIndicator: {
+    position: "absolute",
+    zIndex: 1,
+  },
   container: {
+    alignItems: "center",
     flex: 1,
+    justifyContent: "center",
   },
   map: {
     width: "100%",

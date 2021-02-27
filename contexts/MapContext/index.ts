@@ -3,11 +3,11 @@ import { IMapContext } from "./interfaces";
 
 // set default values
 const MapContext = React.createContext<IMapContext>({
-  database: undefined,
+  featuresDatabase: undefined,
   executeSql: () => {},
   feature: undefined,
   features: undefined,
-  featuresRef: undefined,
+  featuresCollectionRef: undefined,
   setFeature: () => {},
   setFeatures: () => {},
 });

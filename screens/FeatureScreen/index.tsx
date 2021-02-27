@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
-import { colors } from "../../common/styles";
+import { colors, customMapStyle } from "../../common/styles";
 import { MapContext } from "../../contexts";
 import { processFeature } from "./helpers";
 import { IFeatureScreen } from "./interfaces";
@@ -12,7 +12,9 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   const { name } = route.params;
 
   // context hooks
-  const { database, executeSql, feature, setFeature } = useContext(MapContext);
+  const { featuresDatabase, executeSql, feature, setFeature } = useContext(
+    MapContext
+  );
   console.log(feature);
 
   // state hooks
@@ -72,13 +74,13 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   }, [feature]);
 
   useEffect(() => {
-    if (database) {
+    if (featuresDatabase) {
       const sqlStatement = `
         SELECT *
         FROM features
         WHERE name = '${name}';
       `;
-      executeSql!(database, sqlStatement, [])
+      executeSql!(featuresDatabase, sqlStatement, [])
         .then((resultSet: any) => {
           const feature = processFeature(resultSet);
           setFeature(feature);
@@ -116,6 +118,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
       <View pointerEvents={"none"} style={styles.mapContainer}>
         {coordinate && region && (
           <MapView
+            customMapStyle={customMapStyle}
             provider={"google"}
             ref={mapRef}
             region={region}

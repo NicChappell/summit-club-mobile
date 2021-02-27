@@ -2,13 +2,13 @@ import * as SQLite from "expo-sqlite";
 
 // asynchronous sqlite transaction wrapper function
 export const executeSql = async (
-  database: SQLite.WebSQLDatabase,
+  featuresDatabase: SQLite.WebSQLDatabase,
   sqlStatement: string,
   args: string[] = []
 ) => {
   return new Promise((resolve, reject) => {
     // new database transaction
-    database.transaction(
+    featuresDatabase.transaction(
       (tx) => {
         // execute sql statement
         tx.executeSql(

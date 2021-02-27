@@ -2,60 +2,60 @@ import * as React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 import { PlacesScreen } from "../../../screens";
 import { colors } from "../../../common/styles";
 import SettingsStack from "../SettingsStack";
 import MapStack from "../MapStack";
 import HomeTabs from "../HomeTabs";
-import { IMainTabBar } from "./interfaces";
 import { MainTabsParamList } from "./types";
 
-const MainTabBar = ({ descriptors, navigation, state }: IMainTabBar) => {
-  const insets = useSafeAreaInsets();
+const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
+  <View
+    style={[styles.container, { paddingBottom: useSafeAreaInsets().bottom }]}
+  >
+    {state.routes.map((route: any, index: number) => {
+      // destructure route options
+      const { options } = descriptors[route.key];
 
-  return (
-    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
-      {state.routes.map((route: any, index: number) => {
-        // destructure route options
-        const { options } = descriptors[route.key];
+      // determine current route
+      const isFocused = state.index === index;
 
-        // determine current route
-        const isFocused = state.index === index;
+      // get route icon
+      const icon = options.tabBarIcon!({
+        focused: isFocused,
+        color: isFocused ? colors.zomp : colors.queenBlue,
+        size: 24,
+      });
 
-        // get route icon
-        const icon = options.tabBarIcon({
-          focused: isFocused,
-          color: isFocused ? colors.zomp : colors.queenBlue,
-          size: 24,
+      const onPress = () => {
+        // define custom event
+        const event = navigation.emit({
+          type: "tabPress",
+          target: route.key,
         });
 
-        const onPress = () => {
-          // define custom event
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-          });
+        // reroute if eligible
+        if (!isFocused && !event.defaultPrevented) {
+          navigation.navigate(route.name);
+        }
+      };
 
-          // reroute if eligible
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        return (
-          <TouchableOpacity
-            key={route.key}
-            onPress={onPress}
-            style={styles.button}
-          >
-            {icon}
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-};
+      return (
+        <TouchableOpacity
+          key={route.key}
+          onPress={onPress}
+          style={styles.button}
+        >
+          {icon}
+        </TouchableOpacity>
+      );
+    })}
+  </View>
+);
 
 // new bottom tab navigator
 const Tab = createBottomTabNavigator<MainTabsParamList>();

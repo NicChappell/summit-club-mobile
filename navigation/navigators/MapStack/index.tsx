@@ -37,7 +37,7 @@ const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
       <TouchableOpacity style={styles.left} onPress={handlePress}>
-        <Ionicons name={iconName} size={28} color={colors.black} />
+        <Ionicons name={iconName} size={28} color={colors.queenBlue} />
       </TouchableOpacity>
       <Text numberOfLines={1} style={styles.center}>
         {options.title}
@@ -101,6 +101,7 @@ export default MapStack;
 
 const styles = StyleSheet.create({
   center: {
+    color: colors.queenBlue,
     flex: 0,
     fontFamily: "NotoSansJP_500Medium",
     maxWidth: 240,
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: colors.white,
-    borderBottomColor: colors.queenBlue,
+    borderBottomColor: colors.queenBlue50,
     borderBottomWidth: 1,
     flexDirection: "row",
     flexWrap: "nowrap",

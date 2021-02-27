@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: colors.white,
-    borderTopColor: colors.queenBlue,
+    borderTopColor: colors.queenBlue50,
     borderTopWidth: 1,
     flexDirection: "row",
     justifyContent: "space-evenly",

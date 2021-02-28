@@ -8,13 +8,16 @@
         ? - HomeScreen
         : -TourScreen
 
+- MapDrawer
+    - MapStack: MapStack
+
 - MapStack
     - Map: MapScreen
     - Feature: FeatureScreen
 
 - MainTabs
     - Home: HomeTabs
-    - Map: MapStack
+    - Map: MapDrawer
     - Places: PlacesScreen
     - Settings: SettingsStack
 

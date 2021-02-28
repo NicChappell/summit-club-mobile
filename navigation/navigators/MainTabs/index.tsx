@@ -9,7 +9,7 @@ import {
 import { PlacesScreen } from "../../../screens";
 import { colors } from "../../../common/styles";
 import SettingsStack from "../SettingsStack";
-import MapStack from "../MapStack";
+import MapDrawer from "../MapDrawer";
 import HomeTabs from "../HomeTabs";
 import { MainTabsParamList } from "./types";
 
@@ -83,7 +83,7 @@ const MainTabs = () => {
       tabBar={(props) => <MainTabBar {...props} />}
     >
       <Tab.Screen name="Home" component={HomeTabs} />
-      <Tab.Screen name="Map" component={MapStack} />
+      <Tab.Screen name="Map" component={MapDrawer} />
       <Tab.Screen name="Places" component={PlacesScreen} />
       <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>

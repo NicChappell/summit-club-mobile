@@ -6,6 +6,7 @@ import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { TouchableOpacity, View, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 import {
   createStackNavigator,
   StackHeaderProps,
@@ -17,6 +18,9 @@ import { executeSql } from "./helpers";
 import { MapStackParamList } from "./types";
 
 const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
+  // navigation hook
+  const drawerNavigation = useNavigation();
+
   // destructure scene
   const {
     descriptor: { options },
@@ -29,7 +33,7 @@ const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
     handlePress = navigation.goBack;
     iconName = "ios-chevron-back";
   } else {
-    handlePress = () => console.log("TODO: USE TO OPEN DRAWER");
+    handlePress = () => drawerNavigation.dispatch(DrawerActions.openDrawer());
     iconName = "ios-options";
   }
 

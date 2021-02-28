@@ -19,48 +19,43 @@ import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
 
-const HomeScreen = ({ error, navigation, route }: Props) => {
-  const insets = useSafeAreaInsets();
-
-  return (
-    <DismissKeyboard>
-      <ScrollView style={[styles.container]}>
-        <StatusBar barStyle="light-content" />
-        <ErrorOverlay error={error} />
-        <View style={styles.heroContainer}>
-          <ImageBackground
-            source={HERO_IMAGE}
-            style={[styles.heroImageBackground, { paddingTop: insets.top }]}
-          >
-            <Text style={styles.heroTitle}>
-              Find your{"\n"}
-              next adventure
-            </Text>
-            <Input
-              inputContainerStyle={styles.heroInputContainer}
-              leftIcon={
-                <Ionicons name={"ios-search"} size={24} color={colors.black} />
-              }
-              placeholder="Search places"
-            />
-          </ImageBackground>
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Featured places</Text>
-          <FeaturedPlaces />
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent check-ins</Text>
-          <RecentCheckIns />
-        </View>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Popular places</Text>
-          <PopularPlaces />
-        </View>
-      </ScrollView>
-    </DismissKeyboard>
-  );
-};
+const HomeScreen = ({ error, navigation, route }: Props) => (
+  <DismissKeyboard>
+    <ScrollView
+      style={[styles.container, { marginTop: useSafeAreaInsets().top }]}
+    >
+      <StatusBar barStyle="dark-content" />
+      <ErrorOverlay error={error} />
+      <View style={styles.heroContainer}>
+        <ImageBackground source={HERO_IMAGE} style={styles.heroImageBackground}>
+          <Text style={styles.heroTitle}>
+            Find your{"\n"}
+            next adventure
+          </Text>
+          <Input
+            inputContainerStyle={styles.heroInputContainer}
+            leftIcon={
+              <Ionicons name={"ios-search"} size={24} color={colors.black} />
+            }
+            placeholder="Search places"
+          />
+        </ImageBackground>
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Featured places</Text>
+        <FeaturedPlaces />
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Recent check-ins</Text>
+        <RecentCheckIns />
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Popular places</Text>
+        <PopularPlaces />
+      </View>
+    </ScrollView>
+  </DismissKeyboard>
+);
 
 const mapStateToProps = (state: RootState) => {
   return {

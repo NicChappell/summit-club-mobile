@@ -33,7 +33,7 @@ const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
     handlePress = navigation.goBack;
     iconName = "ios-chevron-back";
   } else {
-    handlePress = () => drawerNavigation.dispatch(DrawerActions.openDrawer());
+    handlePress = () => navigation.dispatch(DrawerActions.openDrawer());
     iconName = "ios-options";
   }
 
@@ -89,7 +89,7 @@ const MapStack = () => {
           component={MapScreen}
           name="Map"
           options={{
-            title: "[STATE_NAME]",
+            title: "Search Places",
           }}
         />
         <Stack.Screen

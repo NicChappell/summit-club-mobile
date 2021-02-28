@@ -15,14 +15,12 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   const { featuresDatabase, executeSql, feature, setFeature } = useContext(
     MapContext
   );
-  console.log(feature);
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
   const [latLng, setLatLng] = useState<string | undefined>(undefined);
   const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
   const [region, setRegion] = useState<Region | undefined>(undefined);
-  console.log(coordinate, region);
 
   // ref hooks
   const mapRef: React.MutableRefObject<MapView | null> = useRef(null);
@@ -86,6 +84,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
           setFeature(feature);
         })
         .catch((error: any) => {
+          // TODO: HANDLE THIS ERROR
           console.log(error);
         });
     }

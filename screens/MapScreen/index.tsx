@@ -52,6 +52,14 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
   // effect hooks
   useEffect(() => {
+    // if (featuresDatabase && featuresCollectionRef) {
+    //   dropFeaturesTable(featuresDatabase);
+    //   createFeaturesTable(featuresDatabase, featuresCollectionRef);
+    // }
+    navigation.setOptions({ title: "TODO: DYNAMIC STATE NAME" });
+  }, []);
+
+  useEffect(() => {
     // return early if cameraConfig is undefined
     if (!cameraConfig) return;
 
@@ -92,13 +100,6 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       setMapBoundaries(mapBoundaries);
     });
   }, [mapRef]);
-
-  // useEffect(() => {
-  //   if (featuresDatabase && featuresCollectionRef) {
-  //     dropFeaturesTable(featuresDatabase);
-  //     createFeaturesTable(featuresDatabase, featuresCollectionRef);
-  //   }
-  // }, []);
 
   const handleMarkerPress = (event: MapEvent) => {
     // destructure event

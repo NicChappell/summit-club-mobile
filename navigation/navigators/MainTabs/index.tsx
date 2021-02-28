@@ -34,6 +34,7 @@ const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
       const onPress = () => {
         // define custom event
         const event = navigation.emit({
+          canPreventDefault: true,
           type: "tabPress",
           target: route.key,
         });

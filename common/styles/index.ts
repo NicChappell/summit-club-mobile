@@ -1,3 +1,5 @@
+import { StyleSheet } from "react-native";
+
 export const cardContainer = {
   borderRadius: 4,
   borderWidth: 0,
@@ -152,3 +154,35 @@ export const shadow = {
 export const sizes = {
   icon: 24,
 };
+
+export const stackHeader = StyleSheet.create({
+  button: {
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  center: {
+    color: colors.queenBlue,
+    flex: 0,
+    fontFamily: "NotoSansJP_500Medium",
+    fontSize: 16,
+    maxWidth: 240,
+  },
+  container: {
+    alignItems: "center",
+    backgroundColor: colors.white,
+    borderBottomColor: colors.queenBlue50,
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    height: 64,
+    justifyContent: "space-between",
+  },
+  left: {
+    flex: 1,
+    paddingLeft: 12,
+  },
+  right: {
+    flex: 1,
+    paddingRight: 12,
+  },
+});

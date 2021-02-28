@@ -107,7 +107,10 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     } = event;
 
     // animate map to coordinate
-    mapRef.current?.animateCamera({ center: coordinate }, { duration: 250 });
+    mapRef.current?.animateCamera(
+      { center: coordinate, zoom: 12 },
+      { duration: 666 }
+    );
   };
 
   const handleRegionChange = (region: Region) => {

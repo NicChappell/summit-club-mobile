@@ -3,15 +3,14 @@ import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   createStackNavigator,
-  StackHeaderLeftButtonProps,
   StackHeaderProps,
 } from "@react-navigation/stack";
-import { colors } from "../../../common/styles";
+import { colors, stackHeader } from "../../../common/styles";
 import { MapContext } from "../../../contexts";
 import { FeatureScreen, MapScreen } from "../../../screens";
 import { executeSql } from "./helpers";
@@ -36,9 +35,11 @@ const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
 
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
-      <TouchableOpacity style={styles.left} onPress={handlePress}>
-        <Ionicons name={iconName} size={28} color={colors.queenBlue} />
-      </TouchableOpacity>
+      <View style={styles.left}>
+        <TouchableOpacity style={styles.button} onPress={handlePress}>
+          <Ionicons name={iconName} size={28} color={colors.queenBlue} />
+        </TouchableOpacity>
+      </View>
       <Text numberOfLines={1} style={styles.center}>
         {options.title}
       </Text>
@@ -99,31 +100,4 @@ const MapStack = () => {
 
 export default MapStack;
 
-const styles = StyleSheet.create({
-  center: {
-    color: colors.queenBlue,
-    flex: 0,
-    fontFamily: "NotoSansJP_500Medium",
-    maxWidth: 240,
-  },
-  container: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    borderBottomColor: colors.queenBlue50,
-    borderBottomWidth: 1,
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    height: 64,
-    justifyContent: "space-between",
-  },
-  left: {
-    alignItems: "flex-start",
-    flex: 1,
-    justifyContent: "center",
-    paddingLeft: 12,
-  },
-  right: {
-    flex: 1,
-    paddingRight: 12,
-  },
-});
+const styles = stackHeader;

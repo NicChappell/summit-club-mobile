@@ -19,10 +19,6 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
         <TouchableOpacity style={styles.closeDrawer} onPress={handlePress}>
           <Ionicons name={"ios-close"} size={28} color={colors.queenBlue} />
         </TouchableOpacity>
-        <View>
-          <Text>Slider</Text>
-          <Text>Slider</Text>
-        </View>
         <View
           style={{
             flex: 1,
@@ -43,12 +39,42 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           <Text>Value: {0.4}</Text>
         </View>
         <View>
+          <Text>14ers</Text>
           <CheckBox
             checkedIcon={
-              <Ionicons name={"ios-checkbox-outline"} size={28} color={colors.queenBlue} />
+              <Ionicons
+                name={"ios-checkbox-outline"}
+                size={28}
+                color={colors.queenBlue}
+              />
             }
             uncheckedIcon={
-              <Ionicons name={"ios-square-outline"} size={28} color={colors.queenBlue} />
+              <Ionicons
+                name={"ios-square-outline"}
+                size={28}
+                color={colors.queenBlue}
+              />
+            }
+            checked={true}
+            onPress={() => console.log("TODO: HANDLE THIS CLICK")}
+          />
+        </View>
+        <View>
+          <Text>13ers</Text>
+          <CheckBox
+            checkedIcon={
+              <Ionicons
+                name={"ios-checkbox-outline"}
+                size={28}
+                color={colors.queenBlue}
+              />
+            }
+            uncheckedIcon={
+              <Ionicons
+                name={"ios-square-outline"}
+                size={28}
+                color={colors.queenBlue}
+              />
             }
             checked={true}
             onPress={() => console.log("TODO: HANDLE THIS CLICK")}
@@ -64,7 +90,10 @@ const Drawer = createDrawerNavigator();
 
 const MapDrawer = () => {
   return (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
+    <Drawer.Navigator
+      drawerContent={(props) => <DrawerContent {...props} />}
+      screenOptions={{ swipeEnabled: false }}
+    >
       <Drawer.Screen name="MapStack" component={MapStack} />
     </Drawer.Navigator>
   );
@@ -78,7 +107,6 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     height: 40,
     justifyContent: "center",
-    paddingBottom: 1, // in place of border bottom
     width: 40,
   },
   container: {

@@ -20,6 +20,7 @@
     "@react-navigation/native": "^5.9.0",
     "@react-navigation/stack": "^5.13.0",
     "@turf/bbox": "^6.2.0",
+    "@turf/boolean-point-in-polygon": "^6.3.0",
     "@turf/distance": "^6.2.0",
     "@turf/helpers": "^6.2.0",
     "expo": "~40.0.0",

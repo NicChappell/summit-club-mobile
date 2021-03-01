@@ -1,7 +1,7 @@
 export { default as FeatureScreen } from "./FeatureScreen";
 export { default as ForgotPasswordScreen } from "./ForgotPasswordScreen";
 export { default as HomeScreen } from "./HomeScreen";
-export { default as PlacesScreen } from "./PlacesScreen";
+export { default as SummitsScreen } from "./SummitsScreen";
 export { default as MapScreen } from "./MapScreen";
 export { default as ProfileScreen } from "./ProfileScreen";
 export { default as ResetPasswordScreen } from "./ResetPasswordScreen";

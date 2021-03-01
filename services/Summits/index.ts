@@ -1,13 +1,13 @@
 import { Feature } from "geojson";
 
-export interface IFeaturedPlaces {
-  /** Uniquely identifies the place */
+export interface IFeaturedSummits {
+  /** Uniquely identifies the summit */
   id: string;
-  /** The place's name */
+  /** The summit's name */
   name: string;
 }
 
-export interface IPopularPlaces {
+export interface IPopularSummits {
   /** Number of check-ins previous 7 days */
   checkInsLastWeek: number;
   /** Number of check-ins previous 30 days */
@@ -16,13 +16,13 @@ export interface IPopularPlaces {
   checkInsLastYear: number;
   /** Number of check-ins all time*/
   checkInsAllTime: number;
-  /** The place's feature profile */
+  /** The summit's feature profile */
   feature: Feature;
 }
 
-class Places {
-  /** Fetch array of featured place data */
-  static async getFeaturedPlaces(): Promise<IFeaturedPlaces[]> {
+class Summits {
+  /** Fetch array of featured summit data */
+  static async getFeaturedSummits(): Promise<IFeaturedSummits[]> {
     // TODO: FIREBASE QUERY
 
     if (true) {
@@ -36,12 +36,12 @@ class Places {
         { id: "6", name: "Mt. Mrah" },
       ]);
     } else {
-      return Promise.reject(new Error("featured places fail"));
+      return Promise.reject(new Error("featured summits fail"));
     }
   }
 
-  /** Fetch array of popular place data */
-  static async getPopularPlaces(): Promise<IPopularPlaces[]> {
+  /** Fetch array of popular summit data */
+  static async getPopularSummits(): Promise<IPopularSummits[]> {
     // TODO: FIREBASE QUERY
 
     if (true) {
@@ -123,9 +123,9 @@ class Places {
         },
       ]);
     } else {
-      return Promise.reject(new Error("popular places fail"));
+      return Promise.reject(new Error("popular summits fail"));
     }
   }
 }
 
-export default Places;
+export default Summits;

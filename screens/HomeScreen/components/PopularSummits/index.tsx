@@ -4,22 +4,22 @@ import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
-import { Places, IPopularPlaces } from "../../../../services";
+import { Summits, IPopularSummits } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
 
 type Props = PropsFromRedux;
 
-const PopularPlaces = ({ setError }: Props) => {
+const PopularSummits = ({ setError }: Props) => {
   // state hooks
-  const [popularPlaces, setPopularPlaces] = useState<
-    IPopularPlaces[] | undefined
+  const [popularSummits, setPopularSummits] = useState<
+    IPopularSummits[] | undefined
   >(undefined);
 
   // effect hooks
   useEffect(() => {
-    Places.getPopularPlaces()
-      .then((popularPlaces) => {
-        setPopularPlaces(popularPlaces);
+    Summits.getPopularSummits()
+      .then((popularSummits) => {
+        setPopularSummits(popularSummits);
       })
       .catch((error) => {
         setError({
@@ -31,36 +31,36 @@ const PopularPlaces = ({ setError }: Props) => {
 
   return (
     <View style={styles.container}>
-      {popularPlaces?.map((place, index) => {
+      {popularSummits?.map((summit, index) => {
         const countyState =
-          place.feature.properties?.county &&
-          place.feature.properties?.state ? (
+          summit.feature.properties?.county &&
+          summit.feature.properties?.state ? (
             <Text style={styles.featureHierarchy}>
-              {`${place.feature.properties?.county} County, ${place.feature.properties?.state}`}
+              {`${summit.feature.properties?.county} County, ${summit.feature.properties?.state}`}
             </Text>
           ) : null;
 
         const countryContinent =
-          place.feature.properties?.country &&
-          place.feature.properties?.continent ? (
+          summit.feature.properties?.country &&
+          summit.feature.properties?.continent ? (
             <Text style={styles.featureHierarchy}>
-              {`${place.feature.properties?.country}, ${place.feature.properties?.continent}`}
+              {`${summit.feature.properties?.country}, ${summit.feature.properties?.continent}`}
             </Text>
           ) : null;
 
         const coordinate = (
           <Text style={styles.featureCoordinate}>
-            {`${place.feature.properties?.latitude}° ${
-              place.feature.properties?.latitude >= 0 ? "N" : "S"
-            }, ${place.feature.properties?.longitude}° ${
-              place.feature.properties?.longitude >= 0 ? "E" : "W"
+            {`${summit.feature.properties?.latitude}° ${
+              summit.feature.properties?.latitude >= 0 ? "N" : "S"
+            }, ${summit.feature.properties?.longitude}° ${
+              summit.feature.properties?.longitude >= 0 ? "E" : "W"
             }`}
           </Text>
         );
 
         const elevation = (
           <Text style={styles.featureElevation}>
-            {`${place.feature.properties?.feet.toLocaleString()} ft / ${place.feature.properties?.meters.toLocaleString()} m`}
+            {`${summit.feature.properties?.feet.toLocaleString()} ft / ${summit.feature.properties?.meters.toLocaleString()} m`}
           </Text>
         );
 
@@ -71,11 +71,11 @@ const PopularPlaces = ({ setError }: Props) => {
             wrapperStyle={styles.cardWrapperStyle}
           >
             <Card.Image
-              source={getFeaturePhoto(place.feature.properties?.name)}
+              source={getFeaturePhoto(summit.feature.properties?.name)}
               style={styles.cardImageStyle}
             >
               <Text style={styles.cardImageTextStyle}>
-                {place.feature.properties?.name}
+                {summit.feature.properties?.name}
               </Text>
             </Card.Image>
             <View style={styles.cardContent}>
@@ -87,7 +87,7 @@ const PopularPlaces = ({ setError }: Props) => {
               </View>
               <View style={styles.checkInDetails}>
                 <Text style={styles.checkInCount}>
-                  {place.checkInsLastWeek}
+                  {summit.checkInsLastWeek}
                 </Text>
               </View>
             </View>
@@ -106,7 +106,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(PopularPlaces);
+export default connector(PopularSummits);
 
 const styles = StyleSheet.create({
   container: {},

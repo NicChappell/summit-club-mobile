@@ -89,7 +89,7 @@ const MapStack = () => {
           component={MapScreen}
           name="Map"
           options={{
-            title: "Search Places",
+            title: "Search Summits",
           }}
         />
         <Stack.Screen

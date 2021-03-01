@@ -3,10 +3,14 @@
     - SignUp: SignUpScreen
     - ForgotPassword: ForgotPasswordScreen
 
+- HomeStack
+    - Home: HomeScreen
+    - Feature: FeatureScreen
+
 - HomeTabs
     skipTour
         ? - HomeScreen
-        : -TourScreen
+        : - TourScreen
 
 - MapDrawer
     - MapStack: MapStack
@@ -18,12 +22,16 @@
 - MainTabs
     - Home: HomeTabs
     - Map: MapDrawer
-    - Places: PlacesScreen
+    - Summits: SummitsStack
     - Settings: SettingsStack
 
 - SettingsStack
     - Profile: ProfileScreen
     - ResetPassword: ResetPasswordScreen
+
+- SummitsStack
+    - Summits: SummitsScreen
+    - Feature: FeatureScreen
 
 - root
     authToken

@@ -13,7 +13,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { colors, input, shadow } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
-import { FeaturedPlaces, PopularPlaces, RecentCheckIns } from "./components";
+import { FeaturedSummits, PopularSummits, RecentCheckIns } from "./components";
 import { HERO_IMAGE } from "./images";
 import { IHomeScreen } from "./interfaces";
 
@@ -37,21 +37,21 @@ const HomeScreen = ({ error, navigation, route }: Props) => (
             leftIcon={
               <Ionicons name={"ios-search"} size={24} color={colors.black} />
             }
-            placeholder="Search places"
+            placeholder="Search summits"
           />
         </ImageBackground>
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Featured places</Text>
-        <FeaturedPlaces />
+        <Text style={styles.sectionTitle}>Featured summits</Text>
+        <FeaturedSummits />
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Recent check-ins</Text>
         <RecentCheckIns />
       </View>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Popular places</Text>
-        <PopularPlaces />
+        <Text style={styles.sectionTitle}>Popular summits</Text>
+        <PopularSummits />
       </View>
     </ScrollView>
   </DismissKeyboard>

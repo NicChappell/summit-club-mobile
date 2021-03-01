@@ -4,22 +4,22 @@ import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
-import { Places, IFeaturedPlaces } from "../../../../services";
+import { Summits, IFeaturedSummits } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
 
 type Props = PropsFromRedux;
 
-const FeaturedPlaces = ({ setError }: Props) => {
+const FeaturedSummits = ({ setError }: Props) => {
   // state hooks
-  const [featuredPlaces, setFeaturedPlaces] = useState<
-    IFeaturedPlaces[] | undefined
+  const [featuredSummits, setFeaturedSummits] = useState<
+    IFeaturedSummits[] | undefined
   >(undefined);
 
   // effect hooks
   useEffect(() => {
-    Places.getFeaturedPlaces()
-      .then((featuredPlaces) => {
-        setFeaturedPlaces(featuredPlaces);
+    Summits.getFeaturedSummits()
+      .then((featuredSummits) => {
+        setFeaturedSummits(featuredSummits);
       })
       .catch((error) => {
         setError({
@@ -33,7 +33,7 @@ const FeaturedPlaces = ({ setError }: Props) => {
     <View style={styles.container}>
       <FlatList
         ItemSeparatorComponent={() => <View style={styles.separator} />}
-        data={featuredPlaces}
+        data={featuredSummits}
         horizontal
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -68,7 +68,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(FeaturedPlaces);
+export default connector(FeaturedSummits);
 
 const styles = StyleSheet.create({
   cardContainerStyle: {

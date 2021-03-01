@@ -2,21 +2,21 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { IPlacesScreen } from "./interfaces";
+import { ISummitsScreen } from "./interfaces";
 
-const PlacesScreen = ({ navigation, route }: IPlacesScreen) => {
+const SummitsScreen = ({ navigation, route }: ISummitsScreen) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text>This is top text.</Text>
       <View>
-        <Text>PlacesScreen</Text>
+        <Text>SummitsScreen</Text>
       </View>
       <Text>This is bottom text.</Text>
     </SafeAreaView>
   );
 };
 
-export default PlacesScreen;
+export default SummitsScreen;
 
 const styles = StyleSheet.create({
   container: {

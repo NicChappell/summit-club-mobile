@@ -1767,6 +1767,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
   // effect hooks
   useEffect(() => {
+    console.log(route);
     currentCounty
       ? navigation.setOptions({ title: `${currentCounty} County` })
       : navigation.setOptions({ title: "Search Summits" });

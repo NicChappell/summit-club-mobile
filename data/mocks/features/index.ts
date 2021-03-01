@@ -7,6 +7,7 @@ export const MockFeature: Feature = {
     coordinates: [-105.6162397, 40.2548614],
   },
   properties: {
+    id: 123456789,
     feet: 14262,
     meters: 4347,
     latitude: 40.2548614,

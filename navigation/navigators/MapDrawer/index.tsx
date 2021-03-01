@@ -12,6 +12,151 @@ import MapStack from "../MapStack";
 
 const TEMP_MAX_VALUE = 14439;
 
+const features = [
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
+    properties: {
+      id: 1,
+      feet: 14439,
+      meters: 0,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+      class: "",
+      county: "",
+      state: "",
+      country: "",
+      continent: "",
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
+    properties: {
+      id: 1,
+      feet: 14000,
+      meters: 0,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+      class: "",
+      county: "",
+      state: "",
+      country: "",
+      continent: "",
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
+    properties: {
+      id: 1,
+      feet: 13000,
+      meters: 0,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+      class: "",
+      county: "",
+      state: "",
+      country: "",
+      continent: "",
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
+    properties: {
+      id: 1,
+      feet: 12000,
+      meters: 0,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+      class: "",
+      county: "",
+      state: "",
+      country: "",
+      continent: "",
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
+    properties: {
+      id: 1,
+      feet: 11000,
+      meters: 0,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+      class: "",
+      county: "",
+      state: "",
+      country: "",
+      continent: "",
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
+    properties: {
+      id: 1,
+      feet: 10000,
+      meters: 0,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+      class: "",
+      county: "",
+      state: "",
+      country: "",
+      continent: "",
+    },
+  },
+  {
+    type: "Feature",
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0],
+    },
+    properties: {
+      id: 1,
+      feet: 9000,
+      meters: 0,
+      latitude: 0,
+      longitude: 0,
+      name: "",
+      class: "",
+      county: "",
+      state: "",
+      country: "",
+      continent: "",
+    },
+  },
+];
+
+const featureFilters = () => {};
+
 const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
   // state hooks
   const [sliderValue, setSliderValue] = useState<number>(TEMP_MAX_VALUE);
@@ -71,7 +216,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           <Text style={styles.label}>Above 14,000</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-square-outline"}
+            name={"ios-checkbox-outline"}
             size={28}
           />
         </TouchableOpacity>
@@ -104,7 +249,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           <Text style={styles.label}>11,000 - 11,999</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-checkbox-outline"}
+            name={"ios-square-outline"}
             size={28}
           />
         </TouchableOpacity>
@@ -126,7 +271,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           <Text style={styles.label}>Below 10,000</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-checkbox-outline"}
+            name={"ios-square-outline"}
             size={28}
           />
         </TouchableOpacity>

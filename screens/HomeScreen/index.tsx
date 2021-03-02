@@ -7,7 +7,6 @@ import {
   View,
 } from "react-native";
 import { Input, Text } from "react-native-elements";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
@@ -21,9 +20,7 @@ type Props = PropsFromRedux & IHomeScreen;
 
 const HomeScreen = ({ error, navigation, route }: Props) => (
   <DismissKeyboard>
-    <ScrollView
-      style={[styles.container, { marginTop: useSafeAreaInsets().top }]}
-    >
+    <ScrollView style={styles.container}>
       <StatusBar barStyle="dark-content" />
       <ErrorOverlay error={error} />
       <View style={styles.heroContainer}>
@@ -43,7 +40,7 @@ const HomeScreen = ({ error, navigation, route }: Props) => (
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Featured summits</Text>
-        <FeaturedSummits />
+        <FeaturedSummits navigation={navigation} />
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Recent check-ins</Text>
@@ -51,7 +48,7 @@ const HomeScreen = ({ error, navigation, route }: Props) => (
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Popular summits</Text>
-        <PopularSummits />
+        <PopularSummits navigation={navigation} />
       </View>
     </ScrollView>
   </DismissKeyboard>

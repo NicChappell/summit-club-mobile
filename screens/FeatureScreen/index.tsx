@@ -9,7 +9,7 @@ import { IFeatureScreen } from "./interfaces";
 
 const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   // destructure route params
-  const { name } = route.params;
+  const { id, name } = route.params;
 
   // context hooks
   const { featuresDatabase, executeSql, feature, setFeature } = useContext(
@@ -76,7 +76,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
       const sqlStatement = `
         SELECT *
         FROM features
-        WHERE name = '${name}';
+        WHERE id = '${id}';
       `;
       executeSql!(featuresDatabase, sqlStatement, [])
         .then((resultSet: any) => {
@@ -88,7 +88,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
           console.log(error);
         });
     }
-  }, [name]);
+  }, [id]);
 
   const countyState =
     properties?.county && properties?.state ? (

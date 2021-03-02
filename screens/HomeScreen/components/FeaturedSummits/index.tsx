@@ -4,15 +4,16 @@ import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
-import { Summits, IFeaturedSummits } from "../../../../services";
+import { Summits, IFeaturedSummit } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
+import { IFeaturedSummits } from "./interfaces";
 
-type Props = PropsFromRedux;
+type Props = PropsFromRedux & IFeaturedSummits;
 
-const FeaturedSummits = ({ setError }: Props) => {
+const FeaturedSummits = ({ navigation, setError }: Props) => {
   // state hooks
   const [featuredSummits, setFeaturedSummits] = useState<
-    IFeaturedSummits[] | undefined
+    IFeaturedSummit[] | undefined
   >(undefined);
 
   // effect hooks
@@ -38,7 +39,12 @@ const FeaturedSummits = ({ setError }: Props) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             key={item.id}
-            onPress={() => console.log("TODO: HANDLE PRESS")}
+            onPress={() =>
+              navigation.navigate("Feature", {
+                id: item?.id,
+                name: item?.name,
+              })
+            }
           >
             <Card
               containerStyle={styles.cardContainerStyle}

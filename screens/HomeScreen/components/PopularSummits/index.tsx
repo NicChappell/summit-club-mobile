@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { cardContainer, colors, shadow } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
-import { Summits, IPopularSummits } from "../../../../services";
+import { Summits, IPopularSummit } from "../../../../services";
 import { getFeaturePhoto } from "../../helpers";
+import { IPopularSummits } from "./interfaces";
 
-type Props = PropsFromRedux;
+type Props = PropsFromRedux & IPopularSummits;
 
-const PopularSummits = ({ setError }: Props) => {
+const PopularSummits = ({ navigation, setError }: Props) => {
   // state hooks
   const [popularSummits, setPopularSummits] = useState<
-    IPopularSummits[] | undefined
+    IPopularSummit[] | undefined
   >(undefined);
 
   // effect hooks
@@ -65,33 +66,42 @@ const PopularSummits = ({ setError }: Props) => {
         );
 
         return (
-          <Card
-            containerStyle={styles.cardContainerStyle}
+          <TouchableOpacity
             key={index}
-            wrapperStyle={styles.cardWrapperStyle}
+            onPress={() =>
+              navigation.navigate("Feature", {
+                id: summit.feature.properties?.id,
+                name: summit.feature.properties?.name,
+              })
+            }
           >
-            <Card.Image
-              source={getFeaturePhoto(summit.feature.properties?.name)}
-              style={styles.cardImageStyle}
+            <Card
+              containerStyle={styles.cardContainerStyle}
+              wrapperStyle={styles.cardWrapperStyle}
             >
-              <Text style={styles.cardImageTextStyle}>
-                {summit.feature.properties?.name}
-              </Text>
-            </Card.Image>
-            <View style={styles.cardContent}>
-              <View style={styles.featureDetails}>
-                {countyState}
-                {countryContinent}
-                {elevation}
-                {coordinate}
-              </View>
-              <View style={styles.checkInDetails}>
-                <Text style={styles.checkInCount}>
-                  {summit.checkInsLastWeek}
+              <Card.Image
+                source={getFeaturePhoto(summit.feature.properties?.name)}
+                style={styles.cardImageStyle}
+              >
+                <Text style={styles.cardImageTextStyle}>
+                  {summit.feature.properties?.name}
                 </Text>
+              </Card.Image>
+              <View style={styles.cardContent}>
+                <View style={styles.featureDetails}>
+                  {countyState}
+                  {countryContinent}
+                  {elevation}
+                  {coordinate}
+                </View>
+                <View style={styles.checkInDetails}>
+                  <Text style={styles.checkInCount}>
+                    {summit.checkInsLastWeek}
+                  </Text>
+                </View>
               </View>
-            </View>
-          </Card>
+            </Card>
+          </TouchableOpacity>
         );
       })}
     </View>

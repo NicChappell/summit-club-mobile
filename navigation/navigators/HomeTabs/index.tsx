@@ -3,7 +3,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";
-import { HomeScreen, TourScreen } from "../../../screens";
+import { TourScreen } from "../../../screens";
+import HomeStack from "../HomeStack";
 import { HomeTabsParamList } from "./types";
 
 type Props = PropsFromRedux & HomeTabsParamList;
@@ -22,7 +23,7 @@ const HomeTabs = ({ account, checkTour }: Props) => {
   return (
     <Tab.Navigator screenOptions={{ tabBarVisible: false }}>
       {tourStatus ? (
-        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Home" component={HomeStack} />
       ) : (
         <Tab.Screen name="Tour" component={TourScreen} />
       )}

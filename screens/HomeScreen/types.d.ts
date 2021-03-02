@@ -1,10 +1,10 @@
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RouteProp } from '@react-navigation/native';
-import { HomeTabsParamList } from '../../navigation/navigators/HomeTabs/types';
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
+import { HomeStackParamList } from "../../navigation/navigators/HomeStack/types";
 
-export type HomeScreenNavigationProp = BottomTabNavigationProp<
-    HomeTabsParamList,
-    'Home'
+export type HomeScreenNavigationProp = StackNavigationProp<
+  HomeStackParamList,
+  "Home"
 >;
 
-export type HomeScreenRouteProp = RouteProp<HomeTabsParamList, 'Home'>;
+export type HomeScreenRouteProp = RouteProp<HomeStackParamList, "Home">;

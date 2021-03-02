@@ -13,7 +13,7 @@ import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { Feature, GeoJsonProperties, Geometry, Point } from "geojson";
+import { Feature, GeoJsonProperties, Point } from "geojson";
 import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
 import { colors, customMapStyle } from "../../common/styles";
@@ -1755,7 +1755,6 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     //   dropFeaturesTable(featuresDatabase);
     //   createFeaturesTable(featuresDatabase, featuresCollectionRef);
     // }
-    navigation.setOptions({ title: "TODO: DYNAMIC STATE NAME" });
   }, []);
 
   useEffect(() => {
@@ -2188,7 +2187,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
               <MarkerView properties={properties} />
               <Callout
                 onPress={() =>
-                  navigation.navigate("Feature", { name: properties?.name })
+                  navigation.navigate("Feature", { id: properties?.id, name: properties?.name })
                 }
               >
                 <CalloutView properties={properties} />

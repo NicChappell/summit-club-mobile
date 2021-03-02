@@ -1815,8 +1815,8 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
     // animate map to coordinate
     mapRef.current?.animateCamera(
-      { center: coordinate, zoom: 12 },
-      { duration: 666 }
+      { center: coordinate },
+      { duration: 250 }
     );
   };
 

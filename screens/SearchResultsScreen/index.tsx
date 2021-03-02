@@ -2,14 +2,14 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
 import { colors } from "../../common/styles";
-import { ISummitsScreen } from "./interfaces";
+import { ISearchResultsScreen } from "./interfaces";
 
-const SummitsScreen = ({ navigation, route }: ISummitsScreen) => {
+const SearchResultsScreen = ({ navigation, route }: ISearchResultsScreen) => {
   return (
     <View style={styles.container}>
       <Text>This is top text.</Text>
       <View>
-        <Text>SummitsScreen</Text>
+        <Text>SearchResultsScreen</Text>
         <Button
           title="Go to Features"
           onPress={() =>
@@ -25,7 +25,7 @@ const SummitsScreen = ({ navigation, route }: ISummitsScreen) => {
   );
 };
 
-export default SummitsScreen;
+export default SearchResultsScreen;
 
 const styles = StyleSheet.create({
   container: {

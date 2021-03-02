@@ -5,3 +5,4 @@ export { default as MainTabs } from "./MainTabs";
 export { default as MapDrawer } from "./MapDrawer";
 export { default as MapStack } from "./MapStack";
 export { default as SettingsStack } from "./SettingsStack";
+export { default as SummitsStack } from "./SummitsStack";

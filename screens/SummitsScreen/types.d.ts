@@ -2,7 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { SummitsStackParamList } from '../../navigation/navigators/SummitsStack/types';
 
-export type SummitsScreenNavigationProp = BottomTabNavigationProp<
+export type SummitsScreenNavigationProp = StackNavigationProp<
 SummitsStackParamList,
     'Summits'
 >;

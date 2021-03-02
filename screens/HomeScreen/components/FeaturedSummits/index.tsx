@@ -36,9 +36,9 @@ const FeaturedSummits = ({ navigation, setError }: Props) => {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         data={featuredSummits}
         horizontal
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
-            key={item.id}
             onPress={() =>
               navigation.navigate("Feature", {
                 id: item?.id,

@@ -32,7 +32,7 @@ const PopularSummits = ({ navigation, setError }: Props) => {
 
   return (
     <View style={styles.container}>
-      {popularSummits?.map((summit, index) => {
+      {popularSummits?.map((summit) => {
         const countyState =
           summit.feature.properties?.county &&
           summit.feature.properties?.state ? (
@@ -67,7 +67,7 @@ const PopularSummits = ({ navigation, setError }: Props) => {
 
         return (
           <TouchableOpacity
-            key={index}
+            key={summit.id}
             onPress={() =>
               navigation.navigate("Feature", {
                 id: summit.feature.properties?.id,

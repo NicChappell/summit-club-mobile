@@ -8,6 +8,8 @@ export interface IFeaturedSummit {
 }
 
 export interface IPopularSummit {
+  /** Uniquely identifies the summit */
+  id: number;
   /** Number of check-ins previous 7 days */
   checkInsLastWeek: number;
   /** Number of check-ins previous 30 days */
@@ -47,6 +49,7 @@ class Summits {
     if (true) {
       return Promise.resolve([
         {
+          id: 1,
           checkInsLastWeek: 123,
           checkInsLastMonth: 234,
           checkInsLastYear: 345,
@@ -73,6 +76,7 @@ class Summits {
           },
         },
         {
+          id: 2,
           checkInsLastWeek: 123,
           checkInsLastMonth: 234,
           checkInsLastYear: 345,
@@ -99,6 +103,7 @@ class Summits {
           },
         },
         {
+          id: 3,
           checkInsLastWeek: 123,
           checkInsLastMonth: 234,
           checkInsLastYear: 345,

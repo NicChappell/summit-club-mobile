@@ -7,10 +7,14 @@ import {
   StackHeaderProps,
 } from "@react-navigation/stack";
 import { colors, stackHeader } from "../../../common/styles";
-import { FeatureScreen, HomeScreen, SearchResultsScreen } from "../../../screens";
-import { HomeStackParamList } from "./types";
+import { FeatureScreen, SummitsScreen } from "../../../screens";
+import { SummitsStackParamList } from "./types";
 
-const HomeStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
+const SummitsStackHeader = ({
+  navigation,
+  previous,
+  scene,
+}: StackHeaderProps) => {
   // destructure scene
   const {
     descriptor: { options },
@@ -38,19 +42,18 @@ const HomeStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
 };
 
 // new stack navigator
-const Stack = createStackNavigator<HomeStackParamList>();
+const Stack = createStackNavigator<SummitsStackParamList>();
 
-HomeScreen;
-const HomeStack = () => {
+const SummitsStack = () => {
   return (
     <Stack.Navigator
       headerMode="screen"
-      initialRouteName="Home"
-      screenOptions={{ header: HomeStackHeader }}
+      initialRouteName="Summits"
+      screenOptions={{ header: SummitsStackHeader }}
     >
       <Stack.Screen
-        component={HomeScreen}
-        name="Home"
+        component={SummitsScreen}
+        name="Summits"
         options={{
           title: "Summit Club",
         }}
@@ -60,17 +63,10 @@ const HomeStack = () => {
         name="Feature"
         options={({ route }) => ({ title: route.params.name })}
       />
-      <Stack.Screen
-        component={SearchResultsScreen}
-        name="SearchResults"
-        options={{
-          title: "Search Results",
-        }}
-      />
     </Stack.Navigator>
   );
 };
 
-export default HomeStack;
+export default SummitsStack;
 
 const styles = stackHeader;

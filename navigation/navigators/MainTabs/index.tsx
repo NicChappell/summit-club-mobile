@@ -6,11 +6,11 @@ import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
-import { SummitsScreen } from "../../../screens";
 import { colors } from "../../../common/styles";
-import SettingsStack from "../SettingsStack";
-import MapDrawer from "../MapDrawer";
 import HomeTabs from "../HomeTabs";
+import MapDrawer from "../MapDrawer";
+import SettingsStack from "../SettingsStack";
+import SummitsStack from "../SummitsStack";
 import { MainTabsParamList } from "./types";
 
 const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
@@ -85,7 +85,7 @@ const MainTabs = () => {
     >
       <Tab.Screen name="Home" component={HomeTabs} />
       <Tab.Screen name="Map" component={MapDrawer} />
-      <Tab.Screen name="Summits" component={SummitsScreen} />
+      <Tab.Screen name="Summits" component={SummitsStack} />
       <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>
   );

@@ -93,18 +93,12 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   cardImageTextStyle: {
+    ...shadow,
     color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 12,
     paddingHorizontal: 8,
     paddingVertical: 4,
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    shadowOffset: {
-      height: 1,
-      width: -1,
-    },
   },
   cardImageViewStyle: {
     backgroundColor: colors.black50,

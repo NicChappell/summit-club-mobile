@@ -4,7 +4,6 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { Input, Text } from "react-native-elements";
@@ -30,7 +29,7 @@ const HomeScreen = ({ error, navigation, route }: Props) => {
 
   return (
     <DismissKeyboard>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
         <StatusBar barStyle="dark-content" />
         <ErrorOverlay error={error} />
         <View style={styles.heroContainer}>
@@ -90,10 +89,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(HomeScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.white,
-    flex: 1,
-  },
   heroContainer: {
     height: 224,
     marginBottom: 56,
@@ -121,6 +116,10 @@ const styles = StyleSheet.create({
       height: 1,
       width: -1,
     },
+  },
+  scrollView: {
+    backgroundColor: colors.white,
+    flex: 1,
   },
   section: {
     marginBottom: 24,

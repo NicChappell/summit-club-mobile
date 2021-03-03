@@ -46,6 +46,7 @@ export const colors = {
   white25: "rgba(255, 255, 255, 0.25)",
 };
 
+// TODO: FIND A BETTER LOCATION FOR MAP STYLES
 export const customMapStyle = [
   {
     featureType: "administrative.land_parcel",
@@ -136,12 +137,16 @@ export const customMapStyle = [
 
 export const input = {
   backgroundColor: colors.white,
+  borderColor: colors.black25,
   borderRadius: 4,
+  borderWidth: 1,
   height: 48,
   paddingHorizontal: 8,
 };
 
 export const shadow = {
+  borderColor: "transparent",
+  borderWidth: 0,
   shadowColor: colors.black,
   shadowOpacity: 0.5,
   shadowRadius: 1,

@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, ScrollView, Text, View } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
-import { colors, input, shadow } from "../../common/styles";
+import { colors, inputContainer } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { IProfileScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IProfileScreen;
-
-const DISABLED = true;
 
 const USER = {
   firstName: "Nic",
@@ -31,81 +29,132 @@ const ProfileScreen = ({
   route,
   signOut,
 }: Props) => {
+  // state hooks
+  const [disabled, setDisabled] = useState<boolean>(true);
+
   return (
     <DismissKeyboard>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           <ErrorOverlay error={error} />
           <View style={styles.section}>
+            <Text style={styles.sectionHeader}>Contact</Text>
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Input
+                  disabled={disabled}
+                  inputContainerStyle={styles.inputContainer}
+                  inputStyle={styles.inputStyle}
+                  label="First Name"
+                  labelStyle={styles.labelStyle}
+                  value={USER.firstName}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Input
+                  disabled={disabled}
+                  inputContainerStyle={styles.inputContainer}
+                  inputStyle={styles.inputStyle}
+                  label="Last Name"
+                  labelStyle={styles.labelStyle}
+                  value={USER.lastName}
+                />
+              </View>
+            </View>
             <Input
-              disabled={DISABLED}
+              disabled={disabled}
               inputContainerStyle={styles.inputContainer}
+              inputStyle={styles.inputStyle}
               label="Address Line 1"
-              placeholder={USER.firstName}
+              labelStyle={styles.labelStyle}
+              value={USER.address1}
             />
             <Input
-              disabled={DISABLED}
+              disabled={disabled}
               inputContainerStyle={styles.inputContainer}
+              inputStyle={styles.inputStyle}
               label="Address Line 2"
-              placeholder={USER.lastName}
+              labelStyle={styles.labelStyle}
+              value={USER.address2}
             />
             <Input
-              disabled={DISABLED}
+              disabled={disabled}
               inputContainerStyle={styles.inputContainer}
+              inputStyle={styles.inputStyle}
               label="City"
-              placeholder={USER.address1}
+              labelStyle={styles.labelStyle}
+              value={USER.city}
             />
-            <Input
-              disabled={DISABLED}
-              inputContainerStyle={styles.inputContainer}
-              label="State/Province"
-              placeholder={USER.address2}
-            />
-            <Input
-              disabled={DISABLED}
-              inputContainerStyle={styles.inputContainer}
-              label="Postal Code"
-              placeholder={USER.city}
-            />
-            <Input
-              disabled={DISABLED}
-              inputContainerStyle={styles.inputContainer}
-              label="First Name"
-              placeholder={USER.province}
-            />
-            <Input
-              disabled={DISABLED}
-              inputContainerStyle={styles.inputContainer}
-              label="Last Name"
-              placeholder={USER.postalCode}
+            <View style={styles.row}>
+              <View style={{ flex: 1.75 }}>
+                <Input
+                  disabled={disabled}
+                  inputContainerStyle={styles.inputContainer}
+                  inputStyle={styles.inputStyle}
+                  label="State"
+                  labelStyle={styles.labelStyle}
+                  value={USER.province}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Input
+                  disabled={disabled}
+                  inputContainerStyle={styles.inputContainer}
+                  inputStyle={styles.inputStyle}
+                  label="Postal Code"
+                  labelStyle={styles.labelStyle}
+                  value={USER.postalCode}
+                />
+              </View>
+            </View>
+            <Button
+              buttonStyle={styles.button}
+              containerStyle={styles.buttonContainer}
+              onPress={() => setDisabled(!disabled)}
+              title="Update"
+              titleStyle={styles.buttonTitle}
             />
           </View>
+          <View style={styles.divider} />
           <View style={styles.section}>
+            <Text style={styles.sectionHeader}>Account</Text>
             <Input
-              disabled={DISABLED}
+              disabled
               inputContainerStyle={styles.inputContainer}
+              inputStyle={styles.inputStyle}
               label="Username"
+              labelStyle={styles.labelStyle}
               placeholder={USER.username}
             />
             <Input
-              disabled={DISABLED}
+              disabled
               inputContainerStyle={styles.inputContainer}
+              inputStyle={styles.inputStyle}
               label="Password"
+              labelStyle={styles.labelStyle}
               placeholder={USER.password}
+              secureTextEntry={true}
+            />
+            <Button
+              buttonStyle={styles.button}
+              containerStyle={styles.buttonContainer}
+              onPress={() => navigation.navigate("ResetPassword")}
+              title="Reset password"
+              titleStyle={styles.buttonTitle}
             />
           </View>
-          <View style={styles.section}>
+          <View style={styles.section}></View>
+          {/* <View style={styles.row}>
             <Text>ProfileScreen</Text>
             <Button
               title="Go to Reset Password"
               onPress={() => navigation.navigate("ResetPassword")}
             />
           </View>
-          <View style={styles.section}>
+          <View style={styles.row}>
             <Button title="Reset tour" onPress={resetTour} />
             <Button title="Sign out" onPress={signOut} />
-          </View>
-          <Text>This is bottom text.</Text>
+          </View> */}
         </View>
       </ScrollView>
     </DismissKeyboard>
@@ -130,22 +179,56 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(ProfileScreen);
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: colors.queenBlue,
+  },
+  buttonContainer: {
+    alignItems: "flex-start",
+    marginHorizontal: 8,
+  },
+  buttonTitle: {
+    color: colors.white,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 18,
+    paddingHorizontal: 8,
+  },
   container: {
-    alignItems: "center",
-    backgroundColor: colors.pistachio,
-    flex: 1,
-    justifyContent: "space-between",
+    padding: 16,
+  },
+  divider: {
+    borderBottomColor: colors.queenBlue25,
+    borderBottomWidth: 1,
+    paddingBottom: 40,
+    marginBottom: 40,
+    marginHorizontal: 8,
   },
   inputContainer: {
-    ...input,
+    ...inputContainer,
+  },
+  inputStyle: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 18,
+  },
+  labelStyle: {
+    color: colors.queenBlue,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  section: {},
+  sectionHeader: {
+    color: colors.queenBlue,
+    fontFamily: "NunitoSans_700Bold",
+    fontSize: 24,
+    marginBottom: 16,
+    marginHorizontal: 8,
   },
   scrollView: {
     backgroundColor: colors.white,
     flex: 1,
   },
-  section: {
-    alignSelf: "stretch",
-    marginBottom: 24,
-    padding: 8,
+  row: {
+    flexDirection: "row",
   },
 });

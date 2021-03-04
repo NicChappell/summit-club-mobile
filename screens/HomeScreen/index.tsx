@@ -10,7 +10,7 @@ import { Input, Text } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
-import { colors, input, shadow } from "../../common/styles";
+import { colors, inputContainer, shadow } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import {
   FeaturedSummits,
@@ -95,9 +95,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   heroInputContainer: {
-    ...input,
+    ...inputContainer,
     ...shadow,
-    marginBottom: -input.height,
+    marginBottom: -inputContainer.height,
   },
   heroImageBackground: {
     flex: 1,

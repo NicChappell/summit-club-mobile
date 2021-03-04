@@ -135,7 +135,7 @@ export const customMapStyle = [
   },
 ];
 
-export const input = {
+export const inputContainer = {
   backgroundColor: colors.white,
   borderColor: colors.black25,
   borderRadius: 4,

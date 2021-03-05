@@ -40,6 +40,7 @@ export const colors = {
   black75: "rgba(0, 0, 0, 0.75)",
   black50: "rgba(0, 0, 0, 0.5)",
   black25: "rgba(0, 0, 0, 0.25)",
+  black05: "rgba(0, 0, 0, 0.05)",
   white: "rgba(255, 255, 255, 1)", // #ffffff
   white75: "rgba(255, 255, 255, 0.75)",
   white50: "rgba(255, 255, 255, 0.5)",

@@ -1,6 +1,6 @@
 import { Feature } from "geojson";
 
-export const MockFeature: Feature = {
+export const MOCK_FEATURE: Feature = {
   type: "Feature",
   geometry: {
     type: "Point",

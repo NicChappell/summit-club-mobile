@@ -1,5 +1,6 @@
-import { Classification } from "../types";
+import { Feature } from "geojson";
 import { LatLng } from "react-native-maps";
+import { Classification } from "../types";
 
 export interface IAction {
   /** Action type */
@@ -52,7 +53,14 @@ export interface ISQLResult {
   state: string;
 }
 
-export interface IUser {
+export interface IUserAccount {
+  /** user's username */
+  username: string;
+  /** user's password */
+  password: string;
+}
+
+export interface IUserContact {
   /** user's first name */
   firstName?: string;
   /** user's last name */
@@ -69,8 +77,24 @@ export interface IUser {
   streetAddress2?: string;
   /** user's city */
   city?: string;
-  /** user's state */
-  state?: string;
-  /** user's postal code */
+  /** user's state/province */
+  province?: string;
+  /** user's postal code/zip code */
   postalCode?: string;
+}
+
+export interface IUserSummit {
+  /** the summit's feature profile */
+  feature: Feature;
+  /** array of check-in timestamps */
+  checkIns: string[];
+}
+
+export interface IUser {
+  /** user's account information */
+  account: IUserAccount;
+  /** user's contact information */
+  contact: IUserContact;
+  /** user's summits */
+  summits: IUserSummit[];
 }

@@ -1,26 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, ScrollView, Text, View } from "react-native";
-import { Button, Input } from "react-native-elements";
+import { Avatar, Button, Input, ListItem } from "react-native-elements";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
+import { IUser } from "../../common/interfaces";
 import { colors, inputContainer } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
+import { getInitials } from "./helpers";
 import { IProfileScreen } from "./interfaces";
 
-type Props = PropsFromRedux & IProfileScreen;
+import { MOCK_USER } from "../../data/mocks/users";
 
-const USER = {
-  firstName: "Nic",
-  lastName: "Chappell",
-  address1: "971 Homer Circle",
-  address2: "",
-  city: "Lafayette",
-  province: "CO",
-  postalCode: "80026",
-  username: "NC Hammer",
-  password: "********",
-};
+type Props = PropsFromRedux & IProfileScreen;
 
 const ProfileScreen = ({
   error,
@@ -31,112 +24,268 @@ const ProfileScreen = ({
 }: Props) => {
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [user, setUser] = useState<IUser | undefined>(undefined);
+
+  // effect hooks
+  useEffect(() => {
+    setUser(MOCK_USER);
+  }, []);
 
   return (
     <DismissKeyboard>
       <ScrollView style={styles.scrollView}>
         <View style={styles.container}>
           <ErrorOverlay error={error} />
+          <View style={styles.mrah}>
+            <Avatar
+              containerStyle={styles.avatarContainer}
+              icon={{
+                color: colors.queenBlue,
+                name: "ios-person",
+                type: "ionicon",
+              }}
+              rounded
+              size={96}
+              title={getInitials(user)}
+              titleStyle={styles.avatarTitle}
+            />
+            <ListItem
+              containerStyle={[
+                styles.listItemBorderBottom,
+                styles.listItemBorderTop,
+                styles.listItemContainer,
+              ]}
+            >
+              <ListItem.Content>
+                <ListItem.Title style={styles.listItemTitle}>
+                  Summits
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron
+                name="chevron-forward-outline"
+                type="ionicon"
+                size={24}
+                color={colors.queenBlue75}
+              />
+            </ListItem>
+            <ListItem
+              containerStyle={[
+                styles.listItemBorderBottom,
+                styles.listItemContainer,
+              ]}
+            >
+              <ListItem.Content>
+                <ListItem.Title style={styles.listItemTitle}>
+                Contact
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron
+                name="chevron-forward-outline"
+                type="ionicon"
+                size={24}
+                color={colors.queenBlue75}
+              />
+            </ListItem>
+            <ListItem
+              containerStyle={[
+                styles.listItemBorderBottom,
+                styles.listItemContainer,
+              ]}
+            >
+              <ListItem.Content>
+                <ListItem.Title style={styles.listItemTitle}>
+                Account
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron
+                name="chevron-forward-outline"
+                type="ionicon"
+                size={24}
+                color={colors.queenBlue75}
+              />
+            </ListItem>
+            <ListItem
+              containerStyle={[
+                styles.listItemBorderBottom,
+                styles.listItemContainer,
+              ]}
+            >
+              <ListItem.Content>
+                <ListItem.Title style={styles.listItemTitle}>
+                Settings
+                </ListItem.Title>
+              </ListItem.Content>
+              <ListItem.Chevron
+                name="chevron-forward-outline"
+                type="ionicon"
+                size={24}
+                color={colors.queenBlue75}
+              />
+            </ListItem>
+          </View>
           <View style={styles.section}>
             <Text style={styles.sectionHeader}>Contact</Text>
             <View style={styles.row}>
               <View style={{ flex: 1 }}>
                 <Input
                   disabled={disabled}
-                  inputContainerStyle={styles.inputContainer}
+                  inputContainerStyle={[
+                    styles.inputContainer,
+                    {
+                      backgroundColor: disabled ? colors.black05 : colors.white,
+                    },
+                  ]}
                   inputStyle={styles.inputStyle}
                   label="First Name"
                   labelStyle={styles.labelStyle}
-                  value={USER.firstName}
+                  value={user?.contact.firstName}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Input
                   disabled={disabled}
-                  inputContainerStyle={styles.inputContainer}
+                  inputContainerStyle={[
+                    styles.inputContainer,
+                    {
+                      backgroundColor: disabled ? colors.black05 : colors.white,
+                    },
+                  ]}
                   inputStyle={styles.inputStyle}
                   label="Last Name"
                   labelStyle={styles.labelStyle}
-                  value={USER.lastName}
+                  value={user?.contact.lastName}
                 />
               </View>
             </View>
             <Input
               disabled={disabled}
-              inputContainerStyle={styles.inputContainer}
+              inputContainerStyle={[
+                styles.inputContainer,
+                {
+                  backgroundColor: disabled ? colors.black05 : colors.white,
+                },
+              ]}
               inputStyle={styles.inputStyle}
               label="Address Line 1"
               labelStyle={styles.labelStyle}
-              value={USER.address1}
+              value={user?.contact.streetAddress1}
             />
             <Input
               disabled={disabled}
-              inputContainerStyle={styles.inputContainer}
+              inputContainerStyle={[
+                styles.inputContainer,
+                {
+                  backgroundColor: disabled ? colors.black05 : colors.white,
+                },
+              ]}
               inputStyle={styles.inputStyle}
               label="Address Line 2"
               labelStyle={styles.labelStyle}
-              value={USER.address2}
+              value={user?.contact.streetAddress2}
             />
             <Input
               disabled={disabled}
-              inputContainerStyle={styles.inputContainer}
+              inputContainerStyle={[
+                styles.inputContainer,
+                {
+                  backgroundColor: disabled ? colors.black05 : colors.white,
+                },
+              ]}
               inputStyle={styles.inputStyle}
               label="City"
               labelStyle={styles.labelStyle}
-              value={USER.city}
+              value={user?.contact.city}
             />
             <View style={styles.row}>
               <View style={{ flex: 1.75 }}>
                 <Input
                   disabled={disabled}
-                  inputContainerStyle={styles.inputContainer}
+                  inputContainerStyle={[
+                    styles.inputContainer,
+                    {
+                      backgroundColor: disabled ? colors.black05 : colors.white,
+                    },
+                  ]}
                   inputStyle={styles.inputStyle}
                   label="State"
                   labelStyle={styles.labelStyle}
-                  value={USER.province}
+                  value={user?.contact.province}
                 />
               </View>
               <View style={{ flex: 1 }}>
                 <Input
                   disabled={disabled}
-                  inputContainerStyle={styles.inputContainer}
+                  inputContainerStyle={[
+                    styles.inputContainer,
+                    {
+                      backgroundColor: disabled ? colors.black05 : colors.white,
+                    },
+                  ]}
                   inputStyle={styles.inputStyle}
                   label="Postal Code"
                   labelStyle={styles.labelStyle}
-                  value={USER.postalCode}
+                  value={user?.contact.postalCode}
                 />
               </View>
             </View>
-            <Button
-              buttonStyle={styles.button}
-              containerStyle={styles.buttonContainer}
-              onPress={() => setDisabled(!disabled)}
-              title="Update"
-              titleStyle={styles.buttonTitle}
-            />
+            {disabled ? (
+              <View style={styles.buttonView}>
+                <Button
+                  buttonStyle={styles.disabledButton}
+                  containerStyle={styles.buttonContainer}
+                  onPress={() => setDisabled(!disabled)}
+                  title="Update"
+                  titleStyle={styles.buttonTitle}
+                />
+              </View>
+            ) : (
+              <View style={styles.buttonView}>
+                <Button
+                  buttonStyle={styles.saveButton}
+                  containerStyle={styles.buttonContainer}
+                  onPress={() => setDisabled(!disabled)}
+                  title="Save"
+                  titleStyle={styles.buttonTitle}
+                />
+                <Button
+                  buttonStyle={styles.cancelButton}
+                  containerStyle={styles.buttonContainer}
+                  onPress={() => setDisabled(!disabled)}
+                  title="Cancel"
+                  titleStyle={styles.cancelButtonTitle}
+                  type={"outline"}
+                />
+              </View>
+            )}
           </View>
           <View style={styles.divider} />
           <View style={styles.section}>
             <Text style={styles.sectionHeader}>Account</Text>
             <Input
               disabled
-              inputContainerStyle={styles.inputContainer}
+              inputContainerStyle={[
+                styles.inputContainer,
+                { backgroundColor: colors.black05 },
+              ]}
               inputStyle={styles.inputStyle}
               label="Username"
               labelStyle={styles.labelStyle}
-              placeholder={USER.username}
+              placeholder={user?.account.username}
             />
             <Input
               disabled
-              inputContainerStyle={styles.inputContainer}
+              inputContainerStyle={[
+                styles.inputContainer,
+                { backgroundColor: colors.black05 },
+              ]}
               inputStyle={styles.inputStyle}
               label="Password"
               labelStyle={styles.labelStyle}
-              placeholder={USER.password}
+              placeholder={"••••••••"}
               secureTextEntry={true}
             />
             <Button
-              buttonStyle={styles.button}
+              buttonStyle={styles.disabledButton}
               containerStyle={styles.buttonContainer}
               onPress={() => navigation.navigate("ResetPassword")}
               title="Reset password"
@@ -179,8 +328,33 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(ProfileScreen);
 
 const styles = StyleSheet.create({
-  button: {
+  mrah: {
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  avatarContainer: {
+    backgroundColor: colors.white,
+    borderColor: colors.queenBlue,
+    borderWidth: 3,
+    marginBottom: 32,
+    marginTop: 16,
+  },
+  avatarTitle: {
+    color: colors.queenBlue,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 36,
+  },
+  disabledButton: {
     backgroundColor: colors.queenBlue,
+  },
+  saveButton: {
+    backgroundColor: colors.pistachio,
+  },
+  cancelButton: {
+    borderColor: colors.queenBlue,
+  },
+  cancelButtonTitle: {
+    color: colors.queenBlue,
   },
   buttonContainer: {
     alignItems: "flex-start",
@@ -191,6 +365,9 @@ const styles = StyleSheet.create({
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 18,
     paddingHorizontal: 8,
+  },
+  buttonView: {
+    flexDirection: "row",
   },
   container: {
     padding: 16,
@@ -206,7 +383,7 @@ const styles = StyleSheet.create({
     ...inputContainer,
   },
   inputStyle: {
-    color: colors.black,
+    color: colors.black75,
     fontFamily: "NunitoSans_400Regular",
     fontSize: 18,
   },
@@ -215,6 +392,21 @@ const styles = StyleSheet.create({
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
     marginBottom: 4,
+  },
+  listItemBorderBottom: {
+    borderBottomColor: colors.queenBlue25,
+    borderBottomWidth: 1,
+  },
+  listItemBorderTop: {
+    borderTopColor: colors.queenBlue25,
+    borderTopWidth: 1,
+  },
+  listItemContainer: {
+    width: "100%",
+  },
+  listItemTitle: {
+    color: colors.queenBlue,
+    fontSize: 18,
   },
   section: {},
   sectionHeader: {

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { ImageBackground, ScrollView, StyleSheet, View } from "react-native";
 import { Input, Text } from "react-native-elements";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { colors, inputContainer, shadow } from "../../common/styles";
@@ -30,15 +29,9 @@ const HomeScreen = ({ error, navigation, route }: Props) => {
             source={HERO_IMAGE}
             style={styles.heroImageBackground}
           >
-            <Text style={styles.heroTitle}>
-              Find your{"\n"}
-              next adventure
-            </Text>
             <Input
               inputContainerStyle={styles.heroInputContainer}
-              leftIcon={
-                <Ionicons name={"ios-search"} size={24} color={colors.black} />
-              }
+              inputStyle={styles.heroInput}
               rightIcon={
                 <InputSearchButton
                   disabled={!searchInput}
@@ -46,7 +39,7 @@ const HomeScreen = ({ error, navigation, route }: Props) => {
                 />
               }
               onChangeText={(value) => setSearchInput(value)}
-              placeholder="Search summits"
+              placeholder="Find your next adventure"
             />
           </ImageBackground>
         </View>
@@ -87,6 +80,9 @@ const styles = StyleSheet.create({
     marginBottom: 56,
     width: "100%",
   },
+  heroInput: {
+    fontFamily: "NunitoSans_400Regular",
+  },
   heroInputContainer: {
     ...inputContainer,
     ...shadow,
@@ -95,20 +91,7 @@ const styles = StyleSheet.create({
   heroImageBackground: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "space-between",
-  },
-  heroTitle: {
-    color: colors.white,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 32,
-    padding: 8,
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    shadowOffset: {
-      height: 1,
-      width: -1,
-    },
+    justifyContent: "flex-end",
   },
   scrollView: {
     backgroundColor: colors.white,

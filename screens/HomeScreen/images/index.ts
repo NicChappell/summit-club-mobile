@@ -1,1 +1,1 @@
-export const HERO_IMAGE = require("./stock-photo-sleeping-under-a-star-filled-sky-in-the-rocky-mountains-of-colorado-1508252813.jpg");
+export const HERO_IMAGE = require("./stock-photo-hiking-at-maroon-bells-summer-view-of-a-hiking-trail-in-maroon-creek-valley-at-base-of-maroon-1850838115.jpg");

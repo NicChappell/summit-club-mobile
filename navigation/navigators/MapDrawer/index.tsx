@@ -383,6 +383,7 @@ const styles = StyleSheet.create({
     borderColor: colors.queenBlue,
     borderWidth: 2,
     transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+    marginRight: -4,
   },
   title: {
     color: colors.queenBlue,

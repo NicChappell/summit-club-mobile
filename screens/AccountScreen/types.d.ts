@@ -1,10 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { SummitsStackParamList } from '../../navigation/navigators/SummitsStack/types';
+import { ProfileStackParamList } from '../../navigation/navigators/ProfileStack/types';
 
-export type SummitsScreenNavigationProp = StackNavigationProp<
-SummitsStackParamList,
-    'Summits'
+export type AccountScreenNavigationProp = StackNavigationProp<
+ProfileStackParamList,
+    'Account'
 >;
 
-export type SummitsScreenRouteProp = RouteProp<SummitsStackParamList, 'Summits'>;
+export type AccountScreenRouteProp = RouteProp<ProfileStackParamList, 'Account'>;

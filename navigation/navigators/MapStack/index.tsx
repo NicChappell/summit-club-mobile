@@ -3,7 +3,7 @@ import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { TouchableOpacity, View, Text } from "react-native";
+import { StatusBar, TouchableOpacity, View, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
@@ -39,6 +39,7 @@ const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
 
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.left}>
         <TouchableOpacity style={styles.button} onPress={handlePress}>
           <Ionicons name={iconName} size={28} color={colors.queenBlue} />

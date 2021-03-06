@@ -22,15 +22,15 @@
 - MainTabs
     - Home: HomeTabs
     - Map: MapDrawer
-    - Summits: SummitsStack
+    - Expore: ExploreStack
     - Profile: ProfileStack
 
 - ProfileStack
     - Profile: ProfileScreen
     - ResetPassword: ResetPasswordScreen
 
-- SummitsStack
-    - Summits: SummitsScreen
+- ExploreStack
+    - Explore: ExploreScreen
     - Feature: FeatureScreen
 
 - root

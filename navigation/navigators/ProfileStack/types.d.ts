@@ -1,4 +1,7 @@
 export type ProfileStackParamList = {
     Profile: undefined;
-    ResetPassword: undefined;
+    Summits: undefined;
+    Contact: undefined;
+    Account: undefined;
+    Settings: undefined;
 };

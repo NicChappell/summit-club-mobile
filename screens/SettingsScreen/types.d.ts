@@ -2,9 +2,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ProfileStackParamList } from '../../navigation/navigators/ProfileStack/types';
 
-export type SummitsScreenNavigationProp = StackNavigationProp<
+export type SettingsScreenNavigationProp = BottomTabNavigationProp<
 ProfileStackParamList,
-    'Summits'
+    'Settings'
 >;
 
-export type SummitsScreenRouteProp = RouteProp<ProfileStackParamList, 'Summits'>;
+export type SettingsScreenRouteProp = RouteProp<ProfileStackParamList, 'Settings'>;

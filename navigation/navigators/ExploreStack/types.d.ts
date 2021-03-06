@@ -1,4 +1,4 @@
 export type SummitsStackParamList = {
-  Summits: undefined;
+  Explore: undefined;
   Feature: { id: number; name: string };
 };

@@ -55,6 +55,8 @@ const ProfileScreen = ({
                 styles.listItemBorderTop,
                 styles.listItemContainer,
               ]}
+              onPress={() => navigation.navigate("Summits")}
+              underlayColor={colors.black25}
             >
               <ListItem.Content>
                 <ListItem.Title style={styles.listItemTitle}>
@@ -73,6 +75,8 @@ const ProfileScreen = ({
                 styles.listItemBorderBottom,
                 styles.listItemContainer,
               ]}
+              onPress={() => navigation.navigate("Contact")}
+              underlayColor={colors.black25}
             >
               <ListItem.Content>
                 <ListItem.Title style={styles.listItemTitle}>
@@ -91,6 +95,8 @@ const ProfileScreen = ({
                 styles.listItemBorderBottom,
                 styles.listItemContainer,
               ]}
+              onPress={() => navigation.navigate("Account")}
+              underlayColor={colors.black25}
             >
               <ListItem.Content>
                 <ListItem.Title style={styles.listItemTitle}>
@@ -109,6 +115,8 @@ const ProfileScreen = ({
                 styles.listItemBorderBottom,
                 styles.listItemContainer,
               ]}
+              onPress={() => navigation.navigate("Settings")}
+              underlayColor={colors.black25}
             >
               <ListItem.Content>
                 <ListItem.Title style={styles.listItemTitle}>

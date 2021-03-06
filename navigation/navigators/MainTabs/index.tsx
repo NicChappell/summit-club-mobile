@@ -10,7 +10,7 @@ import { colors } from "../../../common/styles";
 import HomeTabs from "../HomeTabs";
 import MapDrawer from "../MapDrawer";
 import ProfileStack from "../ProfileStack";
-import SummitsStack from "../SummitsStack";
+import ExploreStack from "../ExploreStack";
 import { MainTabsParamList } from "./types";
 
 const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
@@ -72,7 +72,7 @@ const MainTabs = () => {
             iconName = focused ? "ios-home" : "ios-home-outline";
           } else if (route.name === "Map") {
             iconName = focused ? "ios-map" : "ios-map-outline";
-          } else if (route.name === "Summits") {
+          } else if (route.name === "Explore") {
             iconName = focused ? "ios-flag" : "ios-flag-outline";
           } else if (route.name === "Profile") {
             iconName = focused ? "ios-person" : "ios-person-outline";
@@ -85,7 +85,7 @@ const MainTabs = () => {
     >
       <Tab.Screen name="Home" component={HomeTabs} />
       <Tab.Screen name="Map" component={MapDrawer} />
-      <Tab.Screen name="Summits" component={SummitsStack} />
+      <Tab.Screen name="Explore" component={ExploreStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );

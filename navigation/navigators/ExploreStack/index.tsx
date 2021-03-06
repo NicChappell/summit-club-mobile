@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { StatusBar, TouchableOpacity, View, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
@@ -7,7 +7,7 @@ import {
   StackHeaderProps,
 } from "@react-navigation/stack";
 import { colors, stackHeader } from "../../../common/styles";
-import { FeatureScreen, SummitsScreen } from "../../../screens";
+import { FeatureScreen, ExploreScreen } from "../../../screens";
 import { SummitsStackParamList } from "./types";
 
 const SummitsStackHeader = ({
@@ -22,6 +22,7 @@ const SummitsStackHeader = ({
 
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.left}>
         {previous && (
           <TouchableOpacity style={styles.button} onPress={navigation.goBack}>
@@ -48,14 +49,14 @@ const SummitsStack = () => {
   return (
     <Stack.Navigator
       headerMode="screen"
-      initialRouteName="Summits"
+      initialRouteName="Explore"
       screenOptions={{ header: SummitsStackHeader }}
     >
       <Stack.Screen
-        component={SummitsScreen}
-        name="Summits"
+        component={ExploreScreen}
+        name="Explore"
         options={{
-          title: "Summit Club",
+          title: "Explore Summits",
         }}
       />
       <Stack.Screen

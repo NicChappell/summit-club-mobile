@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { StatusBar, TouchableOpacity, View, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
@@ -7,7 +7,13 @@ import {
   StackHeaderProps,
 } from "@react-navigation/stack";
 import { colors, stackHeader } from "../../../common/styles";
-import { ProfileScreen, ResetPasswordScreen } from "../../../screens";
+import {
+  AccountScreen,
+  ContactScreen,
+  ProfileScreen,
+  SettingsScreen,
+  SummitsScreen,
+} from "../../../screens";
 import { ProfileStackParamList } from "./types";
 
 const ProfileStackHeader = ({
@@ -22,6 +28,7 @@ const ProfileStackHeader = ({
 
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.left}>
         {previous && (
           <TouchableOpacity style={styles.button} onPress={navigation.goBack}>
@@ -59,10 +66,31 @@ const ProfileStack = () => {
         }}
       />
       <Stack.Screen
-        component={ResetPasswordScreen}
-        name="ResetPassword"
+        component={SummitsScreen}
+        name="Summits"
         options={{
-          title: "Reset Password",
+          title: "Summits",
+        }}
+      />
+      <Stack.Screen
+        component={ContactScreen}
+        name="Contact"
+        options={{
+          title: "Contact",
+        }}
+      />
+      <Stack.Screen
+        component={AccountScreen}
+        name="Account"
+        options={{
+          title: "Account",
+        }}
+      />
+      <Stack.Screen
+        component={SettingsScreen}
+        name="Settings"
+        options={{
+          title: "Settings",
         }}
       />
     </Stack.Navigator>

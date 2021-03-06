@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { ActivityIndicator, StatusBar, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import MapView, {
   Callout,
   Camera,
@@ -13,7 +13,7 @@ import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { Feature, GeoJsonProperties, Point } from "geojson";
+import { Feature, FeatureCollection, GeoJsonProperties, Point } from "geojson";
 import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
 import { colors, customMapStyle } from "../../common/styles";
@@ -32,9 +32,9 @@ import * as helpers from "@turf/helpers";
 // ACTUALLY -- USE THIS TO CREATE NEW FIRESTORE COLLECTION, PULL FROM THERE FIRST
 // THEN ADD TO DATABASE WHEN APP IS FIRST USED
 // THEN QUERY FROM DATABASE TO STORE IN STATE OR SOMETHING
-const COLORADO_COUNTIES = {
+const COLORADO_COUNTIES: FeatureCollection = {
   type: "FeatureCollection",
-  properties: { kind: "state", state: "CO" },
+  // properties: { kind: "state", state: "CO" },
   features: [
     {
       type: "Feature",
@@ -1814,10 +1814,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     } = event;
 
     // animate map to coordinate
-    mapRef.current?.animateCamera(
-      { center: coordinate },
-      { duration: 250 }
-    );
+    mapRef.current?.animateCamera({ center: coordinate }, { duration: 250 });
   };
 
   const handleRegionChange = (region: Region) => {
@@ -2143,7 +2140,6 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
       <ErrorOverlay error={error} />
       {isWaiting && (
         <ActivityIndicator
@@ -2187,7 +2183,10 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
               <MarkerView properties={properties} />
               <Callout
                 onPress={() =>
-                  navigation.navigate("Feature", { id: properties?.id, name: properties?.name })
+                  navigation.navigate("Feature", {
+                    id: properties?.id,
+                    name: properties?.name,
+                  })
                 }
               >
                 <CalloutView properties={properties} />

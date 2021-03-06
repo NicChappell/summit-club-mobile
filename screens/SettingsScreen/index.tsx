@@ -2,14 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { IResetPasswordScreen } from './interfaces';
+import { ISettingsScreen } from './interfaces';
 
-const ResetPasswordScreen = ({ navigation, route }: IResetPasswordScreen) => {
+const SettingsScreen = ({ navigation, route }: ISettingsScreen) => {
     return (
         <SafeAreaView style={styles.container}>
             <Text>This is top text.</Text>
             <View>
-                <Text>ResetPasswordScreen</Text>
+                <Text>SettingsScreen</Text>
                 <Button
                     title="Go back to Profile"
                     onPress={() => navigation.goBack()}
@@ -20,7 +20,7 @@ const ResetPasswordScreen = ({ navigation, route }: IResetPasswordScreen) => {
     );
 };
 
-export default ResetPasswordScreen;
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
     container: {

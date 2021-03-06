@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  ImageBackground,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from "react-native";
+import { ImageBackground, ScrollView, StyleSheet, View } from "react-native";
 import { Input, Text } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
@@ -30,7 +24,6 @@ const HomeScreen = ({ error, navigation, route }: Props) => {
   return (
     <DismissKeyboard>
       <ScrollView style={styles.scrollView}>
-        <StatusBar barStyle="dark-content" />
         <ErrorOverlay error={error} />
         <View style={styles.heroContainer}>
           <ImageBackground

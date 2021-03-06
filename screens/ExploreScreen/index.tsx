@@ -1,22 +1,31 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
+import { Button, Text } from "react-native-elements";
 import { colors } from "../../common/styles";
-import { ISummitsScreen } from "./interfaces";
+import { IExploreScreen } from "./interfaces";
 
-const SummitsScreen = ({ navigation, route }: ISummitsScreen) => {
+const ExploreScreen = ({ navigation, route }: IExploreScreen) => {
   return (
     <View style={styles.container}>
       <Text>This is top text.</Text>
       <View>
-        <Text>SummitsScreen</Text>
+        <Text>ExploreScreen</Text>
+        <Button
+          title="Go to Features"
+          onPress={() =>
+            navigation.navigate("Feature", {
+              id: 1,
+              name: 'mrah',
+            })
+          }
+        />
       </View>
       <Text>This is bottom text.</Text>
     </View>
   );
 };
 
-export default SummitsScreen;
+export default ExploreScreen;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { StatusBar, TouchableOpacity, View, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
@@ -7,7 +7,11 @@ import {
   StackHeaderProps,
 } from "@react-navigation/stack";
 import { colors, stackHeader } from "../../../common/styles";
-import { FeatureScreen, HomeScreen, SearchResultsScreen } from "../../../screens";
+import {
+  FeatureScreen,
+  HomeScreen,
+  SearchResultsScreen,
+} from "../../../screens";
 import { HomeStackParamList } from "./types";
 
 const HomeStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
@@ -18,6 +22,7 @@ const HomeStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
 
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.left}>
         {previous && (
           <TouchableOpacity style={styles.button} onPress={navigation.goBack}>

@@ -1,8 +1,8 @@
-import { SummitsScreenNavigationProp, SummitsScreenRouteProp } from "./types";
+import { AccountScreenNavigationProp, AccountScreenRouteProp } from "./types";
 
-export interface ISummitsScreen {
+export interface IAccountScreen {
   /** TODO */
-  navigation: SummitsScreenNavigationProp;
+  navigation: AccountScreenNavigationProp;
   /** TODO */
-  route: SummitsScreenRouteProp;
+  route: AccountScreenRouteProp;
 }

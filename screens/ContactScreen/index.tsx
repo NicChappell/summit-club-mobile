@@ -2,21 +2,21 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-elements";
 import { colors } from "../../common/styles";
-import { ISummitsScreen } from "./interfaces";
+import { IContactScreen } from "./interfaces";
 
-const SummitsScreen = ({ navigation, route }: ISummitsScreen) => {
+const ContactScreen = ({ navigation, route }: IContactScreen) => {
   return (
     <View style={styles.container}>
       <Text>This is top text.</Text>
       <View>
-        <Text>SummitsScreen</Text>
+        <Text>ContactScreen</Text>
       </View>
       <Text>This is bottom text.</Text>
     </View>
   );
 };
 
-export default SummitsScreen;
+export default ContactScreen;
 
 const styles = StyleSheet.create({
   container: {

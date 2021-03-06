@@ -64,7 +64,7 @@ const ProfileScreen = ({
               <ListItem.Chevron
                 name="chevron-forward-outline"
                 type="ionicon"
-                size={24}
+                size={20}
                 color={colors.queenBlue75}
               />
             </ListItem>
@@ -76,13 +76,13 @@ const ProfileScreen = ({
             >
               <ListItem.Content>
                 <ListItem.Title style={styles.listItemTitle}>
-                Contact
+                  Contact
                 </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron
                 name="chevron-forward-outline"
                 type="ionicon"
-                size={24}
+                size={20}
                 color={colors.queenBlue75}
               />
             </ListItem>
@@ -94,13 +94,13 @@ const ProfileScreen = ({
             >
               <ListItem.Content>
                 <ListItem.Title style={styles.listItemTitle}>
-                Account
+                  Account
                 </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron
                 name="chevron-forward-outline"
                 type="ionicon"
-                size={24}
+                size={20}
                 color={colors.queenBlue75}
               />
             </ListItem>
@@ -112,13 +112,13 @@ const ProfileScreen = ({
             >
               <ListItem.Content>
                 <ListItem.Title style={styles.listItemTitle}>
-                Settings
+                  Settings
                 </ListItem.Title>
               </ListItem.Content>
               <ListItem.Chevron
                 name="chevron-forward-outline"
                 type="ionicon"
-                size={24}
+                size={20}
                 color={colors.queenBlue75}
               />
             </ListItem>
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   avatarContainer: {
     backgroundColor: colors.white,
     borderColor: colors.queenBlue,
-    borderWidth: 3,
+    borderWidth: 2,
     marginBottom: 32,
     marginTop: 16,
   },
@@ -406,6 +406,7 @@ const styles = StyleSheet.create({
   },
   listItemTitle: {
     color: colors.queenBlue,
+    fontFamily: "NunitoSans_600SemiBold",
     fontSize: 18,
   },
   section: {},

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import { Button, Slider, Text } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -160,6 +160,7 @@ const featureFilters = () => {};
 const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
   // state hooks
   const [sliderValue, setSliderValue] = useState<number>(TEMP_MAX_VALUE);
+  const [isEnabled, setIsEnabled] = useState<boolean>(false);
 
   const handleApplyPress = () => {
     // TODO: APPLY FILTERs
@@ -179,6 +180,8 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
 
   const handleSliderChange = (value: number) => setSliderValue(value);
 
+  const handleSwitchChange = () => setIsEnabled(!isEnabled);
+
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
       <View style={styles.top}>
@@ -188,12 +191,12 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
         >
           <Ionicons name={"ios-close"} size={28} color={colors.queenBlue} />
         </TouchableOpacity>
-        <Text style={styles.title}>
-          Max Elevation:{" "}
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Max Elevation</Text>
           <Text style={styles.maxElevation}>
             {sliderValue.toLocaleString()}
           </Text>
-        </Text>
+        </View>
         <Slider
           maximumTrackTintColor={colors.black25}
           maximumValue={TEMP_MAX_VALUE}
@@ -208,7 +211,9 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           }}
           value={sliderValue}
         />
-        <Text style={styles.title}>Elevation Tier</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Elevation Tier</Text>
+        </View>
         <TouchableOpacity
           style={styles.filterOption}
           onPress={handleElevationTierPress}
@@ -275,6 +280,17 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
             size={28}
           />
         </TouchableOpacity>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Counties Overlay</Text>
+          <Switch
+            trackColor={{ false: colors.black05, true: colors.pistachio75 }}
+            thumbColor={colors.white}
+            ios_backgroundColor={colors.black05}
+            onValueChange={handleSwitchChange}
+            style={styles.switch}
+            value={isEnabled}
+          />
+        </View>
       </View>
       <View style={styles.bottom}>
         <Button
@@ -347,7 +363,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 8,
   },
   label: {
     color: colors.queenBlue,
@@ -357,16 +373,27 @@ const styles = StyleSheet.create({
   maxElevation: {
     color: colors.queenBlue,
     fontFamily: "NotoSansJP_500Medium",
+    fontSize: 20,
   },
   slider: {
     alignSelf: "stretch",
     marginHorizontal: 16,
-    marginVertical: 4,
+  },
+  switch: {
+    borderColor: colors.queenBlue,
+    borderWidth: 2,
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
   title: {
     color: colors.queenBlue,
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 20,
+  },
+  titleContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 12,
     paddingHorizontal: 16,
     paddingVertical: 4,
   },

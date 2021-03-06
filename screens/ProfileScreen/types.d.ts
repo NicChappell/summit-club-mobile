@@ -1,10 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { SettingsStackParamList } from '../../navigation/navigators/SettingsStack/types';
+import { ProfileStackParamList } from '../../navigation/navigators/ProfileStack/types';
 
 export type ProfileScreenNavigationProp = BottomTabNavigationProp<
-SettingsStackParamList,
+ProfileStackParamList,
     'Profile'
 >;
 
-export type ProfileScreenRouteProp = RouteProp<SettingsStackParamList, 'Profile'>;
+export type ProfileScreenRouteProp = RouteProp<ProfileStackParamList, 'Profile'>;

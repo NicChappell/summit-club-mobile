@@ -1,10 +1,10 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { SettingsStackParamList } from '../../navigation/navigators/SettingsStack/types';
+import { ProfileStackParamList } from '../../navigation/navigators/ProfileStack/types';
 
 export type ResetPasswordScreenNavigationProp = BottomTabNavigationProp<
-SettingsStackParamList,
+ProfileStackParamList,
     'ResetPassword'
 >;
 
-export type ResetPasswordScreenRouteProp = RouteProp<SettingsStackParamList, 'ResetPassword'>;
+export type ResetPasswordScreenRouteProp = RouteProp<ProfileStackParamList, 'ResetPassword'>;

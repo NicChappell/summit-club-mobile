@@ -23,9 +23,9 @@
     - Home: HomeTabs
     - Map: MapDrawer
     - Summits: SummitsStack
-    - Settings: SettingsStack
+    - Profile: ProfileStack
 
-- SettingsStack
+- ProfileStack
     - Profile: ProfileScreen
     - ResetPassword: ResetPasswordScreen
 

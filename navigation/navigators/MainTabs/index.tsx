@@ -9,7 +9,7 @@ import {
 import { colors } from "../../../common/styles";
 import HomeTabs from "../HomeTabs";
 import MapDrawer from "../MapDrawer";
-import SettingsStack from "../SettingsStack";
+import ProfileStack from "../ProfileStack";
 import SummitsStack from "../SummitsStack";
 import { MainTabsParamList } from "./types";
 
@@ -74,7 +74,7 @@ const MainTabs = () => {
             iconName = focused ? "ios-map" : "ios-map-outline";
           } else if (route.name === "Summits") {
             iconName = focused ? "ios-flag" : "ios-flag-outline";
-          } else if (route.name === "Settings") {
+          } else if (route.name === "Profile") {
             iconName = focused ? "ios-person" : "ios-person-outline";
           }
 
@@ -86,7 +86,7 @@ const MainTabs = () => {
       <Tab.Screen name="Home" component={HomeTabs} />
       <Tab.Screen name="Map" component={MapDrawer} />
       <Tab.Screen name="Summits" component={SummitsStack} />
-      <Tab.Screen name="Settings" component={SettingsStack} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 };

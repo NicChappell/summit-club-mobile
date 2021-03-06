@@ -1,4 +1,4 @@
-export type SettingsStackParamList = {
+export type ProfileStackParamList = {
     Profile: undefined;
     ResetPassword: undefined;
 };

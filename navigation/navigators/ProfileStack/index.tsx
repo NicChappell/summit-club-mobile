@@ -8,9 +8,9 @@ import {
 } from "@react-navigation/stack";
 import { colors, stackHeader } from "../../../common/styles";
 import { ProfileScreen, ResetPasswordScreen } from "../../../screens";
-import { SettingsStackParamList } from "./types";
+import { ProfileStackParamList } from "./types";
 
-const SettingsStackHeader = ({
+const ProfileStackHeader = ({
   navigation,
   previous,
   scene,
@@ -42,14 +42,14 @@ const SettingsStackHeader = ({
 };
 
 // new stack navigator
-const Stack = createStackNavigator<SettingsStackParamList>();
+const Stack = createStackNavigator<ProfileStackParamList>();
 
-const SettingsStack = () => {
+const ProfileStack = () => {
   return (
     <Stack.Navigator
       headerMode="screen"
       initialRouteName="Profile"
-      screenOptions={{ header: SettingsStackHeader }}
+      screenOptions={{ header: ProfileStackHeader }}
     >
       <Stack.Screen
         component={ProfileScreen}
@@ -69,6 +69,6 @@ const SettingsStack = () => {
   );
 };
 
-export default SettingsStack;
+export default ProfileStack;
 
 const styles = stackHeader;

@@ -69,7 +69,7 @@ const ProfileStack = () => {
         component={SummitsScreen}
         name="Summits"
         options={{
-          title: "Summits",
+          title: "My Summits",
         }}
       />
       <Stack.Screen

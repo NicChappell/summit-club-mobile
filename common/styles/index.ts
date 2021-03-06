@@ -169,7 +169,7 @@ export const stackHeader = StyleSheet.create({
   center: {
     color: colors.queenBlue,
     flex: 0,
-    fontFamily: "NotoSansJP_500Medium",
+    fontFamily: "NotoSansJP_700Bold",
     fontSize: 16,
     maxWidth: 240,
   },

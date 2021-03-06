@@ -27,7 +27,7 @@ const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
       // get route icon
       const icon = options.tabBarIcon!({
         focused: isFocused,
-        color: isFocused ? colors.zomp : colors.queenBlue,
+        color: colors.queenBlue,
         size: 24,
       });
 

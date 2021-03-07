@@ -9,11 +9,18 @@ import MapView, {
   Polygon,
   Region,
 } from "react-native-maps";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { Feature, FeatureCollection, GeoJsonProperties, Point } from "geojson";
+import {
+  Feature,
+  FeatureCollection,
+  Geometry,
+  GeoJsonProperties,
+  Point,
+} from "geojson";
 import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
 import { colors, customMapStyle } from "../../common/styles";
@@ -27,6 +34,36 @@ import { IMapScreen } from "./interfaces";
 
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import * as helpers from "@turf/helpers";
+
+// TODO: MOVE THIS FILTER OBJECT AND INTERFACE SOMEWHERE ELSE
+interface IFeatureFilters {
+  /** maximum elevation allowed */
+  maxElevation: number;
+  /** include features above 14,000' */
+  above14: boolean;
+  /** include features between 13,000' and 14,000' */
+  between13and14: boolean;
+  /** include features between 12,000' and 13,000' */
+  between12and13: boolean;
+  /** include features between 11,000' and 12,000' */
+  between11and12: boolean;
+  /** include features between 10,000' and 11,000' */
+  between10and11: boolean;
+  /** include features below 10,000' */
+  below10: boolean;
+}
+
+const TEMP_MAX_VALUE = 14439;
+
+const featureFilters: IFeatureFilters = {
+  maxElevation: TEMP_MAX_VALUE,
+  above14: true,
+  between13and14: true,
+  between12and13: false,
+  between11and12: false,
+  between10and11: false,
+  below10: false,
+};
 
 // TODO: ADD THIS TO A NEW DATABASE TABLE, AND NEW QUERY TO EXTRACT THE NECESSARY COORDINATES
 // ACTUALLY -- USE THIS TO CREATE NEW FIRESTORE COLLECTION, PULL FROM THERE FIRST
@@ -1734,6 +1771,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   const [mapBoundaries, setMapBoundaries] = useState<IMapBoundaries>(
     initialMapBoundaries
   );
+  const [mapMarkers, setMapMarkers] = useState<
+    Feature<Geometry, GeoJsonProperties>[]
+  >([]);
 
   // context hooks
   const {
@@ -1766,11 +1806,27 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
   // effect hooks
   useEffect(() => {
-    console.log(route);
     currentCounty
       ? navigation.setOptions({ title: `${currentCounty} County` })
       : navigation.setOptions({ title: "Search Summits" });
   }, [currentCounty]);
+
+  useEffect(() => {
+    // return early if features is undefined
+    if (!features) return;
+
+    // sort features in descending order
+    const sortedFeatures = features?.sort(
+      (featureA, featureB) =>
+        featureB.properties?.feet - featureA.properties?.feet
+    );
+
+    // slice (up to) the first 64 features
+    const slicedFeatures = sortedFeatures!.slice(0, 64);
+
+    // update component state
+    setMapMarkers(slicedFeatures!);
+  }, [features]);
 
   useEffect(() => {
     // return early if mapBoundaries is undefined
@@ -1783,17 +1839,20 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     // return early if mapRef is null
     if (!mapRef) return;
 
-    // set current camera config
-    mapRef.current
-      ?.getCamera()
+    // get current camera config
+    mapRef
+      .current!.getCamera()
       .then((cameraConfig) => {
+        // set current camera config
         setCameraConfig(cameraConfig);
 
-        queryFeaturesTable(featuresDatabase!, mapBoundaries).then(
-          (features) => {
-            // update state
-            setFeatures(features);
-          }
+        // TEST COUNT
+        countFeatureRows(featuresDatabase!);
+
+        // initial database query
+        queryFeaturesTable(featuresDatabase!, mapBoundaries).then((features) =>
+          // update MapContext
+          setFeatures(features)
         );
       })
       .catch((error) => {
@@ -1802,9 +1861,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       });
 
     // set current map boundaries
-    mapRef.current?.getMapBoundaries().then((mapBoundaries) => {
-      setMapBoundaries(mapBoundaries);
-    });
+    mapRef.current
+      ?.getMapBoundaries()
+      .then((mapBoundaries) => setMapBoundaries(mapBoundaries));
   }, [mapRef]);
 
   const handleMarkerPress = (event: MapEvent) => {
@@ -1817,9 +1876,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     mapRef.current?.animateCamera({ center: coordinate }, { duration: 250 });
   };
 
-  const handleRegionChange = (region: Region) => {
-    // TODO: DO SOMETHING WITH THIS HANDLER?
-  };
+  const handleRegionChange = (region: Region) => {};
 
   const handleRegionChangeComplete = async (region: Region) => {
     // ------------------------------------------------------
@@ -1828,6 +1885,10 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     // - NEED TO ACTUALLY PUT THOUGHT INTO HELPER FUNCTIONS -
     // ------------------------------------------------------
     // ------------------------------------------------------
+    // ------------------------------------------------------
+
+    // ------------------------------------------------------
+    // ----------------- GET CURRENT COUNTY -----------------
     // ------------------------------------------------------
 
     // use region to format point array
@@ -1858,7 +1919,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     setCurrentCounty(currentCounty?.properties?.name);
 
     // ------------------------------------------------------
-    // ------------------------------------------------------
+    // ---- FILTER FEATURES FROM STATE USING MAP BOUNDS -----
     // ------------------------------------------------------
 
     // get previous camera config
@@ -1876,16 +1937,117 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     // update state
     setMapBoundaries(currentMapBoundaries!);
 
-    // query database
-    const newFeatures = await queryFeaturesTable(
-      featuresDatabase!,
-      currentMapBoundaries
+    // filter features within current map bounds
+    const filteredFeatures = features?.filter((feature) => {
+      // destructure map boundaries
+      const northEast = currentMapBoundaries!.northEast;
+      const southWest = currentMapBoundaries!.southWest;
+
+      // destructure northeast coordinates
+      const neLat = northEast?.latitude;
+      const neLng = northEast?.longitude;
+
+      // destructure southwest coordinates
+      const swLat = southWest?.latitude;
+      const swLng = southWest?.longitude;
+
+      // destructure feature
+      const geometry = feature.geometry;
+
+      // destructure geometry
+      const coordinates = (geometry as Point).coordinates;
+      const latitude = coordinates[1];
+      const longitude = coordinates[0];
+
+      // return feature if within current map bounds
+      return (
+        latitude < neLat &&
+        longitude < neLng &&
+        latitude > swLat &&
+        longitude > swLng
+      );
+    });
+    console.log(filteredFeatures?.slice(0, 64).length);
+
+    // sort filtered features in descending order
+    const sortedFeatures = filteredFeatures?.sort(
+      (featureA, featureB) =>
+        featureB.properties?.feet - featureA.properties?.feet
     );
 
-    // compare zoom levels and requery database
-    prevCameraConfig?.zoom === currentCameraConfig?.zoom
-      ? mergeResultSet(newFeatures!)
-      : resetResultSet(newFeatures!);
+    // slice (up to) the first 64 features
+    const slicedFeatures = sortedFeatures!.slice(0, 64);
+
+    // update component state
+    setMapMarkers(slicedFeatures!);
+
+    // // requery database if zoom levels have changed
+    // if (prevCameraConfig?.zoom !== currentCameraConfig?.zoom) {
+    //   // query database
+    //   const newFeatures = await queryFeaturesTable(
+    //     featuresDatabase!,
+    //     currentMapBoundaries
+    //   );
+
+    //   // mergeResultSet(newFeatures!);
+    //   resetResultSet(newFeatures!);
+    // }
+  };
+
+  const countFeatureRows = async (featuresDatabase: SQLite.WebSQLDatabase) => {
+    try {
+      // start activity indicator
+      setIsWaiting(true);
+
+      // construct sql statement
+      const sqlStatement = `
+        SELECT COUNT(*)
+        FROM features
+        WHERE (
+          feet < ${featureFilters.maxElevation}
+        ) AND (
+          ${featureFilters.above14 ? "(feet >= 14000)" : ""}
+          ${
+            featureFilters.between13and14
+              ? "OR (feet >= 13000 AND feet < 14000)"
+              : ""
+          }
+          ${
+            featureFilters.between12and13
+              ? "OR (feet >= 12000 AND feet < 13000)"
+              : ""
+          }
+          ${
+            featureFilters.between11and12
+              ? "OR (feet >= 11000 AND feet < 12000)"
+              : ""
+          }
+          ${
+            featureFilters.between10and11
+              ? "OR (feet >= 10000 AND feet < 11000)"
+              : ""
+          }
+          ${featureFilters.below10 ? "OR (feet < 10000)" : ""}
+        );
+      `;
+      const resultSet: any = await executeSql!(
+        featuresDatabase,
+        sqlStatement,
+        []
+      );
+      console.log("resultSet.rows._array: ", resultSet.rows._array);
+
+      // stop activity indicator
+      setIsWaiting(false);
+    } catch (error) {
+      // stop activity indicator
+      setIsWaiting(false);
+
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
   };
 
   const createFeaturesTable = async (
@@ -1944,7 +2106,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       const documents: firebase.firestore.DocumentData[] = [];
       snapshot.forEach((doc) => {
         // retrieve all document fields as an object
-        // NOTE: data object is equivalent to a GeoJSON Feature object
+        // NOTE: data object is equivalent to a Feature object
         const document = doc.data();
 
         // add document id to feature properties
@@ -2024,30 +2186,70 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       const swLat = southWest?.latitude;
       const swLng = southWest?.longitude;
 
+      // get list of already returned feature ids
+      const existingFeatureIds = features?.map(
+        (feature) => feature.properties?.id
+      );
+
+      // construct sql statement
       const sqlStatement = `
         SELECT *
         FROM features
-        WHERE latitude < ${neLat}
-        AND longitude < ${neLng}
-        AND latitude > ${swLat}
-        AND longitude > ${swLng}
-        ORDER BY meters DESC
-        LIMIT 64;
+        WHERE (
+          latitude < ${neLat}
+          AND longitude < ${neLng}
+          AND latitude > ${swLat}
+          AND longitude > ${swLng}
+        ) AND (
+          feet <= ${featureFilters.maxElevation}
+        ) AND (
+          ${featureFilters.above14 ? "(feet >= 14000)" : ""}
+          ${
+            featureFilters.between13and14
+              ? "OR (feet >= 13000 AND feet < 14000)"
+              : ""
+          }
+          ${
+            featureFilters.between12and13
+              ? "OR (feet >= 12000 AND feet < 13000)"
+              : ""
+          }
+          ${
+            featureFilters.between11and12
+              ? "OR (feet >= 11000 AND feet < 12000)"
+              : ""
+          }
+          ${
+            featureFilters.between10and11
+              ? "OR (feet >= 10000 AND feet < 11000)"
+              : ""
+          }
+          ${featureFilters.below10 ? "OR (feet < 10000)" : ""}
+        ) AND (
+          id NOT IN (${existingFeatureIds ? existingFeatureIds : ""})
+        )
+        ORDER BY meters DESC;
+        -- LIMIT 480
+        -- OFFSET 0
       `;
       const resultSet: any = await executeSql!(
         featuresDatabase,
         sqlStatement,
         []
       );
-      console.log("resultSet.rows._array.length", resultSet.rows._array.length);
+      console.log(
+        "resultSet.rows._array.length: ",
+        resultSet.rows._array.length
+      );
 
-      // convert resultSet into GeoJSON FeatureCollection
-      const { features } = processResultSet(resultSet);
+      // convert resultSet into FeatureCollection
+      const featureCollection = processResultSet(resultSet);
 
       // stop activity indicator
       setIsWaiting(false);
 
-      return features;
+      // return Features from FeatureCollection
+      return featureCollection.features;
     } catch (error) {
       // stop activity indicator
       setIsWaiting(false);
@@ -2059,7 +2261,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     }
   };
 
-  const mergeResultSet = (newFeatures: Feature<Point, GeoJsonProperties>[]) => {
+  const mergeResultSet = (
+    newFeatures: Feature<Geometry, GeoJsonProperties>[]
+  ) => {
     // get previous features
     const prevFeatures = features;
 
@@ -2080,7 +2284,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     setFeatures(mergedFeatures);
   };
 
-  const resetResultSet = (newFeatures: Feature<Point, GeoJsonProperties>[]) => {
+  const resetResultSet = (
+    newFeatures: Feature<Geometry, GeoJsonProperties>[]
+  ) => {
     // update state
     setFeatures(newFeatures);
   };
@@ -2144,8 +2350,16 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       {isWaiting && (
         <ActivityIndicator
           color={colors.black25}
-          size="large"
+          size="small"
           style={styles.activityIndicator}
+        />
+      )}
+      {!isWaiting && (
+        <Ionicons
+          color={colors.black25}
+          name={"add-outline"}
+          size={24}
+          style={styles.translatingIndicator}
         />
       )}
       <MapView
@@ -2159,7 +2373,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         ref={mapRef}
         style={styles.map}
       >
-        {features?.map((feature) => {
+        {mapMarkers?.map((feature) => {
           // destructure feature
           const geometry = feature.geometry;
           const properties = feature.properties;
@@ -2197,9 +2411,9 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         {polygonCoordiantes.map((coordiantes, index) => (
           <Polygon
             coordinates={coordiantes}
-            fillColor={colors.queenBlue25}
+            fillColor={"transparent"}
             key={index}
-            strokeColor={colors.queenBlue75}
+            strokeColor={colors.queenBlue50}
           ></Polygon>
         ))}
       </MapView>
@@ -2234,5 +2448,9 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
+  },
+  translatingIndicator: {
+    position: "absolute",
+    zIndex: 1,
   },
 });

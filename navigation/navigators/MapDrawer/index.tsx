@@ -194,7 +194,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Max Elevation</Text>
           <Text style={styles.maxElevation}>
-            {sliderValue.toLocaleString()}
+            {sliderValue.toLocaleString()}'
           </Text>
         </View>
         <Slider
@@ -218,7 +218,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           style={styles.filterOption}
           onPress={handleElevationTierPress}
         >
-          <Text style={styles.label}>Above 14,000</Text>
+          <Text style={styles.label}>Above 14,000'</Text>
           <Ionicons
             color={colors.queenBlue}
             name={"ios-checkbox-outline"}
@@ -229,7 +229,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           style={styles.filterOption}
           onPress={handleElevationTierPress}
         >
-          <Text style={styles.label}>13,000 - 13,999</Text>
+          <Text style={styles.label}>13,000' - 14,000'</Text>
           <Ionicons
             color={colors.queenBlue}
             name={"ios-checkbox-outline"}
@@ -240,7 +240,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           style={styles.filterOption}
           onPress={handleElevationTierPress}
         >
-          <Text style={styles.label}>12,000 - 12,999</Text>
+          <Text style={styles.label}>12,000' - 13,000'</Text>
           <Ionicons
             color={colors.queenBlue}
             name={"ios-square-outline"}
@@ -251,7 +251,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           style={styles.filterOption}
           onPress={handleElevationTierPress}
         >
-          <Text style={styles.label}>11,000 - 11,999</Text>
+          <Text style={styles.label}>11,000' - 12,000'</Text>
           <Ionicons
             color={colors.queenBlue}
             name={"ios-square-outline"}
@@ -262,7 +262,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           style={styles.filterOption}
           onPress={handleElevationTierPress}
         >
-          <Text style={styles.label}>10,000 - 10,999</Text>
+          <Text style={styles.label}>10,000' - 11,000'</Text>
           <Ionicons
             color={colors.queenBlue}
             name={"ios-square-outline"}
@@ -273,7 +273,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
           style={styles.filterOption}
           onPress={handleElevationTierPress}
         >
-          <Text style={styles.label}>Below 10,000</Text>
+          <Text style={styles.label}>Below 10,000'</Text>
           <Ionicons
             color={colors.queenBlue}
             name={"ios-square-outline"}

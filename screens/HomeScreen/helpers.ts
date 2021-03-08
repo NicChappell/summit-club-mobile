@@ -1,4 +1,4 @@
-import { featurePhotos } from "./images/features";
+import { featurePhotos } from "../../common/images/features";
 
 export const getFeaturePhoto = (name: string) => {
   // find target feature in collection of selected features with photos

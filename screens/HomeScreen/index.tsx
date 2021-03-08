@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ImageBackground, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Input, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
@@ -11,7 +11,6 @@ import {
   PopularSummits,
   RecentCheckIns,
 } from "./components";
-import { HERO_IMAGE } from "./images";
 import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
@@ -24,25 +23,19 @@ const HomeScreen = ({ error, navigation, route }: Props) => {
     <DismissKeyboard>
       <ScrollView style={styles.scrollView}>
         <ErrorOverlay error={error} />
-        <View style={styles.heroContainer}>
-          <ImageBackground
-            source={HERO_IMAGE}
-            style={styles.heroImageBackground}
-          >
-            <Input
-              inputContainerStyle={styles.heroInputContainer}
-              inputStyle={styles.heroInput}
-              rightIcon={
-                <InputSearchButton
-                  disabled={!searchInput}
-                  navigation={navigation}
-                />
-              }
-              onChangeText={(value) => setSearchInput(value)}
-              placeholder="Find your next adventure"
+        <Input
+          containerStyle={styles.searchContainer}
+          inputContainerStyle={styles.inputContainer}
+          inputStyle={styles.input}
+          rightIcon={
+            <InputSearchButton
+              disabled={!searchInput}
+              navigation={navigation}
             />
-          </ImageBackground>
-        </View>
+          }
+          onChangeText={(value) => setSearchInput(value)}
+          placeholder="Find your next adventure"
+        />
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Featured summits</Text>
           <FeaturedSummits navigation={navigation} />
@@ -75,18 +68,16 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(HomeScreen);
 
 const styles = StyleSheet.create({
-  heroContainer: {
-    height: 224,
-    marginBottom: 56,
-    width: "100%",
+  searchContainer: {
+    alignItems: "center",
+    height: 96,
+    justifyContent: "flex-end",
   },
-  heroInput: {
+  input: {
     fontFamily: "NunitoSans_400Regular",
   },
-  heroInputContainer: {
+  inputContainer: {
     ...inputContainer,
-    ...shadow,
-    marginBottom: -inputContainer.height,
   },
   heroImageBackground: {
     flex: 1,

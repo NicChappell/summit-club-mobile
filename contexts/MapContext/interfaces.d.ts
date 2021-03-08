@@ -6,12 +6,6 @@ import { Feature, Geometry, GeoJsonProperties, Point } from "geojson";
 export interface IMapContext {
   /** SQLite Database */
   featuresDatabase?: SQLite.WebSQLDatabase;
-  /** Asynchronous SQLite transaction wrapper function */
-  executeSql?: (
-    featuresDatabase: SQLite.WebSQLDatabase,
-    sqlStatement: string,
-    args: string[] = []
-  ) => Promise;
   /** Selected feature data */
   feature?: Feature<Geometry, GeoJsonProperties>;
   /** Currently available features */

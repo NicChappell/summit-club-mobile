@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
+import { executeSql } from "../../common/helpers";
 import { colors, customMapStyle } from "../../common/styles";
 import { MapContext } from "../../contexts";
 import { processFeature } from "./helpers";
@@ -12,9 +13,7 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   const { id, name } = route.params;
 
   // context hooks
-  const { featuresDatabase, executeSql, feature, setFeature } = useContext(
-    MapContext
-  );
+  const { featuresDatabase, feature, setFeature } = useContext(MapContext);
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);

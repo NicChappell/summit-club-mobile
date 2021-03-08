@@ -14,7 +14,6 @@ import {
 import { colors, stackHeader } from "../../../common/styles";
 import { MapContext } from "../../../contexts";
 import { FeatureScreen, MapScreen } from "../../../screens";
-import { executeSql } from "./helpers";
 import { MapStackParamList } from "./types";
 
 const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
@@ -71,7 +70,6 @@ const MapStack = () => {
   // context provider value
   const value = {
     featuresDatabase,
-    executeSql,
     feature,
     features,
     featuresCollectionRef,

@@ -4,7 +4,6 @@ import { IMapContext } from "./interfaces";
 // set default values
 const MapContext = React.createContext<IMapContext>({
   featuresDatabase: undefined,
-  executeSql: () => {},
   feature: undefined,
   features: undefined,
   featuresCollectionRef: undefined,

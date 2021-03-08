@@ -1,5 +1,17 @@
 import { Region } from "react-native-maps";
 import { IMapBoundaries } from "../../common/interfaces";
+import { IFeatureFilters } from "./interfaces";
+import { MAX_VALUE } from "./STUB";
+
+export const featureFilters: IFeatureFilters = {
+  maxElevation: MAX_VALUE,
+  above14: true,
+  between13and14: true,
+  between12and13: false,
+  between11and12: false,
+  between10and11: false,
+  below10: false,
+};
 
 // The initial map boundaries to query against
 export const initialMapBoundaries: IMapBoundaries = {

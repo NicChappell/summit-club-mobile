@@ -20,13 +20,9 @@ import { IFeatureFilters } from "./interfaces";
 export const countFeatureRows = async (
   featuresDatabase: SQLite.WebSQLDatabase,
   featureFilters: IFeatureFilters,
-  setError: (error: IError) => void,
-  setIsWaiting: React.Dispatch<React.SetStateAction<boolean>>
+  setError: (error: IError) => void
 ) => {
   try {
-    // start activity indicator
-    setIsWaiting(true);
-
     // construct sql statement
     const sqlStatement = `
       SELECT COUNT(*)
@@ -64,13 +60,7 @@ export const countFeatureRows = async (
       []
     );
     console.log("resultSet.rows._array: ", resultSet.rows._array);
-
-    // stop activity indicator
-    setIsWaiting(false);
   } catch (error) {
-    // stop activity indicator
-    setIsWaiting(false);
-
     setError({
       code: error.code,
       message: error.message,
@@ -243,8 +233,7 @@ export const populateFeaturesTable = async (
   featuresDatabase: SQLite.WebSQLDatabase,
   featureFilters: IFeatureFilters,
   mapBoundaries: IMapBoundaries,
-  setError: (error: IError) => void,
-  setIsWaiting: React.Dispatch<React.SetStateAction<boolean>>
+  setError: (error: IError) => void
 ) => {
   try {
     // retrieve data from firestore
@@ -312,8 +301,7 @@ export const populateFeaturesTable = async (
       featuresDatabase,
       featureFilters,
       mapBoundaries,
-      setError,
-      setIsWaiting
+      setError
     );
   } catch (error) {
     setError({
@@ -357,13 +345,9 @@ export const queryFeaturesTable = async (
   featuresDatabase: SQLite.WebSQLDatabase,
   featureFilters: IFeatureFilters,
   mapBoundaries: IMapBoundaries = initialMapBoundaries,
-  setError: (error: IError) => void,
-  setIsWaiting: React.Dispatch<React.SetStateAction<boolean>>
+  setError: (error: IError) => void
 ) => {
   try {
-    // start activity indicator
-    setIsWaiting(true);
-
     // destructure map boundaries
     const northEast = mapBoundaries.northEast;
     const southWest = mapBoundaries.southWest;
@@ -432,15 +416,9 @@ export const queryFeaturesTable = async (
     // convert resultSet into FeatureCollection
     const featureCollection = processResultSet(resultSet);
 
-    // stop activity indicator
-    setIsWaiting(false);
-
     // return Features from FeatureCollection
     return featureCollection.features;
   } catch (error) {
-    // stop activity indicator
-    setIsWaiting(false);
-
     setError({
       code: error.code,
       message: error.message,

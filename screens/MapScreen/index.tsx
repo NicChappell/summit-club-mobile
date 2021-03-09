@@ -76,19 +76,10 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   const mapRef = useRef<MapView>(null);
 
   // effect hooks
-  useEffect(() => {
-    // if (featuresDatabase && featuresCollectionRef) {
-    //   dropFeaturesTable(featuresDatabase);
-    //   createFeaturesTable(featuresDatabase, featuresCollectionRef);
-    // }
-  }, []);
-
-  useEffect(() => {
-    // return early if cameraConfig is undefined
-    if (!cameraConfig) return;
-
-    // TODO: ANYTIME THE CAMERA CHANGES, UPDATE THE HEADER BASED ON WHAT COUNTY THE CENTER POINT IS
-  }, [cameraConfig]);
+  // useEffect(() => {
+  //   // return early if cameraConfig is undefined
+  //   if (!cameraConfig) return;
+  // }, [cameraConfig]);
 
   // effect hooks
   useEffect(() => {
@@ -114,16 +105,17 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     setMapMarkers(slicedFeatures!);
   }, [features]);
 
-  useEffect(() => {
-    // return early if mapBoundaries is undefined
-    if (!mapBoundaries) return;
-
-    // TODO: DO SOMETHING WITH THE MAP BOUNDARIES?
-  }, [mapBoundaries]);
+  // useEffect(() => {
+  //   // return early if mapBoundaries is undefined
+  //   if (!mapBoundaries) return;
+  // }, [mapBoundaries]);
 
   useEffect(() => {
     // return early if mapRef is null
     if (!mapRef) return;
+
+    // start activity indicator
+    setIsWaiting(true);
 
     // get current camera config
     mapRef
@@ -133,29 +125,32 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         setCameraConfig(cameraConfig);
 
         // TEST COUNT
-        countFeatureRows(
-          featuresDatabase!,
-          featureFilters,
-          setError,
-          setIsWaiting
-        );
+        countFeatureRows(featuresDatabase!, featureFilters, setError);
 
         // initial database query
-        queryFeaturesTable(
+        return queryFeaturesTable(
           features,
           featuresDatabase!,
           featureFilters,
           mapBoundaries,
-          setError,
-          setIsWaiting
-        ).then((features) =>
-          // update MapContext
-          setFeatures(features)
+          setError
         );
       })
+      .then((features) => {
+        // update MapContext
+        setFeatures(features);
+
+        // stop activity indicator
+        setIsWaiting(false);
+      })
       .catch((error) => {
-        // TODO: HANDLE THIS ERroR
-        console.log(error);
+        // stop activity indicator
+        setIsWaiting(false);
+
+        setError({
+          code: error.code,
+          message: error.message,
+        });
       });
 
     // get counties overlay polygon coordinates
@@ -180,6 +175,18 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     // animate map to coordinate
     mapRef.current?.animateCamera({ center: coordinate }, { duration: 250 });
   };
+
+  // useEffect(() => {
+  //   if (featuresDatabase && featuresCollectionRef) {
+  //     dropFeaturesTable(featuresDatabase, setError);
+  //     createFeaturesTable(
+  //       featuresDatabase,
+  //       featuresCollectionRef,
+  //       populateFeaturesTable,
+  //       setError
+  //     );
+  //   }
+  // }, []);
 
   const handleRegionChange = (region: Region) => {};
 

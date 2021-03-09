@@ -1,5 +1,16 @@
 import { StyleSheet } from "react-native";
 
+export const borderReset = {
+  borderBottomColor: "transparent",
+  borderBottomWidth: 0,
+  borderLeftColor: "transparent",
+  borderLeftWidth: 0,
+  borderRightColor: "transparent",
+  borderRightWidth: 0,
+  borderTopColor: "transparent",
+  borderTopWidth: 0,
+};
+
 export const cardContainer = {
   borderRadius: 4,
   borderWidth: 0,
@@ -136,13 +147,50 @@ export const customMapStyle = [
   },
 ];
 
+export const inputBorder = {
+  borderBottomColor: colors.black25,
+  borderBottomWidth: 1,
+  borderLeftColor: colors.black25,
+  borderLeftWidth: 1,
+  borderRightColor: colors.black25,
+  borderRightWidth: 1,
+  borderTopColor: colors.black25,
+  borderTopWidth: 1,
+};
+
 export const inputContainer = {
+  alignSelf: "stretch",
   backgroundColor: colors.white,
-  borderColor: colors.black25,
   borderRadius: 4,
-  borderWidth: 1,
-  height: 48,
   paddingHorizontal: 8,
+};
+
+export const inputIconContainer = {
+  alignItems: "center",
+  height: 48,
+  justifyContent: "center",
+  width: 40,
+};
+
+export const inputStyle = {
+  color: colors.black75,
+  fontFamily: "NunitoSans_400Regular",
+  fontSize: 18,
+  height: 48,
+};
+
+export const marginReset = {
+  marginBottom: 0,
+  marginLeft: 0,
+  marginRight: 0,
+  marginTop: 0,
+};
+
+export const paddingReset = {
+  paddingBottom: 0,
+  paddingLeft: 0,
+  paddingRight: 0,
+  paddingTop: 0,
 };
 
 export const shadow = {

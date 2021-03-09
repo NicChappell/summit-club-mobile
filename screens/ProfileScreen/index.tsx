@@ -4,7 +4,12 @@ import { Avatar, ListItem } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay } from "../../common/components";
 import { IUser } from "../../common/interfaces";
-import { colors, inputContainer } from "../../common/styles";
+import {
+  colors,
+  inputBorder,
+  inputContainer,
+  inputStyle,
+} from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { getInitials } from "./helpers";
 import { IProfileScreen } from "./interfaces";
@@ -186,12 +191,11 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   inputContainer: {
+    ...inputBorder,
     ...inputContainer,
   },
   inputStyle: {
-    color: colors.black75,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 18,
+    ...inputStyle,
   },
   labelStyle: {
     color: colors.queenBlue,

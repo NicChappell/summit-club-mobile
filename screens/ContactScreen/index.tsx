@@ -3,7 +3,12 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
-import { colors, inputContainer } from "../../common/styles";
+import {
+  colors,
+  inputBorder,
+  inputContainer,
+  inputStyle,
+} from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { IContactScreen } from "./interfaces";
 
@@ -214,12 +219,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   inputContainer: {
+    ...inputBorder,
     ...inputContainer,
   },
   inputStyle: {
-    color: colors.black75,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 18,
+    ...inputStyle,
   },
   labelStyle: {
     color: colors.queenBlue,

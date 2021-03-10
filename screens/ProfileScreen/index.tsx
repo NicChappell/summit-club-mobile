@@ -14,6 +14,24 @@ import { RootState } from "../../redux/reducers";
 import { getInitials } from "./helpers";
 import { IProfileScreen } from "./interfaces";
 
+// Profile Screen:
+//     - Summits Link --> Summits Screen
+//         - FlatList of Summits
+//     - Contact Link --> Contact Info Screen
+//         - Contact info form
+//     - Account Link --> Account Info Screen
+//         - username and password form
+//         - sign out
+//         - reset password link --> ResetPasswordScreen
+//             - reset password form
+//         - delete account form
+//             - type the username in form field to enable button to delete acct
+//     - Settings Link -> Settings Screen
+//         - share my check-ins publicly
+//         - future things like connecting to twitter and other accounts
+//         - dark mode / light mode
+//         - reset tour
+
 import { MOCK_USER } from "../../data/mocks/users";
 
 type Props = PropsFromRedux & IProfileScreen;
@@ -54,7 +72,7 @@ const ProfileScreen = ({ error, navigation, route }: Props) => {
         >
           <ListItem.Content>
             <ListItem.Title style={styles.listItemTitle}>
-              Summits
+              My Summits
             </ListItem.Title>
           </ListItem.Content>
           <ListItem.Chevron

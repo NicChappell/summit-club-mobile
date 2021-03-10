@@ -3,54 +3,11 @@ import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { StatusBar, TouchableOpacity, View, Text } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
-import {
-  createStackNavigator,
-  StackHeaderProps,
-} from "@react-navigation/stack";
-import { colors, stackHeader } from "../../../common/styles";
+import { createStackNavigator } from "@react-navigation/stack";
 import { MapContext } from "../../../contexts";
+import { StackNavigatorHeader } from "../../../common/components";
 import { FeatureScreen, MapScreen } from "../../../screens";
 import { MapStackParamList } from "./types";
-
-const MapStackHeader = ({ navigation, previous, scene }: StackHeaderProps) => {
-  // navigation hook
-  const drawerNavigation = useNavigation();
-
-  // destructure scene
-  const {
-    descriptor: { options },
-  } = scene;
-
-  let handlePress;
-  let iconName;
-
-  if (previous) {
-    handlePress = navigation.goBack;
-    iconName = "ios-chevron-back";
-  } else {
-    handlePress = () => navigation.dispatch(DrawerActions.openDrawer());
-    iconName = "ios-options";
-  }
-
-  return (
-    <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.left}>
-        <TouchableOpacity style={styles.button} onPress={handlePress}>
-          <Ionicons name={iconName} size={28} color={colors.queenBlue} />
-        </TouchableOpacity>
-      </View>
-      <Text numberOfLines={1} style={styles.center}>
-        {options.title}
-      </Text>
-      <View style={styles.right}>{/* intentionally empty */}</View>
-    </View>
-  );
-};
 
 // new stack navigator
 const Stack = createStackNavigator<MapStackParamList>();
@@ -82,7 +39,7 @@ const MapStack = () => {
       <Stack.Navigator
         headerMode="screen"
         initialRouteName="Map"
-        screenOptions={{ header: MapStackHeader }}
+        screenOptions={{ header: StackNavigatorHeader }}
       >
         <Stack.Screen
           component={MapScreen}
@@ -102,5 +59,3 @@ const MapStack = () => {
 };
 
 export default MapStack;
-
-const styles = stackHeader;

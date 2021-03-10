@@ -1,13 +1,17 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-elements";
+import { HorizontalDetailsCard } from "../../common/components";
 import { colors } from "../../common/styles";
 import { IExploreScreen } from "./interfaces";
 
 const ExploreScreen = ({ navigation, route }: IExploreScreen) => {
   return (
     <View style={styles.container}>
-      <Text>This is top text.</Text>
+      <HorizontalDetailsCard />
+      <HorizontalDetailsCard />
+      <HorizontalDetailsCard />
+      <HorizontalDetailsCard />
       <View>
         <Text>ExploreScreen</Text>
         <Button
@@ -20,7 +24,6 @@ const ExploreScreen = ({ navigation, route }: IExploreScreen) => {
           }
         />
       </View>
-      <Text>This is bottom text.</Text>
     </View>
   );
 };

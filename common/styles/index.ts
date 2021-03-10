@@ -159,16 +159,13 @@ export const inputBorder = {
 };
 
 export const inputContainer = {
-  alignSelf: "stretch",
   backgroundColor: colors.white,
   borderRadius: 4,
   paddingHorizontal: 8,
 };
 
 export const inputIconContainer = {
-  alignItems: "center",
-  height: 48,
-  justifyContent: "center",
+  height: 40,
   width: 40,
 };
 
@@ -208,35 +205,3 @@ export const shadow = {
 export const sizes = {
   icon: 24,
 };
-
-export const stackHeader = StyleSheet.create({
-  button: {
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  center: {
-    color: colors.queenBlue,
-    flex: 0,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 16,
-    maxWidth: 240,
-  },
-  container: {
-    alignItems: "center",
-    backgroundColor: colors.white,
-    borderBottomColor: colors.queenBlue50,
-    borderBottomWidth: 1,
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    height: 64,
-    justifyContent: "space-between",
-  },
-  left: {
-    flex: 1,
-    paddingLeft: 12,
-  },
-  right: {
-    flex: 1,
-    paddingRight: 12,
-  },
-});

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
@@ -32,7 +32,10 @@ import { IHorizontalDetailsCard } from "./interfaces";
 //   },
 // };
 
-const HorizontalDetailsCard = ({ feature }: IHorizontalDetailsCard) => {
+const HorizontalDetailsCard = ({
+  feature,
+  navigation,
+}: IHorizontalDetailsCard) => {
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
   const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
@@ -103,45 +106,54 @@ const HorizontalDetailsCard = ({ feature }: IHorizontalDetailsCard) => {
   );
 
   return (
-    <Card
-      containerStyle={styles.cardContainerStyle}
-      wrapperStyle={styles.cardWrapperStyle}
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Feature", {
+          id: feature.properties?.id,
+          name: feature.properties?.name,
+        })
+      }
     >
-      {Math.random() > 0.5 ? (
-        // show feature image if available
-        <Image
-          source={{ uri: "https://picsum.photos/512" }}
-          style={styles.featureImage}
-        />
-      ) : (
-        // otherwise show mapview
-        <View pointerEvents={"none"} style={styles.mapContainer}>
-          <MapView
-            customMapStyle={customMapStyle}
-            provider={"google"}
-            region={region}
-            style={styles.map}
-          >
-            {coordinate && (
-              <Circle
-                center={coordinate}
-                fillColor={colors.queenBlue50}
-                radius={500}
-                strokeColor={colors.queenBlue}
-                strokeWidth={2.5}
-              />
-            )}
-          </MapView>
+      <Card
+        containerStyle={styles.cardContainerStyle}
+        wrapperStyle={styles.cardWrapperStyle}
+      >
+        {Math.random() > 0.5 ? (
+          // show feature image if available
+          <Image
+            source={{ uri: "https://picsum.photos/512" }}
+            style={styles.featureImage}
+          />
+        ) : (
+          // otherwise show mapview
+          <View pointerEvents={"none"} style={styles.mapContainer}>
+            <MapView
+              customMapStyle={customMapStyle}
+              provider={"google"}
+              region={region}
+              style={styles.map}
+            >
+              {coordinate && (
+                <Circle
+                  center={coordinate}
+                  fillColor={colors.queenBlue50}
+                  radius={500}
+                  strokeColor={colors.queenBlue}
+                  strokeWidth={2.5}
+                />
+              )}
+            </MapView>
+          </View>
+        )}
+        <View style={styles.featureDetails}>
+          {featureName}
+          {featureCountyState}
+          {featureCountryContinent}
+          {featureElevation}
+          {featureCoordinate}
         </View>
-      )}
-      <View style={styles.featureDetails}>
-        {featureName}
-        {featureCountyState}
-        {featureCountryContinent}
-        {featureElevation}
-        {featureCoordinate}
-      </View>
-    </Card>
+      </Card>
+    </TouchableOpacity>
   );
 };
 

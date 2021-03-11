@@ -45,7 +45,7 @@ const ExploreScreen = ({ navigation, route }: IExploreScreen) => {
       <FlatList
         data={filteredFeatures}
         renderItem={({ item: feature }) => (
-          <HorizontalDetailsCard feature={feature} />
+          <HorizontalDetailsCard feature={feature} navigation={navigation} />
         )}
         keyExtractor={(feature) => feature.properties?.id.toString()}
         style={{ alignSelf: "stretch" }}

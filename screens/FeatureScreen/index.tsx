@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
@@ -20,9 +20,6 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   const [latLng, setLatLng] = useState<string | undefined>(undefined);
   const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
   const [region, setRegion] = useState<Region | undefined>(undefined);
-
-  // ref hooks
-  const mapRef: React.MutableRefObject<MapView | null> = useRef(null);
 
   // effect hooks
   useEffect(() => {
@@ -118,7 +115,6 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
           <MapView
             customMapStyle={customMapStyle}
             provider={"google"}
-            ref={mapRef}
             region={region}
             style={styles.map}
           >

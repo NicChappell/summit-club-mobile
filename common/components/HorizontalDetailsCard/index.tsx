@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
-import { cardContainer, colors, shadow } from "../../../common/styles";
-import { MOCK_FEATURE } from "../../../data/mocks/features";
+import MapView, { Circle, LatLng, Region } from "react-native-maps";
+import { GeoJsonProperties, Point } from "geojson";
+import {
+  cardContainer,
+  colors,
+  customMapStyle,
+  shadow,
+} from "../../../common/styles";
+import { IHorizontalDetailsCard } from "./interfaces";
 
-// {
+// const MOCK_FEATURE: Feature = {
 //   type: "Feature",
 //   geometry: {
 //     type: "Point",
@@ -25,39 +32,74 @@ import { MOCK_FEATURE } from "../../../data/mocks/features";
 //   },
 // };
 
-const HorizontalDetailsCard = () => {
-  const coordinate = (
+const HorizontalDetailsCard = ({ feature }: IHorizontalDetailsCard) => {
+  // state hooks
+  const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
+  const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
+  const [region, setRegion] = useState<Region | undefined>(undefined);
+
+  // effect hooks
+  useEffect(() => {
+    if (feature) {
+      // destructure feature
+      const { geometry, properties } = feature;
+
+      // destructure geometry
+      const coordinates = (geometry as Point).coordinates;
+
+      // format marker coordinate
+      const coordinate: LatLng = {
+        latitude: coordinates[1],
+        longitude: coordinates[0],
+      };
+
+      // format map region
+      const region: Region = {
+        latitude: coordinates[1],
+        longitude: coordinates[0],
+        latitudeDelta: 0.075,
+        longitudeDelta: 0.075,
+      };
+
+      // update state
+      setCoordinate(coordinate);
+      setProperties(properties);
+      setRegion(region);
+    }
+  }, [feature]);
+
+  const featureCoordinate = (
     <Text style={styles.featureCoordinate}>
-      {`${MOCK_FEATURE.properties?.latitude}° ${
-        MOCK_FEATURE.properties?.latitude >= 0 ? "N" : "S"
-      }, ${MOCK_FEATURE.properties?.longitude}° ${
-        MOCK_FEATURE.properties?.longitude >= 0 ? "E" : "W"
+      {`${feature.properties?.latitude}° ${
+        feature.properties?.latitude >= 0 ? "N" : "S"
+      }, ${feature.properties?.longitude}° ${
+        feature.properties?.longitude >= 0 ? "E" : "W"
       }`}
     </Text>
   );
 
-  const countyState =
-    MOCK_FEATURE.properties?.county && MOCK_FEATURE.properties?.state ? (
+  const featureCountyState =
+    feature.properties?.county && feature.properties?.state ? (
       <Text style={styles.featureHierarchy}>
-        {`${MOCK_FEATURE.properties?.county} County, ${MOCK_FEATURE.properties?.state}`}
+        {`${feature.properties?.county} County, ${feature.properties?.state}`}
       </Text>
     ) : null;
 
-  const countryContinent =
-    MOCK_FEATURE.properties?.country && MOCK_FEATURE.properties?.continent ? (
+  const featureCountryContinent =
+    feature.properties?.country && feature.properties?.continent ? (
       <Text style={styles.featureHierarchy}>
-        {`${MOCK_FEATURE.properties?.country}, ${MOCK_FEATURE.properties?.continent}`}
+        {`${feature.properties?.country}, ${feature.properties?.continent}`}
       </Text>
     ) : null;
 
-  const elevation = (
+  const featureElevation = (
     <Text style={styles.featureElevation}>
-      {`${MOCK_FEATURE.properties?.feet.toLocaleString()} ft / ${MOCK_FEATURE.properties?.meters.toLocaleString()} m`}
+      {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
     </Text>
   );
 
   const featureName = (
-    <Text style={styles.featureName}>{MOCK_FEATURE.properties?.name}</Text>
+    <Text style={styles.featureName}>{feature.properties?.name}</Text>
   );
 
   return (
@@ -65,16 +107,39 @@ const HorizontalDetailsCard = () => {
       containerStyle={styles.cardContainerStyle}
       wrapperStyle={styles.cardWrapperStyle}
     >
-      <Image
-        source={{ uri: "https://picsum.photos/512" }}
-        style={styles.featureImage}
-      />
+      {Math.random() > 0.5 ? (
+        // show feature image if available
+        <Image
+          source={{ uri: "https://picsum.photos/512" }}
+          style={styles.featureImage}
+        />
+      ) : (
+        // otherwise show mapview
+        <View pointerEvents={"none"} style={styles.mapContainer}>
+          <MapView
+            customMapStyle={customMapStyle}
+            provider={"google"}
+            region={region}
+            style={styles.map}
+          >
+            {coordinate && (
+              <Circle
+                center={coordinate}
+                fillColor={colors.queenBlue50}
+                radius={500}
+                strokeColor={colors.queenBlue}
+                strokeWidth={2.5}
+              />
+            )}
+          </MapView>
+        </View>
+      )}
       <View style={styles.featureDetails}>
         {featureName}
-        {countyState}
-        {countryContinent}
-        {elevation}
-        {coordinate}
+        {featureCountyState}
+        {featureCountryContinent}
+        {featureElevation}
+        {featureCoordinate}
       </View>
     </Card>
   );
@@ -127,5 +192,14 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
     fontSize: 12,
+  },
+  mapContainer: {
+    height: 128,
+    width: 128,
+  },
+  map: {
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
+    flex: 1,
   },
 });

@@ -7,10 +7,11 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import { colors } from "../../../common/styles";
+import ExploreDrawer from "../ExploreDrawer";
+import ExploreStack from "../ExploreStack";
 import HomeTabs from "../HomeTabs";
 import MapDrawer from "../MapDrawer";
 import ProfileStack from "../ProfileStack";
-import ExploreStack from "../ExploreStack";
 import { MainTabsParamList } from "./types";
 
 const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
@@ -85,7 +86,7 @@ const MainTabs = () => {
     >
       <Tab.Screen name="Home" component={HomeTabs} />
       <Tab.Screen name="Map" component={MapDrawer} />
-      <Tab.Screen name="Explore" component={ExploreStack} />
+      <Tab.Screen name="Explore" component={ExploreDrawer} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );

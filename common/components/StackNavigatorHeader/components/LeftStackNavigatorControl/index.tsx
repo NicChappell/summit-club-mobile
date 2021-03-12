@@ -25,6 +25,15 @@ const LeftStackNavigatorControl = ({
 
   // return custom navigation control for select screens
   switch (name) {
+    case "Explore":
+      return (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+        >
+          <Ionicons name={"ios-filter-outline"} size={28} color={colors.queenBlue} />
+        </TouchableOpacity>
+      );
     case "Map":
       return (
         <TouchableOpacity

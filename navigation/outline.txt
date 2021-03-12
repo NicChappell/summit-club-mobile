@@ -3,6 +3,13 @@
     - SignUp: SignUpScreen
     - ForgotPassword: ForgotPasswordScreen
 
+- ExploreDrawer
+    - ExploreStack: ExploreStack
+
+- ExploreStack
+    - Explore: ExploreScreen
+    - Feature: FeatureScreen
+
 - HomeStack
     - Home: HomeScreen
     - Feature: FeatureScreen
@@ -22,16 +29,12 @@
 - MainTabs
     - Home: HomeTabs
     - Map: MapDrawer
-    - Expore: ExploreStack
+    - Expore: ExploreDrawer
     - Profile: ProfileStack
 
 - ProfileStack
     - Profile: ProfileScreen
     - ResetPassword: ResetPasswordScreen
-
-- ExploreStack
-    - Explore: ExploreScreen
-    - Feature: FeatureScreen
 
 - root
     authToken

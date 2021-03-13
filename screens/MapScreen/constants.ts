@@ -29,6 +29,6 @@ export const initialMapBoundaries: IMapBoundaries = {
 export const initialRegion: Region = {
   latitude: 39.331557, // center latitude coordinate
   longitude: -105.5704935, // center longitude coordinate
-  latitudeDelta: 7.5,
-  longitudeDelta: 7.5,
+  latitudeDelta: 8.75, // north-to-south distance (measured in degrees) to display on the map
+  longitudeDelta: 7.5, // east-to-west distance (measured in degrees) to display on the map
 };

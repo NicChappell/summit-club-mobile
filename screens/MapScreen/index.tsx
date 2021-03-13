@@ -16,7 +16,7 @@ import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
 import { colors, customMapStyle } from "../../common/styles";
 import { IMapBoundaries } from "../../common/interfaces";
-import { MapContext } from "../../contexts";
+import { FeaturesContext } from "../../contexts";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
 import {
@@ -64,13 +64,14 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 
   // context hooks
   const {
-    featuresDatabase,
     feature,
     features,
+    featuresDatabase,
+    featureFilters,
     featuresCollectionRef,
     setFeature,
     setFeatures,
-  } = useContext(MapContext);
+  } = useContext(FeaturesContext);
 
   // ref hooks
   const mapRef = useRef<MapView>(null);

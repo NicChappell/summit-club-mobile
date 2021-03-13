@@ -1,186 +1,75 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import { Button, Slider, Text } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import * as SQLite from "expo-sqlite";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
 } from "@react-navigation/drawer";
 import { colors } from "../../../common/styles";
+import { FeaturesContext } from "../../../contexts/";
+import { ElevationTier, IMapFilter } from "../../../contexts/interfaces";
 import MapStack from "../MapStack";
-
-const TEMP_MAX_VALUE = 14439;
-
-const features = [
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [0, 0],
-    },
-    properties: {
-      id: 1,
-      feet: 14439,
-      meters: 0,
-      latitude: 0,
-      longitude: 0,
-      name: "",
-      class: "",
-      county: "",
-      state: "",
-      country: "",
-      continent: "",
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [0, 0],
-    },
-    properties: {
-      id: 1,
-      feet: 14000,
-      meters: 0,
-      latitude: 0,
-      longitude: 0,
-      name: "",
-      class: "",
-      county: "",
-      state: "",
-      country: "",
-      continent: "",
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [0, 0],
-    },
-    properties: {
-      id: 1,
-      feet: 13000,
-      meters: 0,
-      latitude: 0,
-      longitude: 0,
-      name: "",
-      class: "",
-      county: "",
-      state: "",
-      country: "",
-      continent: "",
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [0, 0],
-    },
-    properties: {
-      id: 1,
-      feet: 12000,
-      meters: 0,
-      latitude: 0,
-      longitude: 0,
-      name: "",
-      class: "",
-      county: "",
-      state: "",
-      country: "",
-      continent: "",
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [0, 0],
-    },
-    properties: {
-      id: 1,
-      feet: 11000,
-      meters: 0,
-      latitude: 0,
-      longitude: 0,
-      name: "",
-      class: "",
-      county: "",
-      state: "",
-      country: "",
-      continent: "",
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [0, 0],
-    },
-    properties: {
-      id: 1,
-      feet: 10000,
-      meters: 0,
-      latitude: 0,
-      longitude: 0,
-      name: "",
-      class: "",
-      county: "",
-      state: "",
-      country: "",
-      continent: "",
-    },
-  },
-  {
-    type: "Feature",
-    geometry: {
-      type: "Point",
-      coordinates: [0, 0],
-    },
-    properties: {
-      id: 1,
-      feet: 9000,
-      meters: 0,
-      latitude: 0,
-      longitude: 0,
-      name: "",
-      class: "",
-      county: "",
-      state: "",
-      country: "",
-      continent: "",
-    },
-  },
-];
-
-const featureFilters = () => {};
+import { initMapFilters, maxElevation } from "./constants";
 
 const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
+  // context hooks
+  const { featureFilters, setFeatureFilters } = useContext(FeaturesContext);
+
   // state hooks
-  const [sliderValue, setSliderValue] = useState<number>(TEMP_MAX_VALUE);
-  const [isEnabled, setIsEnabled] = useState<boolean>(false);
+  const [filters, setFilters] = useState<IMapFilter>(
+    featureFilters as IMapFilter
+  );
 
   const handleApplyPress = () => {
-    // TODO: APPLY FILTERs
+    // apply filters
+    setFeatureFilters(filters);
+
+    // close drawer
     navigation.closeDrawer();
   };
 
   const handleCancelPress = () => {
-    // TODO: APPLY FILTERs
+    // reset filters
+    setFilters(featureFilters as IMapFilter);
+
+    // close drawer
     navigation.closeDrawer();
   };
 
-  const handleCloseDrawerPress = () => navigation.closeDrawer();
+  const handleCloseDrawerPress = () => {
+    // reset filters
+    setFilters(featureFilters as IMapFilter);
 
-  const handleElevationTierPress = () => {
-    console.log("TODO");
+    // close drawer
+    navigation.closeDrawer();
   };
 
-  const handleSliderChange = (value: number) => setSliderValue(value);
+  const handleElevationTierPress = (tier: ElevationTier) => {
+    setFilters({
+      ...filters,
+      [tier]: !filters[tier],
+    });
+  };
 
-  const handleSwitchChange = () => setIsEnabled(!isEnabled);
+  const handleSliderChange = (value: number) => {
+    setFilters({
+      ...filters,
+      maxElevation: value,
+    });
+  };
+
+  const handleSwitchChange = () => {
+    setFilters({
+      ...filters,
+      countiesOverlay: !filters.countiesOverlay,
+    });
+  };
 
   return (
     <View style={[styles.container, { paddingTop: useSafeAreaInsets().top }]}>
@@ -194,13 +83,14 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Max Elevation</Text>
           <Text style={styles.maxElevation}>
-            {sliderValue.toLocaleString()}'
+            {filters.maxElevation.toLocaleString()}'
           </Text>
         </View>
         <Slider
           maximumTrackTintColor={colors.black25}
-          maximumValue={TEMP_MAX_VALUE}
+          maximumValue={maxElevation}
           minimumTrackTintColor={colors.black25}
+          minimumValue={10000}
           onValueChange={handleSliderChange}
           step={1}
           style={styles.slider}
@@ -209,74 +99,94 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
             width: 24,
             backgroundColor: colors.queenBlue,
           }}
-          value={sliderValue}
+          value={filters.maxElevation}
         />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Elevation Tier</Text>
         </View>
         <TouchableOpacity
           style={styles.filterOption}
-          onPress={handleElevationTierPress}
+          onPress={() => handleElevationTierPress("above14")}
         >
           <Text style={styles.label}>Above 14,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-checkbox-outline"}
+            name={
+              filters.above14 ? "ios-checkbox-outline" : "ios-square-outline"
+            }
             size={28}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.filterOption}
-          onPress={handleElevationTierPress}
+          onPress={() => handleElevationTierPress("between13and14")}
         >
           <Text style={styles.label}>13,000' - 14,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-checkbox-outline"}
+            name={
+              filters.between13and14
+                ? "ios-checkbox-outline"
+                : "ios-square-outline"
+            }
             size={28}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.filterOption}
-          onPress={handleElevationTierPress}
+          onPress={() => handleElevationTierPress("between12and13")}
         >
           <Text style={styles.label}>12,000' - 13,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-square-outline"}
+            name={
+              filters.between12and13
+                ? "ios-checkbox-outline"
+                : "ios-square-outline"
+            }
             size={28}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.filterOption}
-          onPress={handleElevationTierPress}
+          onPress={() => handleElevationTierPress("between11and12")}
         >
           <Text style={styles.label}>11,000' - 12,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-square-outline"}
+            name={
+              filters.between11and12
+                ? "ios-checkbox-outline"
+                : "ios-square-outline"
+            }
             size={28}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.filterOption}
-          onPress={handleElevationTierPress}
+          onPress={() => handleElevationTierPress("between10and11")}
         >
           <Text style={styles.label}>10,000' - 11,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-square-outline"}
+            name={
+              filters.between10and11
+                ? "ios-checkbox-outline"
+                : "ios-square-outline"
+            }
             size={28}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.filterOption}
-          onPress={handleElevationTierPress}
+          onPress={() => handleElevationTierPress("below10")}
         >
           <Text style={styles.label}>Below 10,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={"ios-square-outline"}
+            name={
+              filters.below10 ? "ios-checkbox-outline" : "ios-square-outline"
+            }
             size={28}
           />
         </TouchableOpacity>
@@ -288,7 +198,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
             ios_backgroundColor={colors.black05}
             onValueChange={handleSwitchChange}
             style={styles.switch}
-            value={isEnabled}
+            value={filters.countiesOverlay}
           />
         </View>
       </View>
@@ -316,13 +226,41 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
 const Drawer = createDrawerNavigator();
 
 const MapDrawer = () => {
+  // state hooks
+  const [feature, setFeature] = useState<
+    Feature<Geometry, GeoJsonProperties> | undefined
+  >(undefined);
+  const [featureFilters, setFeatureFilters] = useState<IMapFilter>(
+    initMapFilters
+  );
+  const [features, setFeatures] = useState<
+    Feature<Geometry, GeoJsonProperties>[] | undefined
+  >(undefined);
+
+  const featuresDatabase = SQLite.openDatabase("features");
+  const featuresCollectionRef = firebase.firestore().collection("features");
+
+  // context provider value
+  const value = {
+    feature,
+    featureFilters,
+    features,
+    featuresDatabase,
+    featuresCollectionRef,
+    setFeature,
+    setFeatures,
+    setFeatureFilters,
+  };
+
   return (
-    <Drawer.Navigator
-      drawerContent={(props) => <DrawerContent {...props} />}
-      screenOptions={{ swipeEnabled: false }}
-    >
-      <Drawer.Screen name="MapStack" component={MapStack} />
-    </Drawer.Navigator>
+    <FeaturesContext.Provider value={value}>
+      <Drawer.Navigator
+        drawerContent={(props) => <DrawerContent {...props} />}
+        screenOptions={{ swipeEnabled: false }}
+      >
+        <Drawer.Screen name="MapStack" component={MapStack} />
+      </Drawer.Navigator>
+    </FeaturesContext.Provider>
   );
 };
 

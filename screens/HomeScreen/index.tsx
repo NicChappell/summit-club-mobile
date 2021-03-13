@@ -1,10 +1,15 @@
 import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { DismissKeyboard, ErrorOverlay } from "../../common/components";
+import {
+  BasicDetailsCard,
+  DismissKeyboard,
+  ErrorOverlay,
+  FullDetailsCard,
+} from "../../common/components";
 import { colors } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
-import { FeaturedSummits, PopularSummits, RecentCheckIns } from "./components";
+import { RecentCheckIns } from "./components";
 import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
@@ -15,7 +20,7 @@ const HomeScreen = ({ error, navigation, route }: Props) => (
       <ErrorOverlay error={error} />
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Featured summits</Text>
-        <FeaturedSummits navigation={navigation} />
+        <BasicDetailsCard navigation={navigation} />
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Recent check-ins</Text>
@@ -23,7 +28,7 @@ const HomeScreen = ({ error, navigation, route }: Props) => (
       </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Popular summits</Text>
-        <PopularSummits navigation={navigation} />
+        <FullDetailsCard navigation={navigation} />
       </View>
     </ScrollView>
   </DismissKeyboard>

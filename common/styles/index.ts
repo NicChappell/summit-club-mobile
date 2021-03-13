@@ -12,6 +12,11 @@ export const borderReset = {
 };
 
 export const cardContainer = {
+  margin: 0,
+  padding: 0,
+};
+
+export const cardWrapper = {
   borderRadius: 4,
   borderWidth: 0,
   margin: 0,
@@ -199,6 +204,16 @@ export const shadow = {
   shadowOffset: {
     height: 1,
     width: -1,
+  },
+};
+
+export const shadowReset = {
+  shadowColor: "transparent",
+  shadowOpacity: 1,
+  shadowRadius: 0,
+  shadowOffset: {
+    height: 0,
+    width: 0,
   },
 };
 

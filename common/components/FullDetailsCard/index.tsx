@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
-import { cardContainer, colors, shadow } from "../../../../common/styles";
-import * as actions from "../../../../redux/actions";
-import { Summits, IPopularSummit } from "../../../../services";
+import {
+  cardContainer,
+  cardWrapper,
+  colors,
+  shadow,
+} from "../../../common/styles";
+import * as actions from "../../../redux/actions";
+import { Summits, IPopularSummit } from "../../../services";
 import { getFeaturePhoto } from "../../helpers";
 import { IPopularSummits } from "./interfaces";
 
 type Props = PropsFromRedux & IPopularSummits;
 
-const PopularSummits = ({ navigation, setError }: Props) => {
+const FullDetailsCard = ({ navigation, setError }: Props) => {
   // state hooks
   const [popularSummits, setPopularSummits] = useState<
     IPopularSummit[] | undefined
@@ -116,13 +121,12 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(PopularSummits);
+export default connector(FullDetailsCard);
 
 const styles = StyleSheet.create({
   container: {},
   cardContainerStyle: {
     ...cardContainer,
-    ...shadow,
     alignSelf: "stretch",
     marginTop: 24,
     marginHorizontal: 2,
@@ -155,7 +159,10 @@ const styles = StyleSheet.create({
       width: -1,
     },
   },
-  cardWrapperStyle: {},
+  cardWrapperStyle: {
+    ...cardWrapper,
+    ...shadow,
+  },
   checkInCount: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",

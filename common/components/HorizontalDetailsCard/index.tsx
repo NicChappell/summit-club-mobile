@@ -5,6 +5,7 @@ import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
 import {
   cardContainer,
+  cardWrapper,
   colors,
   customMapStyle,
   shadow,
@@ -162,13 +163,14 @@ export default HorizontalDetailsCard;
 const styles = StyleSheet.create({
   cardContainerStyle: {
     ...cardContainer,
-    ...shadow,
     alignSelf: "stretch",
     height: 128,
     marginTop: 24,
     marginHorizontal: 2,
   },
   cardWrapperStyle: {
+    ...cardWrapper,
+    ...shadow,
     flexDirection: "row",
     justifyContent: "space-between",
   },

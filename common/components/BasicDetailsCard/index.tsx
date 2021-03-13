@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
-import { cardContainer, colors, shadow } from "../../../../common/styles";
-import * as actions from "../../../../redux/actions";
-import { Summits, IFeaturedSummit } from "../../../../services";
+import {
+  borderReset,
+  cardContainer,
+  cardWrapper,
+  colors,
+  shadow,
+  shadowReset,
+} from "../../../common/styles";
+import * as actions from "../../../redux/actions";
+import { Summits, IFeaturedSummit } from "../../../services";
 import { getFeaturePhoto } from "../../helpers";
 import { IFeaturedSummits } from "./interfaces";
 
 type Props = PropsFromRedux & IFeaturedSummits;
 
-const FeaturedSummits = ({ navigation, setError }: Props) => {
+const BasicDetailsCard = ({ navigation, setError }: Props) => {
   // state hooks
   const [featuredSummits, setFeaturedSummits] = useState<
     IFeaturedSummit[] | undefined
@@ -74,15 +81,17 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(FeaturedSummits);
+export default connector(BasicDetailsCard);
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
+    ...borderReset,
     ...cardContainer,
-    ...shadow,
-    height: 124,
-    margin: 2,
-    width: 124,
+    ...shadowReset,
+    alignItems: "flex-end",
+    height: 128,
+    justifyContent: "flex-start",
+    width: 128,
   },
   cardImageStyle: {
     alignItems: "flex-end",
@@ -105,8 +114,17 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 4,
     borderTopLeftRadius: 4,
   },
-  cardWrapperStyle: {},
-  container: { marginTop: 24 },
+  cardWrapperStyle: {
+    ...cardWrapper,
+    ...shadow,
+    height: 126,
+    width: 126,
+  },
+  container: {
+    alignSelf: "stretch",
+    height: 128,
+    marginTop: 24,
+  },
   separator: {
     width: 16,
   },

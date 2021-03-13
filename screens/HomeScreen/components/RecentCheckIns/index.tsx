@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
-import { cardContainer, colors, shadow } from "../../../../common/styles";
+import {
+  cardContainer,
+  cardWrapper,
+  colors,
+  shadow,
+} from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { CheckIn, ICheckIn } from "../../../../services";
 
@@ -122,13 +127,14 @@ const styles = StyleSheet.create({
   container: {},
   cardContainerStyle: {
     ...cardContainer,
-    ...shadow,
     alignSelf: "stretch",
     height: 128,
     marginTop: 24,
     marginHorizontal: 2,
   },
   cardWrapperStyle: {
+    ...cardWrapper,
+    ...shadow,
     justifyContent: "space-between",
   },
   checkInDetails: {

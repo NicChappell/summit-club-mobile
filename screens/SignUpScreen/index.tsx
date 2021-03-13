@@ -53,7 +53,7 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
         setVisible={setIsTermsAndConditionsVisible}
       />
       <DismissKeyboard>
-        <Card containerStyle={styles.cardContainer}>
+        <Card containerStyle={styles.cardWrapper}>
           <Formik
             validationSchema={signUpSchema}
             initialValues={{ email: "", password: "", terms: false }}
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
   },
-  cardContainer: {
+  cardWrapper: {
     alignSelf: "stretch",
   },
 });

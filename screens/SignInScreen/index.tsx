@@ -41,7 +41,7 @@ const SignInScreen = ({ error, navigation, route, signIn }: Props) => {
       <SafeAreaView style={styles.container}>
         <ErrorOverlay error={error} />
         <Text>This is top text.</Text>
-        <Card containerStyle={styles.cardContainer}>
+        <Card containerStyle={styles.cardWrapper}>
           <Formik
             validationSchema={signInSchema}
             initialValues={{ email: "", password: "" }}
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
   },
-  cardContainer: {
+  cardWrapper: {
     alignSelf: "stretch",
   },
 });

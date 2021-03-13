@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View /* Text */ } from "react-native";
+import { FlatList, StyleSheet, View, Text } from "react-native";
 // import { Button } from "react-native-elements";
 import { Feature } from "geojson";
-import { HorizontalDetailsCard } from "../../common/components";
+import {
+  BasicDetailsCard,
+  HorizontalDetailsCard,
+} from "../../common/components";
 import { colors } from "../../common/styles";
 import { IExploreScreen } from "./interfaces";
 
@@ -42,6 +45,10 @@ const ExploreScreen = ({ navigation, route }: IExploreScreen) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Collections</Text>
+        <BasicDetailsCard navigation={navigation} />
+      </View>
       <FlatList
         data={filteredFeatures}
         renderItem={({ item: feature }) => (
@@ -74,5 +81,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
     justifyContent: "flex-start",
+  },
+  section: {
+    marginBottom: 24,
+    padding: 8,
+  },
+  sectionTitle: {
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 24,
   },
 });

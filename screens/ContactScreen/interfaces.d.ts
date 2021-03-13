@@ -1,8 +1,8 @@
 import { ContactScreenNavigationProp, ContactScreenRouteProp } from "./types";
 
 export interface IContactScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: ContactScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: ContactScreenRouteProp;
 }

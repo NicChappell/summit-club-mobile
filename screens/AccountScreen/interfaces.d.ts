@@ -1,8 +1,8 @@
 import { AccountScreenNavigationProp, AccountScreenRouteProp } from "./types";
 
 export interface IAccountScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: AccountScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: AccountScreenRouteProp;
 }

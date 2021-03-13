@@ -4,6 +4,6 @@ import { ExploreScreenNavigationProp } from "../../types";
 export interface IHorizontalDetailsCard {
   /** Feature profile */
   feature: Feature;
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: ExploreScreenNavigationProp;
 }

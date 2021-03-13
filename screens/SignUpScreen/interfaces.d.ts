@@ -1,8 +1,8 @@
 import { SignUpScreenNavigationProp, SignUpScreenRouteProp } from "./types";
 
 export interface ISignUpScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: SignUpScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: SignUpScreenRouteProp;
 }

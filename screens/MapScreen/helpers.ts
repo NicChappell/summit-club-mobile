@@ -14,12 +14,12 @@ import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import * as helpers from "@turf/helpers";
 import { executeSql } from "../../common/helpers";
 import { IError, IMapBoundaries, ISQLResult } from "../../common/interfaces";
+import { IMapFilters } from "../../contexts/interfaces";
 import { initialMapBoundaries } from "./constants";
-import { IFeatureFilters } from "./interfaces";
 
 export const countFeatureRows = async (
   featuresDatabase: SQLite.WebSQLDatabase,
-  featureFilters: IFeatureFilters,
+  featureFilters: IMapFilters,
   setError: (error: IError) => void
 ) => {
   try {
@@ -231,7 +231,7 @@ export const populateFeaturesTable = async (
   features: Feature<Geometry, GeoJsonProperties>[] | undefined,
   featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>,
   featuresDatabase: SQLite.WebSQLDatabase,
-  featureFilters: IFeatureFilters,
+  featureFilters: IMapFilters,
   mapBoundaries: IMapBoundaries,
   setError: (error: IError) => void
 ) => {
@@ -343,7 +343,7 @@ export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
 export const queryFeaturesTable = async (
   features: Feature<Geometry, GeoJsonProperties>[] | undefined,
   featuresDatabase: SQLite.WebSQLDatabase,
-  featureFilters: IFeatureFilters,
+  featureFilters: IMapFilters,
   mapBoundaries: IMapBoundaries = initialMapBoundaries,
   setError: (error: IError) => void
 ) => {

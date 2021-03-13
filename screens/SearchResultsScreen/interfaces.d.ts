@@ -1,8 +1,8 @@
 import { SearchResultsScreenNavigationProp, SearchResultsScreenRouteProp } from "./types";
 
 export interface ISearchResultsScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: SearchResultsScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: SearchResultsScreenRouteProp;
 }

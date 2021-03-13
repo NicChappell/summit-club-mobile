@@ -1,8 +1,8 @@
 import { ITourSlide } from "../../interfaces";
 
 export interface ITourSlides {
-  /** TODO */
+  /** array of slide data */
   data: ITourSlide[];
-  /** TODO */
+  /** functions that dispatches a redux action to update global account state */
   onComplete: () => void;
 }

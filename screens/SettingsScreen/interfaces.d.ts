@@ -4,8 +4,8 @@ import {
 } from "./types";
 
 export interface ISettingsScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: SettingsScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: SettingsScreenRouteProp;
 }

@@ -1,8 +1,8 @@
 import { ProfileScreenNavigationProp, ProfileScreenRouteProp } from "./types";
 
 export interface IProfileScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: ProfileScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: ProfileScreenRouteProp;
 }

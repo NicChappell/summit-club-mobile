@@ -31,6 +31,7 @@
     - Map: MapDrawer
     - Expore: ExploreDrawer
     - Profile: ProfileStack
+    - Download: DownloadScreen
 
 - ProfileStack
     - Profile: ProfileScreen

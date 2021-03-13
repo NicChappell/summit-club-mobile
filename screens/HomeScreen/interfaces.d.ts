@@ -1,8 +1,8 @@
 import { HomeScreenNavigationProp, HomeScreenRouteProp } from "./types";
 
 export interface IHomeScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: HomeScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: HomeScreenRouteProp;
 }

@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
 export interface IDismissKeyboard {
-  /** TODO */
-  children: ReactElement;
+  /** object with type, props and key */
+  children: ReactElement | ReactElement[];
 }

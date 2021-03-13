@@ -17,7 +17,7 @@ export interface IFeatureContext {
   /** Selected feature data */
   feature?: Feature<Geometry, GeoJsonProperties>;
   /** Filter conditions for database queries */
-  featureFilters?: IExploreFilter | IMapFilter;
+  featureFilters?: IExploreFilter | IMapFilters;
   /** Currently available features */
   features?: Feature<Geometry, GeoJsonProperties>[];
   /** SQLite database */
@@ -30,7 +30,7 @@ export interface IFeatureContext {
   ) => void;
   /** Function that updates features filter */
   setFeatureFilters: (
-    featureFilters: Dispatch<SetStateAction<IExploreFilter | IMapFilter>>
+    featureFilters: Dispatch<SetStateAction<IExploreFilter | IMapFilters>>
   ) => void;
   /** Function that updates features value */
   setFeatures: (
@@ -38,7 +38,7 @@ export interface IFeatureContext {
   ) => void;
 }
 
-export interface IMapFilter {
+export interface IMapFilters {
   /** Maximum summit elevation to return */
   maxElevation: number;
   /** Include summits with elvations above 14,000' */

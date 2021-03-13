@@ -7,8 +7,8 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import { colors } from "../../../common/styles";
+import { DownloadScreen } from "../../../screens";
 import ExploreDrawer from "../ExploreDrawer";
-import ExploreStack from "../ExploreStack";
 import HomeTabs from "../HomeTabs";
 import MapDrawer from "../MapDrawer";
 import ProfileStack from "../ProfileStack";
@@ -77,6 +77,8 @@ const MainTabs = () => {
             iconName = focused ? "ios-flag" : "ios-flag-outline";
           } else if (route.name === "Profile") {
             iconName = focused ? "ios-person" : "ios-person-outline";
+          } else if (route.name === "Download") {
+            iconName = focused ? "ios-download" : "ios-download-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -88,6 +90,7 @@ const MainTabs = () => {
       <Tab.Screen name="Map" component={MapDrawer} />
       <Tab.Screen name="Explore" component={ExploreDrawer} />
       <Tab.Screen name="Profile" component={ProfileStack} />
+      <Tab.Screen name="Download" component={DownloadScreen} />
     </Tab.Navigator>
   );
 };

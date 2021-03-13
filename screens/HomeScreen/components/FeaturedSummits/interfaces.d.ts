@@ -1,6 +1,6 @@
 import { HomeScreenNavigationProp } from "../../types";
 
 export interface IFeaturedSummits {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: HomeScreenNavigationProp;
 }

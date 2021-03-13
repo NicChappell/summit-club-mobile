@@ -17,13 +17,10 @@ import { ErrorOverlay } from "../../common/components";
 import { colors, customMapStyle } from "../../common/styles";
 import { IMapBoundaries } from "../../common/interfaces";
 import { FeaturesContext } from "../../contexts";
+import { IMapFilters } from "../../contexts/interfaces";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
-import {
-  featureFilters,
-  initialMapBoundaries,
-  initialRegion,
-} from "./constants";
+import { initialMapBoundaries, initialRegion } from "./constants";
 import {
   countFeatureRows,
   createFeaturesTable,
@@ -65,13 +62,15 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   // context hooks
   const {
     feature,
+    featureFilters,
     features,
     featuresDatabase,
-    featureFilters,
     featuresCollectionRef,
     setFeature,
     setFeatures,
+    setFeatureFilters,
   } = useContext(FeaturesContext);
+  console.log(featureFilters);
 
   // ref hooks
   const mapRef = useRef<MapView>(null);
@@ -126,13 +125,17 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         setCameraConfig(cameraConfig);
 
         // TEST COUNT
-        countFeatureRows(featuresDatabase!, featureFilters, setError);
+        countFeatureRows(
+          featuresDatabase!,
+          featureFilters as IMapFilters,
+          setError
+        );
 
         // initial database query
         return queryFeaturesTable(
           features,
           featuresDatabase!,
-          featureFilters,
+          featureFilters as IMapFilters,
           mapBoundaries,
           setError
         );
@@ -166,6 +169,32 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       ?.getMapBoundaries()
       .then((mapBoundaries) => setMapBoundaries(mapBoundaries));
   }, [mapRef]);
+
+  useEffect(() => {
+    queryFeaturesTable(
+      features,
+      featuresDatabase!,
+      featureFilters as IMapFilters,
+      mapBoundaries,
+      setError
+    )
+      .then((features) => {
+        // update MapContext
+        setFeatures(features);
+
+        // stop activity indicator
+        setIsWaiting(false);
+      })
+      .catch((error) => {
+        // stop activity indicator
+        setIsWaiting(false);
+
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
+  }, [featureFilters]);
 
   const handleMarkerPress = (event: MapEvent) => {
     // destructure event
@@ -326,14 +355,15 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
             </Marker>
           );
         })}
-        {countiesPolygonCoordinates?.map((coordiantes, index) => (
-          <Polygon
-            coordinates={coordiantes}
-            fillColor={"transparent"}
-            key={index}
-            strokeColor={colors.queenBlue50}
-          ></Polygon>
-        ))}
+        {(featureFilters as IMapFilters).countiesOverlay &&
+          countiesPolygonCoordinates?.map((coordiantes, index) => (
+            <Polygon
+              coordinates={coordiantes}
+              fillColor={"transparent"}
+              key={index}
+              strokeColor={colors.queenBlue50}
+            ></Polygon>
+          ))}
       </MapView>
     </View>
   );

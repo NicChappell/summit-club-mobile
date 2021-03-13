@@ -13,7 +13,7 @@ import {
 } from "@react-navigation/drawer";
 import { colors } from "../../../common/styles";
 import { FeaturesContext } from "../../../contexts/";
-import { ElevationTier, IMapFilter } from "../../../contexts/interfaces";
+import { ElevationTier, IMapFilters } from "../../../contexts/interfaces";
 import MapStack from "../MapStack";
 import { initMapFilters, maxElevation } from "./constants";
 
@@ -22,8 +22,8 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
   const { featureFilters, setFeatureFilters } = useContext(FeaturesContext);
 
   // state hooks
-  const [filters, setFilters] = useState<IMapFilter>(
-    featureFilters as IMapFilter
+  const [filters, setFilters] = useState<IMapFilters>(
+    featureFilters as IMapFilters
   );
 
   const handleApplyPress = () => {
@@ -36,7 +36,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
 
   const handleCancelPress = () => {
     // reset filters
-    setFilters(featureFilters as IMapFilter);
+    setFilters(featureFilters as IMapFilters);
 
     // close drawer
     navigation.closeDrawer();
@@ -44,7 +44,7 @@ const DrawerContent = ({ navigation }: DrawerContentComponentProps) => {
 
   const handleCloseDrawerPress = () => {
     // reset filters
-    setFilters(featureFilters as IMapFilter);
+    setFilters(featureFilters as IMapFilters);
 
     // close drawer
     navigation.closeDrawer();
@@ -230,7 +230,7 @@ const MapDrawer = () => {
   const [feature, setFeature] = useState<
     Feature<Geometry, GeoJsonProperties> | undefined
   >(undefined);
-  const [featureFilters, setFeatureFilters] = useState<IMapFilter>(
+  const [featureFilters, setFeatureFilters] = useState<IMapFilters>(
     initMapFilters
   );
   const [features, setFeatures] = useState<

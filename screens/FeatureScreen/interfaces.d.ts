@@ -1,8 +1,8 @@
 import { FeatureScreenNavigationProp, FeatureScreenRouteProp } from "./types";
 
 export interface IFeatureScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: FeatureScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: FeatureScreenRouteProp;
 }

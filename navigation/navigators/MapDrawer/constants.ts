@@ -1,8 +1,8 @@
-import { IMapFilter } from "../../../contexts/interfaces";
+import { IMapFilters } from "../../../contexts/interfaces";
 
 export const maxElevation = 14426; // Elevation of Mount Elbert according to GNIS database
 
-export const initMapFilters: IMapFilter = {
+export const initMapFilters: IMapFilters = {
   maxElevation: maxElevation,
   above14: true,
   between13and14: true,

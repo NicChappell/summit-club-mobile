@@ -1,8 +1,8 @@
 import { IError } from "../../../common/interfaces";
 
 export interface IErrorOverlay {
-  /** TODO */
+  /** functions that dispatches a redux action to reset global error state */
   clearError: () => void;
-  /** TODO */
+  /** object with optional error code and optional error message */
   error: IError;
 }

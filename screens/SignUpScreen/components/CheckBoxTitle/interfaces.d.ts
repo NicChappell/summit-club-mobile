@@ -1,4 +1,4 @@
 export interface ICheckBoxTitle {
-  /** TODO */
+  /** function to set visible state value */
   setVisible: (visible: React.SetStateAction<boolean>) => void;
 }

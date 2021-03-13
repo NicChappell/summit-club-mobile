@@ -1,8 +1,8 @@
 import { ExploreScreenNavigationProp, ExploreScreenRouteProp } from "./types";
 
 export interface IExploreScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: ExploreScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: ExploreScreenRouteProp;
 }

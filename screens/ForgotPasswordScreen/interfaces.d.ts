@@ -4,8 +4,8 @@ import {
 } from "./types";
 
 export interface IForgotPasswordScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: ForgotPasswordScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: ForgotPasswordScreenRouteProp;
 }

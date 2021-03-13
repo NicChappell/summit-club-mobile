@@ -1,8 +1,8 @@
 import { SummitsScreenNavigationProp, SummitsScreenRouteProp } from "./types";
 
 export interface ISummitsScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: SummitsScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: SummitsScreenRouteProp;
 }

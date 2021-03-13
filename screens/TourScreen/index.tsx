@@ -9,11 +9,11 @@ import { ITourScreen } from "./interfaces";
 type Props = PropsFromRedux & ITourScreen;
 
 interface ITourSlide {
-  /** TODO */
+  /** uniquely identifies the slide */
   id: number;
-  /** TODO */
+  /** the slide's text content */
   text: string;
-  /** TODO */
+  /** the slide's background color */
   color: string;
 }
 

@@ -1,8 +1,8 @@
 import { TourScreenNavigationProp, TourScreenRouteProp } from "./types";
 
 export interface ITourScreen {
-  /** TODO */
+  /** contains various convenience functions that dispatch navigation actions */
   navigation: TourScreenNavigationProp;
-  /** TODO */
+  /** contains various information regarding current route */
   route: TourScreenRouteProp;
 }

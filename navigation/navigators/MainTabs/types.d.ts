@@ -1,6 +1,7 @@
 export type MainTabsParamList = {
-    Home: undefined;
-    Map: undefined;
-    Explore: undefined;
-    Profile: undefined;
+  Download: undefined;
+  Explore: undefined;
+  Home: undefined;
+  Map: undefined;
+  Profile: undefined;
 };

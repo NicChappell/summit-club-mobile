@@ -28,30 +28,35 @@ export const countFeatureRows = async (
       SELECT COUNT(*)
       FROM features
       WHERE (
-        feet < ${featureFilters.maxElevation}
+        feet <= ${featureFilters.maxElevation}
       ) AND (
-        ${featureFilters.above14 ? "(feet >= 14000)" : ""}
+        ${featureFilters.above14 ? "(feet >= 14000)" : "(feet <= 14000)"}
+        ) OR (
         ${
           featureFilters.between13and14
-            ? "OR (feet >= 13000 AND feet < 14000)"
-            : ""
+            ? "(feet BETWEEN 13000 AND 14000)"
+            : "(feet NOT BETWEEN 13000 AND 14000)"
         }
+        ) OR (
         ${
           featureFilters.between12and13
-            ? "OR (feet >= 12000 AND feet < 13000)"
-            : ""
+            ? "(feet BETWEEN 12000 AND 13000)"
+            : "(feet NOT BETWEEN 12000 AND 13000)"
         }
+        ) OR (
         ${
           featureFilters.between11and12
-            ? "OR (feet >= 11000 AND feet < 12000)"
-            : ""
+            ? "(feet BETWEEN 11000 AND 12000)"
+            : "(feet NOT BETWEEN 11000 AND 12000)"
         }
+        ) OR (
         ${
           featureFilters.between10and11
-            ? "OR (feet >= 10000 AND feet < 11000)"
-            : ""
+            ? "(feet BETWEEN 10000 AND 11000)"
+            : "(feet NOT BETWEEN 10000 AND 11000)"
         }
-        ${featureFilters.below10 ? "OR (feet < 10000)" : ""}
+        ) OR (
+        ${featureFilters.below10 ? "(feet <= 10000)" : "(feet >= 10000)"}
       );
     `;
     const resultSet: any = await executeSql!(
@@ -360,11 +365,6 @@ export const queryFeaturesTable = async (
     const swLat = southWest?.latitude;
     const swLng = southWest?.longitude;
 
-    // get list of already returned feature ids
-    const existingFeatureIds = features?.map(
-      (feature) => feature.properties?.id
-    );
-
     // construct sql statement
     const sqlStatement = `
       SELECT *
@@ -377,33 +377,36 @@ export const queryFeaturesTable = async (
       ) AND (
         feet <= ${featureFilters.maxElevation}
       ) AND (
-        ${featureFilters.above14 ? "(feet >= 14000)" : ""}
+        ${featureFilters.above14 ? "(feet >= 14000)" : "(feet <= 14000)"}
+        ) OR (
         ${
           featureFilters.between13and14
-            ? "OR (feet >= 13000 AND feet < 14000)"
-            : ""
+            ? "(feet BETWEEN 13000 AND 14000)"
+            : "(feet NOT BETWEEN 13000 AND 14000)"
         }
+        ) OR (
         ${
           featureFilters.between12and13
-            ? "OR (feet >= 12000 AND feet < 13000)"
-            : ""
+            ? "(feet BETWEEN 12000 AND 13000)"
+            : "(feet NOT BETWEEN 12000 AND 13000)"
         }
+        ) OR (
         ${
           featureFilters.between11and12
-            ? "OR (feet >= 11000 AND feet < 12000)"
-            : ""
+            ? "(feet BETWEEN 11000 AND 12000)"
+            : "(feet NOT BETWEEN 11000 AND 12000)"
         }
+        ) OR (
         ${
           featureFilters.between10and11
-            ? "OR (feet >= 10000 AND feet < 11000)"
-            : ""
+            ? "(feet BETWEEN 10000 AND 11000)"
+            : "(feet NOT BETWEEN 10000 AND 11000)"
         }
-        ${featureFilters.below10 ? "OR (feet < 10000)" : ""}
-      ) AND (
-        id NOT IN (${existingFeatureIds ? existingFeatureIds : ""})
+        ) OR (
+        ${featureFilters.below10 ? "(feet <= 10000)" : "(feet >= 10000)"}
       )
-      ORDER BY meters DESC;
-      -- LIMIT 480
+      ORDER BY meters DESC
+      LIMIT 100;
       -- OFFSET 0
     `;
     const resultSet: any = await executeSql!(

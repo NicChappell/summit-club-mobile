@@ -1,4 +1,4 @@
-import { IUser } from "../../../common/interfaces";
+import { IUser } from "../../../services/User";
 import { MOCK_SUMMIT } from "../summits";
 
 export const MOCK_USER: IUser = {

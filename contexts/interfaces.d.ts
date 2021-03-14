@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import { Feature, Geometry, GeoJsonProperties, Point } from "geojson";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 
 export type ElevationTier =
   | "above14"

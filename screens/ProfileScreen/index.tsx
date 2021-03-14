@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay } from "../../common/components";
-import { IUser } from "../../common/interfaces";
+import { IUser } from "../../services/User";
 import {
   colors,
   inputBorder,
@@ -32,7 +32,7 @@ import { IProfileScreen } from "./interfaces";
 //         - dark mode / light mode
 //         - reset tour
 
-import { MOCK_USER } from "../../data/mocks/users";
+import { MOCK_USER } from "../../data/mocks";
 
 type Props = PropsFromRedux & IProfileScreen;
 

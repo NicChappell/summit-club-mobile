@@ -13,8 +13,8 @@ import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { IAccountScreen } from "./interfaces";
 
-import { IUser } from "../../common/interfaces";
-import { MOCK_USER } from "../../data/mocks/users";
+import { IUser } from "../../services/User";
+import { MOCK_USER } from "../../data/mocks";
 
 type Props = PropsFromRedux & IAccountScreen;
 

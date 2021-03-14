@@ -1,4 +1,4 @@
-import { IUser } from "../../common/interfaces";
+import { IUser } from "../../services/User";
 
 export const getInitials = (user?: IUser) => {
   const firstNameInitial = user?.contact.firstName?.charAt(0);

@@ -1,4 +1,4 @@
-import { IUserSummit } from "../../../common/interfaces";
+import { IUserSummit } from "../../../services/User";
 import { MOCK_FEATURE } from "../features";
 
 export const MOCK_SUMMIT: IUserSummit = {

@@ -3,13 +3,15 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import {
-  cardContainer,
-  cardWrapper,
+  borderRadius4,
+  borderReset,
   colors,
+  marginReset,
+  paddingReset,
   shadow,
 } from "../../../common/styles";
 import * as actions from "../../../redux/actions";
-import { Summits, IPopularSummit } from "../../../services";
+import { Summit, IPopularSummit } from "../../../services";
 import { getFeaturePhoto } from "../../helpers";
 import { IPopularSummits } from "./interfaces";
 
@@ -23,7 +25,7 @@ const FullDetailsCard = ({ navigation, setError }: Props) => {
 
   // effect hooks
   useEffect(() => {
-    Summits.getPopularSummits()
+    Summit.getPopularSummits()
       .then((popularSummits) => {
         setPopularSummits(popularSummits);
       })
@@ -126,7 +128,8 @@ export default connector(FullDetailsCard);
 const styles = StyleSheet.create({
   container: {},
   cardContainerStyle: {
-    ...cardContainer,
+    ...marginReset,
+    ...paddingReset,
     alignSelf: "stretch",
     marginTop: 24,
     marginHorizontal: 2,
@@ -160,7 +163,8 @@ const styles = StyleSheet.create({
     },
   },
   cardWrapperStyle: {
-    ...cardWrapper,
+    ...borderRadius4,
+    ...borderReset,
     ...shadow,
   },
   checkInCount: {

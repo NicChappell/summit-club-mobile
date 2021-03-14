@@ -1,92 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Card, Text } from "react-native-elements";
-import { connect, ConnectedProps } from "react-redux";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Card } from "react-native-elements";
 import {
+  borderRadius4,
   borderReset,
-  cardContainer,
-  cardWrapper,
   colors,
+  marginReset,
+  paddingReset,
   shadow,
   shadowReset,
 } from "../../../common/styles";
-import * as actions from "../../../redux/actions";
-import { Summits, IFeaturedSummit } from "../../../services";
 import { getFeaturePhoto } from "../../helpers";
-import { IFeaturedSummits } from "./interfaces";
+import { IBasicDetailsCard } from "./interfaces";
 
-type Props = PropsFromRedux & IFeaturedSummits;
-
-const BasicDetailsCard = ({ navigation, setError }: Props) => {
-  // state hooks
-  const [featuredSummits, setFeaturedSummits] = useState<
-    IFeaturedSummit[] | undefined
-  >(undefined);
-
-  // effect hooks
-  useEffect(() => {
-    Summits.getFeaturedSummits()
-      .then((featuredSummits) => {
-        setFeaturedSummits(featuredSummits);
+const BasicDetailsCard = ({ item, navigation }: IBasicDetailsCard) => (
+  <TouchableOpacity
+    onPress={() =>
+      navigation.navigate("Feature", {
+        id: 1,
+        name: "Test",
       })
-      .catch((error) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
-      });
-  }, []);
+    }
+  >
+    <Card
+      containerStyle={styles.cardContainerStyle}
+      wrapperStyle={styles.cardWrapperStyle}
+    >
+      <Card.Image
+        source={getFeaturePhoto("Test")}
+        style={styles.cardImageStyle}
+      >
+        <View style={styles.cardImageViewStyle}>
+          <Text style={styles.cardImageTextStyle}>Test</Text>
+        </View>
+      </Card.Image>
+    </Card>
+  </TouchableOpacity>
+);
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        data={featuredSummits}
-        horizontal
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("Feature", {
-                id: item?.id,
-                name: item?.name,
-              })
-            }
-          >
-            <Card
-              containerStyle={styles.cardContainerStyle}
-              wrapperStyle={styles.cardWrapperStyle}
-            >
-              <Card.Image
-                source={getFeaturePhoto(item.name)}
-                style={styles.cardImageStyle}
-              >
-                <View style={styles.cardImageViewStyle}>
-                  <Text style={styles.cardImageTextStyle}>{item.name}</Text>
-                </View>
-              </Card.Image>
-            </Card>
-          </TouchableOpacity>
-        )}
-      />
-    </View>
-  );
-};
-
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = { setError: actions.setError };
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(BasicDetailsCard);
+export default BasicDetailsCard;
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
     ...borderReset,
-    ...cardContainer,
+    ...marginReset,
+    ...paddingReset,
     ...shadowReset,
     alignItems: "flex-end",
     height: 128,
@@ -115,23 +73,11 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 4,
   },
   cardWrapperStyle: {
-    ...cardWrapper,
+    ...borderRadius4,
+    ...marginReset,
+    ...paddingReset,
     ...shadow,
     height: 126,
     width: 126,
-  },
-  container: {
-    alignSelf: "stretch",
-    height: 128,
-    marginTop: 24,
-  },
-  separator: {
-    width: 16,
-  },
-  slideStyle: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 0,
   },
 });

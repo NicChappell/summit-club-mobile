@@ -3,9 +3,11 @@ import { Image, StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import {
-  cardContainer,
-  cardWrapper,
+  borderRadius4,
+  borderReset,
   colors,
+  marginReset,
+  paddingReset,
   shadow,
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
@@ -126,14 +128,16 @@ export default connector(RecentCheckIns);
 const styles = StyleSheet.create({
   container: {},
   cardContainerStyle: {
-    ...cardContainer,
+    ...marginReset,
+    ...paddingReset,
     alignSelf: "stretch",
     height: 128,
     marginTop: 24,
     marginHorizontal: 2,
   },
   cardWrapperStyle: {
-    ...cardWrapper,
+    ...borderRadius4,
+    ...borderReset,
     ...shadow,
     justifyContent: "space-between",
   },

@@ -22,9 +22,9 @@ export interface IPopularSummit {
   feature: Feature;
 }
 
-class Summits {
+class Summit {
   /** Fetch array of featured summit data */
-  static async getFeaturedSummits(): Promise<IFeaturedSummit[]> {
+  static getFeaturedSummits(): Promise<IFeaturedSummit[]> {
     // TODO: FIREBASE QUERY
 
     if (true) {
@@ -38,12 +38,12 @@ class Summits {
         { id: 6, name: "Mt. Mrah" },
       ]);
     } else {
-      return Promise.reject(new Error("featured summits fail"));
+      return Promise.reject(new Error("unable to process request"));
     }
   }
 
   /** Fetch array of popular summit data */
-  static async getPopularSummits(): Promise<IPopularSummit[]> {
+  static getPopularSummits(): Promise<IPopularSummit[]> {
     // TODO: FIREBASE QUERY
 
     if (true) {
@@ -131,9 +131,9 @@ class Summits {
         },
       ]);
     } else {
-      return Promise.reject(new Error("popular summits fail"));
+      return Promise.reject(new Error("unable to process request"));
     }
   }
 }
 
-export default Summits;
+export default Summit;

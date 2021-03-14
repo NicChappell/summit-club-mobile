@@ -4,10 +4,12 @@ import { Card, Text } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
 import {
-  cardContainer,
-  cardWrapper,
+  borderRadius4,
+  borderReset,
   colors,
   customMapStyle,
+  marginReset,
+  paddingReset,
   shadow,
 } from "../../../common/styles";
 import { IHorizontalDetailsCard } from "./interfaces";
@@ -162,14 +164,16 @@ export default HorizontalDetailsCard;
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
-    ...cardContainer,
+    ...marginReset,
+    ...paddingReset,
     alignSelf: "stretch",
     height: 128,
     marginTop: 24,
     marginHorizontal: 2,
   },
   cardWrapperStyle: {
-    ...cardWrapper,
+    ...borderRadius4,
+    ...borderReset,
     ...shadow,
     flexDirection: "row",
     justifyContent: "space-between",

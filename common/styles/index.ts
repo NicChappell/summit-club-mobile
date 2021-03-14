@@ -1,5 +1,12 @@
 import { StyleSheet } from "react-native";
 
+export const borderRadius4 = {
+  borderBottomLeftRadius: 4,
+  borderBottomRightRadius: 4,
+  borderTopLeftRadius: 4,
+  borderTopRightRadius: 4,
+};
+
 export const borderReset = {
   borderBottomColor: "transparent",
   borderBottomWidth: 0,
@@ -9,18 +16,6 @@ export const borderReset = {
   borderRightWidth: 0,
   borderTopColor: "transparent",
   borderTopWidth: 0,
-};
-
-export const cardContainer = {
-  margin: 0,
-  padding: 0,
-};
-
-export const cardWrapper = {
-  borderRadius: 4,
-  borderWidth: 0,
-  margin: 0,
-  padding: 0,
 };
 
 export const colors = {

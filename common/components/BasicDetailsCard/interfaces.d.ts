@@ -1,6 +1,8 @@
-import { HomeScreenNavigationProp } from "../../types";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-export interface IFeaturedSummits {
+export interface IBasicDetailsCard {
+  /** item data */
+  item: any;
   /** contains various convenience functions that dispatch navigation actions */
-  navigation: HomeScreenNavigationProp;
+  navigation: StackNavigationProp;
 }

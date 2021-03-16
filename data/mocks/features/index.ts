@@ -1,6 +1,6 @@
-import { Feature } from "geojson";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 
-export const MOCK_FEATURE: Feature = {
+export const MOCK_FEATURE: Feature<Geometry, GeoJsonProperties> = {
   type: "Feature",
   geometry: {
     type: "Point",
@@ -21,205 +21,205 @@ export const MOCK_FEATURE: Feature = {
   },
 };
 
-export const MOCK_FEATURES: Feature[] = [
+export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 1,
-      name: "Britteny Beach"
-    }
+      name: "Britteny Beach",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 2,
-      name: "Madie Vera"
-    }
+      name: "Madie Vera",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 3,
-      name: "Kris Mcgill"
-    }
+      name: "Kris Mcgill",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 4,
-      name: "Ardath Taggart"
-    }
+      name: "Ardath Taggart",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 5,
-      name: "Daisey Wenzel"
-    }
+      name: "Daisey Wenzel",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 6,
-      name: "Florance Toler"
-    }
+      name: "Florance Toler",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 7,
-      name: "Alyse Vue"
-    }
+      name: "Alyse Vue",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 8,
-      name: "Dusti Cleveland"
-    }
+      name: "Dusti Cleveland",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 9,
-      name: "Maurine Meehan"
-    }
+      name: "Maurine Meehan",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 10,
-      name: "Fredricka Sipes"
-    }
+      name: "Fredricka Sipes",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 11,
-      name: "Machelle Hester"
-    }
+      name: "Machelle Hester",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 12,
-      name: "Troy Wray"
-    }
+      name: "Troy Wray",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 13,
-      name: "Kerrie Provost"
-    }
+      name: "Kerrie Provost",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 14,
-      name: "Ivory Fulmer"
-    }
+      name: "Ivory Fulmer",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 15,
-      name: "Mia Salmon"
-    }
+      name: "Mia Salmon",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 16,
-      name: "Sulema Noland"
-    }
+      name: "Sulema Noland",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 17,
-      name: "Janae Hein"
-    }
+      name: "Janae Hein",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 18,
-      name: "Denis Battle"
-    }
+      name: "Denis Battle",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 19,
-      name: "Jc Beauregard"
-    }
+      name: "Jc Beauregard",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 20,
-      name: "Rhea Kaminski"
-    }
+      name: "Rhea Kaminski",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 21,
-      name: "Iona Kline"
-    }
+      name: "Iona Kline",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 22,
-      name: "Felica Weeks"
-    }
+      name: "Felica Weeks",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 23,
-      name: "Jaymie Varner"
-    }
+      name: "Jaymie Varner",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 24,
-      name: "Nicolle Frost"
-    }
+      name: "Nicolle Frost",
+    },
   },
   {
     ...MOCK_FEATURE,
     properties: {
       ...MOCK_FEATURE.properties,
       id: 25,
-      name: "Ok Sotelo"
-    }
-  }
+      name: "Ok Sotelo",
+    },
+  },
 ];

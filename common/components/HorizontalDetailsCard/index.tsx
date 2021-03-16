@@ -11,6 +11,7 @@ import {
   marginReset,
   paddingReset,
   shadow,
+  shadowReset,
 } from "../../../common/styles";
 import { IHorizontalDetailsCard } from "./interfaces";
 
@@ -164,19 +165,25 @@ export default HorizontalDetailsCard;
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
+    ...borderReset,
     ...marginReset,
     ...paddingReset,
-    alignSelf: "stretch",
+    ...shadowReset,
     height: 128,
-    marginTop: 24,
-    marginHorizontal: 2,
+    paddingBottom: 2,
+    paddingLeft: 2,
+    width: "100%",
   },
   cardWrapperStyle: {
     ...borderRadius4,
-    ...borderReset,
+    ...marginReset,
+    ...paddingReset,
     ...shadow,
+    alignItems: "flex-start",
     flexDirection: "row",
-    justifyContent: "space-between",
+    height: "100%",
+    justifyContent: "flex-start",
+    width: "100%",
   },
   featureDetails: {
     flex: 1,
@@ -202,7 +209,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 4,
     borderTopLeftRadius: 4,
     borderWidth: 0,
-    height: 128,
+    height: "100%",
     justifyContent: "flex-end",
     width: 128,
   },
@@ -212,7 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   mapContainer: {
-    height: 128,
+    height: "100%",
     width: 128,
   },
   map: {

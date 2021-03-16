@@ -91,4 +91,7 @@ const styles = StyleSheet.create({
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 24,
   },
+  separator: {
+    width: 16,
+  },
 });

@@ -1,9 +1,9 @@
-import { Feature } from "geojson";
-import { ExploreScreenNavigationProp } from "../../types";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 export interface IHorizontalDetailsCard {
   /** Feature profile */
-  feature: Feature;
+  feature: Feature<Geometry, GeoJsonProperties>;
   /** contains various convenience functions that dispatch navigation actions */
-  navigation: ExploreScreenNavigationProp;
+  navigation: StackNavigationProp;
 }

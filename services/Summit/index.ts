@@ -1,4 +1,5 @@
-import { Feature } from "geojson";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
+import { MOCK_FEATURES } from "../../data/mocks";
 
 export interface IFeaturedSummit {
   /** Uniquely identifies the summit */
@@ -19,7 +20,7 @@ export interface IPopularSummit {
   /** Number of check-ins all time*/
   checkInsAllTime: number;
   /** The summit's feature profile */
-  feature: Feature;
+  feature: Feature<Geometry, GeoJsonProperties>;
 }
 
 class Summit {
@@ -130,6 +131,17 @@ class Summit {
           },
         },
       ]);
+    } else {
+      return Promise.reject(new Error("unable to process request"));
+    }
+  }
+
+  /** Query local Features database */
+  static query(): Promise<Feature<Geometry, GeoJsonProperties>[]> {
+    // TODO: SQLITE DATABASE QUERY
+
+    if (true) {
+      return Promise.resolve(MOCK_FEATURES);
     } else {
       return Promise.reject(new Error("unable to process request"));
     }

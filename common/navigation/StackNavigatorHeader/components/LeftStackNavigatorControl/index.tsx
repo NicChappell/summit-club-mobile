@@ -31,7 +31,7 @@ const LeftStackNavigatorControl = ({
           style={styles.button}
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         >
-          <Ionicons name={"ios-filter-outline"} size={28} color={colors.queenBlue} />
+          <Ionicons name={"ios-options"} size={28} color={colors.queenBlue} />
         </TouchableOpacity>
       );
     case "Map":

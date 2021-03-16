@@ -1,12 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View, Text } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+} from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { BasicDetailsCard, ErrorOverlay } from "../../common/components";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import {
+  BasicDetailsCard,
+  ErrorOverlay,
+  HorizontalDetailsCard,
+} from "../../common/components";
 import { IError } from "../../common/interfaces";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { Collection, ICollection } from "../../services";
+import { Collection, ICollection, Summit } from "../../services";
 import { IExploreScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IExploreScreen;
@@ -14,6 +26,9 @@ type Props = PropsFromRedux & IExploreScreen;
 const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
   const [collections, setCollections] = useState<ICollection[] | undefined>();
+  const [filteredSummits, setFilteredSummits] = useState<
+    Feature<Geometry, GeoJsonProperties>[] | undefined
+  >();
 
   // effect hooks
   useEffect(() => {
@@ -27,32 +42,76 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           message: error.message,
         });
       });
+
+    Summit.query()
+      .then((filteredSummits) => {
+        setFilteredSummits(filteredSummits);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
   }, []);
 
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Collections</Text>
+      <View
+        style={[
+          styles.section,
+          {
+            borderBottomColor: colors.queenBlue25,
+            borderBottomWidth: 1,
+            paddingBottom: 16,
+            paddingTop: 8,
+          },
+        ]}
+      >
+        <Text style={styles.sectionTitle}>Summit Collections</Text>
         <FlatList
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          ItemSeparatorComponent={() => (
+            <View style={styles.horizontalSeparator} />
+          )}
           data={collections}
           horizontal
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <BasicDetailsCard item={item} navigation={navigation} />
+            <BasicDetailsCard
+              dimensions={{ height: 96, width: 96 }}
+              item={item}
+              navigation={navigation}
+            />
           )}
+          style={{ height: 96 }}
         />
       </View>
-      <View style={styles.section}>
-        {/* <FlatList
-          data={filteredFeatures}
+      <View style={[styles.section, { paddingTop: 16 }]}>
+        <View style={styles.sortBy}>
+          <Text style={styles.sectionTitle}>Sort by elevation</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log("TODO")}
+          >
+            <Ionicons
+              name={"ios-caret-up"}
+              size={20}
+              color={colors.queenBlue}
+            />
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          ItemSeparatorComponent={() => (
+            <View style={styles.verticalSeparator} />
+          )}
+          data={filteredSummits}
+          keyExtractor={(feature) => feature.properties?.id.toString()}
           renderItem={({ item: feature }) => (
             <HorizontalDetailsCard feature={feature} navigation={navigation} />
           )}
-          keyExtractor={(feature) => feature.properties?.id.toString()}
-          style={{ alignSelf: "stretch" }}
-        /> */}
+          style={{ height: 256 + 16 }}
+        />
       </View>
     </View>
   );
@@ -73,22 +132,35 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(ExploreScreen);
 
 const styles = StyleSheet.create({
-  container: {
+  button: {
     alignItems: "center",
+    justifyContent: "center",
+  },
+  container: {
+    alignItems: "flex-start",
     backgroundColor: colors.white,
     flex: 1,
     justifyContent: "flex-start",
-  },
-  section: {
-    marginBottom: 24,
     padding: 8,
   },
+  horizontalSeparator: {
+    width: 16,
+  },
+  section: {
+    alignSelf: "stretch",
+  },
   sectionTitle: {
+    color: colors.queenBlue,
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 20,
-    marginBottom: 0,
+    marginBottom: 8,
   },
-  separator: {
-    width: 16,
+  sortBy: {
+    alignItems: "baseline",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  verticalSeparator: {
+    height: 16,
   },
 });

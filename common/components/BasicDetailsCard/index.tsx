@@ -11,32 +11,39 @@ import {
   shadowReset,
 } from "../../../common/styles";
 import { getFeaturePhoto } from "../../helpers";
+import { defaultDimensions } from "./constants";
 import { IBasicDetailsCard } from "./interfaces";
 
-const BasicDetailsCard = ({ item, navigation }: IBasicDetailsCard) => (
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("Feature", {
-        id: 1,
-        name: "Test",
-      })
-    }
-  >
-    <Card
-      containerStyle={styles.cardContainerStyle}
-      wrapperStyle={styles.cardWrapperStyle}
+const BasicDetailsCard = ({
+  dimensions = defaultDimensions,
+  item,
+  navigation,
+}: IBasicDetailsCard) => {
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Feature", {
+          id: 1,
+          name: "Test",
+        })
+      }
     >
-      <Card.Image
-        source={getFeaturePhoto("Test")}
-        style={styles.cardImageStyle}
+      <Card
+        containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
+        wrapperStyle={styles.cardWrapperStyle}
       >
-        <View style={styles.cardImageViewStyle}>
-          <Text style={styles.cardImageTextStyle}>Test</Text>
-        </View>
-      </Card.Image>
-    </Card>
-  </TouchableOpacity>
-);
+        <Card.Image
+          source={getFeaturePhoto("Test")}
+          style={styles.cardImageStyle}
+        >
+          <View style={styles.cardImageViewStyle}>
+            <Text style={styles.cardImageTextStyle}>Test</Text>
+          </View>
+        </Card.Image>
+      </Card>
+    </TouchableOpacity>
+  );
+};
 
 export default BasicDetailsCard;
 
@@ -46,10 +53,8 @@ const styles = StyleSheet.create({
     ...marginReset,
     ...paddingReset,
     ...shadowReset,
-    alignItems: "flex-end",
-    height: 128,
-    justifyContent: "flex-start",
-    width: 128,
+    paddingBottom: 2,
+    paddingLeft: 2,
   },
   cardImageStyle: {
     alignItems: "flex-end",
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
     ...marginReset,
     ...paddingReset,
     ...shadow,
-    height: 126,
-    width: 126,
+    height: "100%",
+    width: "100%",
   },
 });

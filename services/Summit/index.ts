@@ -1,11 +1,15 @@
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { MOCK_FEATURES } from "../../data/mocks";
+import { MOCK_FEATURE, MOCK_FEATURES } from "../../data/mocks";
+
+export type SummitType = "featured" | "popular";
 
 export interface IFeaturedSummit {
-  /** Uniquely identifies the summit */
+  /** Uniquely identifies the Feature */
   id: number;
-  /** The summit's name */
-  name: string;
+  /** Type of Feature */
+  type: SummitType;
+  /** The Feature profile */
+  feature: Feature<Geometry, GeoJsonProperties>;
 }
 
 export interface IPopularSummit {
@@ -19,7 +23,7 @@ export interface IPopularSummit {
   checkInsLastYear: number;
   /** Number of check-ins all time*/
   checkInsAllTime: number;
-  /** The summit's feature profile */
+  /** The Feature profile */
   feature: Feature<Geometry, GeoJsonProperties>;
 }
 
@@ -30,13 +34,36 @@ class Summit {
 
     if (true) {
       return Promise.resolve([
-        { id: 0, name: "Conundrum Peak" },
-        { id: 1, name: "El Diente Peak" },
-        { id: 2, name: "Grays Peak" },
-        { id: 3, name: "Kit Carson Peak" },
-        { id: 4, name: "Maroon Peak" },
-        { id: 5, name: "Mt. Belford" },
-        { id: 6, name: "Mt. Mrah" },
+        {
+          id: 0,
+          type: "featured",
+          feature: MOCK_FEATURE,
+        },
+        {
+          id: 1,
+          type: "featured",
+          feature: MOCK_FEATURE,
+        },
+        {
+          id: 2,
+          type: "featured",
+          feature: MOCK_FEATURE,
+        },
+        {
+          id: 3,
+          type: "featured",
+          feature: MOCK_FEATURE,
+        },
+        {
+          id: 4,
+          type: "featured",
+          feature: MOCK_FEATURE,
+        },
+        {
+          id: 5,
+          type: "featured",
+          feature: MOCK_FEATURE,
+        },
       ]);
     } else {
       return Promise.reject(new Error("unable to process request"));

@@ -11,7 +11,7 @@ import { IError } from "../../common/interfaces";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { Collection, ICollection } from "../../services";
+import { IFeaturedSummit, Summit } from "../../services";
 import { RecentCheckIns } from "./components";
 import { IHomeScreen } from "./interfaces";
 
@@ -19,13 +19,15 @@ type Props = PropsFromRedux & IHomeScreen;
 
 const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
-  const [collections, setCollections] = useState<ICollection[] | undefined>();
+  const [featuredSummits, setFeaturedSummits] = useState<
+    IFeaturedSummit[] | undefined
+  >();
 
   // effect hooks
   useEffect(() => {
-    Collection.get()
-      .then((collections) => {
-        setCollections(collections);
+    Summit.getFeaturedSummits()
+      .then((featuredSummits) => {
+        setFeaturedSummits(featuredSummits);
       })
       .catch((error: IError) => {
         setError({
@@ -43,7 +45,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
           <Text style={styles.sectionTitle}>Featured summits</Text>
           <FlatList
             ItemSeparatorComponent={() => <View style={styles.separator} />}
-            data={collections}
+            data={featuredSummits}
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (

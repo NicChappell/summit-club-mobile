@@ -1,4 +1,4 @@
-export type CollectionType = "featured" | "range" | "popular";
+export type CollectionType = "range";
 
 export interface ICollection {
   /** Uniquely identifies the Collection */

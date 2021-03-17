@@ -55,6 +55,8 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
       });
   }, []);
 
+  const basicDetailsCardDimensions = { height: 64, width: 128 };
+
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
@@ -79,28 +81,25 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <BasicDetailsCard
-              dimensions={{ height: 96, width: 96 }}
+              dimensions={{
+                height: basicDetailsCardDimensions.height,
+                width: basicDetailsCardDimensions.width,
+              }}
               item={item}
               navigation={navigation}
             />
           )}
-          style={{ height: 96 }}
+          style={{ height: basicDetailsCardDimensions.height }}
         />
       </View>
       <View style={[styles.section, { paddingTop: 16 }]}>
-        <View style={styles.sortBy}>
+        <TouchableOpacity
+          style={styles.sortBy}
+          onPress={() => console.log("TODO")}
+        >
           <Text style={styles.sectionTitle}>Sort by elevation</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => console.log("TODO")}
-          >
-            <Ionicons
-              name={"ios-caret-up"}
-              size={20}
-              color={colors.queenBlue}
-            />
-          </TouchableOpacity>
-        </View>
+          <Ionicons name={"ios-caret-up"} size={20} color={colors.queenBlue} />
+        </TouchableOpacity>
         <FlatList
           ItemSeparatorComponent={() => (
             <View style={styles.verticalSeparator} />
@@ -132,10 +131,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(ExploreScreen);
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
   container: {
     alignItems: "flex-start",
     backgroundColor: colors.white,

@@ -23,7 +23,7 @@ const RecentCheckIns = ({ setError }: Props) => {
 
   // effect hooks
   useEffect(() => {
-    CheckIn.getRecentCheckIns()
+    CheckIn.get()
       .then((recentCheckIns) => {
         setRecentCheckIns(recentCheckIns);
       })
@@ -37,7 +37,7 @@ const RecentCheckIns = ({ setError }: Props) => {
 
   return (
     <View style={styles.container}>
-      {recentCheckIns?.map((checkIn, index) => {
+      {/* {recentCheckIns?.map((checkIn, index) => {
         const coordinate = (
           <Text style={styles.featureCoordinate}>
             {`${checkIn.feature.properties?.latitude}° ${
@@ -110,7 +110,7 @@ const RecentCheckIns = ({ setError }: Props) => {
             </View>
           </Card>
         );
-      })}
+      })} */}
     </View>
   );
 };

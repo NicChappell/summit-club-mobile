@@ -6,6 +6,6 @@ export interface IBasicDetailsCard {
   dimensions?: { height: number; width: number };
   /** item data */
   item: ICollection | IFeaturedSummit;
-  /** contains various convenience functions that dispatch navigation actions */
+  /** Contains various convenience functions that dispatch navigation actions */
   navigation: StackNavigationProp;
 }

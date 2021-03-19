@@ -1,42 +1,64 @@
-import { Feature } from "geojson";
-import { IUser } from "../../services/User";
-import { MOCK_FEATURE, MOCK_USER } from "../../data/mocks";
-
 export interface ICheckIn {
   /** Check-in ID */
   id: string;
-  /** User profile */
-  user: IUser;
+  /** User ID */
+  userId: string;
   /** Feature profile */
-  feature: Feature;
+  featureId: string;
+  /** Array of timestamps */
+  checkIns: Date[];
   /** Timestamp */
-  date: Date;
+  checkOff: Date;
 }
 
 class CheckIn {
-  /** Fetch array of recent check-in data */
-  static getRecentCheckIns(): Promise<ICheckIn[]> {
+  /** Fetch array of User's check-in data */
+  static get(): Promise<ICheckIn[]> {
     // TODO: FIREBASE QUERY
 
     if (true) {
       return Promise.resolve([
         {
           id: "0",
-          user: MOCK_USER,
-          feature: MOCK_FEATURE,
-          date: new Date(),
+          userId: "1",
+          featureId: "0",
+          checkIns: [new Date()],
+          checkOff: new Date(),
         },
         {
           id: "1",
-          user: MOCK_USER,
-          feature: MOCK_FEATURE,
-          date: new Date(),
+          userId: "1",
+          featureId: "0",
+          checkIns: [new Date()],
+          checkOff: new Date(),
         },
         {
           id: "2",
-          user: MOCK_USER,
-          feature: MOCK_FEATURE,
-          date: new Date(),
+          userId: "1",
+          featureId: "0",
+          checkIns: [new Date()],
+          checkOff: new Date(),
+        },
+        {
+          id: "3",
+          userId: "1",
+          featureId: "0",
+          checkIns: [new Date()],
+          checkOff: new Date(),
+        },
+        {
+          id: "4",
+          userId: "1",
+          featureId: "0",
+          checkIns: [new Date()],
+          checkOff: new Date(),
+        },
+        {
+          id: "5",
+          userId: "1",
+          featureId: "0",
+          checkIns: [new Date()],
+          checkOff: new Date(),
         },
       ]);
     } else {

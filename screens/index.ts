@@ -1,4 +1,5 @@
 export { default as AccountScreen } from "./AccountScreen";
+export { default as CheckInScreen } from "./CheckInScreen";
 export { default as ContactScreen } from "./ContactScreen";
 export { default as DownloadScreen } from "./DownloadScreen";
 export { default as ExploreScreen } from "./ExploreScreen";

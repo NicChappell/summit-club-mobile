@@ -55,7 +55,7 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
       });
   }, []);
 
-  const basicDetailsCardDimensions = { height: 64, width: 128 };
+  const basicDetailsCardDimensions = { height: 48, width: 128 };
 
   return (
     <View style={styles.container}>

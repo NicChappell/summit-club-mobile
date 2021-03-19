@@ -59,7 +59,7 @@ export const countFeatureRows = async (
         ${featureFilters.below10 ? "(feet <= 10000)" : "(feet >= 10000)"}
       );
     `;
-    const resultSet: any = await executeSql!(
+    const resultSet = await executeSql!(
       featuresDatabase,
       sqlStatement,
       []
@@ -409,7 +409,7 @@ export const queryFeaturesTable = async (
       LIMIT 100;
       -- OFFSET 0
     `;
-    const resultSet: any = await executeSql!(
+    const resultSet = await executeSql!(
       featuresDatabase,
       sqlStatement,
       []

@@ -8,13 +8,9 @@ export const borderRadius4 = {
 };
 
 export const borderReset = {
-  borderBottomColor: "transparent",
   borderBottomWidth: 0,
-  borderLeftColor: "transparent",
   borderLeftWidth: 0,
-  borderRightColor: "transparent",
   borderRightWidth: 0,
-  borderTopColor: "transparent",
   borderTopWidth: 0,
 };
 

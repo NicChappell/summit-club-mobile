@@ -12,12 +12,12 @@ import MapView, {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Feature, Geometry, GeoJsonProperties, Point } from "geojson";
-import * as actions from "../../redux/actions";
 import { ErrorOverlay } from "../../common/components";
 import { colors, customMapStyle } from "../../common/styles";
 import { IMapBoundaries } from "../../common/interfaces";
 import { FeaturesContext } from "../../contexts";
 import { IMapFilters } from "../../contexts/interfaces";
+import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
 import { initialMapBoundaries, initialRegion } from "./constants";
@@ -70,7 +70,6 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     setFeatures,
     setFeatureFilters,
   } = useContext(FeaturesContext);
-  console.log(featureFilters);
 
   // ref hooks
   const mapRef = useRef<MapView>(null);
@@ -141,7 +140,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         );
       })
       .then((features) => {
-        // update MapContext
+        // update Context
         setFeatures(features);
 
         // stop activity indicator
@@ -179,7 +178,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
       setError
     )
       .then((features) => {
-        // update MapContext
+        // update Context
         setFeatures(features);
 
         // stop activity indicator

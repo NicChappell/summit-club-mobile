@@ -6,7 +6,7 @@ export const executeSql = async (
   featuresDatabase: SQLite.WebSQLDatabase,
   sqlStatement: string,
   args: string[] = []
-) => {
+): Promise<SQLite.SQLResultSet> => {
   return new Promise((resolve, reject) => {
     // new database transaction
     featuresDatabase.transaction((tx) => {

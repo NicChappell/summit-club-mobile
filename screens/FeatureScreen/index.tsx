@@ -1,19 +1,40 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
+import { connect, ConnectedProps } from "react-redux";
 import { GeoJsonProperties, Point } from "geojson";
-import { executeSql } from "../../common/helpers";
-import { colors, customMapStyle } from "../../common/styles";
-import { MapContext } from "../../contexts";
+import { ErrorOverlay } from "../../common/components";
+import { executeSql, getFeaturePhoto } from "../../common/helpers";
+import { borderReset, colors, customMapStyle } from "../../common/styles";
+import { FeaturesContext } from "../../contexts";
+import * as actions from "../../redux/actions";
+import { RootState } from "../../redux/reducers";
 import { processFeature } from "./helpers";
 import { IFeatureScreen } from "./interfaces";
 
-const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
+type Props = PropsFromRedux & IFeatureScreen;
+
+const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
   // destructure route params
-  const { id, name } = route.params;
+  const { id: featureId, name: featureName } = route.params;
 
   // context hooks
-  const { featuresDatabase, feature, setFeature } = useContext(MapContext);
+  const {
+    feature,
+    featureFilters,
+    features,
+    featuresDatabase,
+    featuresCollectionRef,
+    setFeature,
+    setFeatures,
+    setFeatureFilters,
+  } = useContext(FeaturesContext);
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
@@ -68,23 +89,27 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
   }, [feature]);
 
   useEffect(() => {
+    console.log(featuresDatabase);
     if (featuresDatabase) {
       const sqlStatement = `
         SELECT *
         FROM features
-        WHERE id = '${id}';
+        WHERE id = '${featureId}';
       `;
       executeSql!(featuresDatabase, sqlStatement, [])
-        .then((resultSet: any) => {
+        .then((resultSet) => {
           const feature = processFeature(resultSet);
+          console.log(feature);
           setFeature(feature);
         })
-        .catch((error: any) => {
-          // TODO: HANDLE THIS ERROR
-          console.log(error);
+        .catch((error) => {
+          setError({
+            code: error.code,
+            message: error.message,
+          });
         });
     }
-  }, [id]);
+  }, [featureId]);
 
   const countyState =
     properties?.county && properties?.state ? (
@@ -106,40 +131,65 @@ const FeatureScreen = ({ navigation, route }: IFeatureScreen) => {
     </Text>
   );
 
-  const featureName = <Text style={styles.name}>{properties?.name}</Text>;
+  const title = <Text style={styles.featureName}>{properties?.name}</Text>;
 
   return (
-    <View style={styles.container}>
-      <View pointerEvents={"none"} style={styles.mapContainer}>
-        {coordinate && region && (
-          <MapView
-            customMapStyle={customMapStyle}
-            provider={"google"}
-            region={region}
-            style={styles.map}
-          >
-            <Circle
-              center={coordinate}
-              fillColor={colors.queenBlue50}
-              radius={500}
-              strokeColor={colors.queenBlue}
-              strokeWidth={2.5}
-            />
-          </MapView>
-        )}
+    <ScrollView style={styles.scrollView}>
+      <ErrorOverlay error={error} />
+      <View style={styles.container}>
+        <ImageBackground
+          source={getFeaturePhoto(properties?.name)}
+          style={styles.featureImageBackground}
+        >
+          <View style={styles.featureImageBackgroundView}>
+            <Text style={styles.featureImageBackgroundText}>
+              {properties?.name}
+            </Text>
+          </View>
+        </ImageBackground>
+        <View pointerEvents={"none"} style={styles.mapContainer}>
+          {coordinate && region && (
+            <MapView
+              customMapStyle={customMapStyle}
+              provider={"google"}
+              region={region}
+              style={styles.map}
+            >
+              <Circle
+                center={coordinate}
+                fillColor={colors.queenBlue50}
+                radius={500}
+                strokeColor={colors.queenBlue}
+                strokeWidth={2.5}
+              />
+            </MapView>
+          )}
+        </View>
+        <View style={styles.featurePropertiesContainer}>
+          {title}
+          {countyState}
+          {countryContinent}
+          {elevation}
+          <Text style={styles.coordinate}>{latLng}</Text>
+        </View>
       </View>
-      <View style={styles.featurePropertiesContainer}>
-        {featureName}
-        {countyState}
-        {countryContinent}
-        {elevation}
-        <Text style={styles.coordinate}>{latLng}</Text>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
-export default FeatureScreen;
+const mapStateToProps = (state: RootState) => {
+  return {
+    error: state.error,
+  };
+};
+
+const mapDispatchToProps = { setError: actions.setError };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(FeatureScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -153,6 +203,29 @@ const styles = StyleSheet.create({
   elevation: {
     fontFamily: "NunitoSans_400Regular",
   },
+  featureImageBackground: {
+    ...borderReset,
+    alignItems: "flex-end",
+    height: 256,
+    justifyContent: "flex-end",
+    width: "100%",
+  },
+  featureImageBackgroundText: {
+    color: colors.white,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 24,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  featureImageBackgroundView: {
+    backgroundColor: colors.black75,
+    borderBottomRightRadius: 4,
+    borderTopLeftRadius: 4,
+  },
+  featureName: {
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 30,
+  },
   featurePropertiesContainer: {
     alignItems: "flex-start",
     alignSelf: "stretch",
@@ -165,13 +238,13 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     width: "100%",
-    height: "50%",
+    height: 256,
   },
   map: {
     flex: 1,
   },
-  name: {
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 30,
+  scrollView: {
+    backgroundColor: colors.white,
+    flex: 1,
   },
 });

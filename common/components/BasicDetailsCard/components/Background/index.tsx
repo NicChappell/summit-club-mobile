@@ -7,7 +7,7 @@ import {
   colors,
   shadow,
 } from "../../../../../common/styles";
-import { getFeaturePhoto } from "../../../../helpers";
+import { getFeaturePhoto } from "../../../../../common/helpers";
 import { IBackground } from "./interfaces";
 
 const Background = ({ item }: IBackground) => {
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   cardImageTextStyle: {
-    ...shadow,
     color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 12,
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   cardImageViewStyle: {
-    backgroundColor: colors.black50,
+    backgroundColor: colors.black75,
     borderBottomRightRadius: 4,
     borderTopLeftRadius: 4,
   },

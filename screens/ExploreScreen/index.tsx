@@ -20,6 +20,7 @@ import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { Collection, ICollection, Summit } from "../../services";
 import { IExploreScreen } from "./interfaces";
+import { SortMethod, SortMethodIcon } from "./types";
 
 type Props = PropsFromRedux & IExploreScreen;
 
@@ -29,6 +30,10 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
   const [filteredSummits, setFilteredSummits] = useState<
     Feature<Geometry, GeoJsonProperties>[] | undefined
   >();
+  const [sortMethod, setSortMethod] = useState<SortMethod>("descending");
+  const [sortMethodIcon, setSortMethodIcon] = useState<SortMethodIcon>(
+    "ios-caret-down"
+  );
 
   // effect hooks
   useEffect(() => {
@@ -54,6 +59,16 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
         });
       });
   }, []);
+
+  const handleSortMethodPress = () => {
+    if (sortMethod === "descending") {
+      setSortMethod("ascending");
+      setSortMethodIcon("ios-caret-up");
+    } else {
+      setSortMethod("descending");
+      setSortMethodIcon("ios-caret-down");
+    }
+  };
 
   const basicDetailsCardDimensions = { height: 48, width: 128 };
 
@@ -93,12 +108,9 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
         />
       </View>
       <View style={[styles.section, { paddingTop: 16 }]}>
-        <TouchableOpacity
-          style={styles.sortBy}
-          onPress={() => console.log("TODO")}
-        >
+        <TouchableOpacity style={styles.sortBy} onPress={handleSortMethodPress}>
           <Text style={styles.sectionTitle}>Sort by elevation</Text>
-          <Ionicons name={"ios-caret-up"} size={20} color={colors.queenBlue} />
+          <Ionicons name={sortMethodIcon} size={20} color={colors.queenBlue} />
         </TouchableOpacity>
         <FlatList
           ItemSeparatorComponent={() => (

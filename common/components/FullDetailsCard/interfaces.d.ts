@@ -1,4 +1,4 @@
-import { HomeScreenNavigationProp } from "../../types";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 export interface IPopularSummits {
   /** Contains various convenience functions that dispatch navigation actions */

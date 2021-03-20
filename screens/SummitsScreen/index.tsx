@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay, HorizontalDetailsCard } from "../../common/components";
 import { IError } from "../../common/interfaces";
@@ -33,17 +32,17 @@ const SummitsScreen = ({ error, navigation, route, setError }: Props) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.scrollView}>
       <ErrorOverlay error={error} />
-      {checkIns?.map((checkIn, index) => {
-        // TODO: SQL DATABASE QUERY
-        const feature = MOCK_FEATURE;
+      <View style={styles.container}>
+        {checkIns?.map((checkIn, index) => {
+          // TODO: SQL DATABASE QUERY
+          const feature = MOCK_FEATURE;
 
-        return (
-          <HorizontalDetailsCard feature={feature} navigation={navigation} />
-        );
-      })}
-    </View>
+          return <HorizontalDetailsCard feature={feature} />;
+        })}
+      </View>
+    </ScrollView>
   );
 };
 
@@ -67,5 +66,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
     justifyContent: "space-between",
+    paddingVertical: 8,
+  },
+  scrollView: {
+    backgroundColor: colors.white,
+    flex: 1,
   },
 });

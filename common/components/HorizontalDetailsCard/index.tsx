@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
     marginBottom: 8,
     marginTop: 8,
-    width: "100%",
+    width: 384,
   },
   cardWrapperStyle: {
     ...borderRadius4,

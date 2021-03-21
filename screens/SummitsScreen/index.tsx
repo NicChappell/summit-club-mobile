@@ -36,7 +36,7 @@ const SummitsScreen = ({ error, navigation, route, setError }: Props) => {
       <ErrorOverlay error={error} />
       <View style={styles.container}>
         {checkIns?.map((checkIn, index) => {
-          // TODO: SQL DATABASE QUERY
+          // TODO: FIREBASE QUERY
           const feature = MOCK_FEATURE;
 
           return <HorizontalDetailsCard feature={feature} />;

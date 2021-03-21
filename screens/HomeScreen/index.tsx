@@ -6,25 +6,39 @@ import {
   DismissKeyboard,
   ErrorOverlay,
   FullDetailsCard,
+  HorizontalDetailsCard,
 } from "../../common/components";
 import { IError } from "../../common/interfaces";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { IFeaturedSummit, Summit } from "../../services";
-import { RecentCheckIns } from "./components";
+import { CheckIn, ICheckIn, IFeaturedSummit, Summit } from "../../services";
 import { IHomeScreen } from "./interfaces";
+
+import { MOCK_FEATURES } from "../../data/mocks/features";
 
 type Props = PropsFromRedux & IHomeScreen;
 
 const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
+  const [checkIns, setCheckIns] = useState<ICheckIn[] | undefined>();
   const [featuredSummits, setFeaturedSummits] = useState<
     IFeaturedSummit[] | undefined
   >();
 
   // effect hooks
   useEffect(() => {
+    CheckIn.get()
+      .then((checkIns) => {
+        setCheckIns(checkIns);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
+
     Summit.getFeaturedSummits()
       .then((featuredSummits) => {
         setFeaturedSummits(featuredSummits);
@@ -54,8 +68,16 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
           />
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent check-ins</Text>
-          <RecentCheckIns />
+          <Text style={styles.sectionTitle}>Recent Check Ins</Text>
+          <Text style={styles.sectionTitle}>TODO: MIGHT NEED SOME SORT OF COMPONENT WRAPPER TO DYNAMICALLY CALCULATE SCREEN WIDTH - PADDING ON PARENT VIEWS</Text>
+          <FlatList
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            data={MOCK_FEATURES}
+            horizontal
+            keyExtractor={(item) => item.properties?.id.toString()}
+            pagingEnabled
+            renderItem={({ item }) => <HorizontalDetailsCard feature={item} />}
+          />
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Popular summits</Text>

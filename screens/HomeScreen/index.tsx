@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import {
   BasicDetailsCard,
@@ -16,6 +23,9 @@ import { CheckIn, ICheckIn, IFeaturedSummit, Summit } from "../../services";
 import { IHomeScreen } from "./interfaces";
 
 import { MOCK_FEATURES } from "../../data/mocks/features";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const SECTION_PADDING = 8;
 
 type Props = PropsFromRedux & IHomeScreen;
 
@@ -51,6 +61,12 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
       });
   }, []);
 
+  const basicDetailsCardDimensions = { height: 128, width: 128 };
+  const horizontalDetailsCardDimensions = {
+    height: 128,
+    width: SCREEN_WIDTH - SECTION_PADDING * 2,
+  };
+
   return (
     <DismissKeyboard>
       <ScrollView style={styles.scrollView}>
@@ -63,20 +79,33 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <BasicDetailsCard item={item} navigation={navigation} />
+              <BasicDetailsCard
+                dimensions={{
+                  height: basicDetailsCardDimensions.height,
+                  width: basicDetailsCardDimensions.width,
+                }}
+                item={item}
+                navigation={navigation}
+              />
             )}
           />
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Recent Check Ins</Text>
-          <Text style={styles.sectionTitle}>TODO: MIGHT NEED SOME SORT OF COMPONENT WRAPPER TO DYNAMICALLY CALCULATE SCREEN WIDTH - PADDING ON PARENT VIEWS</Text>
           <FlatList
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
             data={MOCK_FEATURES}
             horizontal
             keyExtractor={(item) => item.properties?.id.toString()}
             pagingEnabled
-            renderItem={({ item }) => <HorizontalDetailsCard feature={item} />}
+            renderItem={({ item }) => (
+              <HorizontalDetailsCard
+                dimensions={{
+                  height: horizontalDetailsCardDimensions.height,
+                  width: horizontalDetailsCardDimensions.width,
+                }}
+                feature={item}
+              />
+            )}
           />
         </View>
         <View style={styles.section}>
@@ -109,7 +138,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 24,
-    padding: 8,
+    padding: SECTION_PADDING,
   },
   sectionTitle: {
     fontFamily: "NotoSansJP_700Bold",

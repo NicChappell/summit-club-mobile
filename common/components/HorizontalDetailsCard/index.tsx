@@ -13,6 +13,7 @@ import {
   shadow,
   shadowReset,
 } from "../../../common/styles";
+import { defaultDimensions } from "./constants";
 import { IHorizontalDetailsCard } from "./interfaces";
 
 // const MOCK_FEATURE: Feature = {
@@ -36,7 +37,10 @@ import { IHorizontalDetailsCard } from "./interfaces";
 //   },
 // };
 
-const HorizontalDetailsCard = ({ feature }: IHorizontalDetailsCard) => {
+const HorizontalDetailsCard = ({
+  dimensions = defaultDimensions,
+  feature,
+}: IHorizontalDetailsCard) => {
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
   const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
@@ -108,7 +112,7 @@ const HorizontalDetailsCard = ({ feature }: IHorizontalDetailsCard) => {
 
   return (
     <Card
-      containerStyle={styles.cardContainerStyle}
+      containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
       wrapperStyle={styles.cardWrapperStyle}
     >
       {Math.random() > 0.5 ? (
@@ -157,12 +161,10 @@ const styles = StyleSheet.create({
     ...marginReset,
     ...paddingReset,
     ...shadowReset,
-    height: 128,
     paddingBottom: 2,
     paddingLeft: 2,
     marginBottom: 8,
     marginTop: 8,
-    width: 384,
   },
   cardWrapperStyle: {
     ...borderRadius4,
@@ -173,8 +175,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "flex-start",
-    marginLeft: 8,
-    marginRight: 8,
   },
   featureDetails: {
     flex: 1,

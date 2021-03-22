@@ -95,14 +95,22 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           horizontal
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <BasicDetailsCard
-              dimensions={{
-                height: basicDetailsCardDimensions.height,
-                width: basicDetailsCardDimensions.width,
-              }}
-              item={item}
-              navigation={navigation}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Feature", {
+                  id: 1,
+                  name: "Test",
+                })
+              }
+            >
+              <BasicDetailsCard
+                dimensions={{
+                  height: basicDetailsCardDimensions.height,
+                  width: basicDetailsCardDimensions.width,
+                }}
+                item={item}
+              />
+            </TouchableOpacity>
           )}
           style={{ height: basicDetailsCardDimensions.height }}
         />

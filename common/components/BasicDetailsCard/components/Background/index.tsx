@@ -3,9 +3,8 @@ import { StyleSheet, View, Text } from "react-native";
 import { Card } from "react-native-elements";
 import {
   borderRadius4,
-  borderReset,
+  borderWidthReset,
   colors,
-  shadow,
 } from "../../../../../common/styles";
 import { getFeaturePhoto } from "../../../../../common/helpers";
 import { IBackground } from "./interfaces";
@@ -37,10 +36,11 @@ export default Background;
 const styles = StyleSheet.create({
   cardImageStyle: {
     ...borderRadius4,
-    ...borderReset,
+    ...borderWidthReset,
     alignItems: "flex-end",
     height: "100%",
     justifyContent: "flex-end",
+    overflow: "hidden",
     width: "100%",
   },
   cardImageTextStyle: {
@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   },
   cardImageViewStyle: {
     backgroundColor: colors.black75,
-    borderBottomRightRadius: 4,
     borderTopLeftRadius: 4,
   },
   rangeTextStyle: {
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   rangeViewStyle: {
-    ...borderRadius4,
     alignItems: "center",
     backgroundColor: colors.zomp,
     height: "100%",

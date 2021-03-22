@@ -46,3 +46,18 @@ export const getFeaturePhoto = (name: string) => {
     return { uri: "https://picsum.photos/1760/880" };
   }
 };
+
+export const getFeaturePhoto2 = (name: string) => {
+  // find target feature in collection of selected features with photos
+  const feature = Object.values(featurePhotos).find(
+    (feature) => feature.name === name
+  );
+
+  if (feature) {
+    // return feature photo if available
+    return feature.photo;
+  }
+
+  // return null by default
+  return null;
+};

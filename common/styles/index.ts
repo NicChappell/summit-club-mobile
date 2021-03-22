@@ -7,7 +7,7 @@ export const borderRadius4 = {
   borderTopRightRadius: 4,
 };
 
-export const borderReset = {
+export const borderWidthReset = {
   borderBottomWidth: 0,
   borderLeftWidth: 0,
   borderRightWidth: 0,
@@ -48,6 +48,7 @@ export const colors = {
   black50: "rgba(0, 0, 0, 0.5)",
   black25: "rgba(0, 0, 0, 0.25)",
   black05: "rgba(0, 0, 0, 0.05)",
+  black01: "rgba(0, 0, 0, 0.01)",
   white: "rgba(255, 255, 255, 1)", // #ffffff
   white75: "rgba(255, 255, 255, 0.75)",
   white50: "rgba(255, 255, 255, 0.5)",

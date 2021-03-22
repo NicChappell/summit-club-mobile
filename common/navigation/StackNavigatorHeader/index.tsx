@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StackHeaderProps } from "@react-navigation/stack";
 import {
-  borderReset,
+  borderWidthReset,
   colors,
   inputBorder,
   inputContainer,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   searchBarContainer: {
-    ...borderReset,
+    ...borderWidthReset,
     alignSelf: "stretch",
     backgroundColor: colors.white,
     height: 64,

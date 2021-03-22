@@ -3,9 +3,10 @@ import { Image, StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { GeoJsonProperties, Point } from "geojson";
+import { getFeaturePhoto2 } from "../../../common/helpers";
 import {
   borderRadius4,
-  borderReset,
+  borderWidthReset,
   colors,
   customMapStyle,
   marginReset,
@@ -16,33 +17,13 @@ import {
 import { defaultDimensions } from "./constants";
 import { IHorizontalDetailsCard } from "./interfaces";
 
-// const MOCK_FEATURE: Feature = {
-//   type: "Feature",
-//   geometry: {
-//     type: "Point",
-//     coordinates: [-105.6162397, 40.2548614],
-//   },
-//   properties: {
-//     id: 123456789,
-//     feet: 14262,
-//     meters: 4347,
-//     latitude: 40.2548614,
-//     longitude: -105.6162397,
-//     name: "Longs Peak",
-//     class: "Summit",
-//     county: "Boulder",
-//     state: "CO",
-//     country: "United States",
-//     continent: "North America",
-//   },
-// };
-
 const HorizontalDetailsCard = ({
   dimensions = defaultDimensions,
   feature,
 }: IHorizontalDetailsCard) => {
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
+  const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
   const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
   const [region, setRegion] = useState<Region | undefined>(undefined);
 
@@ -75,6 +56,14 @@ const HorizontalDetailsCard = ({
       setRegion(region);
     }
   }, [feature]);
+
+  useEffect(() => {
+    // retreive feature photo if available
+    const featurePhoto = getFeaturePhoto2(properties?.name);
+
+    // update state
+    setFeaturePhoto(featurePhoto);
+  }, [properties]);
 
   const featureCoordinate = (
     <Text style={styles.featureCoordinate}>
@@ -115,14 +104,11 @@ const HorizontalDetailsCard = ({
       containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
       wrapperStyle={styles.cardWrapperStyle}
     >
-      {Math.random() > 0.5 ? (
-        // show feature image if available
-        <Image
-          source={{ uri: "https://picsum.photos/512" }}
-          style={styles.featureImage}
-        />
+      {featurePhoto ? (
+        // render feature photo if available
+        <Image source={featurePhoto} style={styles.featurePhoto} />
       ) : (
-        // otherwise show mapview
+        // render MapView by default
         <View pointerEvents={"none"} style={styles.mapContainer}>
           <MapView
             customMapStyle={customMapStyle}
@@ -157,14 +143,13 @@ export default HorizontalDetailsCard;
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
-    ...borderReset,
+    ...borderWidthReset,
     ...marginReset,
     ...paddingReset,
     ...shadowReset,
+    backgroundColor: "transparent",
     paddingBottom: 2,
     paddingLeft: 2,
-    marginBottom: 8,
-    marginTop: 8,
   },
   cardWrapperStyle: {
     ...borderRadius4,
@@ -172,6 +157,7 @@ const styles = StyleSheet.create({
     ...paddingReset,
     ...shadow,
     alignItems: "flex-start",
+    backgroundColor: colors.white,
     flexDirection: "row",
     flex: 1,
     justifyContent: "flex-start",
@@ -195,7 +181,7 @@ const styles = StyleSheet.create({
     fontFamily: "NunitoSans_400Regular",
     fontSize: 12,
   },
-  featureImage: {
+  featurePhoto: {
     alignItems: "flex-end",
     borderBottomLeftRadius: 4,
     borderTopLeftRadius: 4,
@@ -210,12 +196,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   mapContainer: {
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
     height: "100%",
+    overflow: "hidden",
     width: 128,
   },
   map: {
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
     flex: 1,
   },
 });

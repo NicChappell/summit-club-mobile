@@ -35,7 +35,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 2,
-      name: "Madie Vera",
     },
   },
   {
@@ -51,7 +50,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 4,
-      name: "Ardath Taggart",
     },
   },
   {
@@ -67,7 +65,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 6,
-      name: "Florance Toler",
     },
   },
   {
@@ -83,7 +80,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 8,
-      name: "Dusti Cleveland",
     },
   },
   {
@@ -99,7 +95,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 10,
-      name: "Fredricka Sipes",
     },
   },
   {
@@ -115,7 +110,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 12,
-      name: "Troy Wray",
     },
   },
   {
@@ -131,7 +125,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 14,
-      name: "Ivory Fulmer",
     },
   },
   {
@@ -147,7 +140,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 16,
-      name: "Sulema Noland",
     },
   },
   {
@@ -163,7 +155,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 18,
-      name: "Denis Battle",
     },
   },
   {
@@ -179,7 +170,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 20,
-      name: "Rhea Kaminski",
     },
   },
   {
@@ -195,7 +185,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 22,
-      name: "Felica Weeks",
     },
   },
   {
@@ -211,7 +200,6 @@ export const MOCK_FEATURES: Feature<Geometry, GeoJsonProperties>[] = [
     properties: {
       ...MOCK_FEATURE.properties,
       id: 24,
-      name: "Nicolle Frost",
     },
   },
   {

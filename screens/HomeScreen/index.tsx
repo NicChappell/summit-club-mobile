@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
@@ -69,7 +70,10 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
 
   return (
     <DismissKeyboard>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         <ErrorOverlay error={error} />
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Featured summits</Text>
@@ -79,15 +83,24 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <BasicDetailsCard
-                dimensions={{
-                  height: basicDetailsCardDimensions.height,
-                  width: basicDetailsCardDimensions.width,
-                }}
-                item={item}
-                navigation={navigation}
-              />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Feature", {
+                    id: 1,
+                    name: "Test",
+                  })
+                }
+              >
+                <BasicDetailsCard
+                  dimensions={{
+                    height: basicDetailsCardDimensions.height,
+                    width: basicDetailsCardDimensions.width,
+                  }}
+                  item={item}
+                />
+              </TouchableOpacity>
             )}
+            showsHorizontalScrollIndicator={false}
           />
         </View>
         <View style={styles.section}>
@@ -106,6 +119,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
                 feature={item}
               />
             )}
+            showsHorizontalScrollIndicator={false}
           />
         </View>
         <View style={styles.section}>
@@ -133,7 +147,7 @@ export default connector(HomeScreen);
 
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.black01,
     flex: 1,
   },
   section: {

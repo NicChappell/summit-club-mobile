@@ -4,7 +4,7 @@ import { Card, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import {
   borderRadius4,
-  borderReset,
+  borderWidthReset,
   colors,
   marginReset,
   paddingReset,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   cardWrapperStyle: {
     ...borderRadius4,
-    ...borderReset,
+    ...borderWidthReset,
     ...shadow,
   },
   checkInCount: {

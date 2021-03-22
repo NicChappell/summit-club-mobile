@@ -2,7 +2,8 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Card } from "react-native-elements";
 import {
-  borderReset,
+  borderRadius4,
+  borderWidthReset,
   marginReset,
   paddingReset,
   shadow,
@@ -15,24 +16,14 @@ import { IBasicDetailsCard } from "./interfaces";
 const BasicDetailsCard = ({
   dimensions = defaultDimensions,
   item,
-  navigation,
 }: IBasicDetailsCard) => {
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("Feature", {
-          id: 1,
-          name: "Test",
-        })
-      }
+    <Card
+      containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
+      wrapperStyle={styles.cardWrapperStyle}
     >
-      <Card
-        containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
-        wrapperStyle={styles.cardWrapperStyle}
-      >
-        <Background item={item} />
-      </Card>
-    </TouchableOpacity>
+      <Background item={item} />
+    </Card>
   );
 };
 
@@ -40,18 +31,19 @@ export default BasicDetailsCard;
 
 const styles = StyleSheet.create({
   cardContainerStyle: {
-    ...borderReset,
+    ...borderWidthReset,
     ...marginReset,
     ...paddingReset,
     ...shadowReset,
+    backgroundColor: "transparent",
     paddingBottom: 2,
     paddingLeft: 2,
   },
   cardWrapperStyle: {
+    ...borderRadius4,
     ...marginReset,
     ...paddingReset,
     ...shadow,
-    height: "100%",
-    width: "100%",
+    flex: 1,
   },
 });

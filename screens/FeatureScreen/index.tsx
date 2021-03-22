@@ -11,7 +11,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { GeoJsonProperties, Point } from "geojson";
 import { ErrorOverlay } from "../../common/components";
 import { executeSql, getFeaturePhoto } from "../../common/helpers";
-import { borderReset, colors, customMapStyle } from "../../common/styles";
+import { borderWidthReset, colors, customMapStyle } from "../../common/styles";
 import { FeaturesContext } from "../../contexts";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     fontFamily: "NunitoSans_400Regular",
   },
   featureImageBackground: {
-    ...borderReset,
+    ...borderWidthReset,
     alignItems: "flex-end",
     height: 256,
     justifyContent: "flex-end",

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { ListItem } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
-import { ErrorOverlay, HorizontalDetailsCard } from "../../common/components";
+import { ErrorOverlay } from "../../common/components";
 import { IError } from "../../common/interfaces";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
@@ -32,17 +33,34 @@ const SummitsScreen = ({ error, navigation, route, setError }: Props) => {
   }, []);
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <View style={styles.container}>
       <ErrorOverlay error={error} />
-      <View style={styles.container}>
-        {checkIns?.map((checkIn, index) => {
-          // TODO: FIREBASE QUERY
+
+      <FlatList
+        data={checkIns}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          // TODO: SQLITE DATABASE QUERY
           const feature = MOCK_FEATURE;
 
-          return <HorizontalDetailsCard feature={feature} />;
-        })}
-      </View>
-    </ScrollView>
+          return (
+            <TouchableOpacity onPress={() => console.log("TODO: HANDLE PRESS")}>
+              <ListItem
+                bottomDivider
+                containerStyle={styles.listItemContainerStyle}
+                key={item.id}
+              >
+                <ListItem.Content>
+                  <ListItem.Title>{feature.properties?.name}</ListItem.Title>
+                  <ListItem.Subtitle>{`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}</ListItem.Subtitle>
+                </ListItem.Content>
+              </ListItem>
+            </TouchableOpacity>
+          );
+        }}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 };
 
@@ -62,14 +80,10 @@ export default connector(SummitsScreen);
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     backgroundColor: colors.white,
     flex: 1,
-    justifyContent: "space-between",
-    paddingVertical: 8,
   },
-  scrollView: {
-    backgroundColor: colors.white,
-    flex: 1,
+  listItemContainerStyle: {
+    // width: "100%",
   },
 });

@@ -67,9 +67,9 @@ const HorizontalDetailsCard = ({
 
   const featureCoordinate = (
     <Text style={styles.featureCoordinate}>
-      {`${feature.properties?.latitude}° ${
+      {`${feature.properties?.latitude.toFixed(3)}° ${
         feature.properties?.latitude >= 0 ? "N" : "S"
-      }, ${feature.properties?.longitude}° ${
+      }, ${feature.properties?.longitude.toFixed(3)}° ${
         feature.properties?.longitude >= 0 ? "E" : "W"
       }`}
     </Text>
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
   },
   featureName: {
     color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 12,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 18,
   },
   mapContainer: {
     borderBottomLeftRadius: 4,

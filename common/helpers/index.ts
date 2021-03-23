@@ -54,7 +54,7 @@ export const getFeaturePhoto2 = (name: string) => {
   );
 
   if (feature) {
-    // return feature photo if available
+    // return feature photo if found
     return feature.photo;
   }
 

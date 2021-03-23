@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { Card, Text } from "react-native-elements";
-import { connect, ConnectedProps } from "react-redux";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { Card } from "react-native-elements";
 import {
   borderRadius4,
   borderWidthReset,
@@ -9,130 +8,88 @@ import {
   marginReset,
   paddingReset,
   shadow,
+  shadowReset,
 } from "../../../common/styles";
-import * as actions from "../../../redux/actions";
-import { Summit, IPopularSummit } from "../../../services";
-import { getFeaturePhoto } from "../../helpers";
-import { IPopularSummits } from "./interfaces";
+import { getFeaturePhoto } from "../../../common/helpers";
+import { defaultDimensions } from "./constants";
+import { IFullDetailsCard } from "./interfaces";
 
-type Props = PropsFromRedux & IPopularSummits;
+const FullDetailsCard = ({
+  dimensions = defaultDimensions,
+  item,
+}: IFullDetailsCard) => {
+  // destructure item
+  const { checkInsLastWeek, feature } = item;
 
-const FullDetailsCard = ({ navigation, setError }: Props) => {
-  // state hooks
-  const [popularSummits, setPopularSummits] = useState<
-    IPopularSummit[] | undefined
-  >(undefined);
+  const countyState =
+    feature.properties?.county && feature.properties?.state ? (
+      <Text style={styles.featureHierarchy}>
+        {`${feature.properties?.county} County, ${feature.properties?.state}`}
+      </Text>
+    ) : null;
 
-  // effect hooks
-  useEffect(() => {
-    Summit.getPopularSummits()
-      .then((popularSummits) => {
-        setPopularSummits(popularSummits);
-      })
-      .catch((error) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
-      });
-  }, []);
+  const countryContinent =
+    feature.properties?.country && feature.properties?.continent ? (
+      <Text style={styles.featureHierarchy}>
+        {`${feature.properties?.country}, ${feature.properties?.continent}`}
+      </Text>
+    ) : null;
+
+  const coordinate = (
+    <Text style={styles.featureCoordinate}>
+      {`${feature.properties?.latitude}° ${
+        feature.properties?.latitude >= 0 ? "N" : "S"
+      }, ${feature.properties?.longitude}° ${
+        feature.properties?.longitude >= 0 ? "E" : "W"
+      }`}
+    </Text>
+  );
+
+  const elevation = (
+    <Text style={styles.featureElevation}>
+      {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
+    </Text>
+  );
 
   return (
-    <View style={styles.container}>
-      {popularSummits?.map((summit) => {
-        const countyState =
-          summit.feature.properties?.county &&
-          summit.feature.properties?.state ? (
-            <Text style={styles.featureHierarchy}>
-              {`${summit.feature.properties?.county} County, ${summit.feature.properties?.state}`}
-            </Text>
-          ) : null;
-
-        const countryContinent =
-          summit.feature.properties?.country &&
-          summit.feature.properties?.continent ? (
-            <Text style={styles.featureHierarchy}>
-              {`${summit.feature.properties?.country}, ${summit.feature.properties?.continent}`}
-            </Text>
-          ) : null;
-
-        const coordinate = (
-          <Text style={styles.featureCoordinate}>
-            {`${summit.feature.properties?.latitude}° ${
-              summit.feature.properties?.latitude >= 0 ? "N" : "S"
-            }, ${summit.feature.properties?.longitude}° ${
-              summit.feature.properties?.longitude >= 0 ? "E" : "W"
-            }`}
-          </Text>
-        );
-
-        const elevation = (
-          <Text style={styles.featureElevation}>
-            {`${summit.feature.properties?.feet.toLocaleString()} ft / ${summit.feature.properties?.meters.toLocaleString()} m`}
-          </Text>
-        );
-
-        return (
-          <TouchableOpacity
-            key={summit.id}
-            onPress={() =>
-              navigation.navigate("Feature", {
-                id: summit.feature.properties?.id,
-                name: summit.feature.properties?.name,
-              })
-            }
-          >
-            <Card
-              containerStyle={styles.cardContainerStyle}
-              wrapperStyle={styles.cardWrapperStyle}
-            >
-              <Card.Image
-                source={getFeaturePhoto(summit.feature.properties?.name)}
-                style={styles.cardImageStyle}
-              >
-                <Text style={styles.cardImageTextStyle}>
-                  {summit.feature.properties?.name}
-                </Text>
-              </Card.Image>
-              <View style={styles.cardContent}>
-                <View style={styles.featureDetails}>
-                  {countyState}
-                  {countryContinent}
-                  {elevation}
-                  {coordinate}
-                </View>
-                <View style={styles.checkInDetails}>
-                  <Text style={styles.checkInCount}>
-                    {summit.checkInsLastWeek}
-                  </Text>
-                </View>
-              </View>
-            </Card>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
+    <Card
+      containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
+      wrapperStyle={styles.cardWrapperStyle}
+    >
+      <Card.Image
+        source={getFeaturePhoto(feature.properties?.name)}
+        style={styles.cardImageStyle}
+      >
+        <Text style={styles.cardImageTextStyle}>
+          {feature.properties?.name}
+        </Text>
+      </Card.Image>
+      <View style={styles.cardContent}>
+        <View style={styles.featureDetails}>
+          {countyState}
+          {countryContinent}
+          {elevation}
+          {coordinate}
+        </View>
+        <View style={styles.checkInDetails}>
+          <Text style={styles.checkInCount}>{checkInsLastWeek}</Text>
+        </View>
+      </View>
+    </Card>
   );
 };
 
-const mapStateToProps = () => ({});
-
-const mapDispatchToProps = { setError: actions.setError };
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(FullDetailsCard);
+export default FullDetailsCard;
 
 const styles = StyleSheet.create({
-  container: {},
   cardContainerStyle: {
+    ...borderWidthReset,
     ...marginReset,
     ...paddingReset,
-    alignSelf: "stretch",
-    marginTop: 24,
-    marginHorizontal: 2,
+    ...shadowReset,
+    backgroundColor: "transparent",
+    paddingBottom: 2,
+    paddingLeft: 2,
   },
   cardContent: {
     alignSelf: "stretch",
@@ -164,8 +121,10 @@ const styles = StyleSheet.create({
   },
   cardWrapperStyle: {
     ...borderRadius4,
-    ...borderWidthReset,
+    ...marginReset,
+    ...paddingReset,
     ...shadow,
+    flex: 1,
   },
   checkInCount: {
     color: colors.black,
@@ -188,19 +147,6 @@ const styles = StyleSheet.create({
     fontFamily: "NunitoSans_400Regular",
   },
   featureHierarchy: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-  },
-  featureImage: {
-    alignItems: "flex-end",
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-    borderWidth: 0,
-    height: 128,
-    justifyContent: "flex-end",
-    width: 128,
-  },
-  featureName: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
   },

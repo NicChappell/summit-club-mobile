@@ -1,4 +1,3 @@
-import { StackNavigationProp } from "@react-navigation/stack";
 import { ICollection, IFeaturedSummit } from "../../../services";
 
 export interface IBasicDetailsCard {

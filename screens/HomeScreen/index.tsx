@@ -20,7 +20,13 @@ import { IError } from "../../common/interfaces";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { CheckIn, ICheckIn, IFeaturedSummit, Summit } from "../../services";
+import {
+  CheckIn,
+  ICheckIn,
+  IFeaturedSummit,
+  IPopularSummit,
+  Summit,
+} from "../../services";
 import { IHomeScreen } from "./interfaces";
 
 import { MOCK_FEATURES } from "../../data/mocks/features";
@@ -35,6 +41,9 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   const [checkIns, setCheckIns] = useState<ICheckIn[] | undefined>();
   const [featuredSummits, setFeaturedSummits] = useState<
     IFeaturedSummit[] | undefined
+  >();
+  const [popularSummits, setPopularSummits] = useState<
+    IPopularSummit[] | undefined
   >();
 
   // effect hooks
@@ -60,9 +69,21 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
           message: error.message,
         });
       });
+
+    Summit.getPopularSummits()
+      .then((popularSummits) => {
+        setFeaturedSummits(popularSummits);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
   }, []);
 
   const basicDetailsCardDimensions = { height: 128, width: 128 };
+  const fullDetailsCardDimensions = { height: 256, width: 256 };
   const horizontalDetailsCardDimensions = {
     height: 128,
     width: SCREEN_WIDTH - SECTION_PADDING * 2,
@@ -124,7 +145,31 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Popular summits</Text>
-          <FullDetailsCard navigation={navigation} />
+          <FlatList
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            data={popularSummits}
+            horizontal
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Feature", {
+                    id: 1,
+                    name: "Test",
+                  })
+                }
+              >
+                <FullDetailsCard
+                  dimensions={{
+                    height: fullDetailsCardDimensions.height,
+                    width: fullDetailsCardDimensions.width,
+                  }}
+                  item={item}
+                />
+              </TouchableOpacity>
+            )}
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
       </ScrollView>
     </DismissKeyboard>

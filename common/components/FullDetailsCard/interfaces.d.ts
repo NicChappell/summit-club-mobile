@@ -1,6 +1,8 @@
-import { StackNavigationProp } from "@react-navigation/stack";
+import { IPopularSummit } from "../../../services";
 
-export interface IPopularSummits {
-  /** Contains various convenience functions that dispatch navigation actions */
-  navigation: HomeScreenNavigationProp;
+export interface IFullDetailsCard {
+  /** Custom card dimensions */
+  dimensions?: { height: number | string; width: number | string };
+  /** Item data */
+  item: IPopularSummit;
 }

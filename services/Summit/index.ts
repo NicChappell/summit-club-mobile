@@ -15,6 +15,8 @@ export interface IFeaturedSummit {
 export interface IPopularSummit {
   /** Uniquely identifies the summit */
   id: number;
+  /** Type of Feature */
+  type: SummitType;
   /** Number of check-ins previous 7 days */
   checkInsLastWeek: number;
   /** Number of check-ins previous 30 days */
@@ -78,10 +80,11 @@ class Summit {
       return Promise.resolve([
         {
           id: 1,
-          checkInsLastWeek: 123,
-          checkInsLastMonth: 234,
-          checkInsLastYear: 345,
-          checkInsAllTime: 456,
+          type: "popular",
+          checkInsLastWeek: 111,
+          checkInsLastMonth: 111,
+          checkInsLastYear: 111,
+          checkInsAllTime: 111,
           feature: {
             type: "Feature",
             geometry: {
@@ -105,10 +108,11 @@ class Summit {
         },
         {
           id: 2,
-          checkInsLastWeek: 123,
-          checkInsLastMonth: 234,
-          checkInsLastYear: 345,
-          checkInsAllTime: 456,
+          type: "popular",
+          checkInsLastWeek: 222,
+          checkInsLastMonth: 222,
+          checkInsLastYear: 222,
+          checkInsAllTime: 222,
           feature: {
             type: "Feature",
             geometry: {
@@ -132,10 +136,11 @@ class Summit {
         },
         {
           id: 3,
-          checkInsLastWeek: 123,
-          checkInsLastMonth: 234,
-          checkInsLastYear: 345,
-          checkInsAllTime: 456,
+          type: "popular",
+          checkInsLastWeek: 333,
+          checkInsLastMonth: 333,
+          checkInsLastYear: 333,
+          checkInsAllTime: 333,
           feature: {
             type: "Feature",
             geometry: {

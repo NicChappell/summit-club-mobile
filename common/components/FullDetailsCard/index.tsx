@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Card } from "react-native-elements";
+import { Button, Card } from "react-native-elements";
 import {
   borderRadius4,
   borderWidthReset,
@@ -21,58 +21,43 @@ const FullDetailsCard = ({
   // destructure item
   const { checkInsLastWeek, feature } = item;
 
-  const countyState =
-    feature.properties?.county && feature.properties?.state ? (
-      <Text style={styles.featureHierarchy}>
-        {`${feature.properties?.county} County, ${feature.properties?.state}`}
-      </Text>
-    ) : null;
-
-  const countryContinent =
-    feature.properties?.country && feature.properties?.continent ? (
-      <Text style={styles.featureHierarchy}>
-        {`${feature.properties?.country}, ${feature.properties?.continent}`}
-      </Text>
-    ) : null;
-
-  const coordinate = (
-    <Text style={styles.featureCoordinate}>
-      {`${feature.properties?.latitude}° ${
-        feature.properties?.latitude >= 0 ? "N" : "S"
-      }, ${feature.properties?.longitude}° ${
-        feature.properties?.longitude >= 0 ? "E" : "W"
-      }`}
-    </Text>
-  );
-
-  const elevation = (
-    <Text style={styles.featureElevation}>
-      {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
-    </Text>
-  );
-
   return (
     <Card
-      containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
-      wrapperStyle={styles.cardWrapperStyle}
+      containerStyle={[styles.cardContainer, { ...dimensions }]}
+      wrapperStyle={styles.cardWrapper}
     >
       <Card.Image
+        containerStyle={styles.cardImageContainer}
         source={getFeaturePhoto(feature.properties?.name)}
-        style={styles.cardImageStyle}
-      >
-        <Text style={styles.cardImageTextStyle}>
-          {feature.properties?.name}
-        </Text>
-      </Card.Image>
+        style={styles.cardImage}
+      />
       <View style={styles.cardContent}>
-        <View style={styles.featureDetails}>
-          {countyState}
-          {countryContinent}
-          {elevation}
-          {coordinate}
+        <View style={styles.header}>
+          <Text style={styles.featureName}>{feature.properties?.name}</Text>
+          <Text style={styles.featureElevation}>
+            {feature.properties?.feet.toLocaleString()} ft
+          </Text>
         </View>
-        <View style={styles.checkInDetails}>
-          <Text style={styles.checkInCount}>{checkInsLastWeek}</Text>
+        <View style={styles.body}>
+          <Text style={styles.featureLocation}>
+            {feature.properties?.county} County, {feature.properties?.state}
+          </Text>
+          <Text style={styles.featureCoordinate}>
+            {feature.properties?.latitude.toFixed(3)}°{" "}
+            {feature.properties?.latitude >= 0 ? "N" : "S"},
+            {feature.properties?.longitude.toFixed(3)}°{" "}
+            {feature.properties?.longitude >= 0 ? "E" : "W"}
+          </Text>
+        </View>
+        <View style={styles.footer}>
+          <Text style={styles.count}>
+            {checkInsLastWeek} check ins last week
+          </Text>
+          <Button
+            buttonStyle={styles.button}
+            title="Explore"
+            titleStyle={styles.buttonTitle}
+          />
         </View>
       </View>
     </Card>
@@ -82,7 +67,20 @@ const FullDetailsCard = ({
 export default FullDetailsCard;
 
 const styles = StyleSheet.create({
-  cardContainerStyle: {
+  body: {
+    alignItems: "flex-start",
+    alignSelf: "stretch",
+    justifyContent: "center",
+  },
+  button: {
+    backgroundColor: colors.zomp,
+  },
+  buttonTitle: {
+    color: colors.white,
+    fontFamily: "NotoSansJP_500Medium",
+    fontSize: 14,
+  },
+  cardContainer: {
     ...borderWidthReset,
     ...marginReset,
     ...paddingReset,
@@ -92,62 +90,65 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
   },
   cardContent: {
-    alignSelf: "stretch",
-    flexDirection: "row",
+    alignItems: "flex-start",
+    backgroundColor: colors.white,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+    justifyContent: "space-between",
+    height: "50%",
     padding: 8,
   },
-  cardImageStyle: {
-    alignItems: "flex-end",
+  cardImage: {
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
-    borderWidth: 0,
-    height: 256,
-    justifyContent: "flex-end",
+    height: "100%",
     width: "100%",
   },
-  cardImageTextStyle: {
-    color: colors.white,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    shadowColor: colors.black,
-    shadowOpacity: 0.5,
-    shadowRadius: 1,
-    shadowOffset: {
-      height: 1,
-      width: -1,
-    },
+  cardImageContainer: {
+    height: "50%",
   },
-  cardWrapperStyle: {
+  cardWrapper: {
     ...borderRadius4,
     ...marginReset,
     ...paddingReset,
     ...shadow,
     flex: 1,
   },
-  checkInCount: {
+  count: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
-  },
-  checkInDetails: {
-    alignItems: "flex-end",
-    flex: 1,
-  },
-  featureDetails: {
-    alignItems: "flex-start",
-    flex: 2,
+    fontSize: 14,
   },
   featureCoordinate: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+    fontSize: 14,
   },
   featureElevation: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+    fontSize: 14,
   },
-  featureHierarchy: {
+  featureLocation: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
+    fontSize: 14,
+  },
+  featureName: {
+    color: colors.black,
+    fontFamily: "NotoSansJP_500Medium",
+    fontSize: 16,
+  },
+  footer: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  header: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

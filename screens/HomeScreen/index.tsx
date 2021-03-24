@@ -72,7 +72,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
 
     Summit.getPopularSummits()
       .then((popularSummits) => {
-        setFeaturedSummits(popularSummits);
+        setPopularSummits(popularSummits);
       })
       .catch((error: IError) => {
         setError({

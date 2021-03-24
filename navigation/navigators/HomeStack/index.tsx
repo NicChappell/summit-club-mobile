@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StackNavigatorHeader } from "../../../common/components";
+import { StackNavigatorHeader } from "../../../common/navigation";
 import {
   FeatureScreen,
   HomeScreen,

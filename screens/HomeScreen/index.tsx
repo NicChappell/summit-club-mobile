@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Dimensions,
   FlatList,
   ScrollView,
   StyleSheet,
@@ -31,8 +30,7 @@ import { IHomeScreen } from "./interfaces";
 
 import { MOCK_FEATURES } from "../../data/mocks/features";
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SECTION_PADDING = 8;
+const SEPARATOR_WIDTH = 16;
 
 type Props = PropsFromRedux & IHomeScreen;
 
@@ -86,7 +84,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   const fullDetailsCardDimensions = { height: 256, width: 256 };
   const horizontalDetailsCardDimensions = {
     height: 128,
-    width: SCREEN_WIDTH - SECTION_PADDING * 2,
+    width: 320,
   };
 
   return (
@@ -101,6 +99,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
           <FlatList
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             data={featuredSummits}
+            decelerationRate={0}
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
@@ -122,15 +121,18 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
               </TouchableOpacity>
             )}
             showsHorizontalScrollIndicator={false}
+            snapToAlignment={"start"}
+            snapToInterval={basicDetailsCardDimensions.width + SEPARATOR_WIDTH}
           />
         </View>
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Recent Check Ins</Text>
           <FlatList
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
             data={MOCK_FEATURES}
+            decelerationRate={0}
             horizontal
             keyExtractor={(item) => item.properties?.id.toString()}
-            pagingEnabled
             renderItem={({ item }) => (
               <HorizontalDetailsCard
                 dimensions={{
@@ -141,6 +143,10 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
               />
             )}
             showsHorizontalScrollIndicator={false}
+            snapToAlignment={"start"}
+            snapToInterval={
+              horizontalDetailsCardDimensions.width + SEPARATOR_WIDTH
+            }
           />
         </View>
         <View style={styles.section}>
@@ -148,6 +154,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
           <FlatList
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             data={popularSummits}
+            decelerationRate={0}
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
@@ -169,6 +176,8 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
               </TouchableOpacity>
             )}
             showsHorizontalScrollIndicator={false}
+            snapToAlignment={"start"}
+            snapToInterval={fullDetailsCardDimensions.width + SEPARATOR_WIDTH}
           />
         </View>
       </ScrollView>
@@ -197,13 +206,13 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 24,
-    padding: SECTION_PADDING,
+    padding: 8,
   },
   sectionTitle: {
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 24,
   },
   separator: {
-    width: 16,
+    width: SEPARATOR_WIDTH,
   },
 });

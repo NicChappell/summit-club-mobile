@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Card } from "react-native-elements";
 import {
@@ -10,7 +10,7 @@ import {
   shadow,
   shadowReset,
 } from "../../../common/styles";
-import { getFeaturePhoto } from "../../../common/helpers";
+import { getFeaturePhoto, getFeaturePhoto2 } from "../../../common/helpers";
 import { defaultDimensions } from "./constants";
 import { IFullDetailsCard } from "./interfaces";
 
@@ -20,6 +20,18 @@ const FullDetailsCard = ({
 }: IFullDetailsCard) => {
   // destructure item
   const { checkInsLastWeek, feature } = item;
+
+  // state hooks
+  const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
+
+  // effect hooks
+  useEffect(() => {
+    // retreive feature photo if available
+    const featurePhoto = getFeaturePhoto2(feature.properties?.name);
+
+    // update state
+    setFeaturePhoto(featurePhoto);
+  }, []);
 
   return (
     <Card

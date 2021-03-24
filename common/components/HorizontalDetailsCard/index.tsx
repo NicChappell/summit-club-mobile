@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-elements";
-import MapView, { Circle, LatLng, Region } from "react-native-maps";
-import { GeoJsonProperties, Point } from "geojson";
-import { getFeaturePhoto2 } from "../../../common/helpers";
+import { StaticMapBackground } from "../../../common/components";
 import {
   borderRadius4,
   borderWidthReset,
   colors,
-  customMapStyle,
   marginReset,
   paddingReset,
   shadow,
   shadowReset,
 } from "../../../common/styles";
+import { getFeaturePhoto2 } from "../../../common/helpers";
 import { defaultDimensions } from "./constants";
 import { IHorizontalDetailsCard } from "./interfaces";
 
@@ -22,82 +20,16 @@ const HorizontalDetailsCard = ({
   feature,
 }: IHorizontalDetailsCard) => {
   // state hooks
-  const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
-  const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
-  const [region, setRegion] = useState<Region | undefined>(undefined);
 
   // effect hooks
   useEffect(() => {
-    if (feature) {
-      // destructure feature
-      const { geometry, properties } = feature;
-
-      // destructure geometry
-      const coordinates = (geometry as Point).coordinates;
-
-      // format marker coordinate
-      const coordinate: LatLng = {
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-      };
-
-      // format map region
-      const region: Region = {
-        latitude: coordinates[1],
-        longitude: coordinates[0],
-        latitudeDelta: 0.075,
-        longitudeDelta: 0.075,
-      };
-
-      // update state
-      setCoordinate(coordinate);
-      setProperties(properties);
-      setRegion(region);
-    }
-  }, [feature]);
-
-  useEffect(() => {
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto2(properties?.name);
+    const featurePhoto = getFeaturePhoto2(feature.properties?.name);
 
     // update state
     setFeaturePhoto(featurePhoto);
-  }, [properties]);
-
-  const featureCoordinate = (
-    <Text style={styles.featureCoordinate}>
-      {`${feature.properties?.latitude.toFixed(3)}° ${
-        feature.properties?.latitude >= 0 ? "N" : "S"
-      }, ${feature.properties?.longitude.toFixed(3)}° ${
-        feature.properties?.longitude >= 0 ? "E" : "W"
-      }`}
-    </Text>
-  );
-
-  const featureCountyState =
-    feature.properties?.county && feature.properties?.state ? (
-      <Text style={styles.featureHierarchy}>
-        {`${feature.properties?.county} County, ${feature.properties?.state}`}
-      </Text>
-    ) : null;
-
-  const featureCountryContinent =
-    feature.properties?.country && feature.properties?.continent ? (
-      <Text style={styles.featureHierarchy}>
-        {`${feature.properties?.country}, ${feature.properties?.continent}`}
-      </Text>
-    ) : null;
-
-  const featureElevation = (
-    <Text style={styles.featureElevation}>
-      {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
-    </Text>
-  );
-
-  const featureName = (
-    <Text style={styles.featureName}>{feature.properties?.name}</Text>
-  );
+  }, []);
 
   return (
     <Card
@@ -108,32 +40,34 @@ const HorizontalDetailsCard = ({
         // render feature photo if available
         <Image source={featurePhoto} style={styles.featurePhoto} />
       ) : (
-        // render MapView by default
-        <View pointerEvents={"none"} style={styles.mapContainer}>
-          <MapView
-            customMapStyle={customMapStyle}
-            provider={"google"}
-            region={region}
-            style={styles.map}
-          >
-            {coordinate && (
-              <Circle
-                center={coordinate}
-                fillColor={colors.queenBlue50}
-                radius={500}
-                strokeColor={colors.queenBlue}
-                strokeWidth={2.5}
-              />
-            )}
-          </MapView>
-        </View>
+        // render map by default
+        <StaticMapBackground
+          containerStyles={{
+            borderBottomLeftRadius: 4,
+            borderTopLeftRadius: 4,
+            width: 128,
+          }}
+          feature={feature}
+        />
       )}
       <View style={styles.featureDetails}>
-        {featureName}
-        {featureCountyState}
-        {featureCountryContinent}
-        {featureElevation}
-        {featureCoordinate}
+        <Text style={styles.featureName}>{feature.properties?.name}</Text>
+        <Text style={styles.featureHierarchy}>
+          {`${feature.properties?.county} County, ${feature.properties?.state}`}
+        </Text>
+        <Text style={styles.featureHierarchy}>
+          {`${feature.properties?.country}, ${feature.properties?.continent}`}
+        </Text>
+        <Text style={styles.featureElevation}>
+          {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
+        </Text>
+        <Text style={styles.featureCoordinate}>
+          {`${feature.properties?.latitude.toFixed(3)}° ${
+            feature.properties?.latitude >= 0 ? "N" : "S"
+          }, ${feature.properties?.longitude.toFixed(3)}° ${
+            feature.properties?.longitude >= 0 ? "E" : "W"
+          }`}
+        </Text>
       </View>
     </Card>
   );
@@ -194,15 +128,5 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 18,
-  },
-  mapContainer: {
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-    height: "100%",
-    overflow: "hidden",
-    width: 128,
-  },
-  map: {
-    flex: 1,
   },
 });

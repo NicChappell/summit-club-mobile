@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Avatar, ListItem } from "react-native-elements";
+import { Avatar, Button, ListItem } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay } from "../../common/components";
 import { IUser } from "../../services/User";
@@ -143,6 +143,15 @@ const ProfileScreen = ({ error, navigation, route }: Props) => {
           />
         </ListItem>
       </View>
+      <Button
+        onPress={() =>
+          navigation.navigate("Feature", {
+            id: 1,
+            name: "Test",
+          })
+        }
+        title="test feature nav"
+      />
     </View>
   );
 };

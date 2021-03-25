@@ -1,6 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StackNavigatorHeader } from "../../../common/navigation";
+import { StackNavigatorHeader } from "../../../common/components";
 import { FeatureScreen, ExploreScreen } from "../../../screens";
 import { SummitsStackParamList } from "./types";
 

@@ -5,4 +5,6 @@ export interface IStaticMapBackground {
   containerStyles?: any;
   /** Feature profile */
   feature: Feature<Geometry, GeoJsonProperties>;
+  /** Overlay component */
+  overlay?: any; // TODO: FIGURE OUT THIS TYPE
 }

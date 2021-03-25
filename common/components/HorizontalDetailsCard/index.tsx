@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
-import { Card, Text } from "react-native-elements";
-import { StaticMapBackground } from "../../../common/components";
+import { StyleSheet, Text, View } from "react-native";
+import { Card } from "react-native-elements";
 import {
   borderRadius4,
   borderWidthReset,
@@ -12,6 +11,7 @@ import {
   shadowReset,
 } from "../../../common/styles";
 import { getFeaturePhoto2 } from "../../../common/helpers";
+import StaticMapBackground from "../StaticMapBackground";
 import { defaultDimensions } from "./constants";
 import { IHorizontalDetailsCard } from "./interfaces";
 
@@ -38,7 +38,18 @@ const HorizontalDetailsCard = ({
     >
       {featurePhoto ? (
         // render feature photo if available
-        <Image source={featurePhoto} style={styles.featurePhoto} />
+        <Card.Image
+          containerStyle={[
+            styles.cardImageContainer,
+            {
+              borderBottomLeftRadius: 4,
+              borderTopLeftRadius: 4,
+              width: 128,
+            },
+          ]}
+          source={featurePhoto}
+          style={styles.cardImage}
+        />
       ) : (
         // render map by default
         <StaticMapBackground
@@ -85,6 +96,15 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     paddingLeft: 2,
   },
+  cardImage: {
+    height: "100%",
+    width: "100%",
+  },
+  cardImageContainer: {
+    height: "100%",
+    overflow: "hidden",
+    width: "100%",
+  },
   cardWrapperStyle: {
     ...borderRadius4,
     ...marginReset,
@@ -114,15 +134,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
     fontSize: 12,
-  },
-  featurePhoto: {
-    alignItems: "flex-end",
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-    borderWidth: 0,
-    height: "100%",
-    justifyContent: "flex-end",
-    width: 128,
   },
   featureName: {
     color: colors.black,

@@ -8,6 +8,7 @@ import { IStaticMapBackground } from "./interfaces";
 const StaticMapBackground = ({
   containerStyles,
   feature,
+  overlay,
 }: IStaticMapBackground) => {
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
@@ -60,6 +61,7 @@ const StaticMapBackground = ({
             strokeWidth={2.5}
           />
         )}
+        {overlay}
       </MapView>
     </View>
   );

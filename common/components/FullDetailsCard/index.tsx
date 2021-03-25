@@ -10,7 +10,8 @@ import {
   shadow,
   shadowReset,
 } from "../../../common/styles";
-import { getFeaturePhoto, getFeaturePhoto2 } from "../../../common/helpers";
+import { getFeaturePhoto2 } from "../../../common/helpers";
+import StaticMapBackground from "../StaticMapBackground";
 import { defaultDimensions } from "./constants";
 import { IFullDetailsCard } from "./interfaces";
 
@@ -38,11 +39,31 @@ const FullDetailsCard = ({
       containerStyle={[styles.cardContainer, { ...dimensions }]}
       wrapperStyle={styles.cardWrapper}
     >
-      <Card.Image
-        containerStyle={styles.cardImageContainer}
-        source={getFeaturePhoto(feature.properties?.name)}
-        style={styles.cardImage}
-      />
+      {featurePhoto ? (
+        // render feature photo if available
+        <Card.Image
+          containerStyle={[
+            styles.cardImageContainer,
+            {
+              borderTopLeftRadius: 4,
+              borderTopRightRadius: 4,
+              height: "50%",
+            },
+          ]}
+          source={featurePhoto}
+          style={styles.cardImage}
+        />
+      ) : (
+        // render map by default
+        <StaticMapBackground
+          containerStyles={{
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+            height: "50%",
+          }}
+          feature={feature}
+        />
+      )}
       <View style={styles.cardContent}>
         <View style={styles.header}>
           <Text style={styles.featureName}>{feature.properties?.name}</Text>
@@ -111,13 +132,13 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   cardImage: {
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
     height: "100%",
     width: "100%",
   },
   cardImageContainer: {
-    height: "50%",
+    height: "100%",
+    overflow: "hidden",
+    width: "100%",
   },
   cardWrapper: {
     ...borderRadius4,

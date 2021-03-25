@@ -39,7 +39,13 @@ class Summit {
         {
           id: 0,
           type: "featured",
-          feature: MOCK_FEATURE,
+          feature: {
+            ...MOCK_FEATURE,
+            properties: {
+              ...MOCK_FEATURE.properties,
+              name: "asdf",
+            },
+          },
         },
         {
           id: 1,
@@ -49,7 +55,13 @@ class Summit {
         {
           id: 2,
           type: "featured",
-          feature: MOCK_FEATURE,
+          feature: {
+            ...MOCK_FEATURE,
+            properties: {
+              ...MOCK_FEATURE.properties,
+              name: "qwer",
+            },
+          },
         },
         {
           id: 3,
@@ -59,7 +71,13 @@ class Summit {
         {
           id: 4,
           type: "featured",
-          feature: MOCK_FEATURE,
+          feature: {
+            ...MOCK_FEATURE,
+            properties: {
+              ...MOCK_FEATURE.properties,
+              name: "zxcv",
+            },
+          },
         },
         {
           id: 5,
@@ -114,6 +132,21 @@ class Summit {
           checkInsLastYear: 222,
           checkInsAllTime: 222,
           feature: {
+            ...MOCK_FEATURE,
+            properties: {
+              ...MOCK_FEATURE.properties,
+              name: "asdf",
+            },
+          },
+        },
+        {
+          id: 3,
+          type: "popular",
+          checkInsLastWeek: 222,
+          checkInsLastMonth: 222,
+          checkInsLastYear: 222,
+          checkInsAllTime: 222,
+          feature: {
             type: "Feature",
             geometry: {
               type: "Point",
@@ -135,7 +168,22 @@ class Summit {
           },
         },
         {
-          id: 3,
+          id: 4,
+          type: "popular",
+          checkInsLastWeek: 222,
+          checkInsLastMonth: 222,
+          checkInsLastYear: 222,
+          checkInsAllTime: 222,
+          feature: {
+            ...MOCK_FEATURE,
+            properties: {
+              ...MOCK_FEATURE.properties,
+              name: "qwer",
+            },
+          },
+        },
+        {
+          id: 5,
           type: "popular",
           checkInsLastWeek: 333,
           checkInsLastMonth: 333,
@@ -159,6 +207,21 @@ class Summit {
               state: "CO",
               country: "United States",
               continent: "North America",
+            },
+          },
+        },
+        {
+          id: 6,
+          type: "popular",
+          checkInsLastWeek: 222,
+          checkInsLastMonth: 222,
+          checkInsLastYear: 222,
+          checkInsAllTime: 222,
+          feature: {
+            ...MOCK_FEATURE,
+            properties: {
+              ...MOCK_FEATURE.properties,
+              name: "zxcv",
             },
           },
         },

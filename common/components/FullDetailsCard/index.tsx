@@ -107,6 +107,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: colors.zomp,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   buttonTitle: {
     color: colors.white,

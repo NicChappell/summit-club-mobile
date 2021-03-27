@@ -76,9 +76,11 @@ const StackNavigatorHeader = ({
               previousScreen={!!previous}
             />
           </View>
-          <Text numberOfLines={1} style={styles.center}>
-            {options.title}
-          </Text>
+          <View style={styles.center}>
+            <Text numberOfLines={1} style={styles.title}>
+              {options.title}
+            </Text>
+          </View>
           <View style={styles.right}>{/* intentionally empty */}</View>
         </View>
       )}
@@ -90,32 +92,39 @@ export default StackNavigatorHeader;
 
 const styles = StyleSheet.create({
   center: {
-    color: colors.queenBlue,
-    flex: 0,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 16,
-    maxWidth: 240,
+    alignItems: "center",
+    backgroundColor: "orange",
+    height: 64,
+    justifyContent: "center",
   },
   container: {
-    alignItems: "center",
+    ...paddingReset,
+    ...marginReset,
+    backgroundColor: colors.white,
     flexDirection: "row",
-    flexWrap: "nowrap",
     height: 64,
     justifyContent: "space-between",
+    width: "100%",
   },
   left: {
-    flex: 1,
-    paddingLeft: 12,
+    backgroundColor: "red",
+    height: 64,
+    width: 64,
   },
   right: {
-    flex: 1,
-    paddingRight: 12,
+    alignItems: "center",
+    backgroundColor: "green",
+    height: 64,
+    justifyContent: "center",
+    width: 64,
   },
   searchBarContainer: {
     ...borderWidthReset,
+    alignItems: "center",
     alignSelf: "stretch",
     backgroundColor: colors.white,
     height: 64,
+    justifyContent: "center",
     paddingHorizontal: 8,
   },
   searchBarInput: {
@@ -142,6 +151,11 @@ const styles = StyleSheet.create({
     ...inputIconContainer,
     alignItems: "center",
     justifyContent: "center",
+  },
+  title: {
+    color: colors.queenBlue,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 16,
   },
   wrapper: {
     backgroundColor: colors.white,

@@ -26,11 +26,14 @@ export default LeftComponent;
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "flex-start",
+    alignItems: "center",
+    height: "100%",
     justifyContent: "center",
+    width: "100%",
   },
   left: {
-    flex: 1,
-    paddingLeft: 12,
+    backgroundColor: "red",
+    height: 64,
+    width: 64,
   },
 });

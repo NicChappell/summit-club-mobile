@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { colors } from "../../../../styles";
+import { colors, marginReset, paddingReset } from "../../../../styles";
 import { ICenterComponent } from "./interfaces";
 
 const CenterComponent = ({ title }: ICenterComponent) => {
@@ -17,8 +17,10 @@ export default CenterComponent;
 
 const styles = StyleSheet.create({
   center: {
-    flex: 0,
-    maxWidth: 240,
+    alignItems: "center",
+    backgroundColor: "orange",
+    height: 64,
+    justifyContent: "center",
   },
   title: {
     color: colors.queenBlue,

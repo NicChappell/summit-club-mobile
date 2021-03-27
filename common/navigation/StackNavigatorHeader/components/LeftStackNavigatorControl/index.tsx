@@ -52,7 +52,9 @@ export default LeftStackNavigatorControl;
 
 const styles = StyleSheet.create({
   button: {
-    alignItems: "flex-start",
+    alignItems: "center",
+    height: "100%",
     justifyContent: "center",
+    width: "100%",
   },
 });

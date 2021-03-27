@@ -12,6 +12,12 @@ import {
   inputIconContainer,
   inputStyle,
   marginReset,
+  navigationHeaderCenterComponent,
+  navigationHeaderContainer,
+  navigationHeaderLeftComponent,
+  navigationHeaderRightComponent,
+  navigationHeaderTitle,
+  navigationHeaderWrapper,
   paddingReset,
 } from "../../styles";
 import { LeftStackNavigatorControl } from "./components";
@@ -42,7 +48,9 @@ const StackNavigatorHeader = ({
   };
 
   return (
-    <View style={[styles.wrapper, { paddingTop: useSafeAreaInsets().top }]}>
+    <View
+      style={[navigationHeaderWrapper, { paddingTop: useSafeAreaInsets().top }]}
+    >
       <StatusBar barStyle="dark-content" />
       {name === "Home" ? (
         <SearchBar
@@ -68,20 +76,22 @@ const StackNavigatorHeader = ({
           value={searchInput}
         />
       ) : (
-        <View style={styles.container}>
-          <View style={styles.left}>
+        <View style={navigationHeaderContainer}>
+          <View style={navigationHeaderLeftComponent}>
             <LeftStackNavigatorControl
               name={name}
               navigation={navigation}
               previousScreen={!!previous}
             />
           </View>
-          <View style={styles.center}>
-            <Text numberOfLines={1} style={styles.title}>
+          <View style={navigationHeaderCenterComponent}>
+            <Text numberOfLines={1} style={navigationHeaderTitle}>
               {options.title}
             </Text>
           </View>
-          <View style={styles.right}>{/* intentionally empty */}</View>
+          <View style={navigationHeaderRightComponent}>
+            {/* intentionally empty */}
+          </View>
         </View>
       )}
     </View>
@@ -91,33 +101,6 @@ const StackNavigatorHeader = ({
 export default StackNavigatorHeader;
 
 const styles = StyleSheet.create({
-  center: {
-    alignItems: "center",
-    backgroundColor: "orange",
-    height: 64,
-    justifyContent: "center",
-  },
-  container: {
-    ...paddingReset,
-    ...marginReset,
-    backgroundColor: colors.white,
-    flexDirection: "row",
-    height: 64,
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  left: {
-    backgroundColor: "red",
-    height: 64,
-    width: 64,
-  },
-  right: {
-    alignItems: "center",
-    backgroundColor: "green",
-    height: 64,
-    justifyContent: "center",
-    width: 64,
-  },
   searchBarContainer: {
     ...borderWidthReset,
     alignItems: "center",
@@ -151,15 +134,5 @@ const styles = StyleSheet.create({
     ...inputIconContainer,
     alignItems: "center",
     justifyContent: "center",
-  },
-  title: {
-    color: colors.queenBlue,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 16,
-  },
-  wrapper: {
-    backgroundColor: colors.white,
-    borderBottomColor: colors.queenBlue50,
-    borderBottomWidth: 1,
   },
 });

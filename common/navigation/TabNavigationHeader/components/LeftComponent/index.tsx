@@ -1,7 +1,11 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { colors } from "../../../../styles";
+import {
+  colors,
+  navigationHeaderButton,
+  navigationHeaderLeftComponent,
+} from "../../../../styles";
 import { ILeftComponent } from "./interfaces";
 
 const LeftComponent = ({
@@ -10,8 +14,11 @@ const LeftComponent = ({
   previousScreen,
 }: ILeftComponent) => {
   return (
-    <View style={styles.left}>
-      <TouchableOpacity style={styles.button} onPress={navigation.goBack}>
+    <View style={navigationHeaderLeftComponent}>
+      <TouchableOpacity
+        style={navigationHeaderButton}
+        onPress={navigation.goBack}
+      >
         <Ionicons
           name={"ios-chevron-back"}
           size={28}
@@ -23,17 +30,3 @@ const LeftComponent = ({
 };
 
 export default LeftComponent;
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    height: "100%",
-    justifyContent: "center",
-    width: "100%",
-  },
-  left: {
-    backgroundColor: "red",
-    height: 64,
-    width: 64,
-  },
-});

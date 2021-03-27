@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { DrawerActions } from "@react-navigation/native";
-import { colors } from "../../../../styles";
+import { colors, navigationHeaderButton } from "../../../../styles";
 import { IStackNavigatorControl } from "./interfaces";
 
 const LeftStackNavigatorControl = ({
@@ -13,7 +13,10 @@ const LeftStackNavigatorControl = ({
   // if previous screen return default navigation control
   if (previousScreen) {
     return (
-      <TouchableOpacity style={styles.button} onPress={navigation.goBack}>
+      <TouchableOpacity
+        style={navigationHeaderButton}
+        onPress={navigation.goBack}
+      >
         <Ionicons
           name={"ios-chevron-back"}
           size={28}
@@ -28,7 +31,7 @@ const LeftStackNavigatorControl = ({
     case "Explore":
       return (
         <TouchableOpacity
-          style={styles.button}
+          style={navigationHeaderButton}
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         >
           <Ionicons name={"ios-options"} size={28} color={colors.queenBlue} />
@@ -37,7 +40,7 @@ const LeftStackNavigatorControl = ({
     case "Map":
       return (
         <TouchableOpacity
-          style={styles.button}
+          style={navigationHeaderButton}
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         >
           <Ionicons name={"ios-options"} size={28} color={colors.queenBlue} />
@@ -49,12 +52,3 @@ const LeftStackNavigatorControl = ({
 };
 
 export default LeftStackNavigatorControl;
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    height: "100%",
-    justifyContent: "center",
-    width: "100%",
-  },
-});

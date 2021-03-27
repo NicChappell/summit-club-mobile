@@ -1,12 +1,15 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { colors, marginReset, paddingReset } from "../../../../styles";
+import { View, Text } from "react-native";
+import {
+  navigationHeaderCenterComponent,
+  navigationHeaderTitle,
+} from "../../../../styles";
 import { ICenterComponent } from "./interfaces";
 
 const CenterComponent = ({ title }: ICenterComponent) => {
   return (
-    <View style={styles.center}>
-      <Text numberOfLines={1} style={styles.title}>
+    <View style={navigationHeaderCenterComponent}>
+      <Text numberOfLines={1} style={navigationHeaderTitle}>
         {title}
       </Text>
     </View>
@@ -14,17 +17,3 @@ const CenterComponent = ({ title }: ICenterComponent) => {
 };
 
 export default CenterComponent;
-
-const styles = StyleSheet.create({
-  center: {
-    alignItems: "center",
-    backgroundColor: "orange",
-    height: 64,
-    justifyContent: "center",
-  },
-  title: {
-    color: colors.queenBlue,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 16,
-  },
-});

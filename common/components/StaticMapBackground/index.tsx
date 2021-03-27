@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { Point } from "geojson";
-import { colors, customMapStyle } from "../../../common/styles";
+import { customMapStyle } from "../../../common/constants";
+import { colors } from "../../../common/styles";
 import { IStaticMapBackground } from "./interfaces";
 
 const StaticMapBackground = ({

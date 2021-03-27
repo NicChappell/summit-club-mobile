@@ -1,24 +1,22 @@
 import React, { useRef, useState } from "react";
-import { StatusBar, StyleSheet, View, Text } from "react-native";
+import { StatusBar, View, Text } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StackHeaderProps } from "@react-navigation/stack";
 import {
-  borderWidthReset,
   colors,
-  inputBorder,
-  inputContainer,
-  inputIconContainer,
-  inputStyle,
-  marginReset,
   navigationHeaderCenterComponent,
   navigationHeaderContainer,
   navigationHeaderLeftComponent,
   navigationHeaderRightComponent,
   navigationHeaderTitle,
   navigationHeaderWrapper,
-  paddingReset,
+  searchBarContainer,
+  searchBarInput,
+  searchBarInputContainer,
+  searchBarLeftIconContainer,
+  searchBarRightIconContainer,
 } from "../../styles";
 import { LeftStackNavigatorControl } from "./components";
 
@@ -62,14 +60,14 @@ const StackNavigatorHeader = ({
               onPress={handleClearIconPress}
             />
           }
-          containerStyle={styles.searchBarContainer}
-          inputContainerStyle={styles.searchBarInputContainer}
-          inputStyle={styles.searchBarInput}
-          leftIconContainerStyle={styles.searchBarLeftIconContainer}
+          containerStyle={searchBarContainer}
+          inputContainerStyle={searchBarInputContainer}
+          inputStyle={searchBarInput}
+          leftIconContainerStyle={searchBarLeftIconContainer}
           onChangeText={(value) => setSearchInput(value)}
           placeholder="Find your next adventure"
           ref={searchBarRef}
-          rightIconContainerStyle={styles.searchBarRightIconContainer}
+          rightIconContainerStyle={searchBarRightIconContainer}
           searchIcon={
             <Ionicons name={"ios-search"} size={22} color={colors.queenBlue} />
           }
@@ -99,40 +97,3 @@ const StackNavigatorHeader = ({
 };
 
 export default StackNavigatorHeader;
-
-const styles = StyleSheet.create({
-  searchBarContainer: {
-    ...borderWidthReset,
-    alignItems: "center",
-    alignSelf: "stretch",
-    backgroundColor: colors.white,
-    height: 64,
-    justifyContent: "center",
-    paddingHorizontal: 8,
-  },
-  searchBarInput: {
-    ...inputStyle,
-    ...marginReset,
-    ...paddingReset,
-    height: 40,
-  },
-  searchBarInputContainer: {
-    ...inputBorder,
-    ...inputContainer,
-    alignSelf: "stretch",
-  },
-  searchBarLeftIconContainer: {
-    ...marginReset,
-    ...paddingReset,
-    ...inputIconContainer,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  searchBarRightIconContainer: {
-    ...marginReset,
-    ...paddingReset,
-    ...inputIconContainer,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

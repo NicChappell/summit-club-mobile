@@ -1,18 +1,22 @@
 import React, { useRef, useState } from "react";
-import { StatusBar, StyleSheet, View, Text } from "react-native";
+import { StatusBar, View, Text } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StackHeaderProps } from "@react-navigation/stack";
 import {
-  borderWidthReset,
   colors,
-  inputBorder,
-  inputContainer,
-  inputIconContainer,
-  inputStyle,
-  marginReset,
-  paddingReset,
+  navigationHeaderCenterComponent,
+  navigationHeaderContainer,
+  navigationHeaderLeftComponent,
+  navigationHeaderRightComponent,
+  navigationHeaderTitle,
+  navigationHeaderWrapper,
+  searchBarContainer,
+  searchBarInput,
+  searchBarInputContainer,
+  searchBarLeftIconContainer,
+  searchBarRightIconContainer,
 } from "../../styles";
 import { LeftStackNavigatorControl } from "./components";
 
@@ -42,7 +46,9 @@ const StackNavigatorHeader = ({
   };
 
   return (
-    <View style={[styles.wrapper, { paddingTop: useSafeAreaInsets().top }]}>
+    <View
+      style={[navigationHeaderWrapper, { paddingTop: useSafeAreaInsets().top }]}
+    >
       <StatusBar barStyle="dark-content" />
       {name === "Home" ? (
         <SearchBar
@@ -54,32 +60,36 @@ const StackNavigatorHeader = ({
               onPress={handleClearIconPress}
             />
           }
-          containerStyle={styles.searchBarContainer}
-          inputContainerStyle={styles.searchBarInputContainer}
-          inputStyle={styles.searchBarInput}
-          leftIconContainerStyle={styles.searchBarLeftIconContainer}
+          containerStyle={searchBarContainer}
+          inputContainerStyle={searchBarInputContainer}
+          inputStyle={searchBarInput}
+          leftIconContainerStyle={searchBarLeftIconContainer}
           onChangeText={(value) => setSearchInput(value)}
           placeholder="Find your next adventure"
           ref={searchBarRef}
-          rightIconContainerStyle={styles.searchBarRightIconContainer}
+          rightIconContainerStyle={searchBarRightIconContainer}
           searchIcon={
             <Ionicons name={"ios-search"} size={22} color={colors.queenBlue} />
           }
           value={searchInput}
         />
       ) : (
-        <View style={styles.container}>
-          <View style={styles.left}>
+        <View style={navigationHeaderContainer}>
+          <View style={navigationHeaderLeftComponent}>
             <LeftStackNavigatorControl
               name={name}
               navigation={navigation}
               previousScreen={!!previous}
             />
           </View>
-          <Text numberOfLines={1} style={styles.center}>
-            {options.title}
-          </Text>
-          <View style={styles.right}>{/* intentionally empty */}</View>
+          <View style={navigationHeaderCenterComponent}>
+            <Text numberOfLines={1} style={navigationHeaderTitle}>
+              {options.title}
+            </Text>
+          </View>
+          <View style={navigationHeaderRightComponent}>
+            {/* intentionally empty */}
+          </View>
         </View>
       )}
     </View>
@@ -87,65 +97,3 @@ const StackNavigatorHeader = ({
 };
 
 export default StackNavigatorHeader;
-
-const styles = StyleSheet.create({
-  center: {
-    color: colors.queenBlue,
-    flex: 0,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 16,
-    maxWidth: 240,
-  },
-  container: {
-    alignItems: "center",
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    height: 64,
-    justifyContent: "space-between",
-  },
-  left: {
-    flex: 1,
-    paddingLeft: 12,
-  },
-  right: {
-    flex: 1,
-    paddingRight: 12,
-  },
-  searchBarContainer: {
-    ...borderWidthReset,
-    alignSelf: "stretch",
-    backgroundColor: colors.white,
-    height: 64,
-    paddingHorizontal: 8,
-  },
-  searchBarInput: {
-    ...inputStyle,
-    ...marginReset,
-    ...paddingReset,
-    height: 40,
-  },
-  searchBarInputContainer: {
-    ...inputBorder,
-    ...inputContainer,
-    alignSelf: "stretch",
-  },
-  searchBarLeftIconContainer: {
-    ...marginReset,
-    ...paddingReset,
-    ...inputIconContainer,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  searchBarRightIconContainer: {
-    ...marginReset,
-    ...paddingReset,
-    ...inputIconContainer,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  wrapper: {
-    backgroundColor: colors.white,
-    borderBottomColor: colors.queenBlue50,
-    borderBottomWidth: 1,
-  },
-});

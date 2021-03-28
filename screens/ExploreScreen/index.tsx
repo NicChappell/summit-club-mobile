@@ -127,7 +127,7 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           data={filteredSummits}
           keyExtractor={(feature) => feature.properties?.id.toString()}
           renderItem={({ item: feature }) => (
-            <HorizontalDetailsCard feature={feature} navigation={navigation} />
+            <HorizontalDetailsCard feature={feature} />
           )}
           style={{ height: 256 + 16 }}
         />

@@ -238,9 +238,9 @@ const styles = StyleSheet.create({
   closeDrawer: {
     alignItems: "center",
     alignSelf: "flex-end",
-    height: 44,
+    height: 64,
     justifyContent: "center",
-    width: 44,
+    width: 64,
   },
   container: {
     alignItems: "stretch",

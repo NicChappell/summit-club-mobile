@@ -1,6 +1,6 @@
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { RouteProp } from "@react-navigation/native";
 
 export interface ITabNavigationHeader {
-  /** object of convenience functions to dispatch navigation actions */
-  navigation: StackNavigationProp<Record<string, object | undefined>, string>;
+  /** Contains various information regarding current route */
+  route: RouteProp;
 }

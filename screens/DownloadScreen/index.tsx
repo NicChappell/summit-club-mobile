@@ -8,7 +8,7 @@ import { IDownloadScreen } from "./interfaces";
 const DownloadScreen = ({ navigation, route }: IDownloadScreen) => {
   return (
     <View style={styles.container}>
-      <TabNavigationHeader navigation={navigation} />
+      <TabNavigationHeader route={route} />
       <Text>This is top text.</Text>
       <View>
         <Text>DownloadScreen</Text>

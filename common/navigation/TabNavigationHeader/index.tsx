@@ -9,29 +9,21 @@ import {
 import { CenterComponent, LeftComponent, RightComponent } from "./components";
 import { ITabNavigationHeader } from "./interfaces";
 
-const TabNavigationHeader = ({ navigation }: ITabNavigationHeader) => {
-  return (
-    <View
-      style={[navigationHeaderWrapper, { paddingTop: useSafeAreaInsets().top }]}
-    >
-      <Header
-        barStyle={"dark-content"}
-        containerStyle={[
-          navigationHeaderContainer,
-          { paddingBottom: useSafeAreaInsets().top },
-        ]}
-        leftComponent={
-          <LeftComponent
-            name={"mrah"}
-            navigation={navigation}
-            previousScreen={true}
-          />
-        }
-        centerComponent={<CenterComponent title="Profile" />}
-        rightComponent={<RightComponent />}
-      />
-    </View>
-  );
-};
+const TabNavigationHeader = ({ route }: ITabNavigationHeader) => (
+  <View
+    style={[navigationHeaderWrapper, { paddingTop: useSafeAreaInsets().top }]}
+  >
+    <Header
+      barStyle={"dark-content"}
+      containerStyle={[
+        navigationHeaderContainer,
+        { paddingBottom: useSafeAreaInsets().top },
+      ]}
+      leftComponent={<LeftComponent />}
+      centerComponent={<CenterComponent title={route.name} />}
+      rightComponent={<RightComponent />}
+    />
+  </View>
+);
 
 export default TabNavigationHeader;

@@ -2,7 +2,7 @@ import React from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MainTabBar } from "../../../common/navigation";
-import { DownloadScreen, FeatureScreen } from "../../../screens";
+import { DownloadScreen } from "../../../screens";
 import ExploreDrawer from "../ExploreDrawer";
 import HomeTabs from "../HomeTabs";
 import MapDrawer from "../MapDrawer";
@@ -41,7 +41,6 @@ const MainTabs = () => {
       <Tab.Screen name="Explore" component={ExploreDrawer} />
       <Tab.Screen name="Profile" component={ProfileStack} />
       <Tab.Screen name="Download" component={DownloadScreen} />
-      <Tab.Screen name="Feature" component={FeatureScreen} />
     </Tab.Navigator>
   );
 };

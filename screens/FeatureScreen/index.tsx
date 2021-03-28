@@ -12,7 +12,6 @@ import { GeoJsonProperties, Point } from "geojson";
 import { ErrorOverlay } from "../../common/components";
 import { customMapStyle } from "../../common/constants";
 import { executeSql, getFeaturePhoto } from "../../common/helpers";
-import { TabNavigationHeader } from "../../common/navigation";
 import { borderWidthReset, colors } from "../../common/styles";
 import { FeaturesContext } from "../../contexts";
 import * as actions from "../../redux/actions";
@@ -138,7 +137,6 @@ const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
   return (
     <ScrollView style={styles.scrollView}>
       <ErrorOverlay error={error} />
-      <TabNavigationHeader navigation={navigation} />
       <View style={styles.container}>
         <ImageBackground
           source={getFeaturePhoto(properties?.name)}

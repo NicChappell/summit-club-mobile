@@ -13,13 +13,17 @@ import { LatLng } from "react-native-maps";
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import * as helpers from "@turf/helpers";
 import { executeSql } from "../../common/helpers";
-import { IError, IMapBoundaries, ISQLResult } from "../../common/interfaces";
-import { IMapFilters } from "../../contexts/interfaces";
+import {
+  IError,
+  IMapBoundaries,
+  IFeatureFilters,
+  ISQLResult,
+} from "../../common/interfaces";
 import { initialMapBoundaries } from "./constants";
 
 export const countFeatureRows = async (
   featuresDatabase: SQLite.WebSQLDatabase,
-  featureFilters: IMapFilters,
+  featureFilters: IFeatureFilters,
   setError: (error: IError) => void
 ) => {
   try {
@@ -59,11 +63,7 @@ export const countFeatureRows = async (
         ${featureFilters.below10 ? "(feet <= 10000)" : "(feet >= 10000)"}
       );
     `;
-    const resultSet = await executeSql!(
-      featuresDatabase,
-      sqlStatement,
-      []
-    );
+    const resultSet = await executeSql!(featuresDatabase, sqlStatement, []);
     console.log("resultSet.rows._array: ", resultSet.rows._array);
   } catch (error) {
     setError({
@@ -236,7 +236,7 @@ export const populateFeaturesTable = async (
   features: Feature<Geometry, GeoJsonProperties>[] | undefined,
   featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>,
   featuresDatabase: SQLite.WebSQLDatabase,
-  featureFilters: IMapFilters,
+  featureFilters: IFeatureFilters,
   mapBoundaries: IMapBoundaries,
   setError: (error: IError) => void
 ) => {
@@ -348,7 +348,7 @@ export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
 export const queryFeaturesTable = async (
   features: Feature<Geometry, GeoJsonProperties>[] | undefined,
   featuresDatabase: SQLite.WebSQLDatabase,
-  featureFilters: IMapFilters,
+  featureFilters: IFeatureFilters,
   mapBoundaries: IMapBoundaries = initialMapBoundaries,
   setError: (error: IError) => void
 ) => {
@@ -409,11 +409,7 @@ export const queryFeaturesTable = async (
       LIMIT 100;
       -- OFFSET 0
     `;
-    const resultSet = await executeSql!(
-      featuresDatabase,
-      sqlStatement,
-      []
-    );
+    const resultSet = await executeSql!(featuresDatabase, sqlStatement, []);
     console.log("resultSet.rows._array.length: ", resultSet.rows._array.length);
 
     // convert resultSet into FeatureCollection

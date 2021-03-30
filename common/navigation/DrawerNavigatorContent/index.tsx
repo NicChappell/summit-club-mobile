@@ -1,24 +1,48 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
 import { Button, Slider, Text } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
+import { IFeatureFilters } from "../../../common/interfaces";
 import { colors } from "../../../common/styles";
-import { FeaturesContext } from "../../../contexts/";
-import { ElevationTier, IMapFilters } from "../../../contexts/interfaces";
-import { maxElevation } from "./constants";
+import { ElevationTier } from "../../../common/types";
+import * as actions from "../../../redux/actions";
+import { RootState } from "../../../redux/reducers";
+
+type Props = PropsFromRedux & DrawerContentComponentProps;
 
 const DrawerNavigatorContent = ({
+  featureFilters,
   navigation,
-}: DrawerContentComponentProps) => {
-  // context hooks
-  const { featureFilters, setFeatureFilters } = useContext(FeaturesContext);
-
+  setFeatureFilters,
+}: Props) => {
   // state hooks
-  const [filters, setFilters] = useState<IMapFilters>(
-    featureFilters as IMapFilters
-  );
+  const [filters, setFilters] = useState<IFeatureFilters | undefined>();
+
+  // effect hooks
+  useEffect(() => {
+    setFilters(featureFilters);
+  }, []);
+
+  if (!filters) {
+    // return early if filters is undefined
+    return null;
+  }
+
+  // destructure state
+  const {
+    maxElevation,
+    above14,
+    between13and14,
+    between12and13,
+    between11and12,
+    between10and11,
+    below10,
+    countiesOverlay,
+  } = filters;
+  console.log(maxElevation);
 
   const handleApplyPress = () => {
     // apply filters
@@ -30,7 +54,7 @@ const DrawerNavigatorContent = ({
 
   const handleCancelPress = () => {
     // reset filters
-    setFilters(featureFilters as IMapFilters);
+    setFilters(featureFilters);
 
     // close drawer
     navigation.closeDrawer();
@@ -38,7 +62,7 @@ const DrawerNavigatorContent = ({
 
   const handleCloseDrawerPress = () => {
     // reset filters
-    setFilters(featureFilters as IMapFilters);
+    setFilters(featureFilters);
 
     // close drawer
     navigation.closeDrawer();
@@ -61,7 +85,7 @@ const DrawerNavigatorContent = ({
   const handleSwitchChange = () => {
     setFilters({
       ...filters,
-      countiesOverlay: !filters.countiesOverlay,
+      countiesOverlay: !filters?.countiesOverlay,
     });
   };
 
@@ -77,7 +101,7 @@ const DrawerNavigatorContent = ({
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Max Elevation</Text>
           <Text style={styles.maxElevation}>
-            {filters.maxElevation.toLocaleString()}'
+            {maxElevation?.toLocaleString()}'
           </Text>
         </View>
         <Slider
@@ -93,7 +117,7 @@ const DrawerNavigatorContent = ({
             width: 24,
             backgroundColor: colors.queenBlue,
           }}
-          value={filters.maxElevation}
+          value={maxElevation}
         />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Elevation Tier</Text>
@@ -105,9 +129,7 @@ const DrawerNavigatorContent = ({
           <Text style={styles.label}>Above 14,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={
-              filters.above14 ? "ios-checkbox-outline" : "ios-square-outline"
-            }
+            name={above14 ? "ios-checkbox-outline" : "ios-square-outline"}
             size={28}
           />
         </TouchableOpacity>
@@ -119,9 +141,7 @@ const DrawerNavigatorContent = ({
           <Ionicons
             color={colors.queenBlue}
             name={
-              filters.between13and14
-                ? "ios-checkbox-outline"
-                : "ios-square-outline"
+              between13and14 ? "ios-checkbox-outline" : "ios-square-outline"
             }
             size={28}
           />
@@ -134,9 +154,7 @@ const DrawerNavigatorContent = ({
           <Ionicons
             color={colors.queenBlue}
             name={
-              filters.between12and13
-                ? "ios-checkbox-outline"
-                : "ios-square-outline"
+              between12and13 ? "ios-checkbox-outline" : "ios-square-outline"
             }
             size={28}
           />
@@ -149,9 +167,7 @@ const DrawerNavigatorContent = ({
           <Ionicons
             color={colors.queenBlue}
             name={
-              filters.between11and12
-                ? "ios-checkbox-outline"
-                : "ios-square-outline"
+              between11and12 ? "ios-checkbox-outline" : "ios-square-outline"
             }
             size={28}
           />
@@ -164,9 +180,7 @@ const DrawerNavigatorContent = ({
           <Ionicons
             color={colors.queenBlue}
             name={
-              filters.between10and11
-                ? "ios-checkbox-outline"
-                : "ios-square-outline"
+              between10and11 ? "ios-checkbox-outline" : "ios-square-outline"
             }
             size={28}
           />
@@ -178,9 +192,7 @@ const DrawerNavigatorContent = ({
           <Text style={styles.label}>Below 10,000'</Text>
           <Ionicons
             color={colors.queenBlue}
-            name={
-              filters.below10 ? "ios-checkbox-outline" : "ios-square-outline"
-            }
+            name={below10 ? "ios-checkbox-outline" : "ios-square-outline"}
             size={28}
           />
         </TouchableOpacity>
@@ -192,7 +204,7 @@ const DrawerNavigatorContent = ({
             ios_backgroundColor={colors.black05}
             onValueChange={handleSwitchChange}
             style={styles.switch}
-            value={filters.countiesOverlay}
+            value={countiesOverlay}
           />
         </View>
       </View>
@@ -216,7 +228,17 @@ const DrawerNavigatorContent = ({
   );
 };
 
-export default DrawerNavigatorContent;
+const mapStateToProps = (state: RootState) => {
+  return { featureFilters: state.features.featureFilters };
+};
+
+const mapDispatchToProps = { setFeatureFilters: actions.setFeatureFilters };
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(DrawerNavigatorContent);
 
 const styles = StyleSheet.create({
   bottom: {
@@ -253,7 +275,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
   label: {
     color: colors.queenBlue,

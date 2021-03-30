@@ -6,9 +6,9 @@ export interface ICheckIn {
   /** Feature profile */
   featureId: string;
   /** Array of timestamps */
-  checkIns: Date[];
+  checkIns: Date[] | null;
   /** Timestamp */
-  checkOff: Date;
+  checkOff: Date | null;
 }
 
 class CheckIn {
@@ -30,13 +30,13 @@ class CheckIn {
           userId: "1",
           featureId: "0",
           checkIns: [new Date()],
-          checkOff: new Date(),
+          checkOff: null,
         },
         {
           id: "2",
           userId: "1",
           featureId: "0",
-          checkIns: [new Date()],
+          checkIns: null,
           checkOff: new Date(),
         },
         {
@@ -51,13 +51,13 @@ class CheckIn {
           userId: "1",
           featureId: "0",
           checkIns: [new Date()],
-          checkOff: new Date(),
+          checkOff: null,
         },
         {
           id: "5",
           userId: "1",
           featureId: "0",
-          checkIns: [new Date()],
+          checkIns: null,
           checkOff: new Date(),
         },
       ]);

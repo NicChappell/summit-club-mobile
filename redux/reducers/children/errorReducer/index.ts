@@ -1,4 +1,4 @@
-import { CLEAR_ERROR, SET_ERROR } from "../../../actions/errorActions/types";
+import { CLEAR_ERROR, SET_ERROR } from "../../../actions/error/types";
 import { IAction } from "../../../../common/interfaces";
 import { initState } from "./constants";
 

@@ -47,7 +47,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-export default function App() {
+const App = () => {
   let [fontsLoaded] = useFonts({
     NotoSansJP_100Thin,
     NotoSansJP_300Light,
@@ -70,6 +70,7 @@ export default function App() {
     NunitoSans_900Black,
     NunitoSans_900Black_Italic,
   });
+
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
@@ -81,4 +82,6 @@ export default function App() {
       </Provider>
     );
   }
-}
+};
+
+export default App;

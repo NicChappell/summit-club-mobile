@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ImageBackground,
   ScrollView,
@@ -13,7 +13,6 @@ import { ErrorOverlay } from "../../common/components";
 import { customMapStyle } from "../../common/constants";
 import { executeSql, getFeaturePhoto } from "../../common/helpers";
 import { borderWidthReset, colors } from "../../common/styles";
-import { FeaturesContext } from "../../contexts";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { processFeature } from "./helpers";
@@ -21,21 +20,24 @@ import { IFeatureScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IFeatureScreen;
 
-const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
+const FeatureScreen = ({
+  error,
+  feature,
+  features,
+  featuresDatabase,
+  featuresCollectionRef,
+  filters,
+  navigation,
+  route,
+  setError,
+  setFeature,
+  setFeatures,
+  setFeaturesCollectionRef,
+  setFeaturesDatabase,
+  setFilters,
+}: Props) => {
   // destructure route params
   const { id: featureId, name: featureName } = route.params;
-
-  // context hooks
-  const {
-    feature,
-    featureFilters,
-    features,
-    featuresDatabase,
-    featuresCollectionRef,
-    setFeature,
-    setFeatures,
-    setFeatureFilters,
-  } = useContext(FeaturesContext);
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
@@ -90,7 +92,6 @@ const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
   }, [feature]);
 
   useEffect(() => {
-    console.log(featuresDatabase);
     if (featuresDatabase) {
       const sqlStatement = `
         SELECT *
@@ -100,7 +101,6 @@ const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
       executeSql!(featuresDatabase, sqlStatement, [])
         .then((resultSet) => {
           const feature = processFeature(resultSet);
-          console.log(feature);
           setFeature(feature);
         })
         .catch((error) => {
@@ -111,28 +111,6 @@ const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
         });
     }
   }, [featureId]);
-
-  const countyState =
-    properties?.county && properties?.state ? (
-      <Text style={styles.hierarchy}>
-        {`${properties?.county} County, ${properties?.state}`}
-      </Text>
-    ) : null;
-
-  const countryContinent =
-    properties?.country && properties?.continent ? (
-      <Text style={styles.hierarchy}>
-        {`${properties?.country}, ${properties?.continent}`}
-      </Text>
-    ) : null;
-
-  const elevation = (
-    <Text style={styles.elevation}>
-      {`${properties?.feet.toLocaleString()} ft / ${properties?.meters.toLocaleString()} m`}
-    </Text>
-  );
-
-  const title = <Text style={styles.featureName}>{properties?.name}</Text>;
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -167,10 +145,16 @@ const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
           )}
         </View>
         <View style={styles.featurePropertiesContainer}>
-          {title}
-          {countyState}
-          {countryContinent}
-          {elevation}
+          <Text style={styles.featureName}>{properties?.name}</Text>
+          <Text style={styles.hierarchy}>
+            {`${properties?.county} County, ${properties?.state}`}
+          </Text>
+          <Text style={styles.hierarchy}>
+            {`${properties?.country}, ${properties?.continent}`}
+          </Text>
+          <Text style={styles.elevation}>
+            {`${properties?.feet.toLocaleString()} ft / ${properties?.meters.toLocaleString()} m`}
+          </Text>
           <Text style={styles.coordinate}>{latLng}</Text>
         </View>
       </View>
@@ -181,10 +165,22 @@ const FeatureScreen = ({ error, navigation, route, setError }: Props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
+    feature: state.feature.feature,
+    features: state.feature.features,
+    featuresDatabase: state.feature.featuresDatabase,
+    featuresCollectionRef: state.feature.featuresCollectionRef,
+    filters: state.feature.filters,
   };
 };
 
-const mapDispatchToProps = { setError: actions.setError };
+const mapDispatchToProps = {
+  setError: actions.setError,
+  setFeature: actions.setFeature,
+  setFeatures: actions.setFeatures,
+  setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
+  setFeaturesDatabase: actions.setFeaturesDatabase,
+  setFilters: actions.setFilters,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

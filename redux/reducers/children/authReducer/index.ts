@@ -2,7 +2,7 @@ import {
   SIGN_IN,
   SIGN_OUT,
   SIGN_UP,
-} from "../../../actions/authActions/types";
+} from "../../../actions/auth/types";
 import { IAction } from "../../../../common/interfaces";
 import { initState } from "./constants";
 

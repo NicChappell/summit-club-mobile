@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import MapView, {
   Callout,
@@ -15,9 +15,7 @@ import { Feature, Geometry, GeoJsonProperties, Point } from "geojson";
 import { ErrorOverlay } from "../../common/components";
 import { customMapStyle } from "../../common/constants";
 import { colors } from "../../common/styles";
-import { IMapBoundaries } from "../../common/interfaces";
-import { FeaturesContext } from "../../contexts";
-import { IMapFilters } from "../../contexts/interfaces";
+import { IMapBoundaries, IFeatureFilters } from "../../common/interfaces";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
@@ -41,7 +39,22 @@ import { COLORADO_COUNTIES } from "./STUB";
 
 type Props = PropsFromRedux & IMapScreen;
 
-const MapScreen = ({ error, navigation, route, setError }: Props) => {
+const MapScreen = ({
+  error,
+  feature,
+  featureFilters,
+  features,
+  featuresDatabase,
+  featuresCollectionRef,
+  navigation,
+  route,
+  setError,
+  setFeature,
+  setFeatureFilters,
+  setFeatures,
+  setFeaturesCollectionRef,
+  setFeaturesDatabase,
+}: Props) => {
   // state hooks
   const [cameraConfig, setCameraConfig] = useState<Camera | undefined>(
     undefined
@@ -59,18 +72,6 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
   const [mapMarkers, setMapMarkers] = useState<
     Feature<Geometry, GeoJsonProperties>[]
   >([]);
-
-  // context hooks
-  const {
-    feature,
-    featureFilters,
-    features,
-    featuresDatabase,
-    featuresCollectionRef,
-    setFeature,
-    setFeatures,
-    setFeatureFilters,
-  } = useContext(FeaturesContext);
 
   // ref hooks
   const mapRef = useRef<MapView>(null);
@@ -125,17 +126,13 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
         setCameraConfig(cameraConfig);
 
         // TEST COUNT
-        countFeatureRows(
-          featuresDatabase!,
-          featureFilters as IMapFilters,
-          setError
-        );
+        countFeatureRows(featuresDatabase!, featureFilters, setError);
 
         // initial database query
         return queryFeaturesTable(
           features,
           featuresDatabase!,
-          featureFilters as IMapFilters,
+          featureFilters,
           mapBoundaries,
           setError
         );
@@ -174,7 +171,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
     queryFeaturesTable(
       features,
       featuresDatabase!,
-      featureFilters as IMapFilters,
+      featureFilters,
       mapBoundaries,
       setError
     )
@@ -355,7 +352,7 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
             </Marker>
           );
         })}
-        {(featureFilters as IMapFilters).countiesOverlay &&
+        {featureFilters?.countiesOverlay &&
           countiesPolygonCoordinates?.map((coordiantes, index) => (
             <Polygon
               coordinates={coordiantes}
@@ -372,10 +369,22 @@ const MapScreen = ({ error, navigation, route, setError }: Props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
+    feature: state.features.feature,
+    featureFilters: state.features.featureFilters,
+    features: state.features.features,
+    featuresDatabase: state.features.featuresDatabase,
+    featuresCollectionRef: state.features.featuresCollectionRef,
   };
 };
 
-const mapDispatchToProps = { setError: actions.setError };
+const mapDispatchToProps = {
+  setError: actions.setError,
+  setFeature: actions.setFeature,
+  setFeatureFilters: actions.setFeatureFilters,
+  setFeatures: actions.setFeatures,
+  setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
+  setFeaturesDatabase: actions.setFeaturesDatabase,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

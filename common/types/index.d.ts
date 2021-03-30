@@ -131,3 +131,11 @@ export type Classification =
   | "Valley"
   | "Well"
   | "Woods";
+
+export type ElevationTier =
+  | "above14"
+  | "between13and14"
+  | "between12and13"
+  | "between11and12"
+  | "between10and11"
+  | "below10";

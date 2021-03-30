@@ -2,7 +2,7 @@ import {
   COMPLETE_TOUR,
   RESET_TOUR,
   SKIP_TOUR,
-} from "../../../actions/accountActions/types";
+} from "../../../actions/account/types";
 import { IAction } from "../../../../common/interfaces";
 import { initState } from "./constants";
 

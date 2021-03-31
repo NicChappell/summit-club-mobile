@@ -5,6 +5,10 @@ import {
   borderRadius4,
   borderWidthReset,
   colors,
+  featureCoordinate,
+  featureElevation,
+  featureLocation,
+  featureName,
   marginReset,
   paddingReset,
   shadow,
@@ -62,17 +66,17 @@ const HorizontalDetailsCard = ({
         />
       )}
       <View style={styles.featureDetails}>
-        <Text style={styles.featureName}>{feature.properties?.name}</Text>
-        <Text style={styles.featureHierarchy}>
+        <Text style={featureName}>{feature.properties?.name}</Text>
+        <Text style={featureLocation}>
           {`${feature.properties?.county} County, ${feature.properties?.state}`}
         </Text>
-        <Text style={styles.featureHierarchy}>
+        <Text style={featureLocation}>
           {`${feature.properties?.country}, ${feature.properties?.continent}`}
         </Text>
-        <Text style={styles.featureElevation}>
+        <Text style={featureElevation}>
           {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
         </Text>
-        <Text style={styles.featureCoordinate}>
+        <Text style={featureCoordinate}>
           {feature.properties?.latitude.toFixed(3)}°{" "}
           {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
           {feature.properties?.longitude.toFixed(3)}°{" "}
@@ -118,25 +122,5 @@ const styles = StyleSheet.create({
   featureDetails: {
     flex: 1,
     padding: 8,
-  },
-  featureCoordinate: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 12,
-  },
-  featureElevation: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 12,
-  },
-  featureHierarchy: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 12,
-  },
-  featureName: {
-    color: colors.black,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 18,
   },
 });

@@ -5,7 +5,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { StaticMapBackground } from "../../../../common/components";
 import { getFeaturePhoto2 } from "../../../../common/helpers";
-import { colors } from "../../../../common/styles";
+import {
+  colors,
+  featureLocation,
+  featureName,
+} from "../../../../common/styles";
 import { ICheckInListItemDetails } from "./interfaces";
 
 import { MOCK_FEATURE } from "../../../../data/mocks/features";
@@ -43,11 +47,7 @@ const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
   if (!feature) return null;
 
   return (
-    <ListItem
-      bottomDivider
-      containerStyle={styles.listItemContainer}
-      key={checkIn.id}
-    >
+    <ListItem bottomDivider key={checkIn.id}>
       {featurePhoto ? (
         // render feature photo if available
         <View
@@ -55,8 +55,8 @@ const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
             styles.listItemImageContainer,
             {
               borderRadius: 4,
-              height: 96,
-              width: 96,
+              height: 80,
+              width: 80,
             },
           ]}
         >
@@ -67,74 +67,31 @@ const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
         <StaticMapBackground
           containerStyles={{
             borderRadius: 4,
-            height: 96,
-            width: 96,
+            height: 80,
+            width: 80,
           }}
           feature={feature}
         />
       )}
       <ListItem.Content>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-          }}
-        >
-          <View
-            style={{
-              alignItems: "flex-start",
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "space-between",
-            }}
-          >
-            <View style={styles.header}>
-              <Text style={styles.featureName}>{feature.properties?.name}</Text>
-              <Text style={styles.featureElevation}>
-                {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
-              </Text>
-            </View>
-            <View style={styles.body}>
-              <Text style={styles.featureLocation}>
-                {feature.properties?.county} County, {feature.properties?.state}
-              </Text>
-              <Text style={styles.featureCoordinate}>
-                {feature.properties?.latitude.toFixed(3)}°{" "}
-                {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-                {feature.properties?.longitude.toFixed(3)}°{" "}
-                {feature.properties?.longitude > 0 ? "E" : "W"}
-              </Text>
-            </View>
+        <View style={styles.row}>
+          <View style={styles.leftColumn}>
+            <Text style={featureName}>{feature.properties?.name}</Text>
+            <Text style={featureLocation}>
+              {feature.properties?.county} County,
+              {feature.properties?.state}
+            </Text>
           </View>
-          <View
-            style={{
-              alignItems: "center",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
+          <View style={styles.rightColumn}>
             <Ionicons
               name={"ios-shield-checkmark-outline"}
               size={28}
               color={colors.queenBlue}
             />
-            <Text
-              style={{
-                color: colors.black,
-                fontFamily: "NunitoSans_400Regular",
-                fontSize: 14,
-              }}
-            >
-              Verified
-            </Text>
+            <Text style={styles.verified}>Verified</Text>
           </View>
         </View>
       </ListItem.Content>
-      {/* <ListItem.Chevron
-        name={"ios-shield-checkmark-outline"}
-        size={28}
-        color={colors.queenBlue}
-      /> */}
     </ListItem>
   );
 };
@@ -142,35 +99,6 @@ const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
 export default CheckInListItemDetails;
 
 const styles = StyleSheet.create({
-  body: {
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  featureCoordinate: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 14,
-  },
-  featureElevation: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 14,
-  },
-  featureLocation: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 14,
-  },
-  featureName: {
-    color: colors.black,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 18,
-  },
-  header: {
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  listItemContainer: {},
   listItemImage: {
     height: "100%",
     width: "100%",
@@ -179,5 +107,25 @@ const styles = StyleSheet.create({
     height: "100%",
     overflow: "hidden",
     width: "100%",
+  },
+  leftColumn: {
+    alignItems: "flex-start",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  rightColumn: {
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  row: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  verified: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 12,
   },
 });

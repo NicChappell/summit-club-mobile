@@ -6,3 +6,4 @@ export * from "./reset";
 export * from "./search";
 export * from "./shadow";
 export * from "./sizes";
+export * from "./text";

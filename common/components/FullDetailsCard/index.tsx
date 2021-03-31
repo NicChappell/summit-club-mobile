@@ -77,9 +77,9 @@ const FullDetailsCard = ({
           </Text>
           <Text style={styles.featureCoordinate}>
             {feature.properties?.latitude.toFixed(3)}°{" "}
-            {feature.properties?.latitude >= 0 ? "N" : "S"},
+            {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
             {feature.properties?.longitude.toFixed(3)}°{" "}
-            {feature.properties?.longitude >= 0 ? "E" : "W"}
+            {feature.properties?.longitude > 0 ? "E" : "W"}
           </Text>
         </View>
         <View style={styles.footer}>

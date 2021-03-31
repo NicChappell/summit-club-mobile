@@ -55,8 +55,8 @@ const FeatureScreen = ({
     if (coordinate) {
       const { latitude, longitude } = coordinate;
 
-      const xCardinal = longitude >= 0 ? "E" : "W";
-      const yCardinal = latitude >= 0 ? "N" : "S";
+      const xCardinal = longitude > 0 ? "E" : "W";
+      const yCardinal = latitude > 0 ? "N" : "S";
 
       setLatLng(`${latitude}° ${yCardinal}, ${longitude}° ${xCardinal}`);
     }

@@ -20,6 +20,7 @@ import { defaultDimensions } from "./constants";
 import { IHorizontalDetailsCard } from "./interfaces";
 
 const HorizontalDetailsCard = ({
+  ContentComponent,
   dimensions = defaultDimensions,
   feature,
 }: IHorizontalDetailsCard) => {
@@ -37,8 +38,8 @@ const HorizontalDetailsCard = ({
 
   return (
     <Card
-      containerStyle={[styles.cardContainerStyle, { ...dimensions }]}
-      wrapperStyle={styles.cardWrapperStyle}
+      containerStyle={[styles.cardContainer, { ...dimensions }]}
+      wrapperStyle={styles.cardWrapper}
     >
       {featurePhoto ? (
         // render feature photo if available
@@ -65,24 +66,25 @@ const HorizontalDetailsCard = ({
           feature={feature}
         />
       )}
-      <View style={styles.featureDetails}>
-        <Text style={featureName}>{feature.properties?.name}</Text>
-        <Text style={featureLocation}>
-          {`${feature.properties?.county} County, ${feature.properties?.state}`}
-        </Text>
-        <Text style={featureLocation}>
-          {`${feature.properties?.country}, ${feature.properties?.continent}`}
-        </Text>
-        <Text style={featureElevation}>
-          {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
-        </Text>
-        <Text style={featureCoordinate}>
-          {feature.properties?.latitude.toFixed(3)}°{" "}
-          {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-          {feature.properties?.longitude.toFixed(3)}°{" "}
-          {feature.properties?.longitude > 0 ? "E" : "W"}
-        </Text>
-      </View>
+      {false ? (
+        <View style={styles.cardContentContainer}>
+          <Text style={featureName}>{feature.properties?.name}</Text>
+          <Text style={featureLocation}>
+            {`${feature.properties?.county} County, ${feature.properties?.state}`}
+          </Text>
+          <Text style={featureElevation}>
+            {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
+          </Text>
+          <Text style={featureCoordinate}>
+            {feature.properties?.latitude.toFixed(3)}°{" "}
+            {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+            {feature.properties?.longitude.toFixed(3)}°{" "}
+            {feature.properties?.longitude > 0 ? "E" : "W"}
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.cardContentContainer}>{ContentComponent}</View>
+      )}
     </Card>
   );
 };
@@ -90,7 +92,7 @@ const HorizontalDetailsCard = ({
 export default HorizontalDetailsCard;
 
 const styles = StyleSheet.create({
-  cardContainerStyle: {
+  cardContainer: {
     ...borderWidthReset,
     ...marginReset,
     ...paddingReset,
@@ -98,6 +100,10 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     paddingBottom: 2,
     paddingLeft: 2,
+  },
+  cardContentContainer: {
+    flex: 1,
+    padding: 8,
   },
   cardImage: {
     height: "100%",
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
   },
-  cardWrapperStyle: {
+  cardWrapper: {
     ...borderRadius4,
     ...marginReset,
     ...paddingReset,
@@ -118,9 +124,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "flex-start",
-  },
-  featureDetails: {
-    flex: 1,
-    padding: 8,
   },
 });

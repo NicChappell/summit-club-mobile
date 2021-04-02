@@ -7,6 +7,7 @@ import { StaticMapBackground } from "../../../../common/components";
 import { getFeaturePhoto2 } from "../../../../common/helpers";
 import {
   colors,
+  featureCoordinate,
   featureLocation,
   featureName,
 } from "../../../../common/styles";
@@ -78,14 +79,19 @@ const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
           <View style={styles.leftColumn}>
             <Text style={featureName}>{feature.properties?.name}</Text>
             <Text style={featureLocation}>
-              {feature.properties?.county} County,
-              {feature.properties?.state}
+              {feature.properties?.county} County, {feature.properties?.state}
+            </Text>
+            <Text style={featureCoordinate}>
+              {feature.properties?.latitude.toFixed(3)}°{" "}
+              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+              {feature.properties?.longitude.toFixed(3)}°{" "}
+              {feature.properties?.longitude > 0 ? "E" : "W"}
             </Text>
           </View>
           <View style={styles.rightColumn}>
             <Ionicons
               name={"ios-shield-checkmark-outline"}
-              size={28}
+              size={24}
               color={colors.queenBlue}
             />
             <Text style={styles.verified}>Verified</Text>

@@ -34,6 +34,14 @@ const SEPARATOR_WIDTH = 16;
 
 type Props = PropsFromRedux & IHomeScreen;
 
+const Mrah = () => {
+  return (
+    <View>
+      <Text>test</Text>
+    </View>
+  );
+};
+
 const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
   const [checkIns, setCheckIns] = useState<ICheckIn[] | undefined>();
@@ -135,6 +143,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             keyExtractor={(item) => item.properties?.id.toString()}
             renderItem={({ item }) => (
               <HorizontalDetailsCard
+                ContentComponent={<Mrah />}
                 dimensions={{
                   height: horizontalDetailsCardDimensions.height,
                   width: horizontalDetailsCardDimensions.width,

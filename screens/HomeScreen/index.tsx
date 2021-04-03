@@ -26,6 +26,7 @@ import {
   IPopularSummit,
   Summit,
 } from "../../services";
+import { RecentCheckInCardContent } from "./components";
 import { IHomeScreen } from "./interfaces";
 
 import { MOCK_FEATURES } from "../../data/mocks/features";
@@ -33,14 +34,6 @@ import { MOCK_FEATURES } from "../../data/mocks/features";
 const SEPARATOR_WIDTH = 16;
 
 type Props = PropsFromRedux & IHomeScreen;
-
-const Mrah = () => {
-  return (
-    <View>
-      <Text>test</Text>
-    </View>
-  );
-};
 
 const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
@@ -143,7 +136,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             keyExtractor={(item) => item.properties?.id.toString()}
             renderItem={({ item }) => (
               <HorizontalDetailsCard
-                ContentComponent={<Mrah />}
+                ContentComponent={<RecentCheckInCardContent />}
                 dimensions={{
                   height: horizontalDetailsCardDimensions.height,
                   width: horizontalDetailsCardDimensions.width,

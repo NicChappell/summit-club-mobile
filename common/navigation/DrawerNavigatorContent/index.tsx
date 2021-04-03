@@ -26,10 +26,8 @@ const DrawerNavigatorContent = ({
     setFilters(featureFilters);
   }, []);
 
-  if (!filters) {
-    // return early if filters is undefined
-    return null;
-  }
+  // return early if filters is undefined
+  if (!filters) return null;
 
   // destructure state
   const {
@@ -42,7 +40,6 @@ const DrawerNavigatorContent = ({
     below10,
     countiesOverlay,
   } = filters;
-  console.log(maxElevation);
 
   const handleApplyPress = () => {
     // apply filters

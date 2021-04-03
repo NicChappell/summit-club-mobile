@@ -87,14 +87,15 @@ const FullDetailsCard = ({
           </Text>
         </View>
         <View style={styles.footer}>
-          <Text style={styles.count}>
-            {checkInsLastWeek} check ins last week
-          </Text>
           <Button
-            buttonStyle={styles.button}
+            disabledStyle={styles.button}
+            disabled={true}
             title="Explore"
-            titleStyle={styles.buttonTitle}
+            disabledTitleStyle={styles.buttonTitle}
           />
+          <Text style={styles.count}>
+            {checkInsLastWeek} check-ins
+          </Text>
         </View>
       </View>
     </Card>
@@ -159,13 +160,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   footer: {
-    alignItems: "center",
+    alignItems: "baseline",
     alignSelf: "stretch",
     flexDirection: "row",
     justifyContent: "space-between",
   },
   header: {
-    alignItems: "center",
+    alignItems: "baseline",
     alignSelf: "stretch",
     flexDirection: "row",
     justifyContent: "space-between",

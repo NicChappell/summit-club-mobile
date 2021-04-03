@@ -6,9 +6,9 @@ import {
   featureLocation,
   featureName,
 } from "../../../../common/styles";
-import { IRecentCheckInCardContent } from "./interfaces";
+import { ICheckInCardContent } from "./interfaces";
 
-const RecentCheckInCardContent = ({}: IRecentCheckInCardContent) => {
+const CheckInCardContent = ({}: ICheckInCardContent) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -33,7 +33,7 @@ const RecentCheckInCardContent = ({}: IRecentCheckInCardContent) => {
   );
 };
 
-export default RecentCheckInCardContent;
+export default CheckInCardContent;
 
 const styles = StyleSheet.create({
   container: {

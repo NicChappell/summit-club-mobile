@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   rangeViewStyle: {
+    ...borderRadius4,
     alignItems: "center",
     backgroundColor: colors.zomp,
     height: "100%",

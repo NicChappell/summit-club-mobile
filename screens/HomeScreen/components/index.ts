@@ -1,1 +1,1 @@
-export { default as RecentCheckInCardContent } from "./RecentCheckInCardContent";
+export { default as CheckInCardContent } from "./CheckInCardContent";

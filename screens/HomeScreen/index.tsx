@@ -26,7 +26,7 @@ import {
   IPopularSummit,
   Summit,
 } from "../../services";
-import { RecentCheckInCardContent } from "./components";
+import { CheckInCardContent } from "./components";
 import { IHomeScreen } from "./interfaces";
 
 import { MOCK_FEATURES } from "../../data/mocks/features";
@@ -82,7 +82,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   }, []);
 
   const basicDetailsCardDimensions = { height: 128, width: 128 };
-  const fullDetailsCardDimensions = { height: 256, width: 256 };
+  const fullDetailsCardDimensions = { height: 288, width: 288 };
   const horizontalDetailsCardDimensions = {
     height: 128,
     width: 320,
@@ -127,7 +127,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
           />
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent Check Ins</Text>
+          <Text style={styles.sectionTitle}>Recent check-ins</Text>
           <FlatList
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             data={MOCK_FEATURES}
@@ -136,7 +136,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             keyExtractor={(item) => item.properties?.id.toString()}
             renderItem={({ item }) => (
               <HorizontalDetailsCard
-                ContentComponent={<RecentCheckInCardContent />}
+                ContentComponent={<CheckInCardContent />}
                 dimensions={{
                   height: horizontalDetailsCardDimensions.height,
                   width: horizontalDetailsCardDimensions.width,

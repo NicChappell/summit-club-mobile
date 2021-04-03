@@ -19,8 +19,11 @@ import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { Collection, ICollection, Summit } from "../../services";
+import { FeatureCardContent } from "./components";
 import { IExploreScreen } from "./interfaces";
 import { SortMethod, SortMethodIcon } from "./types";
+
+const SEPARATOR_WIDTH = 16;
 
 type Props = PropsFromRedux & IExploreScreen;
 
@@ -75,23 +78,14 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
-      <View
-        style={[
-          styles.section,
-          {
-            borderBottomColor: colors.queenBlue25,
-            borderBottomWidth: 1,
-            paddingBottom: 16,
-            paddingTop: 8,
-          },
-        ]}
-      >
+      <View style={styles.horizontalScrollSection}>
         <Text style={styles.sectionTitle}>Summit Collections</Text>
         <FlatList
           ItemSeparatorComponent={() => (
             <View style={styles.horizontalSeparator} />
           )}
           data={collections}
+          decelerationRate={0}
           horizontal
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
@@ -112,10 +106,12 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
               />
             </TouchableOpacity>
           )}
-          style={{ height: basicDetailsCardDimensions.height }}
+          showsHorizontalScrollIndicator={false}
+          snapToAlignment={"start"}
+          snapToInterval={basicDetailsCardDimensions.width + SEPARATOR_WIDTH}
         />
       </View>
-      <View style={[styles.section, { paddingTop: 16 }]}>
+      <View style={styles.verticalScrollSection}>
         <TouchableOpacity style={styles.sortBy} onPress={handleSortMethodPress}>
           <Text style={styles.sectionTitle}>Sort by elevation</Text>
           <Ionicons name={sortMethodIcon} size={20} color={colors.queenBlue} />
@@ -127,9 +123,12 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           data={filteredSummits}
           keyExtractor={(feature) => feature.properties?.id.toString()}
           renderItem={({ item: feature }) => (
-            <HorizontalDetailsCard feature={feature} />
+            <HorizontalDetailsCard
+              ContentComponent={<FeatureCardContent />}
+              feature={feature}
+            />
           )}
-          style={{ height: 256 + 16 }}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </View>
@@ -153,16 +152,20 @@ export default connector(ExploreScreen);
 const styles = StyleSheet.create({
   container: {
     alignItems: "flex-start",
-    backgroundColor: colors.white,
+    backgroundColor: colors.black01,
     flex: 1,
     justifyContent: "flex-start",
     padding: 8,
   },
-  horizontalSeparator: {
-    width: 16,
-  },
-  section: {
+  horizontalScrollSection: {
     alignSelf: "stretch",
+    borderBottomColor: colors.queenBlue25,
+    borderBottomWidth: 1,
+    paddingBottom: 16,
+    paddingTop: 8,
+  },
+  horizontalSeparator: {
+    width: SEPARATOR_WIDTH,
   },
   sectionTitle: {
     color: colors.queenBlue,
@@ -175,7 +178,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
   },
+  verticalScrollSection: {
+    alignSelf: "stretch",
+    flex: 1,
+    marginTop: 16,
+  },
   verticalSeparator: {
-    height: 16,
+    height: SEPARATOR_WIDTH,
   },
 });

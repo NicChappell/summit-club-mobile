@@ -1,79 +1,30 @@
 import React, { useEffect, useState } from "react";
-import {
-  ImageBackground,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
-import { GeoJsonProperties, Point } from "geojson";
+import { Point } from "geojson";
 import { ErrorOverlay } from "../../common/components";
 import { customMapStyle } from "../../common/constants";
-import { executeSql, getFeaturePhoto } from "../../common/helpers";
 import { borderWidthReset, colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { processFeature } from "./helpers";
 import { IFeatureScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IFeatureScreen;
 
 const FeatureScreen = ({
   error,
-  feature,
   features,
-  featuresDatabase,
-  featuresCollectionRef,
-  featureFilters,
   navigation,
   route,
   setError,
-  setFeature,
-  setFeatures,
-  setFeaturesCollectionRef,
-  setFeaturesDatabase,
-  setFeatureFilters,
 }: Props) => {
-  console.log("error:", error);
-  console.log("feature:", feature);
-  console.log("featuresDatabase:", featuresDatabase);
-  console.log("route:", route);
-  console.log("setError:", setError);
-  console.log("setFeature:", setFeature);
-
-  // destructure route params
-  const { id: featureId, name: featureName } = route.params;
-  console.log("featureId: ", featureId);
-  console.log("featureName: ", featureName);
+  // destructure features
+  const { feature } = features;
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
-  const [latLng, setLatLng] = useState<string | undefined>(undefined);
-  const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
   const [region, setRegion] = useState<Region | undefined>(undefined);
-  console.log("coordinate: ", coordinate);
-  console.log("latLng: ", latLng);
-  console.log("properties: ", properties);
-  console.log("region: ", region);
-
-  // effect hooks
-  useEffect(() => {
-    // reset the selected feature data
-    return () => setFeature(undefined);
-  }, []);
-
-  useEffect(() => {
-    if (coordinate) {
-      const { latitude, longitude } = coordinate;
-
-      const xCardinal = longitude > 0 ? "E" : "W";
-      const yCardinal = latitude > 0 ? "N" : "S";
-
-      setLatLng(`${latitude}° ${yCardinal}, ${longitude}° ${xCardinal}`);
-    }
-  }, [coordinate]);
 
   useEffect(() => {
     if (feature) {
@@ -99,37 +50,15 @@ const FeatureScreen = ({
 
       // update state
       setCoordinate(coordinate);
-      setProperties(properties);
       setRegion(region);
     }
   }, [feature]);
-
-  useEffect(() => {
-    if (featuresDatabase) {
-      const sqlStatement = `
-        SELECT *
-        FROM features
-        WHERE id = '${featureId}';
-      `;
-      executeSql!(featuresDatabase, sqlStatement, [])
-        .then((resultSet) => {
-          const feature = processFeature(resultSet);
-          setFeature(feature);
-        })
-        .catch((error) => {
-          setError({
-            code: error.code,
-            message: error.message,
-          });
-        });
-    }
-  }, [featureId]);
 
   return (
     <ScrollView style={styles.scrollView}>
       <ErrorOverlay error={error} />
       <View style={styles.container}>
-        <ImageBackground
+        {/* <ImageBackground
           source={getFeaturePhoto(properties?.name)}
           style={styles.featureImageBackground}
         >
@@ -138,7 +67,7 @@ const FeatureScreen = ({
               {properties?.name}
             </Text>
           </View>
-        </ImageBackground>
+        </ImageBackground> */}
         <View pointerEvents={"none"} style={styles.mapContainer}>
           {coordinate && region && (
             <MapView
@@ -157,7 +86,7 @@ const FeatureScreen = ({
             </MapView>
           )}
         </View>
-        <View style={styles.featurePropertiesContainer}>
+        {/* <View style={styles.featurePropertiesContainer}>
           <Text style={styles.featureName}>{properties?.name}</Text>
           <Text style={styles.hierarchy}>
             {`${properties?.county} County, ${properties?.state}`}
@@ -168,8 +97,7 @@ const FeatureScreen = ({
           <Text style={styles.elevation}>
             {`${properties?.feet.toLocaleString()} ft / ${properties?.meters.toLocaleString()} m`}
           </Text>
-          <Text style={styles.coordinate}>{latLng}</Text>
-        </View>
+        </View> */}
       </View>
     </ScrollView>
   );
@@ -178,22 +106,11 @@ const FeatureScreen = ({
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
-    feature: state.features.feature,
-    features: state.features.features,
-    featuresDatabase: state.features.featuresDatabase,
-    featuresCollectionRef: state.features.featuresCollectionRef,
-    featureFilters: state.features.featureFilters,
+    features: state.features,
   };
 };
 
-const mapDispatchToProps = {
-  setError: actions.setError,
-  setFeature: actions.setFeature,
-  setFeatures: actions.setFeatures,
-  setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
-  setFeaturesDatabase: actions.setFeaturesDatabase,
-  setFeatureFilters: actions.setFeatureFilters,
-};
+const mapDispatchToProps = { setError: actions.setError };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -206,9 +123,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "flex-start",
-  },
-  coordinate: {
-    fontFamily: "NunitoSans_400Regular",
   },
   elevation: {
     fontFamily: "NunitoSans_400Regular",

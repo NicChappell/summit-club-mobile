@@ -8,11 +8,15 @@
 
 - ExploreStack
     - Explore: ExploreScreen
+    - Feature: FeatureStack
+
+- FeatureStack
     - Feature: FeatureScreen
+    - CheckIn: CheckInScreen
 
 - HomeStack
     - Home: HomeScreen
-    - Feature: FeatureScreen
+    - Feature: FeatureStack
 
 - HomeTabs
     skipTour
@@ -24,7 +28,7 @@
 
 - MapStack
     - Map: MapScreen
-    - Feature: FeatureScreen
+    - Feature: FeatureStack
 
 - MainTabs
     - Home: HomeTabs

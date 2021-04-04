@@ -1,11 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigatorHeader } from "../../../common/navigation";
-import {
-  FeatureScreen,
-  HomeScreen,
-  SearchResultsScreen,
-} from "../../../screens";
+import { HomeScreen, SearchResultsScreen } from "../../../screens";
+import FeatureStack from "../FeatureStack";
 import { HomeStackParamList } from "./types";
 
 // new stack navigator
@@ -26,7 +23,7 @@ const HomeStack = () => {
         }}
       />
       <Stack.Screen
-        component={FeatureScreen}
+        component={FeatureStack}
         name="Feature"
         options={({ route }) => ({ title: route.params.name })}
       />

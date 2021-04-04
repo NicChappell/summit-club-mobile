@@ -8,6 +8,7 @@ import {
   GeoJsonProperties,
   MultiPolygon,
   Point,
+  Position,
 } from "geojson";
 import { LatLng } from "react-native-maps";
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
@@ -164,9 +165,10 @@ export const getCurrentCounty = (
 ): Feature | undefined => {
   return features.find((feature) => {
     // destructure feature
-    const {
-      geometry: { coordinates },
-    } = feature;
+    const { geometry } = feature;
+
+    // destructure geometry
+    const coordinates = (geometry as MultiPolygon).coordinates;
 
     // destructure coordinates
     // NOTE: coordinates is an array of three-dimensional arrays
@@ -316,11 +318,33 @@ export const populateFeaturesTable = async (
   }
 };
 
-export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
-  // destructure result set
+export const processResult = (resultSet: SQLite.SQLResultSet) => {
+  // destructure ResultSet
   const { _array }: any = resultSet.rows;
 
-  // convert result set array into GeoJSON Features
+  // get first result of ResultSet _array
+  const result = _array[0];
+
+  // create a GeoJSON Geometry from result coordinates
+  const geometry: Geometry = {
+    type: "Point",
+    coordinates: [result.longitude, result.latitude],
+  };
+
+  // create a GeoJSON properties object from result properties
+  const properties: GeoJsonProperties = { ...result };
+
+  // create a GeoJSON Feature
+  const feature: Feature = helpers.feature(geometry, properties);
+
+  return feature;
+};
+
+export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
+  // destructure ResultSet
+  const { _array }: any = resultSet.rows;
+
+  // convert ResultSet array into GeoJSON Features
   const features = _array.map((result: ISQLResult) => {
     // create a GeoJSON Geometry from result coordinates
     const geometry: Geometry = {

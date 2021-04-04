@@ -20,11 +20,7 @@ const SummitsScreen = ({ error, navigation, route }: Props) => {
       <FlatList
         data={summits}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => console.log("TODO: HANDLE PRESS")}>
-            <SummitDetailsListItem item={item} />
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => <SummitDetailsListItem item={item} />}
         showsVerticalScrollIndicator={false}
       />
     </View>

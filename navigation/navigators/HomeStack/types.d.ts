@@ -1,5 +1,11 @@
 export type HomeStackParamList = {
+  /** Home Screen */
   Home: undefined;
-  Feature: { id: number; name: string };
+  /** Feature Stack */
+  Feature: {
+    /** The Feature name */
+    name: string;
+  };
+  /** Search Results Screen */
   SearchResults: undefined;
 };

@@ -30,7 +30,13 @@ import { IHomeScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IHomeScreen;
 
-const HomeScreen = ({ error, navigation, route, setError }: Props) => {
+const HomeScreen = ({
+  error,
+  navigation,
+  route,
+  setError,
+  setFeature,
+}: Props) => {
   // state hooks
   const [checkIns, setCheckIns] = useState<ICheckIn[] | undefined>();
   const [featuredSummits, setFeaturedSummits] = useState<
@@ -76,6 +82,20 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
       });
   }, []);
 
+  const handleFeaturedSummitPress = (item: ISummit) => {
+    // destructure item
+    const { feature } = item;
+
+    // update global state
+    setFeature(feature);
+
+    // navigate to Feature screen
+    navigation.navigate("Feature", {
+      id: feature.properties?.id,
+      name: feature.properties?.name,
+    });
+  };
+
   const basicDetailsCardDimensions = { height: 128, width: 128 };
   const fullDetailsCardDimensions = { height: 288, width: 288 };
   const horizontalDetailsCardDimensions = {
@@ -101,14 +121,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Feature", {
-                    id: 1,
-                    name: "Test",
-                  })
-                }
-              >
+              <TouchableOpacity onPress={() => handleFeaturedSummitPress(item)}>
                 <BasicDetailsCard
                   dimensions={{
                     height: basicDetailsCardDimensions.height,

@@ -1,4 +1,11 @@
 export type MapStackParamList = {
+  /** Map Screen */
   Map: undefined;
-  Feature: { id: number; name: string };
+  /** Feature Screen */
+  Feature: {
+    /** The Feature id */
+    id: number;
+    /** The Feature name */
+    name: string;
+  };
 };

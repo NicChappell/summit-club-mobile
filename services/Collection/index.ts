@@ -1,7 +1,7 @@
 export type CollectionType = "range";
 
 export interface ICollection {
-  /** Uniquely identifies the Collection */
+  /** Uniquely identifies the Collection record */
   id: number;
   /** Name of the Collection */
   name: string;

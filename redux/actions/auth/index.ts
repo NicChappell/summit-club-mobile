@@ -35,7 +35,7 @@ export const signIn = (authCredentials: IAuthCredentials): AppThunk => async (
       await AsyncStorage.setItem("uid", user.uid);
 
       // authenticate user
-      dispatch({ type: SIGN_UP, payload: { uid: user.uid } });
+      dispatch({ type: SIGN_IN, payload: { uid: user.uid } });
     }
   } catch (error) {
     const payload: IError = {

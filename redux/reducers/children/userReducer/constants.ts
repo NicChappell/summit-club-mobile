@@ -1,6 +1,7 @@
-import { ISummitsState } from "./interfaces";
+import { IUserState } from "./interfaces";
 
-export const initState: ISummitsState = {
-  featuredSummits: undefined,
-  popularSummits: undefined,
+export const initState: IUserState = {
+  account: undefined,
+  contact: undefined,
+  summits: undefined,
 };

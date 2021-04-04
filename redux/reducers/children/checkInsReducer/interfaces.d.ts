@@ -1,4 +1,4 @@
-import { ICheckIn } from "../../../../services/CheckIn";
+import { ICheckIn } from "../../../../services";
 
 export interface ICheckInsState {
   /** Array of recent check-in data */

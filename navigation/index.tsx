@@ -4,15 +4,20 @@ import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
+import { IError } from "../common/interfaces";
 import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
+import { IAuthState } from "../redux/reducers/children/authReducer/interfaces";
+import { User } from "../services";
 import { AuthStack, MainTabs } from "./navigators";
 
 const Navigation = ({
   auth,
   checkAuthentication,
+  setError,
   setFeaturesCollectionRef,
   setFeaturesDatabase,
+  setUser,
 }: PropsFromRedux) => {
   // destructure auth
   const { uid } = auth;
@@ -33,10 +38,21 @@ const Navigation = ({
 
   let navigator;
   if (uid) {
-    // authenticated navigator
+    User.get(uid)
+      .then((user) => {
+        setUser(user);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
+
+    // use authenticated navigator
     navigator = <MainTabs />;
   } else {
-    // unauthenticated navigator
+    // use unauthenticated navigator
     navigator = <AuthStack />;
   }
 
@@ -45,16 +61,16 @@ const Navigation = ({
 
 const mapStateToProps = (state: RootState) => {
   return {
-    auth: state.auth,
-    featuresDatabase: state.features.featuresDatabase,
-    featuresCollectionRef: state.features.featuresCollectionRef,
+    auth: state.auth as IAuthState,
   };
 };
 
 const mapDispatchToProps = {
   checkAuthentication: actions.checkAuthentication,
+  setError: actions.setError,
   setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
   setFeaturesDatabase: actions.setFeaturesDatabase,
+  setUser: actions.setUser,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

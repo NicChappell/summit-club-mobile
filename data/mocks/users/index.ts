@@ -18,5 +18,13 @@ export const MOCK_USER: IUser = {
     province: "CO",
     postalCode: "80026",
   },
-  summits: [MOCK_SUMMIT],
+  summits: [
+    MOCK_SUMMIT,
+    {
+      ...MOCK_SUMMIT,
+      id: 2,
+      checkIns: undefined,
+      checkOff: new Date(),
+    },
+  ],
 };

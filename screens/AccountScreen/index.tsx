@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
@@ -13,19 +13,15 @@ import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { IAccountScreen } from "./interfaces";
 
-import { IUser } from "../../services/User";
-import { MOCK_USER } from "../../data/mocks";
-
 type Props = PropsFromRedux & IAccountScreen;
 
 const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
-  // state hooks
-  const [user, setUser] = useState<IUser | undefined>(undefined);
+  // destructure route params
+  const { account } = route.params;
+  console.log(account);
 
-  // effect hooks
-  useEffect(() => {
-    setUser(MOCK_USER);
-  }, []);
+  // state hooks
+  const [disabled, setDisabled] = useState<boolean>(true);
 
   return (
     <DismissKeyboard>
@@ -42,7 +38,7 @@ const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
             inputStyle={styles.inputStyle}
             label="Username"
             labelStyle={styles.labelStyle}
-            placeholder={user?.account.username}
+            placeholder={account.username}
           />
           <Input
             disabled

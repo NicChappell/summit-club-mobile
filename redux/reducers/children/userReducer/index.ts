@@ -1,31 +1,24 @@
-import {
-  RESET_SUMMITS,
-  SET_FEATURED_SUMMITS,
-  SET_POPULAR_SUMMITS,
-} from "../../../actions/summits/types";
+import { RESET_USER, SET_USER } from "../../../actions/user/types";
 import { IAction } from "../../../../common/interfaces";
 import { initState } from "./constants";
 
-const summitsReducer = (state = initState, action: IAction) => {
+const userReducer = (state = initState, action: IAction) => {
   // destructure action
   const { type, payload } = action;
 
   switch (type) {
-    case RESET_SUMMITS:
+    case RESET_USER:
       return { ...initState };
-    case SET_FEATURED_SUMMITS:
+    case SET_USER:
       return {
         ...state,
-        feature: payload.featuredSummits,
-      };
-    case SET_POPULAR_SUMMITS:
-      return {
-        ...state,
-        features: payload.popularSummits,
+        account: payload.user.account,
+        contact: payload.user.contact,
+        summits: payload.user.summits,
       };
     default:
       return state;
   }
 };
 
-export default summitsReducer;
+export default userReducer;

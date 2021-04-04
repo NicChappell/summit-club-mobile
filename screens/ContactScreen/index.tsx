@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
@@ -12,20 +12,15 @@ import {
 import { RootState } from "../../redux/reducers";
 import { IContactScreen } from "./interfaces";
 
-import { IUser } from "../../services/User";
-import { MOCK_USER } from "../../data/mocks";
-
 type Props = PropsFromRedux & IContactScreen;
 
 const ContactScreen = ({ error, navigation, route }: Props) => {
+  // destructure route params
+  const { contact } = route.params;
+  console.log(contact);
+
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [user, setUser] = useState<IUser | undefined>(undefined);
-
-  // effect hooks
-  useEffect(() => {
-    setUser(MOCK_USER);
-  }, []);
 
   return (
     <DismissKeyboard>
@@ -46,7 +41,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
                 inputStyle={styles.inputStyle}
                 label="First Name"
                 labelStyle={styles.labelStyle}
-                value={user?.contact.firstName}
+                value={contact.firstName}
               />
             </View>
             <View style={{ flex: 1 }}>
@@ -61,7 +56,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
                 inputStyle={styles.inputStyle}
                 label="Last Name"
                 labelStyle={styles.labelStyle}
-                value={user?.contact.lastName}
+                value={contact.lastName}
               />
             </View>
           </View>
@@ -76,7 +71,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
             inputStyle={styles.inputStyle}
             label="Address Line 1"
             labelStyle={styles.labelStyle}
-            value={user?.contact.streetAddress1}
+            value={contact.streetAddress1}
           />
           <Input
             disabled={disabled}
@@ -89,7 +84,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
             inputStyle={styles.inputStyle}
             label="Address Line 2"
             labelStyle={styles.labelStyle}
-            value={user?.contact.streetAddress2}
+            value={contact.streetAddress2}
           />
           <Input
             disabled={disabled}
@@ -102,7 +97,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
             inputStyle={styles.inputStyle}
             label="City"
             labelStyle={styles.labelStyle}
-            value={user?.contact.city}
+            value={contact.city}
           />
           <View style={styles.row}>
             <View style={{ flex: 1.75 }}>
@@ -117,7 +112,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
                 inputStyle={styles.inputStyle}
                 label="State"
                 labelStyle={styles.labelStyle}
-                value={user?.contact.province}
+                value={contact.province}
               />
             </View>
             <View style={{ flex: 1 }}>
@@ -132,7 +127,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
                 inputStyle={styles.inputStyle}
                 label="Postal Code"
                 labelStyle={styles.labelStyle}
-                value={user?.contact.postalCode}
+                value={contact.postalCode}
               />
             </View>
           </View>

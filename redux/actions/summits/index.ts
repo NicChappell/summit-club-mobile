@@ -1,4 +1,4 @@
-import { ISummit, IPopularSummit } from "../../../services/Summit";
+import { ISummit, IPopularSummit } from "../../../services";
 import { AppThunk } from "../../reducers";
 import {
   RESET_SUMMITS,

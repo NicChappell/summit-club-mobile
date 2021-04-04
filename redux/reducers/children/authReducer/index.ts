@@ -1,8 +1,4 @@
-import {
-  SIGN_IN,
-  SIGN_OUT,
-  SIGN_UP,
-} from "../../../actions/auth/types";
+import { SIGN_IN, SIGN_OUT, SIGN_UP } from "../../../actions/auth/types";
 import { IAction } from "../../../../common/interfaces";
 import { initState } from "./constants";
 

@@ -1,29 +1,14 @@
-import { ISummit, IPopularSummit } from "../../../services/Summit";
+import { IUser } from "../../../services";
 import { AppThunk } from "../../reducers";
-import {
-  RESET_SUMMITS,
-  SET_FEATURED_SUMMITS,
-  SET_POPULAR_SUMMITS,
-} from "./types";
+import { RESET_USER, SET_USER } from "./types";
 
-export const resetSummits = (): AppThunk => async (dispatch) => {
-  dispatch({ type: RESET_SUMMITS });
+export const resetUser = (): AppThunk => async (dispatch) => {
+  dispatch({ type: RESET_USER });
 };
 
-export const setFeaturedSummits = (
-  featuredSummits?: ISummit[]
-): AppThunk => async (dispatch) => {
+export const setUser = (user?: IUser): AppThunk => async (dispatch) => {
   dispatch({
-    type: SET_FEATURED_SUMMITS,
-    payload: { featuredSummits },
-  });
-};
-
-export const setPopularSummits = (
-  popularSummits?: IPopularSummit[]
-): AppThunk => async (dispatch) => {
-  dispatch({
-    type: SET_POPULAR_SUMMITS,
-    payload: { popularSummits },
+    type: SET_USER,
+    payload: { user },
   });
 };

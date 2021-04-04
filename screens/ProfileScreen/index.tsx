@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay } from "../../common/components";
-import { IUser } from "../../services/User";
 import {
   colors,
   inputBorder,
@@ -32,18 +31,11 @@ import { IProfileScreen } from "./interfaces";
 //         - dark mode / light mode
 //         - reset tour
 
-import { MOCK_USER } from "../../data/mocks";
-
 type Props = PropsFromRedux & IProfileScreen;
 
-const ProfileScreen = ({ error, navigation, route }: Props) => {
-  // state hooks
-  const [user, setUser] = useState<IUser | undefined>(undefined);
-
-  // effect hooks
-  useEffect(() => {
-    setUser(MOCK_USER);
-  }, []);
+const ProfileScreen = ({ error, navigation, route, user }: Props) => {
+  // destructure user
+  const { account, contact, summits } = user;
 
   return (
     <View style={styles.container}>
@@ -58,7 +50,7 @@ const ProfileScreen = ({ error, navigation, route }: Props) => {
           }}
           rounded
           size={96}
-          title={getInitials(user)}
+          title={getInitials(contact)}
           titleStyle={styles.avatarTitle}
         />
         <ListItem
@@ -67,7 +59,7 @@ const ProfileScreen = ({ error, navigation, route }: Props) => {
             styles.listItemBorderTop,
             styles.listItemContainer,
           ]}
-          onPress={() => navigation.navigate("Summits")}
+          onPress={() => navigation.navigate("Summits", { summits })}
           underlayColor={colors.black25}
         >
           <ListItem.Content>
@@ -87,7 +79,7 @@ const ProfileScreen = ({ error, navigation, route }: Props) => {
             styles.listItemBorderBottom,
             styles.listItemContainer,
           ]}
-          onPress={() => navigation.navigate("Contact")}
+          onPress={() => navigation.navigate("Contact", { contact })}
           underlayColor={colors.black25}
         >
           <ListItem.Content>
@@ -107,7 +99,7 @@ const ProfileScreen = ({ error, navigation, route }: Props) => {
             styles.listItemBorderBottom,
             styles.listItemContainer,
           ]}
-          onPress={() => navigation.navigate("Account")}
+          onPress={() => navigation.navigate("Account", { account })}
           underlayColor={colors.black25}
         >
           <ListItem.Content>
@@ -150,6 +142,7 @@ const ProfileScreen = ({ error, navigation, route }: Props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
+    user: state.user,
   };
 };
 

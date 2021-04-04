@@ -5,7 +5,7 @@ import { MOCK_USER } from "../../data/mocks";
 export type CheckInType = "recentCheckIn" | "userCheckIn";
 
 export interface ICheckIn {
-  /** Uniquely identifies the Check-in */
+  /** Uniquely identifies the Check-in record */
   id: string;
   /** Type of Check-in */
   type: CheckInType;

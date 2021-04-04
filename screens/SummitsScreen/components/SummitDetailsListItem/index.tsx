@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { StaticMapBackground } from "../../../../common/components";
 import { getFeaturePhoto2 } from "../../../../common/helpers";
 import {
@@ -11,32 +10,17 @@ import {
   featureLocation,
   featureName,
 } from "../../../../common/styles";
-import { ICheckInListItemDetails } from "./interfaces";
+import { ISummitDetailsListItem } from "./interfaces";
 
-import { MOCK_FEATURE } from "../../../../data/mocks/features";
+const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
+  // destructure item
+  const { checkIns, checkOff, feature, id } = item;
 
-const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
   // state hooks
-  const [feature, setFeature] = useState<
-    Feature<Geometry, GeoJsonProperties> | undefined
-  >(undefined);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
 
   // effect hooks
   useEffect(() => {
-    // TODO: WHAT'S BEST WAY TO GET FEATURE DATA? RETURN FROM FIRESTORE, OR QUERY LOCAL DB?
-    // checkIn.featureId --> use to lookup feature
-    const feature = MOCK_FEATURE;
-
-    // update state
-    setFeature(feature);
-  }, []);
-
-  // effect hooks
-  useEffect(() => {
-    // return early if feature is undefined
-    if (!feature) return;
-
     // retreive feature photo if available
     const featurePhoto = getFeaturePhoto2(feature.properties?.name);
 
@@ -44,11 +28,8 @@ const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
     setFeaturePhoto(featurePhoto);
   }, [feature]);
 
-  // return early if feature is undefined
-  if (!feature) return null;
-
   return (
-    <ListItem bottomDivider key={checkIn.id}>
+    <ListItem bottomDivider key={id}>
       {featurePhoto ? (
         // render feature photo if available
         <View
@@ -88,21 +69,23 @@ const CheckInListItemDetails = ({ checkIn }: ICheckInListItemDetails) => {
               {feature.properties?.longitude > 0 ? "E" : "W"}
             </Text>
           </View>
-          <View style={styles.rightColumn}>
-            <Ionicons
-              name={"ios-shield-checkmark-outline"}
-              size={24}
-              color={colors.queenBlue}
-            />
-            <Text style={styles.verified}>Verified</Text>
-          </View>
+          {checkIns?.length ? (
+            <View style={styles.rightColumn}>
+              <Ionicons
+                name={"ios-shield-checkmark-outline"}
+                size={24}
+                color={colors.queenBlue}
+              />
+              <Text style={styles.verified}>Verified</Text>
+            </View>
+          ) : null}
         </View>
       </ListItem.Content>
     </ListItem>
   );
 };
 
-export default CheckInListItemDetails;
+export default SummitDetailsListItem;
 
 const styles = StyleSheet.create({
   listItemImage: {

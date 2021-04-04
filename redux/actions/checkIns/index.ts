@@ -1,4 +1,4 @@
-import { ICheckIn } from "../../../services/CheckIn";
+import { ICheckIn } from "../../../services";
 import { AppThunk } from "../../reducers";
 import { RESET_CHECK_INS, SET_RECENT_CHECK_INS } from "./types";
 

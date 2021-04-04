@@ -5,6 +5,7 @@ import {
   authReducer,
   errorReducer,
   featuresReducer,
+  userReducer,
 } from "./children";
 
 export const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
   auth: authReducer,
   error: errorReducer,
   features: featuresReducer,
+  user: userReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

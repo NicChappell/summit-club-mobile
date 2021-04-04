@@ -1,4 +1,4 @@
-import { ISummit, IPopularSummit } from "../../../../services/Summit";
+import { ISummit, IPopularSummit } from "../../../../services";
 
 export interface ISummitsState {
   /** Array of popular summit data */

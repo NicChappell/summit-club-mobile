@@ -1,8 +1,10 @@
-import { ISummit, IPopularSummit } from "../../../../services/Summit";
+import { IUserAccount, IUserContact, IUserSummit } from "../../../../services";
 
-export interface ISummitsState {
-  /** Array of popular summit data */
-  popularSummits?: IPopularSummit;
-  /** Array of featured summit profiles */
-  featuredSummits?: ISummit;
+export interface IUserState {
+  /** The user's Account information */
+  account?: IUserAccount;
+  /** The user's Contact information */
+  contact?: IUserContact;
+  /** The user's Summits */
+  summits?: IUserSummit[];
 }

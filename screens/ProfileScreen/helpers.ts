@@ -1,8 +1,8 @@
-import { IUser } from "../../services/User";
+import { IUserContact } from "../../services";
 
-export const getInitials = (user?: IUser) => {
-  const firstNameInitial = user?.contact.firstName?.charAt(0);
-  const lastNameInitial = user?.contact.lastName?.charAt(0);
+export const getInitials = (contact?: IUserContact) => {
+  const firstNameInitial = contact?.firstName?.charAt(0);
+  const lastNameInitial = contact?.lastName?.charAt(0);
 
   if (firstNameInitial && lastNameInitial) {
     return firstNameInitial + lastNameInitial;

@@ -1,5 +1,5 @@
 export interface IClassification {
-  /** Uniquely identifies the Classification */
+  /** Uniquely identifies the Classification record */
   id: number;
   /** Name of the Classification */
   name: string;

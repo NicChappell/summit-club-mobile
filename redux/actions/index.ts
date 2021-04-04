@@ -4,3 +4,4 @@ export * from "./checkIns";
 export * from "./error";
 export * from "./features";
 export * from "./summits";
+export * from "./user";

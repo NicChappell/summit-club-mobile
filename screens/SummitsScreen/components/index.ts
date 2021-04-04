@@ -1,1 +1,1 @@
-export { default as CheckInListItemDetails } from "./CheckInListItemDetails";
+export { default as SummitDetailsListItem } from "./SummitDetailsListItem";

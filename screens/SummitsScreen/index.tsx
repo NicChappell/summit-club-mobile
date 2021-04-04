@@ -1,54 +1,28 @@
-import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { ListItem } from "react-native-elements";
+import React from "react";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { ErrorOverlay, StaticMapBackground } from "../../common/components";
-import { IError } from "../../common/interfaces";
+import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
-import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { CheckIn, ICheckIn } from "../../services";
-import { CheckInListItemDetails } from "./components";
+import { SummitDetailsListItem } from "./components";
 import { ISummitsScreen } from "./interfaces";
-
-import { MOCK_FEATURE } from "../../data/mocks/features";
 
 type Props = PropsFromRedux & ISummitsScreen;
 
-const SummitsScreen = ({ error, navigation, route, setError }: Props) => {
-  // state hooks
-  const [checkIns, setCheckIns] = useState<ICheckIn[] | undefined>();
-
-  // effect hooks
-  useEffect(() => {
-    CheckIn.get()
-      .then((checkIns) => {
-        setCheckIns(checkIns);
-      })
-      .catch((error: IError) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
-      });
-  }, []);
+const SummitsScreen = ({ error, navigation, route }: Props) => {
+  // destructure route params
+  const { summits } = route.params;
+  console.log(summits);
 
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
-
       <FlatList
-        data={checkIns}
+        data={summits}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item: checkIn }) => (
+        renderItem={({ item }) => (
           <TouchableOpacity onPress={() => console.log("TODO: HANDLE PRESS")}>
-            <CheckInListItemDetails checkIn={checkIn} />
+            <SummitDetailsListItem item={item} />
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={false}
@@ -63,7 +37,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = { setError: actions.setError };
+const mapDispatchToProps = {};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

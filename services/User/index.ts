@@ -2,37 +2,39 @@ import { Feature } from "geojson";
 import { MOCK_USER } from "../../data/mocks";
 
 export interface IUserAccount {
-  /** user's username */
+  /** The user's username */
   username: string;
-  /** user's password */
+  /** The user's password */
   password: string;
 }
 
 export interface IUserContact {
-  /** user's first name */
+  /** The user's first name */
   firstName?: string;
-  /** user's last name */
+  /** The user's last name */
   lastName?: string;
-  /** user's email address */
+  /** The user's email address */
   email?: string;
-  /** user's phone's country code */
+  /** The user's phone's country code */
   countryCode?: string;
-  /** user's phone number */
+  /** The user's phone number */
   phone?: string;
-  /** user's street address */
+  /** The user's street address */
   streetAddress1?: string;
-  /** user's street address */
+  /** The user's street address */
   streetAddress2?: string;
-  /** user's city */
+  /** The user's city */
   city?: string;
-  /** user's state/province */
+  /** User state/province */
   province?: string;
-  /** user's postal code/zip code */
+  /** User postal code/zip code */
   postalCode?: string;
 }
 
 export interface IUserSummit {
-  /** The summit's feature profile */
+  /** Uniquely identifies the user's Summit record */
+  id: number;
+  /** Summit profile */
   feature: Feature;
   /** Array of Check-in timestamps */
   checkIns?: Date[] | null;
@@ -41,17 +43,17 @@ export interface IUserSummit {
 }
 
 export interface IUser {
-  /** user's account information */
+  /** The user's Account information */
   account: IUserAccount;
-  /** user's contact information */
+  /** The user's Contact information */
   contact: IUserContact;
-  /** user's summits */
+  /** The user's Summits */
   summits: IUserSummit[];
 }
 
 class User {
-  /** Fetch array of recent check-in data */
-  static get(): Promise<IUser> {
+  /** Fetch User profile */
+  static get(uid: string): Promise<IUser> {
     // TODO: FIREBASE QUERY
 
     if (true) {

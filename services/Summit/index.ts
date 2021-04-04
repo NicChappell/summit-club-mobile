@@ -4,7 +4,7 @@ import { MOCK_FEATURE } from "../../data/mocks";
 export type SummitType = "featuredSummit" | "filteredSummit" | "popularSummit";
 
 export interface ISummit {
-  /** Uniquely identifies the Summit */
+  /** Uniquely identifies the Summit record */
   id: number;
   /** Type of Summit */
   type: SummitType;

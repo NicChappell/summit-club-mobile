@@ -7,22 +7,30 @@ import {
   featureElevation,
   featureLocation,
   featureName,
-  marginReset,
-  paddingReset,
-} from "../../../../common/styles";
+} from "../../../../../common/styles";
 import { IFeatureCardContent } from "./interfaces";
 
-const FeatureCardContent = ({}: IFeatureCardContent) => {
+const FeatureCardContent = ({ item }: IFeatureCardContent) => {
+  // destructure item
+  const { feature } = item;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={featureName}>{"Feature Name"}</Text>
-        <Text style={featureElevation}>{"14,245 ft"}</Text>
+        <Text style={featureName}>{feature.properties?.name}</Text>
+        <Text style={featureElevation}>
+          {feature.properties?.feet.toLocaleString()} ft
+        </Text>
       </View>
       <View style={styles.body}>
-        <Text style={featureLocation}>{"Name of County, CO"}</Text>
+        <Text style={featureLocation}>
+          {feature.properties?.county} County, {feature.properties?.state}
+        </Text>
         <Text style={featureCoordinate}>
-          {"88.888 N"}° {"111.111 W"}°
+          {feature.properties?.latitude.toFixed(3)}°{" "}
+          {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+          {feature.properties?.longitude.toFixed(3)}°{" "}
+          {feature.properties?.longitude > 0 ? "E" : "W"}
         </Text>
       </View>
       <View style={styles.footer}>
@@ -57,9 +65,11 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "flex-start",
+    alignSelf: "stretch",
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
+    padding: 8,
   },
   date: {
     color: colors.black,

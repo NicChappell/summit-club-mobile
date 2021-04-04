@@ -7,7 +7,6 @@ import {
   Text,
 } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   BasicDetailsCard,
@@ -15,15 +14,17 @@ import {
   HorizontalDetailsCard,
 } from "../../common/components";
 import { IError } from "../../common/interfaces";
-import { colors } from "../../common/styles";
+import { colors, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { Collection, ICollection, Summit } from "../../services";
-import { FeatureCardContent } from "./components";
+import {
+  Collection,
+  ICollection,
+  ISummit,
+  Summit,
+} from "../../services";
 import { IExploreScreen } from "./interfaces";
 import { SortMethod, SortMethodIcon } from "./types";
-
-const SEPARATOR_WIDTH = 16;
 
 type Props = PropsFromRedux & IExploreScreen;
 
@@ -31,7 +32,7 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
   const [collections, setCollections] = useState<ICollection[] | undefined>();
   const [filteredSummits, setFilteredSummits] = useState<
-    Feature<Geometry, GeoJsonProperties>[] | undefined
+    ISummit[] | undefined
   >();
   const [sortMethod, setSortMethod] = useState<SortMethod>("descending");
   const [sortMethodIcon, setSortMethodIcon] = useState<SortMethodIcon>(
@@ -79,10 +80,10 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
     <View style={styles.container}>
       <ErrorOverlay error={error} />
       <View style={styles.horizontalScrollSection}>
-        <Text style={styles.sectionTitle}>Summit Collections</Text>
+        <Text style={sectionTitle}>Summit Collections</Text>
         <FlatList
           ItemSeparatorComponent={() => (
-            <View style={styles.horizontalSeparator} />
+            <View style={{ width: separator.width }} />
           )}
           data={collections}
           decelerationRate={0}
@@ -108,26 +109,21 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           )}
           showsHorizontalScrollIndicator={false}
           snapToAlignment={"start"}
-          snapToInterval={basicDetailsCardDimensions.width + SEPARATOR_WIDTH}
+          snapToInterval={basicDetailsCardDimensions.width + separator.width}
         />
       </View>
       <View style={styles.verticalScrollSection}>
         <TouchableOpacity style={styles.sortBy} onPress={handleSortMethodPress}>
-          <Text style={styles.sectionTitle}>Sort by elevation</Text>
+          <Text style={sectionTitle}>Sort by elevation</Text>
           <Ionicons name={sortMethodIcon} size={20} color={colors.queenBlue} />
         </TouchableOpacity>
         <FlatList
           ItemSeparatorComponent={() => (
-            <View style={styles.verticalSeparator} />
+            <View style={{ height: separator.height }} />
           )}
           data={filteredSummits}
-          keyExtractor={(feature) => feature.properties?.id.toString()}
-          renderItem={({ item: feature }) => (
-            <HorizontalDetailsCard
-              ContentComponent={<FeatureCardContent />}
-              feature={feature}
-            />
-          )}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <HorizontalDetailsCard item={item} />}
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -164,15 +160,6 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingTop: 8,
   },
-  horizontalSeparator: {
-    width: SEPARATOR_WIDTH,
-  },
-  sectionTitle: {
-    color: colors.queenBlue,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 20,
-    marginBottom: 8,
-  },
   sortBy: {
     alignItems: "baseline",
     flexDirection: "row",
@@ -182,8 +169,5 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     flex: 1,
     marginTop: 16,
-  },
-  verticalSeparator: {
-    height: SEPARATOR_WIDTH,
   },
 });

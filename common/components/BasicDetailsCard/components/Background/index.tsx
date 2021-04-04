@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Card } from "react-native-elements";
-import { IFeaturedSummit } from "../../../../../services";
+import { ISummit } from "../../../../../services";
 import {
   borderRadius4,
   borderWidthReset,
@@ -13,7 +13,7 @@ import { IBackground } from "./interfaces";
 
 const Background = ({ item }: IBackground) => {
   // destructure item
-  const { feature } = item as IFeaturedSummit;
+  const { feature } = item as ISummit;
 
   // state hooks
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);

@@ -230,6 +230,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   listItemContainer: {
+    backgroundColor: colors.white,
     width: "100%",
   },
   listItemTitle: {

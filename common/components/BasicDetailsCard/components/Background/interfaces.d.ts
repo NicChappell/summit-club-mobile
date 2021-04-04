@@ -1,6 +1,6 @@
-import { ICollection, IFeaturedSummit } from "../../../../../services";
+import { ICollection, ISummit } from "../../../../../services";
 
 export interface IBackground {
   /** item data */
-  item: ICollection | IFeaturedSummit;
+  item: ICollection | ISummit;
 }

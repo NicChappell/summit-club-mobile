@@ -32,10 +32,12 @@ export interface IUserContact {
 }
 
 export interface IUserSummit {
-  /** the summit's feature profile */
+  /** The summit's feature profile */
   feature: Feature;
-  /** array of check-in timestamps */
-  checkIns: string[];
+  /** Array of Check-in timestamps */
+  checkIns?: Date[] | null;
+  /** Timestamp of check-off */
+  checkOff?: Date | null;
 }
 
 export interface IUser {

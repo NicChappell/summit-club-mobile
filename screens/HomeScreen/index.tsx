@@ -16,22 +16,17 @@ import {
   HorizontalDetailsCard,
 } from "../../common/components";
 import { IError } from "../../common/interfaces";
-import { colors } from "../../common/styles";
+import { colors, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import {
   CheckIn,
   ICheckIn,
-  IFeaturedSummit,
+  ISummit,
   IPopularSummit,
   Summit,
 } from "../../services";
-import { CheckInCardContent } from "./components";
 import { IHomeScreen } from "./interfaces";
-
-import { MOCK_FEATURES } from "../../data/mocks/features";
-
-const SEPARATOR_WIDTH = 16;
 
 type Props = PropsFromRedux & IHomeScreen;
 
@@ -39,7 +34,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
   const [checkIns, setCheckIns] = useState<ICheckIn[] | undefined>();
   const [featuredSummits, setFeaturedSummits] = useState<
-    IFeaturedSummit[] | undefined
+    ISummit[] | undefined
   >();
   const [popularSummits, setPopularSummits] = useState<
     IPopularSummit[] | undefined
@@ -47,7 +42,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
 
   // effect hooks
   useEffect(() => {
-    CheckIn.get()
+    CheckIn.getRecentCheckIns()
       .then((checkIns) => {
         setCheckIns(checkIns);
       })
@@ -96,9 +91,11 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
       >
         <ErrorOverlay error={error} />
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Featured summits</Text>
+          <Text style={sectionTitle}>Featured summits</Text>
           <FlatList
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            ItemSeparatorComponent={() => (
+              <View style={{ width: separator.width }} />
+            )}
             data={featuredSummits}
             decelerationRate={0}
             horizontal
@@ -123,38 +120,41 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             )}
             showsHorizontalScrollIndicator={false}
             snapToAlignment={"start"}
-            snapToInterval={basicDetailsCardDimensions.width + SEPARATOR_WIDTH}
+            snapToInterval={basicDetailsCardDimensions.width + separator.width}
           />
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent check-ins</Text>
+          <Text style={sectionTitle}>Recent check-ins</Text>
           <FlatList
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-            data={MOCK_FEATURES}
+            ItemSeparatorComponent={() => (
+              <View style={{ width: separator.width }} />
+            )}
+            data={checkIns}
             decelerationRate={0}
             horizontal
-            keyExtractor={(item) => item.properties?.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <HorizontalDetailsCard
-                ContentComponent={<CheckInCardContent />}
                 dimensions={{
                   height: horizontalDetailsCardDimensions.height,
                   width: horizontalDetailsCardDimensions.width,
                 }}
-                feature={item}
+                item={item}
               />
             )}
             showsHorizontalScrollIndicator={false}
             snapToAlignment={"start"}
             snapToInterval={
-              horizontalDetailsCardDimensions.width + SEPARATOR_WIDTH
+              horizontalDetailsCardDimensions.width + separator.width
             }
           />
         </View>
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Popular summits</Text>
+          <Text style={sectionTitle}>Popular summits</Text>
           <FlatList
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            ItemSeparatorComponent={() => (
+              <View style={{ width: separator.width }} />
+            )}
             data={popularSummits}
             decelerationRate={0}
             horizontal
@@ -179,7 +179,7 @@ const HomeScreen = ({ error, navigation, route, setError }: Props) => {
             )}
             showsHorizontalScrollIndicator={false}
             snapToAlignment={"start"}
-            snapToInterval={fullDetailsCardDimensions.width + SEPARATOR_WIDTH}
+            snapToInterval={fullDetailsCardDimensions.width + separator.width}
           />
         </View>
       </ScrollView>
@@ -193,7 +193,10 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = { setError: actions.setError };
+const mapDispatchToProps = {
+  setError: actions.setError,
+  setFeature: actions.setFeature,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -207,14 +210,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 16,
     padding: 8,
-  },
-  sectionTitle: {
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 24,
-  },
-  separator: {
-    width: SEPARATOR_WIDTH,
   },
 });

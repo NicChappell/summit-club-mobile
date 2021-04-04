@@ -26,7 +26,7 @@ const FeatureScreen = ({
   features,
   featuresDatabase,
   featuresCollectionRef,
-  filters,
+  featureFilters,
   navigation,
   route,
   setError,
@@ -34,16 +34,29 @@ const FeatureScreen = ({
   setFeatures,
   setFeaturesCollectionRef,
   setFeaturesDatabase,
-  setFilters,
+  setFeatureFilters,
 }: Props) => {
+  console.log("error:", error);
+  console.log("feature:", feature);
+  console.log("featuresDatabase:", featuresDatabase);
+  console.log("route:", route);
+  console.log("setError:", setError);
+  console.log("setFeature:", setFeature);
+
   // destructure route params
   const { id: featureId, name: featureName } = route.params;
+  console.log("featureId: ", featureId);
+  console.log("featureName: ", featureName);
 
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
   const [latLng, setLatLng] = useState<string | undefined>(undefined);
   const [properties, setProperties] = useState<GeoJsonProperties | null>(null);
   const [region, setRegion] = useState<Region | undefined>(undefined);
+  console.log("coordinate: ", coordinate);
+  console.log("latLng: ", latLng);
+  console.log("properties: ", properties);
+  console.log("region: ", region);
 
   // effect hooks
   useEffect(() => {
@@ -165,11 +178,11 @@ const FeatureScreen = ({
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
-    feature: state.feature.feature,
-    features: state.feature.features,
-    featuresDatabase: state.feature.featuresDatabase,
-    featuresCollectionRef: state.feature.featuresCollectionRef,
-    filters: state.feature.filters,
+    feature: state.features.feature,
+    features: state.features.features,
+    featuresDatabase: state.features.featuresDatabase,
+    featuresCollectionRef: state.features.featuresCollectionRef,
+    featureFilters: state.features.featureFilters,
   };
 };
 
@@ -179,7 +192,7 @@ const mapDispatchToProps = {
   setFeatures: actions.setFeatures,
   setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
   setFeaturesDatabase: actions.setFeaturesDatabase,
-  setFilters: actions.setFilters,
+  setFeatureFilters: actions.setFeatureFilters,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

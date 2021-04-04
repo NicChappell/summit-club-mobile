@@ -5,16 +5,26 @@ import {
   featureCoordinate,
   featureLocation,
   featureName,
-} from "../../../../common/styles";
+} from "../../../../../common/styles";
 import { ICheckInCardContent } from "./interfaces";
 
-const CheckInCardContent = ({}: ICheckInCardContent) => {
+const CheckInCardContent = ({ item }: ICheckInCardContent) => {
+  // destructure item
+  const { feature, timestamp, user } = item;
+
+  // destructure user
+  const {
+    contact: { firstName, lastName },
+  } = user;
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.userName}>{"First Last"}</Text>
+        <Text style={styles.userName}>
+          {firstName} {lastName}
+        </Text>
         <Text style={styles.date}>
-          {new Date().toLocaleDateString("en-US", {
+          {timestamp.toLocaleDateString("en-US", {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -23,10 +33,15 @@ const CheckInCardContent = ({}: ICheckInCardContent) => {
         </Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.featureName}>{"Feature Name"}</Text>
-        <Text style={featureLocation}>{"Name of County, CO"}</Text>
+        <Text style={styles.featureName}>{feature.properties?.name}</Text>
+        <Text style={featureLocation}>
+          {feature.properties?.county} County, {feature.properties?.state}
+        </Text>
         <Text style={featureCoordinate}>
-          {"88.888 N"}° {"111.111 W"}°
+          {feature.properties?.latitude.toFixed(3)}°{" "}
+          {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+          {feature.properties?.longitude.toFixed(3)}°{" "}
+          {feature.properties?.longitude > 0 ? "E" : "W"}
         </Text>
       </View>
     </View>
@@ -38,9 +53,11 @@ export default CheckInCardContent;
 const styles = StyleSheet.create({
   container: {
     alignItems: "flex-start",
+    alignSelf: "stretch",
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
+    padding: 8,
   },
   date: {
     color: colors.black,

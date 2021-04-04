@@ -1,6 +1,7 @@
 export * from "./border";
 export * from "./colors";
 export * from "./input";
+export * from "./layout";
 export * from "./navigation";
 export * from "./reset";
 export * from "./search";

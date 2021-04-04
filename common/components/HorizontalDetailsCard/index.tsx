@@ -15,15 +15,19 @@ import {
   shadowReset,
 } from "../../../common/styles";
 import { getFeaturePhoto2 } from "../../../common/helpers";
+import { ICheckIn, ISummit } from "../../../services";
 import StaticMapBackground from "../StaticMapBackground";
+import { CheckInCardContent, FeatureCardContent } from "./components";
 import { defaultDimensions } from "./constants";
 import { IHorizontalDetailsCard } from "./interfaces";
 
 const HorizontalDetailsCard = ({
-  ContentComponent,
   dimensions = defaultDimensions,
-  feature,
+  item,
 }: IHorizontalDetailsCard) => {
+  // destructure item
+  const { feature } = item;
+
   // state hooks
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
 
@@ -35,6 +39,17 @@ const HorizontalDetailsCard = ({
     // update state
     setFeaturePhoto(featurePhoto);
   }, []);
+
+  const renderCardContent = (item: ICheckIn | ISummit) => {
+    switch (item.type) {
+      case "filteredSummit":
+        return <FeatureCardContent item={item} />;
+      case "recentCheckIn":
+        return <CheckInCardContent item={item} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Card
@@ -66,25 +81,22 @@ const HorizontalDetailsCard = ({
           feature={feature}
         />
       )}
-      {false ? (
-        <View style={styles.cardContentContainer}>
-          <Text style={featureName}>{feature.properties?.name}</Text>
-          <Text style={featureLocation}>
-            {`${feature.properties?.county} County, ${feature.properties?.state}`}
-          </Text>
-          <Text style={featureElevation}>
-            {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
-          </Text>
-          <Text style={featureCoordinate}>
-            {feature.properties?.latitude.toFixed(3)}°{" "}
-            {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-            {feature.properties?.longitude.toFixed(3)}°{" "}
-            {feature.properties?.longitude > 0 ? "E" : "W"}
-          </Text>
-        </View>
-      ) : (
-        <View style={styles.cardContentContainer}>{ContentComponent}</View>
-      )}
+      {renderCardContent(item)}
+      {/* <View style={{ flex: 1, padding: 8 }}>
+        <Text style={featureName}>{feature.properties?.name}</Text>
+        <Text style={featureLocation}>
+          {`${feature.properties?.county} County, ${feature.properties?.state}`}
+        </Text>
+        <Text style={featureElevation}>
+          {`${feature.properties?.feet.toLocaleString()} ft / ${feature.properties?.meters.toLocaleString()} m`}
+        </Text>
+        <Text style={featureCoordinate}>
+          {feature.properties?.latitude.toFixed(3)}°{" "}
+          {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+          {feature.properties?.longitude.toFixed(3)}°{" "}
+          {feature.properties?.longitude > 0 ? "E" : "W"}
+        </Text>
+      </View> */}
     </Card>
   );
 };
@@ -100,10 +112,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     paddingBottom: 2,
     paddingLeft: 2,
-  },
-  cardContentContainer: {
-    flex: 1,
-    padding: 8,
   },
   cardImage: {
     height: "100%",

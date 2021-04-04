@@ -24,3 +24,10 @@ export const featureName = {
   fontFamily: "NotoSansJP_500Medium",
   fontSize: 18,
 } as TextStyle;
+
+export const sectionTitle = {
+  color: colors.queenBlue,
+  fontFamily: "NotoSansJP_700Bold",
+  fontSize: 20,
+  marginBottom: 8,
+} as TextStyle;

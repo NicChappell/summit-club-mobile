@@ -17,7 +17,6 @@ type Props = PropsFromRedux & IContactScreen;
 const ContactScreen = ({ error, navigation, route }: Props) => {
   // destructure route params
   const { contact } = route.params;
-  console.log(contact);
 
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -156,7 +155,7 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
                 onPress={() => setDisabled(!disabled)}
                 title="Cancel"
                 titleStyle={styles.cancelButtonTitle}
-                type={"outline"}
+                type="outline"
               />
             </View>
           )}

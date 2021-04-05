@@ -13,6 +13,7 @@ import {
 import { LatLng } from "react-native-maps";
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import * as helpers from "@turf/helpers";
+import { initialMapBoundaries } from "../../common/constants";
 import { executeSql } from "../../common/helpers";
 import {
   IError,
@@ -20,7 +21,6 @@ import {
   IFeatureFilters,
   ISQLResult,
 } from "../../common/interfaces";
-import { initialMapBoundaries } from "./constants";
 
 export const countFeatureRows = async (
   featuresDatabase: SQLite.WebSQLDatabase,

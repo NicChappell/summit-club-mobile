@@ -90,10 +90,7 @@ const HomeScreen = ({
     setFeature(feature);
 
     // navigate to Feature screen
-    navigation.navigate("Feature", {
-      id: feature.properties?.id,
-      name: feature.properties?.name,
-    });
+    navigation.navigate("Feature", { name: feature.properties?.name });
   };
 
   const basicDetailsCardDimensions = { height: 128, width: 128 };
@@ -174,12 +171,7 @@ const HomeScreen = ({
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Feature", {
-                    id: 1,
-                    name: "Test",
-                  })
-                }
+                onPress={() => navigation.navigate("Feature", { name: "Test" })}
               >
                 <FullDetailsCard
                   dimensions={{

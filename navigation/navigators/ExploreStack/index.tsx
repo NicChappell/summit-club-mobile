@@ -1,7 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigatorHeader } from "../../../common/navigation";
-import { FeatureScreen, ExploreScreen } from "../../../screens";
+import { ExploreScreen } from "../../../screens";
+import FeatureStack from "../FeatureStack";
 import { SummitsStackParamList } from "./types";
 
 // new stack navigator
@@ -22,9 +23,11 @@ const SummitsStack = () => {
         }}
       />
       <Stack.Screen
-        component={FeatureScreen}
+        component={FeatureStack}
         name="Feature"
-        options={({ route }) => ({ title: route.params.name })}
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack.Navigator>
   );

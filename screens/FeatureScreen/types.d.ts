@@ -1,10 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
-import { MapStackParamList } from "../../navigation/navigators/MapStack/types";
+import { FeatureStackParamList } from "../../navigation/navigators/FeatureStack/types";
 
 export type FeatureScreenNavigationProp = StackNavigationProp<
-  MapStackParamList,
+FeatureStackParamList,
   "Feature"
 >;
 
-export type FeatureScreenRouteProp = RouteProp<MapStackParamList, "Feature">;
+export type FeatureScreenRouteProp = RouteProp<FeatureStackParamList, "Feature">;

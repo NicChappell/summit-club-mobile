@@ -13,13 +13,16 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Feature, Geometry, GeoJsonProperties, Point } from "geojson";
 import { ErrorOverlay } from "../../common/components";
-import { customMapStyle } from "../../common/constants";
+import {
+  customMapStyle,
+  initialMapBoundaries,
+  initialRegion,
+} from "../../common/constants";
+import { IMapBoundaries } from "../../common/interfaces";
 import { colors } from "../../common/styles";
-import { IMapBoundaries, IFeatureFilters } from "../../common/interfaces";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
-import { initialMapBoundaries, initialRegion } from "./constants";
 import {
   countFeatureRows,
   createFeaturesTable,
@@ -399,12 +402,13 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
+    backgroundColor: colors.black01,
     flex: 1,
     justifyContent: "center",
   },
   map: {
-    width: "100%",
     height: "100%",
+    width: "100%",
   },
   translatingIndicator: {
     position: "absolute",

@@ -25,7 +25,7 @@ const FeatureStack = () => {
         component={FeatureScreen}
         name="Feature"
         options={{
-          headerShown: false,
+          title: "Summit Club",
         }}
       />
     </Stack.Navigator>

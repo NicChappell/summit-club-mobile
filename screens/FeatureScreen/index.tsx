@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import { Point } from "geojson";
@@ -31,6 +32,9 @@ const FeatureScreen = ({
       // destructure feature
       const { geometry, properties } = feature;
 
+      // update navigation options
+      navigation.setOptions({ title: properties.name });
+
       // destructure geometry
       const coordinates = (geometry as Point).coordinates;
 
@@ -53,6 +57,11 @@ const FeatureScreen = ({
       setRegion(region);
     }
   }, [feature]);
+
+  const handleCheckInPress = () => {
+    // navigate to Check In screen
+    navigation.navigate("CheckIn");
+  };
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -86,6 +95,7 @@ const FeatureScreen = ({
             </MapView>
           )}
         </View>
+        <Button title="Check in" onPress={handleCheckInPress} />
         {/* <View style={styles.featurePropertiesContainer}>
           <Text style={styles.featureName}>{properties?.name}</Text>
           <Text style={styles.hierarchy}>

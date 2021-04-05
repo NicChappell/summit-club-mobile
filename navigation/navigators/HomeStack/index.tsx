@@ -25,7 +25,9 @@ const HomeStack = () => {
       <Stack.Screen
         component={FeatureStack}
         name="Feature"
-        options={({ route }) => ({ title: route.params.name })}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         component={SearchResultsScreen}

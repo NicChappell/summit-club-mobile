@@ -196,6 +196,16 @@ const MapScreen = ({
       });
   }, [featureFilters]);
 
+  const handleCalloutPress = (
+    feature: Feature<Geometry, GeoJsonProperties>
+  ) => {
+    // update global state
+    setFeature(feature);
+
+    // navigate to Feature screen
+    navigation.navigate("Feature");
+  };
+
   const handleMarkerPress = (event: MapEvent) => {
     // destructure event
     const {
@@ -342,14 +352,7 @@ const MapScreen = ({
               tracksViewChanges={false}
             >
               <MarkerView properties={properties} />
-              <Callout
-                onPress={() =>
-                  navigation.navigate("Feature", {
-                    id: properties?.id,
-                    name: properties?.name,
-                  })
-                }
-              >
+              <Callout onPress={() => handleCalloutPress(feature)}>
                 <CalloutView properties={properties} />
               </Callout>
             </Marker>

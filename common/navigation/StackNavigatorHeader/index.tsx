@@ -18,7 +18,10 @@ import {
   searchBarLeftIconContainer,
   searchBarRightIconContainer,
 } from "../../styles";
-import { LeftStackNavigatorControl } from "./components";
+import {
+  LeftStackNavigatorControl,
+  RightStackNavigatorControl,
+} from "./components";
 
 const StackNavigatorHeader = ({
   navigation,
@@ -88,7 +91,7 @@ const StackNavigatorHeader = ({
             </Text>
           </View>
           <View style={navigationHeaderRightComponent}>
-            {/* intentionally empty */}
+            <RightStackNavigatorControl name={name} navigation={navigation} />
           </View>
         </View>
       )}

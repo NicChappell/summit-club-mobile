@@ -82,7 +82,7 @@ const HomeScreen = ({
       });
   }, []);
 
-  const handleFeaturedSummitPress = (item: ISummit) => {
+  const handleSummitPress = (item: ISummit) => {
     // destructure item
     const { feature } = item;
 
@@ -90,7 +90,7 @@ const HomeScreen = ({
     setFeature(feature);
 
     // navigate to Feature screen
-    navigation.navigate("Feature", { name: feature.properties?.name });
+    navigation.navigate("Feature");
   };
 
   const basicDetailsCardDimensions = { height: 128, width: 128 };
@@ -118,7 +118,7 @@ const HomeScreen = ({
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleFeaturedSummitPress(item)}>
+              <TouchableOpacity onPress={() => handleSummitPress(item)}>
                 <BasicDetailsCard
                   dimensions={{
                     height: basicDetailsCardDimensions.height,
@@ -170,9 +170,7 @@ const HomeScreen = ({
             horizontal
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Feature", { name: "Test" })}
-              >
+              <TouchableOpacity onPress={() => handleSummitPress(item)}>
                 <FullDetailsCard
                   dimensions={{
                     height: fullDetailsCardDimensions.height,

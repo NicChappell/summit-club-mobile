@@ -11,6 +11,7 @@ export const navigationHeaderButton = {
 
 export const navigationHeaderCenterComponent = {
   alignItems: "center",
+  // alignSelf: "stretch",
   height: 64,
   justifyContent: "center",
 } as ViewStyle;
@@ -26,12 +27,14 @@ export const navigationHeaderContainer = {
 } as ViewStyle;
 
 export const navigationHeaderLeftComponent = {
+  alignItems: "flex-start",
   height: 64,
+  justifyContent: "center",
   width: 64,
 } as ViewStyle;
 
 export const navigationHeaderRightComponent = {
-  alignItems: "center",
+  alignItems: "flex-end",
   height: 64,
   justifyContent: "center",
   width: 64,
@@ -48,9 +51,3 @@ export const navigationHeaderWrapper = {
   borderBottomColor: colors.queenBlue50,
   borderBottomWidth: 1,
 } as ViewStyle;
-
-// export const navigationHeader = {} as ViewStyle;
-
-// export const navigationHeader = {} as ViewStyle;
-
-// export const navigationHeader = {} as ViewStyle;

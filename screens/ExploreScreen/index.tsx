@@ -17,18 +17,19 @@ import { IError } from "../../common/interfaces";
 import { colors, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import {
-  Collection,
-  ICollection,
-  ISummit,
-  Summit,
-} from "../../services";
+import { Collection, ICollection, ISummit, Summit } from "../../services";
 import { IExploreScreen } from "./interfaces";
 import { SortMethod, SortMethodIcon } from "./types";
 
 type Props = PropsFromRedux & IExploreScreen;
 
-const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
+const ExploreScreen = ({
+  error,
+  navigation,
+  route,
+  setError,
+  setFeature,
+}: Props) => {
   // state hooks
   const [collections, setCollections] = useState<ICollection[] | undefined>();
   const [filteredSummits, setFilteredSummits] = useState<
@@ -74,6 +75,21 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
     }
   };
 
+  const handleCollectionPress = (item: ICollection) => {
+    console.log(item);
+  };
+
+  const handleSummitPress = (item: ISummit) => {
+    // destructure item
+    const { feature } = item;
+
+    // update global state
+    setFeature(feature);
+
+    // navigate to Feature screen
+    navigation.navigate("Feature");
+  };
+
   const basicDetailsCardDimensions = { height: 48, width: 128 };
 
   return (
@@ -90,14 +106,7 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           horizontal
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Feature", {
-                  id: 1,
-                  name: "Test",
-                })
-              }
-            >
+            <TouchableOpacity onPress={() => handleCollectionPress(item)}>
               <BasicDetailsCard
                 dimensions={{
                   height: basicDetailsCardDimensions.height,
@@ -123,7 +132,13 @@ const ExploreScreen = ({ error, navigation, route, setError }: Props) => {
           )}
           data={filteredSummits}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <HorizontalDetailsCard item={item} />}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity onPress={() => handleSummitPress(item)}>
+                <HorizontalDetailsCard item={item} />
+              </TouchableOpacity>
+            );
+          }}
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -137,7 +152,10 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = { setError: actions.setError };
+const mapDispatchToProps = {
+  setError: actions.setError,
+  setFeature: actions.setFeature,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

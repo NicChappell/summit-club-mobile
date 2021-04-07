@@ -22,7 +22,7 @@ const MainTabs = () => {
           if (route.name === "Home") {
             iconName = focused ? "ios-home" : "ios-home-outline";
           } else if (route.name === "Map") {
-            iconName = focused ? "ios-map" : "ios-map-outline";
+            iconName = focused ? "ios-compass" : "ios-compass-outline";
           } else if (route.name === "Explore") {
             iconName = focused ? "ios-flag" : "ios-flag-outline";
           } else if (route.name === "Profile") {
@@ -36,11 +36,11 @@ const MainTabs = () => {
       })}
       tabBar={(props) => <MainTabBar {...props} />}
     >
-      <Tab.Screen name="Home" component={HomeTabs} />
-      <Tab.Screen name="Map" component={MapDrawer} />
-      <Tab.Screen name="Explore" component={ExploreDrawer} />
-      <Tab.Screen name="Profile" component={ProfileStack} />
-      <Tab.Screen name="Download" component={DownloadScreen} />
+      <Tab.Screen component={HomeTabs} name="Home" />
+      <Tab.Screen component={MapDrawer} name="Map" />
+      <Tab.Screen component={ExploreDrawer} name="Explore" />
+      <Tab.Screen component={ProfileStack} name="Profile" />
+      <Tab.Screen component={DownloadScreen} name="Download" />
     </Tab.Navigator>
   );
 };

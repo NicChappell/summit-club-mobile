@@ -4,11 +4,15 @@
     - ForgotPassword: ForgotPasswordScreen
 
 - ExploreDrawer
-    - ExploreStack: ExploreStack
+    - Explore: ExploreTabs
 
-- ExploreStack
+// - ExploreStack
+//     - Map: MapScreen
+//     - Explore: ExploreScreen
+
+- ExploreTabs
+    - Map: MapScreen
     - Explore: ExploreScreen
-    - Feature: FeatureStack
 
 - FeatureStack
     - Feature: FeatureScreen
@@ -16,30 +20,26 @@
 
 - HomeStack
     - Home: HomeScreen
-    - Feature: FeatureStack
+    - SearchResults: SearchResultsScreen
 
 - HomeTabs
     skipTour
-        ? - HomeScreen
+        ? - HomeStack
         : - TourScreen
-
-- MapDrawer
-    - MapStack: MapStack
-
-- MapStack
-    - Map: MapScreen
-    - Feature: FeatureStack
 
 - MainTabs
     - Home: HomeTabs
-    - Map: MapDrawer
-    - Expore: ExploreDrawer
+    - Explore: ExploreDrawer
+    - Feature: FeatureStack
     - Profile: ProfileStack
     - Download: DownloadScreen
 
 - ProfileStack
     - Profile: ProfileScreen
-    - ResetPassword: ResetPasswordScreen
+    - Summits: SummitsScreen
+    - Contact: ContactScreen
+    - Account: AccountScreen
+    - Settings: SettingsScreen
 
 - root
     authToken

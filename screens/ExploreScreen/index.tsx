@@ -14,6 +14,7 @@ import {
   HorizontalDetailsCard,
 } from "../../common/components";
 import { IError } from "../../common/interfaces";
+import { TabNavigationHeader } from "../../common/navigation";
 import { colors, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -30,6 +31,7 @@ const ExploreScreen = ({
   setError,
   setFeature,
 }: Props) => {
+  console.log(route);
   // state hooks
   const [collections, setCollections] = useState<ICollection[] | undefined>();
   const [filteredSummits, setFilteredSummits] = useState<
@@ -95,52 +97,62 @@ const ExploreScreen = ({
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
-      <View style={styles.horizontalScrollSection}>
-        <Text style={sectionTitle}>Summit Collections</Text>
-        <FlatList
-          ItemSeparatorComponent={() => (
-            <View style={{ width: separator.width }} />
-          )}
-          data={collections}
-          decelerationRate={0}
-          horizontal
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => handleCollectionPress(item)}>
-              <BasicDetailsCard
-                dimensions={{
-                  height: basicDetailsCardDimensions.height,
-                  width: basicDetailsCardDimensions.width,
-                }}
-                item={item}
-              />
-            </TouchableOpacity>
-          )}
-          showsHorizontalScrollIndicator={false}
-          snapToAlignment={"start"}
-          snapToInterval={basicDetailsCardDimensions.width + separator.width}
-        />
-      </View>
-      <View style={styles.verticalScrollSection}>
-        <TouchableOpacity style={styles.sortBy} onPress={handleSortMethodPress}>
-          <Text style={sectionTitle}>Sort by elevation</Text>
-          <Ionicons name={sortMethodIcon} size={20} color={colors.queenBlue} />
-        </TouchableOpacity>
-        <FlatList
-          ItemSeparatorComponent={() => (
-            <View style={{ height: separator.height }} />
-          )}
-          data={filteredSummits}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => {
-            return (
-              <TouchableOpacity onPress={() => handleSummitPress(item)}>
-                <HorizontalDetailsCard item={item} />
+      <TabNavigationHeader navigation={navigation} route={route} />
+      <View style={styles.content}>
+        <View style={styles.horizontalScrollSection}>
+          <Text style={sectionTitle}>Summit Collections</Text>
+          <FlatList
+            ItemSeparatorComponent={() => (
+              <View style={{ width: separator.width }} />
+            )}
+            data={collections}
+            decelerationRate={0}
+            horizontal
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleCollectionPress(item)}>
+                <BasicDetailsCard
+                  dimensions={{
+                    height: basicDetailsCardDimensions.height,
+                    width: basicDetailsCardDimensions.width,
+                  }}
+                  item={item}
+                />
               </TouchableOpacity>
-            );
-          }}
-          showsVerticalScrollIndicator={false}
-        />
+            )}
+            showsHorizontalScrollIndicator={false}
+            snapToAlignment={"start"}
+            snapToInterval={basicDetailsCardDimensions.width + separator.width}
+          />
+        </View>
+        <View style={styles.verticalScrollSection}>
+          <TouchableOpacity
+            style={styles.sortBy}
+            onPress={handleSortMethodPress}
+          >
+            <Text style={sectionTitle}>Sort by elevation</Text>
+            <Ionicons
+              name={sortMethodIcon}
+              size={20}
+              color={colors.queenBlue}
+            />
+          </TouchableOpacity>
+          <FlatList
+            ItemSeparatorComponent={() => (
+              <View style={{ height: separator.height }} />
+            )}
+            data={filteredSummits}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => {
+              return (
+                <TouchableOpacity onPress={() => handleSummitPress(item)}>
+                  <HorizontalDetailsCard item={item} />
+                </TouchableOpacity>
+              );
+            }}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       </View>
     </View>
   );
@@ -165,16 +177,20 @@ export default connector(ExploreScreen);
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "flex-start",
     backgroundColor: colors.black01,
     flex: 1,
+  },
+  content: {
+    alignItems: "stretch",
+    flex: 1,
     justifyContent: "flex-start",
-    padding: 8,
+    margin: 8,
   },
   horizontalScrollSection: {
-    alignSelf: "stretch",
     borderBottomColor: colors.queenBlue25,
     borderBottomWidth: 1,
+    flex: 0,
+    marginBottom: 16,
     paddingBottom: 16,
     paddingTop: 8,
   },
@@ -184,8 +200,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   verticalScrollSection: {
-    alignSelf: "stretch",
     flex: 1,
-    marginTop: 16,
   },
 });

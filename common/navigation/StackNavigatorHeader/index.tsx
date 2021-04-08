@@ -70,6 +70,7 @@ const StackNavigatorHeader = ({
           onChangeText={(value) => setSearchInput(value)}
           placeholder="Find your next adventure"
           ref={searchBarRef}
+          returnKeyType={"search"}
           rightIconContainerStyle={searchBarRightIconContainer}
           searchIcon={
             <Ionicons name={"ios-search"} size={22} color={colors.queenBlue} />

@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MainTabBar } from "../../../common/navigation";
 import { DownloadScreen } from "../../../screens";
 import ExploreDrawer from "../ExploreDrawer";
+import FeatureStack from "../FeatureStack";
 import HomeTabs from "../HomeTabs";
-import MapDrawer from "../MapDrawer";
 import ProfileStack from "../ProfileStack";
 import { MainTabsParamList } from "./types";
 
@@ -21,9 +21,9 @@ const MainTabs = () => {
 
           if (route.name === "Home") {
             iconName = focused ? "ios-home" : "ios-home-outline";
-          } else if (route.name === "Map") {
-            iconName = focused ? "ios-compass" : "ios-compass-outline";
           } else if (route.name === "Explore") {
+            iconName = focused ? "ios-compass" : "ios-compass-outline";
+          } else if (route.name === "Feature") {
             iconName = focused ? "ios-flag" : "ios-flag-outline";
           } else if (route.name === "Profile") {
             iconName = focused ? "ios-person" : "ios-person-outline";
@@ -36,11 +36,41 @@ const MainTabs = () => {
       })}
       tabBar={(props) => <MainTabBar {...props} />}
     >
-      <Tab.Screen component={HomeTabs} name="Home" />
-      <Tab.Screen component={MapDrawer} name="Map" />
-      <Tab.Screen component={ExploreDrawer} name="Explore" />
-      <Tab.Screen component={ProfileStack} name="Profile" />
-      <Tab.Screen component={DownloadScreen} name="Download" />
+      <Tab.Screen
+        component={HomeTabs}
+        name="Home"
+        options={{
+          title: "Home",
+        }}
+      />
+      <Tab.Screen
+        component={ExploreDrawer}
+        name="Explore"
+        options={{
+          title: "Explore",
+        }}
+      />
+      <Tab.Screen
+        component={FeatureStack}
+        name="Feature"
+        options={{
+          title: "Summit",
+        }}
+      />
+      <Tab.Screen
+        component={ProfileStack}
+        name="Profile"
+        options={{
+          title: "Profile",
+        }}
+      />
+      <Tab.Screen
+        component={DownloadScreen}
+        name="Download"
+        options={{
+          title: "Download",
+        }}
+      />
     </Tab.Navigator>
   );
 };

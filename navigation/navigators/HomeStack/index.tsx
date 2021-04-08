@@ -2,7 +2,6 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigatorHeader } from "../../../common/navigation";
 import { HomeScreen, SearchResultsScreen } from "../../../screens";
-import FeatureStack from "../FeatureStack";
 import { HomeStackParamList } from "./types";
 
 // new stack navigator
@@ -20,13 +19,6 @@ const HomeStack = () => {
         name="Home"
         options={{
           title: "Summit Club",
-        }}
-      />
-      <Stack.Screen
-        component={FeatureStack}
-        name="Feature"
-        options={{
-          headerShown: false,
         }}
       />
       <Stack.Screen

@@ -3,10 +3,10 @@ export type MainTabsParamList = {
   Download: undefined;
   /** Explore Stack */
   Explore: undefined;
-  /** Homeƒ Stack */
+  /** Feature Stack */
+  Feature: undefined;
+  /** Home Tabs */
   Home: undefined;
-  /** Map Stack */
-  Map: undefined;
   /** Profile Stack */
   Profile: undefined;
 };

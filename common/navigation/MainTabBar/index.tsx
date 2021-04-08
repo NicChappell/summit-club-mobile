@@ -1,15 +1,15 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { colors } from "../../../common/styles";
+import { colors, sizes } from "../../../common/styles";
 
 const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
   <View
     style={[styles.container, { paddingBottom: useSafeAreaInsets().bottom }]}
   >
     {state.routes.map((route: any, index: number) => {
-      // destructure route options
+      // destructure options from descriptors
       const { options } = descriptors[route.key];
 
       // determine current route
@@ -43,6 +43,7 @@ const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
           style={styles.button}
         >
           {icon}
+          <Text style={styles.title}>{options.title}</Text>
         </TouchableOpacity>
       );
     })}
@@ -54,17 +55,25 @@ export default MainTabBar;
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    display: "flex",
-    flex: 1,
+    height: sizes.navigation.button.height + sizes.navigation.title.lineHeight,
     justifyContent: "center",
-    paddingVertical: 16,
+    width: sizes.navigation.button.width,
   },
   container: {
-    alignItems: "center",
+    alignItems: "flex-start",
     backgroundColor: colors.white,
     borderTopColor: colors.queenBlue50,
     borderTopWidth: 1,
+    flexBasis: "auto",
     flexDirection: "row",
+    flexGrow: 0,
+    flexShrink: 1,
     justifyContent: "space-evenly",
+  },
+  title: {
+    color: colors.queenBlue,
+    fontFamily: "NotoSansJP_500Medium",
+    fontSize: sizes.navigation.title.fontSize,
+    lineHeight: sizes.navigation.title.lineHeight,
   },
 });

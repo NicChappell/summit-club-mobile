@@ -10,7 +10,19 @@ const LeftStackNavigatorControl = ({
   previousScreen,
   name,
 }: IStackNavigatorControl) => {
-  // if previous screen return default navigation control
+  // return drawer navigation control for select screens
+  if (name === "Explore" || name === "Map") {
+    return (
+      <TouchableOpacity
+        style={navigationHeaderButton}
+        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+      >
+        <Ionicons name={"ios-options"} size={28} color={colors.queenBlue} />
+      </TouchableOpacity>
+    );
+  }
+
+  // return back navigation control for nested screens
   if (previousScreen) {
     return (
       <TouchableOpacity
@@ -26,29 +38,8 @@ const LeftStackNavigatorControl = ({
     );
   }
 
-  // return custom navigation control for select screens
-  switch (name) {
-    case "Explore":
-      return (
-        <TouchableOpacity
-          style={navigationHeaderButton}
-          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-        >
-          <Ionicons name={"ios-options"} size={28} color={colors.queenBlue} />
-        </TouchableOpacity>
-      );
-    case "Map":
-      return (
-        <TouchableOpacity
-          style={navigationHeaderButton}
-          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-        >
-          <Ionicons name={"ios-options"} size={28} color={colors.queenBlue} />
-        </TouchableOpacity>
-      );
-    default:
-      return null;
-  }
+  // return null by default
+  return null;
 };
 
 export default LeftStackNavigatorControl;

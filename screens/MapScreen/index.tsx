@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
 import MapView, {
   Callout,
   Camera,
@@ -9,6 +9,7 @@ import MapView, {
   Polygon,
   Region,
 } from "react-native-maps";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Feature, Geometry, GeoJsonProperties, Point } from "geojson";
@@ -19,7 +20,8 @@ import {
   initialRegion,
 } from "../../common/constants";
 import { IMapBoundaries } from "../../common/interfaces";
-import { colors } from "../../common/styles";
+import { TabNavigationHeader } from "../../common/navigation";
+import { colors, sizes } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
@@ -41,6 +43,12 @@ import { IMapScreen } from "./interfaces";
 import { COLORADO_COUNTIES } from "./STUB";
 
 type Props = PropsFromRedux & IMapScreen;
+
+const MAP_HEIGHT =
+  Dimensions.get("window").height -
+  sizes.navigation.button.height -
+  sizes.navigation.button.height -
+  sizes.navigation.title.lineHeight;
 
 const MapScreen = ({
   error,
@@ -304,6 +312,7 @@ const MapScreen = ({
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
+      <TabNavigationHeader navigation={navigation} route={route} />
       {isWaiting && (
         <ActivityIndicator
           color={colors.black25}
@@ -328,7 +337,11 @@ const MapScreen = ({
         pitchEnabled={false}
         provider={"google"}
         ref={mapRef}
-        style={styles.map}
+        style={{
+          height:
+            MAP_HEIGHT - useSafeAreaInsets().bottom - useSafeAreaInsets().top,
+          width: "100%",
+        }}
       >
         {mapMarkers?.map((feature) => {
           // destructure feature
@@ -408,10 +421,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black01,
     flex: 1,
     justifyContent: "center",
-  },
-  map: {
-    height: "100%",
-    width: "100%",
   },
   translatingIndicator: {
     position: "absolute",

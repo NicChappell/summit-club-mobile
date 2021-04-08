@@ -1,4 +1,6 @@
 export type HomeTabsParamList = {
-    Home: undefined;
-    Tour: undefined;
+  /** Home Stack */
+  Home: undefined;
+  /** Tour Screen */
+  Tour: undefined;
 };

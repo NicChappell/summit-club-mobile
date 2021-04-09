@@ -33,10 +33,8 @@ const ExploreScreen = ({
 }: Props) => {
   console.log(route);
   // state hooks
-  const [collections, setCollections] = useState<ICollection[] | undefined>();
-  const [filteredSummits, setFilteredSummits] = useState<
-    ISummit[] | undefined
-  >();
+  const [collections, setCollections] = useState<ICollection[]>([]);
+  const [filteredSummits, setFilteredSummits] = useState<ISummit[]>([]);
   const [sortMethod, setSortMethod] = useState<SortMethod>("descending");
   const [sortMethodIcon, setSortMethodIcon] = useState<SortMethodIcon>(
     "ios-caret-down"
@@ -46,9 +44,11 @@ const ExploreScreen = ({
   useEffect(() => {
     Collection.get()
       .then((collections) => {
+        // update state
         setCollections(collections);
       })
       .catch((error: IError) => {
+        // dispatch error
         setError({
           code: error.code,
           message: error.message,
@@ -56,10 +56,12 @@ const ExploreScreen = ({
       });
 
     Summit.query()
-      .then((filteredSummits) => {
-        setFilteredSummits(filteredSummits);
+      .then((queriedSummits) => {
+        // update state
+        setFilteredSummits(queriedSummits);
       })
       .catch((error: IError) => {
+        // dispatch error
         setError({
           code: error.code,
           message: error.message,
@@ -90,6 +92,24 @@ const ExploreScreen = ({
 
     // navigate to Feature screen
     navigation.navigate("Feature");
+  };
+
+  // fetch more summits
+  const fetchMoreSummits = async () => {
+    console.log("asdf");
+    try {
+      // query filtered summits
+      const queriedSummits = await Summit.query();
+
+      // update state
+      setFilteredSummits([...filteredSummits, ...queriedSummits]);
+    } catch (error) {
+      // dispatch error
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
   };
 
   const basicDetailsCardDimensions = { height: 48, width: 128 };
@@ -143,6 +163,8 @@ const ExploreScreen = ({
             )}
             data={filteredSummits}
             keyExtractor={(item) => item.id.toString()}
+            onEndReached={fetchMoreSummits}
+            onEndReachedThreshold={2}
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity onPress={() => handleSummitPress(item)}>

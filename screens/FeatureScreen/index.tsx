@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Card } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import { Point } from "geojson";
-import { ErrorOverlay } from "../../common/components";
+import { ErrorOverlay, StaticMapBackground } from "../../common/components";
 import { customMapStyle } from "../../common/constants";
+import { getFeaturePhoto2 } from "../../common/helpers";
 import { borderWidthReset, colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -24,8 +25,9 @@ const FeatureScreen = ({
   const { feature } = features;
 
   // state hooks
-  const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
-  const [region, setRegion] = useState<Region | undefined>(undefined);
+  const [coordinate, setCoordinate] = useState<LatLng>();
+  const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
+  const [region, setRegion] = useState<Region>();
 
   useEffect(() => {
     if (feature) {
@@ -34,6 +36,9 @@ const FeatureScreen = ({
 
       // update navigation options
       navigation.setOptions({ title: properties.name });
+
+      // retreive feature photo if available
+      const featurePhoto = getFeaturePhoto2(properties.name);
 
       // destructure geometry
       const coordinates = (geometry as Point).coordinates;
@@ -54,6 +59,7 @@ const FeatureScreen = ({
 
       // update state
       setCoordinate(coordinate);
+      setFeaturePhoto(featurePhoto);
       setRegion(region);
     }
   }, [feature]);
@@ -66,48 +72,49 @@ const FeatureScreen = ({
   return (
     <ScrollView style={styles.scrollView}>
       <ErrorOverlay error={error} />
-      <View style={styles.container}>
-        {/* <ImageBackground
-          source={getFeaturePhoto(properties?.name)}
-          style={styles.featureImageBackground}
-        >
-          <View style={styles.featureImageBackgroundView}>
-            <Text style={styles.featureImageBackgroundText}>
-              {properties?.name}
-            </Text>
-          </View>
-        </ImageBackground> */}
-        <View pointerEvents={"none"} style={styles.mapContainer}>
-          {coordinate && region && (
-            <MapView
-              customMapStyle={customMapStyle}
-              provider={"google"}
-              region={region}
-              style={styles.map}
-            >
-              <Circle
-                center={coordinate}
-                fillColor={colors.queenBlue50}
-                radius={500}
-                strokeColor={colors.queenBlue}
-                strokeWidth={2.5}
-              />
-            </MapView>
-          )}
-        </View>
-        <Button title="Check in" onPress={handleCheckInPress} />
-        {/* <View style={styles.featurePropertiesContainer}>
-          <Text style={styles.featureName}>{properties?.name}</Text>
-          <Text style={styles.hierarchy}>
-            {`${properties?.county} County, ${properties?.state}`}
-          </Text>
-          <Text style={styles.hierarchy}>
-            {`${properties?.country}, ${properties?.continent}`}
-          </Text>
-          <Text style={styles.elevation}>
-            {`${properties?.feet.toLocaleString()} ft / ${properties?.meters.toLocaleString()} m`}
-          </Text>
-        </View> */}
+      {featurePhoto ? (
+        // render feature photo if available
+        <Card.Image
+          containerStyle={[
+            styles.cardImageContainer,
+            {
+              borderTopLeftRadius: 4,
+              borderTopRightRadius: 4,
+              height: "50%",
+            },
+          ]}
+          source={featurePhoto}
+          style={styles.cardImage}
+        />
+      ) : (
+        // render map by default
+        <StaticMapBackground
+          containerStyles={{
+            borderTopLeftRadius: 4,
+            borderTopRightRadius: 4,
+            height: "50%",
+          }}
+          feature={feature}
+        />
+      )}
+      <Button title="Check in" onPress={handleCheckInPress} />
+      <View pointerEvents={"none"} style={styles.mapContainer}>
+        {coordinate && region && (
+          <MapView
+            customMapStyle={customMapStyle}
+            provider={"google"}
+            region={region}
+            style={styles.map}
+          >
+            <Circle
+              center={coordinate}
+              fillColor={colors.queenBlue50}
+              radius={500}
+              strokeColor={colors.queenBlue}
+              strokeWidth={2.5}
+            />
+          </MapView>
+        )}
       </View>
     </ScrollView>
   );
@@ -129,6 +136,15 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(FeatureScreen);
 
 const styles = StyleSheet.create({
+  cardImage: {
+    height: "100%",
+    width: "100%",
+  },
+  cardImageContainer: {
+    height: "100%",
+    overflow: "hidden",
+    width: "100%",
+  },
   container: {
     alignItems: "center",
     flex: 1,

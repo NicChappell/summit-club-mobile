@@ -6,10 +6,6 @@
 - ExploreDrawer
     - Explore: ExploreTabs
 
-// - ExploreStack
-//     - Map: MapScreen
-//     - Explore: ExploreScreen
-
 - ExploreTabs
     - Map: MapScreen
     - Explore: ExploreScreen

@@ -14,7 +14,7 @@ import {
   shadow,
   shadowReset,
 } from "../../../common/styles";
-import { getFeaturePhoto2 } from "../../../common/helpers";
+import { getFeaturePhoto } from "../../../common/helpers";
 import { ICheckIn, ISummit } from "../../../services";
 import StaticMapBackground from "../StaticMapBackground";
 import { CheckInCardContent, FeatureCardContent } from "./components";
@@ -34,7 +34,7 @@ const HorizontalDetailsCard = ({
   // effect hooks
   useEffect(() => {
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto2(feature.properties?.name);
+    const featurePhoto = getFeaturePhoto(feature.properties?.name);
 
     // update state
     setFeaturePhoto(featurePhoto);
@@ -71,7 +71,7 @@ const HorizontalDetailsCard = ({
           style={styles.cardImage}
         />
       ) : (
-        // render map by default
+        // render static map by default
         <StaticMapBackground
           containerStyles={{
             borderBottomLeftRadius: 4,

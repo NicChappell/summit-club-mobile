@@ -91,7 +91,7 @@ const ExploreScreen = ({
     setFeature(feature);
 
     // navigate to Feature screen
-    navigation.navigate("Feature");
+    navigation.navigate("Feature", { screen: "Feature" });
   };
 
   // fetch more summits

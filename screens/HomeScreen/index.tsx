@@ -90,7 +90,7 @@ const HomeScreen = ({
     setFeature(feature);
 
     // navigate to Feature screen
-    navigation.navigate("Feature");
+    navigation.navigate("Feature", { screen: "Feature" });
   };
 
   const basicDetailsCardDimensions = { height: 128, width: 128 };

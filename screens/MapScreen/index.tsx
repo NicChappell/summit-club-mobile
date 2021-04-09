@@ -211,7 +211,7 @@ const MapScreen = ({
     setFeature(feature);
 
     // navigate to Feature screen
-    navigation.navigate("Feature");
+    navigation.navigate("Feature", { screen: "Feature" });
   };
 
   const handleMarkerPress = (event: MapEvent) => {

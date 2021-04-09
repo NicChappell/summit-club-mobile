@@ -13,7 +13,7 @@ const ExploreDrawer = () => {
       drawerContent={(props) => <DrawerNavigatorContent {...props} />}
       screenOptions={{ swipeEnabled: false }}
     >
-      <Drawer.Screen name="ExploreStack" component={ExploreTabs} />
+      <Drawer.Screen name="Explore" component={ExploreTabs} />
     </Drawer.Navigator>
   );
 };

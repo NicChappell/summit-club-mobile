@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button, Card } from "react-native-elements";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import { Point } from "geojson";
 import { ErrorOverlay, StaticMapBackground } from "../../common/components";
 import { customMapStyle } from "../../common/constants";
-import { getFeaturePhoto2 } from "../../common/helpers";
-import { borderWidthReset, colors } from "../../common/styles";
+import { getFeaturePhoto } from "../../common/helpers";
+import {
+  colors,
+  featureCoordinate,
+  featureElevation,
+  featureLocation,
+  featureName,
+} from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { IFeatureScreen } from "./interfaces";
@@ -38,7 +44,7 @@ const FeatureScreen = ({
       navigation.setOptions({ title: properties.name });
 
       // retreive feature photo if available
-      const featurePhoto = getFeaturePhoto2(properties.name);
+      const featurePhoto = getFeaturePhoto(properties.name);
 
       // destructure geometry
       const coordinates = (geometry as Point).coordinates;
@@ -72,49 +78,65 @@ const FeatureScreen = ({
   return (
     <ScrollView style={styles.scrollView}>
       <ErrorOverlay error={error} />
-      {featurePhoto ? (
-        // render feature photo if available
-        <Card.Image
-          containerStyle={[
-            styles.cardImageContainer,
-            {
-              borderTopLeftRadius: 4,
-              borderTopRightRadius: 4,
-              height: "50%",
-            },
-          ]}
-          source={featurePhoto}
-          style={styles.cardImage}
-        />
-      ) : (
-        // render map by default
-        <StaticMapBackground
-          containerStyles={{
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-            height: "50%",
-          }}
-          feature={feature}
-        />
-      )}
-      <Button title="Check in" onPress={handleCheckInPress} />
-      <View pointerEvents={"none"} style={styles.mapContainer}>
-        {coordinate && region && (
-          <MapView
-            customMapStyle={customMapStyle}
-            provider={"google"}
-            region={region}
-            style={styles.map}
-          >
-            <Circle
-              center={coordinate}
-              fillColor={colors.queenBlue50}
-              radius={500}
-              strokeColor={colors.queenBlue}
-              strokeWidth={2.5}
-            />
-          </MapView>
+      <View style={styles.container}>
+        {featurePhoto ? (
+          // render feature photo if available
+          <View style={styles.featurePhotoContainer}>
+            <Image source={featurePhoto} style={styles.featurePhoto} />
+          </View>
+        ) : (
+          // render static map by default
+          <StaticMapBackground
+            containerStyles={{ height: 256 }}
+            feature={feature}
+          />
         )}
+        <View style={styles.featureDetails}>
+          <View style={styles.header}>
+            <Text style={featureName}>{feature.properties?.name}</Text>
+            <Text style={featureElevation}>
+              {feature.properties?.feet.toLocaleString()} ft
+            </Text>
+          </View>
+          <View style={styles.body}>
+            <Text style={featureLocation}>
+              {feature.properties?.county} County, {feature.properties?.state}
+            </Text>
+            <Text style={featureCoordinate}>
+              {feature.properties?.latitude.toFixed(3)}°{" "}
+              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+              {feature.properties?.longitude.toFixed(3)}°{" "}
+              {feature.properties?.longitude > 0 ? "E" : "W"}
+            </Text>
+          </View>
+          <View style={styles.footer}>
+            <Button
+              disabledStyle={styles.button}
+              disabled={true}
+              title="Explore"
+              disabledTitleStyle={styles.buttonTitle}
+            />
+          </View>
+        </View>
+        <Button title="Check in" onPress={handleCheckInPress} />
+        <View pointerEvents={"none"} style={styles.mapContainer}>
+          {coordinate && region && (
+            <MapView
+              customMapStyle={customMapStyle}
+              provider={"google"}
+              region={region}
+              style={styles.map}
+            >
+              <Circle
+                center={coordinate}
+                fillColor={colors.queenBlue50}
+                radius={500}
+                strokeColor={colors.queenBlue}
+                strokeWidth={2.5}
+              />
+            </MapView>
+          )}
+        </View>
       </View>
     </ScrollView>
   );
@@ -136,65 +158,60 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(FeatureScreen);
 
 const styles = StyleSheet.create({
-  cardImage: {
-    height: "100%",
-    width: "100%",
+  body: {
+    alignItems: "flex-start",
+    alignSelf: "stretch",
+    justifyContent: "center",
   },
-  cardImageContainer: {
-    height: "100%",
-    overflow: "hidden",
-    width: "100%",
-  },
-  container: {
-    alignItems: "center",
-    flex: 1,
-    justifyContent: "flex-start",
-  },
-  elevation: {
-    fontFamily: "NunitoSans_400Regular",
-  },
-  featureImageBackground: {
-    ...borderWidthReset,
-    alignItems: "flex-end",
-    height: 256,
-    justifyContent: "flex-end",
-    width: "100%",
-  },
-  featureImageBackgroundText: {
-    color: colors.white,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 24,
+  button: {
+    backgroundColor: colors.zomp,
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
-  featureImageBackgroundView: {
-    backgroundColor: colors.black75,
-    borderBottomRightRadius: 4,
-    borderTopLeftRadius: 4,
+  buttonTitle: {
+    color: colors.white,
+    fontFamily: "NotoSansJP_500Medium",
+    fontSize: 14,
   },
-  featureName: {
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 30,
-  },
-  featurePropertiesContainer: {
-    alignItems: "flex-start",
-    alignSelf: "stretch",
+  container: {
+    alignItems: "stretch",
     flex: 1,
-    padding: 16,
     justifyContent: "flex-start",
   },
-  hierarchy: {
-    fontFamily: "NunitoSans_400Regular",
+  featureDetails: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    padding: 8,
+  },
+  featurePhoto: {
+    height: "100%",
+    width: "100%",
+  },
+  featurePhotoContainer: {
+    height: 256,
+    width: "100%",
+  },
+  footer: {
+    alignItems: "baseline",
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  header: {
+    alignItems: "baseline",
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   mapContainer: {
-    width: "100%",
     height: 256,
+    width: "100%",
   },
   map: {
-    flex: 1,
+    height: "100%",
+    width: "100%",
   },
   scrollView: {
-    backgroundColor: colors.white,
-    flex: 1,
+    backgroundColor: colors.black01,
   },
 });

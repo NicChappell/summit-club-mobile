@@ -40,12 +40,19 @@ const StackNavigatorHeader = ({
   // state hooks
   const [searchInput, setSearchInput] = useState<string>("");
 
+  const handleChangeText = (text: string) => setSearchInput(text);
+
   const handleClearIconPress = () => {
     // return early if searchBarRef is null
     if (!searchBarRef) return;
 
     // clear search bar input
     searchBarRef.current!.clear();
+  };
+
+  const handleSubmitEditing = () => {
+    // navigate to Search Results screen
+    navigation.navigate("SearchResults");
   };
 
   return (
@@ -67,7 +74,8 @@ const StackNavigatorHeader = ({
           inputContainerStyle={searchBarInputContainer}
           inputStyle={searchBarInput}
           leftIconContainerStyle={searchBarLeftIconContainer}
-          onChangeText={(value) => setSearchInput(value)}
+          onChangeText={handleChangeText}
+          onSubmitEditing={handleSubmitEditing}
           placeholder="Find your next adventure"
           ref={searchBarRef}
           returnKeyType={"search"}

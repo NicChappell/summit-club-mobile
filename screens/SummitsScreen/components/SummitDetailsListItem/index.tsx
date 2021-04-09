@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StaticMapBackground } from "../../../../common/components";
-import { getFeaturePhoto2 } from "../../../../common/helpers";
+import { getFeaturePhoto } from "../../../../common/helpers";
 import {
   colors,
   featureCoordinate,
@@ -22,7 +22,7 @@ const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
   // effect hooks
   useEffect(() => {
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto2(feature.properties?.name);
+    const featurePhoto = getFeaturePhoto(feature.properties?.name);
 
     // update state
     setFeaturePhoto(featurePhoto);
@@ -45,7 +45,7 @@ const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
           <Image source={featurePhoto} style={styles.listItemImage} />
         </View>
       ) : (
-        // render map by default
+        // render static map by default
         <StaticMapBackground
           containerStyles={{
             borderRadius: 4,

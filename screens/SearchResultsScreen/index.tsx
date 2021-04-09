@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-elements";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../common/styles";
 import { ISearchResultsScreen } from "./interfaces";
 
@@ -10,15 +9,6 @@ const SearchResultsScreen = ({ navigation, route }: ISearchResultsScreen) => {
       <Text>This is top text.</Text>
       <View>
         <Text>SearchResultsScreen</Text>
-        <Button
-          title="Go to Features"
-          onPress={() =>
-            navigation.navigate("Feature", {
-              id: 1,
-              name: 'mrah',
-            })
-          }
-        />
       </View>
       <Text>This is bottom text.</Text>
     </View>

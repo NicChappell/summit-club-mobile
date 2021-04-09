@@ -1,14 +1,14 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
-import { ExploreStackParamList } from "../../navigation/navigators/ExploreStack/types";
+import { ExploreTabsParamList } from "../../navigation/navigators/ExploreTabs/types";
 
 export type ExploreScreenNavigationProp = StackNavigationProp<
-  ExploreStackParamList,
+  ExploreTabsParamList,
   "Explore"
 >;
 
 export type ExploreScreenRouteProp = RouteProp<
-  ExploreStackParamList,
+  ExploreTabsParamList,
   "Explore"
 >;
 

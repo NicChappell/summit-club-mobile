@@ -14,7 +14,7 @@ import {
   shadow,
   shadowReset,
 } from "../../../common/styles";
-import { getFeaturePhoto2 } from "../../../common/helpers";
+import { getFeaturePhoto } from "../../../common/helpers";
 import StaticMapBackground from "../StaticMapBackground";
 import { defaultDimensions } from "./constants";
 import { IFullDetailsCard } from "./interfaces";
@@ -32,7 +32,7 @@ const FullDetailsCard = ({
   // effect hooks
   useEffect(() => {
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto2(feature.properties?.name);
+    const featurePhoto = getFeaturePhoto(feature.properties?.name);
 
     // update state
     setFeaturePhoto(featurePhoto);
@@ -58,7 +58,7 @@ const FullDetailsCard = ({
           style={styles.cardImage}
         />
       ) : (
-        // render map by default
+        // render static map by default
         <StaticMapBackground
           containerStyles={{
             borderTopLeftRadius: 4,

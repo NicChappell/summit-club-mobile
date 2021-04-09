@@ -7,7 +7,7 @@ import {
   borderWidthReset,
   colors,
 } from "../../../../../common/styles";
-import { getFeaturePhoto2 } from "../../../../../common/helpers";
+import { getFeaturePhoto } from "../../../../../common/helpers";
 import StaticMapBackground from "../../../StaticMapBackground";
 import { IBackground } from "./interfaces";
 
@@ -22,7 +22,7 @@ const Background = ({ item }: IBackground) => {
   useEffect(() => {
     if (feature) {
       // retreive feature photo if available
-      const featurePhoto = getFeaturePhoto2(feature.properties?.name);
+      const featurePhoto = getFeaturePhoto(feature.properties?.name);
 
       // update state
       setFeaturePhoto(featurePhoto);
@@ -55,7 +55,7 @@ const Background = ({ item }: IBackground) => {
         );
       } else {
         return (
-          // render map by default
+          // render static map by default
           <StaticMapBackground
             containerStyles={{ ...borderRadius4 }}
             feature={feature}

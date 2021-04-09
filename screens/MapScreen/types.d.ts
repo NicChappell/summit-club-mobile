@@ -1,10 +1,10 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
-import { ExploreStackParamList } from "../../navigation/navigators/ExploreStack/types";
+import { ExploreTabsParamList } from "../../navigation/navigators/ExploreTabs/types";
 
 export type MapScreenNavigationProp = StackNavigationProp<
-  ExploreStackParamList,
+  ExploreTabsParamList,
   "Map"
 >;
 
-export type MapScreenRouteProp = RouteProp<ExploreStackParamList, "Map">;
+export type MapScreenRouteProp = RouteProp<ExploreTabsParamList, "Map">;

@@ -13,7 +13,7 @@ import {
 } from "../../common/components";
 import { IAuthCredentials } from "../../common/interfaces";
 import { signUpSchema } from "../../common/schemas";
-import { colors, sizes } from "../../common/styles";
+import { colors } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { CheckBoxTitle } from "./components";
 import { ISignUpScreen } from "./interfaces";
@@ -98,7 +98,7 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
                   rightIcon={
                     <Ionicons
                       name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
-                      size={sizes.icon}
+                      size={24}
                       color={colors.black}
                       onPress={() => setSecureTextEntry(!secureTextEntry)}
                     />

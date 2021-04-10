@@ -1,7 +1,6 @@
 import { TextStyle, ViewStyle } from "react-native";
 import { colors } from "./colors";
 import { paddingReset, marginReset } from "./reset";
-import { sizes } from "./sizes";
 
 export const navigationHeaderButton = {
   alignItems: "center",
@@ -22,23 +21,23 @@ export const navigationHeaderContainer = {
   ...marginReset,
   backgroundColor: colors.white,
   flexDirection: "row",
-  height: sizes.navigation.container.height,
+  height: 64,
   justifyContent: "space-between",
   width: "100%",
 } as ViewStyle;
 
 export const navigationHeaderLeftComponent = {
   alignItems: "flex-start",
-  height: sizes.navigation.button.height,
+  height: 64,
   justifyContent: "center",
-  width: sizes.navigation.button.width,
+  width: 64,
 } as ViewStyle;
 
 export const navigationHeaderRightComponent = {
   alignItems: "flex-end",
-  height: sizes.navigation.button.height,
+  height: 64,
   justifyContent: "center",
-  width: sizes.navigation.button.width,
+  width: 64,
 } as ViewStyle;
 
 export const navigationHeaderTitle = {

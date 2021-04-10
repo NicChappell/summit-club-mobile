@@ -37,7 +37,7 @@ const ErrorOverlay = ({ error, clearError }: Props) => {
         <Button
           buttonStyle={styles.button}
           containerStyle={styles.buttonContainer}
-          icon={<Ionicons name={"close"} size={24} color={colors.black} />}
+          icon={<Ionicons name={"ios-close"} size={24} color={colors.black} />}
           onPress={closeOverlay}
         />
         <Text style={styles.message}>{error.code}</Text>

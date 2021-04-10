@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Divider } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import { Point } from "geojson";
@@ -91,51 +91,86 @@ const FeatureScreen = ({
             feature={feature}
           />
         )}
-        <View style={styles.featureDetails}>
-          <View style={styles.header}>
-            <Text style={featureName}>{feature.properties?.name}</Text>
-            <Text style={featureElevation}>
-              {feature.properties?.feet.toLocaleString()} ft
-            </Text>
-          </View>
-          <View style={styles.body}>
+        <View style={styles.content}>
+          <View style={styles.section}>
+            <Text style={styles.featureName}>{feature.properties?.name}</Text>
             <Text style={featureLocation}>
+              {feature.properties?.feet.toLocaleString()} ft ·{" "}
               {feature.properties?.county} County, {feature.properties?.state}
             </Text>
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={styles.featureDescription}>
+              Last verified check-in: DD-MM-YYYY
+            </Text>
+            <Text style={styles.featureDescription}>
+              or
+            </Text>
+            <Text style={styles.featureDescription}>Mark as complete: Y/N</Text>
+            <Text style={styles.featureDescription}>
+              if user has verified check-in, show badge and data of last check-in. if user has not verified check-in, show component to manually mark as complete.
+            </Text>
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={styles.featureDescription}>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
+              semper semper diam, porttitor mollis ipsum pharetra vel. Nulla
+              blandit eros a diam rhoncus rhoncus vitae ut neque. Sed sagittis,
+              odio ac ultricies feugiat, lectus magna interdum risus, non
+              feugiat metus ipsum id ligula.
+            </Text>
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={styles.featureName}>Location</Text>
             <Text style={featureCoordinate}>
               {feature.properties?.latitude.toFixed(3)}°{" "}
               {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
               {feature.properties?.longitude.toFixed(3)}°{" "}
               {feature.properties?.longitude > 0 ? "E" : "W"}
             </Text>
-          </View>
-          <View style={styles.footer}>
+            <View pointerEvents={"none"} style={styles.mapContainer}>
+              {coordinate && region && (
+                <MapView
+                  customMapStyle={customMapStyle}
+                  provider={"google"}
+                  region={region}
+                  style={styles.map}
+                >
+                  <Circle
+                    center={coordinate}
+                    fillColor={colors.queenBlue50}
+                    radius={500}
+                    strokeColor={colors.queenBlue}
+                    strokeWidth={2.5}
+                  />
+                </MapView>
+              )}
+            </View>
             <Button
-              disabledStyle={styles.button}
-              disabled={true}
-              title="Explore"
-              disabledTitleStyle={styles.buttonTitle}
+              style={styles.button}
+              title="Check in"
+              titleStyle={styles.buttonTitle}
+              onPress={handleCheckInPress}
             />
           </View>
-        </View>
-        <Button title="Check in" onPress={handleCheckInPress} />
-        <View pointerEvents={"none"} style={styles.mapContainer}>
-          {coordinate && region && (
-            <MapView
-              customMapStyle={customMapStyle}
-              provider={"google"}
-              region={region}
-              style={styles.map}
-            >
-              <Circle
-                center={coordinate}
-                fillColor={colors.queenBlue50}
-                radius={500}
-                strokeColor={colors.queenBlue}
-                strokeWidth={2.5}
-              />
-            </MapView>
-          )}
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={styles.featureName}>Merch</Text>
+            <Text style={styles.featureDescription}>
+              somewhere include list of merch available if user has perviously summited
+            </Text>
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={styles.featureName}>Recent check-ins</Text>
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={styles.featureName}>Summits nearby</Text>
+          </View>
         </View>
       </View>
     </ScrollView>
@@ -178,10 +213,23 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
   },
-  featureDetails: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    padding: 8,
+  content: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+  },
+  divider: {
+    backgroundColor: colors.black05,
+    height: 1,
+    marginVertical: 20,
+  },
+  featureDescription: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 14,
+  },
+  featureName: {
+    ...featureName,
+    fontSize: 24,
   },
   featurePhoto: {
     height: "100%",
@@ -190,18 +238,6 @@ const styles = StyleSheet.create({
   featurePhotoContainer: {
     height: 256,
     width: "100%",
-  },
-  footer: {
-    alignItems: "baseline",
-    alignSelf: "stretch",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  header: {
-    alignItems: "baseline",
-    alignSelf: "stretch",
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
   mapContainer: {
     height: 256,
@@ -213,5 +249,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: colors.black01,
+  },
+  section: {
+    alignItems: "flex-start",
+    justifyContent: "space-between",
   },
 });

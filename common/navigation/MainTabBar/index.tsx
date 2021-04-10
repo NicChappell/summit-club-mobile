@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { colors, sizes } from "../../../common/styles";
+import { colors } from "../../../common/styles";
 
 const MainTabBar = ({ descriptors, navigation, state }: BottomTabBarProps) => (
   <View
@@ -55,9 +55,9 @@ export default MainTabBar;
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    height: sizes.navigation.button.height + sizes.navigation.title.lineHeight,
+    height: 80,
     justifyContent: "center",
-    width: sizes.navigation.button.width,
+    width: 64,
   },
   container: {
     alignItems: "flex-start",
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   title: {
     color: colors.queenBlue,
     fontFamily: "NotoSansJP_500Medium",
-    fontSize: sizes.navigation.title.fontSize,
-    lineHeight: sizes.navigation.title.lineHeight,
+    fontSize: 12,
+    lineHeight: 16,
   },
 });

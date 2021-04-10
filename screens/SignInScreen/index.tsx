@@ -9,7 +9,7 @@ import * as actions from "../../redux/actions";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { IAuthCredentials } from "../../common/interfaces";
 import { signInSchema } from "../../common/schemas";
-import { colors, sizes } from "../../common/styles";
+import { colors } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { ISignInScreen } from "./interfaces";
 
@@ -85,7 +85,7 @@ const SignInScreen = ({ error, navigation, route, signIn }: Props) => {
                   rightIcon={
                     <Ionicons
                       name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
-                      size={sizes.icon}
+                      size={24}
                       color={colors.black}
                       onPress={() => setSecureTextEntry(!secureTextEntry)}
                     />

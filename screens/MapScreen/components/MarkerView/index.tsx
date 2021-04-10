@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../../../../common/styles";
 import { IMarkerView } from "./interfaces";
 
@@ -21,9 +22,14 @@ const MarkerView = ({ properties }: IMarkerView) => {
   let label = feet.toString().slice(0, -3);
 
   return (
-    <View style={styles.circle}>
-      <Text style={styles.pinText}>{label}k</Text>
-    </View>
+    // <View style={styles.circle}>
+    //   <Text style={styles.pinText}>{label}k</Text>
+    // </View>
+    <Ionicons
+      color={colors.queenBlue}
+      name={"ios-location"}
+      size={40}
+    />
   );
 };
 

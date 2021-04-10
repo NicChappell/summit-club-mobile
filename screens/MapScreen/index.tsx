@@ -21,7 +21,7 @@ import {
 } from "../../common/constants";
 import { IMapBoundaries } from "../../common/interfaces";
 import { TabNavigationHeader } from "../../common/navigation";
-import { colors, sizes } from "../../common/styles";
+import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
@@ -46,9 +46,9 @@ type Props = PropsFromRedux & IMapScreen;
 
 const MAP_HEIGHT =
   Dimensions.get("window").height -
-  sizes.navigation.button.height -
-  sizes.navigation.button.height -
-  sizes.navigation.title.lineHeight;
+  64 -
+  64 -
+  16;
 
 const MapScreen = ({
   error,
@@ -313,74 +313,75 @@ const MapScreen = ({
     <View style={styles.container}>
       <ErrorOverlay error={error} />
       <TabNavigationHeader navigation={navigation} route={route} />
-      {isWaiting && (
-        <ActivityIndicator
-          color={colors.black25}
-          size="small"
-          style={styles.activityIndicator}
-        />
-      )}
-      {!isWaiting && (
-        <Ionicons
-          color={colors.black25}
-          name={"add-outline"}
-          size={24}
-          style={styles.translatingIndicator}
-        />
-      )}
-      <MapView
-        customMapStyle={customMapStyle}
-        initialRegion={initialRegion}
-        loadingEnabled={true}
-        onRegionChange={handleRegionChange}
-        onRegionChangeComplete={handleRegionChangeComplete}
-        pitchEnabled={false}
-        provider={"google"}
-        ref={mapRef}
-        style={{
-          height:
-            MAP_HEIGHT - useSafeAreaInsets().bottom - useSafeAreaInsets().top,
-          width: "100%",
-        }}
-      >
-        {mapMarkers?.map((feature) => {
-          // destructure feature
-          const geometry = feature.geometry;
-          const properties = feature.properties;
+      <View style={styles.mapContainer}>
+        {isWaiting && (
+          <ActivityIndicator
+            color={colors.black25}
+            size="small"
+            style={styles.activityIndicator}
+          />
+        )}
+        {!isWaiting && (
+          <Ionicons
+            color={colors.black25}
+            name={"ios-add-outline"}
+            size={24}
+            style={styles.translatingIndicator}
+          />
+        )}
+        <MapView
+          customMapStyle={customMapStyle}
+          initialRegion={initialRegion}
+          loadingEnabled={true}
+          onRegionChange={handleRegionChange}
+          onRegionChangeComplete={handleRegionChangeComplete}
+          pitchEnabled={false}
+          provider={"google"}
+          ref={mapRef}
+          style={{
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          {mapMarkers?.map((feature) => {
+            // destructure feature
+            const geometry = feature.geometry;
+            const properties = feature.properties;
 
-          // destructure geometry
-          const coordinates = (geometry as Point).coordinates;
+            // destructure geometry
+            const coordinates = (geometry as Point).coordinates;
 
-          // format marker coordinate
-          const coordinate: LatLng = {
-            latitude: coordinates[1],
-            longitude: coordinates[0],
-          };
+            // format marker coordinate
+            const coordinate: LatLng = {
+              latitude: coordinates[1],
+              longitude: coordinates[0],
+            };
 
-          return (
-            <Marker
-              key={properties!.id}
-              coordinate={coordinate}
-              onPress={handleMarkerPress}
-              tracksViewChanges={false}
-            >
-              <MarkerView properties={properties} />
-              <Callout onPress={() => handleCalloutPress(feature)}>
-                <CalloutView properties={properties} />
-              </Callout>
-            </Marker>
-          );
-        })}
-        {featureFilters?.countiesOverlay &&
-          countiesPolygonCoordinates?.map((coordiantes, index) => (
-            <Polygon
-              coordinates={coordiantes}
-              fillColor={"transparent"}
-              key={index}
-              strokeColor={colors.queenBlue50}
-            ></Polygon>
-          ))}
-      </MapView>
+            return (
+              <Marker
+                key={properties!.id}
+                coordinate={coordinate}
+                onPress={handleMarkerPress}
+                tracksViewChanges={false}
+              >
+                <MarkerView properties={properties} />
+                <Callout onPress={() => handleCalloutPress(feature)}>
+                  <CalloutView properties={properties} />
+                </Callout>
+              </Marker>
+            );
+          })}
+          {featureFilters?.countiesOverlay &&
+            countiesPolygonCoordinates?.map((coordiantes, index) => (
+              <Polygon
+                coordinates={coordiantes}
+                fillColor={"transparent"}
+                key={index}
+                strokeColor={colors.queenBlue50}
+              ></Polygon>
+            ))}
+        </MapView>
+      </View>
     </View>
   );
 };
@@ -417,8 +418,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   container: {
-    alignItems: "center",
+    alignItems: "stretch",
     backgroundColor: colors.black01,
+    flex: 1,
+    justifyContent: "center",
+  },
+  mapContainer: {
+    alignItems: "center",
     flex: 1,
     justifyContent: "center",
   },

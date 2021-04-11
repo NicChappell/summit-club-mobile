@@ -96,7 +96,6 @@ const ExploreScreen = ({
 
   // fetch more summits
   const fetchMoreSummits = async () => {
-    console.log("asdf");
     try {
       // query filtered summits
       const queriedSummits = await Summit.query();

@@ -24,7 +24,7 @@ const FeatureCardContent = ({ item }: IFeatureCardContent) => {
       </View>
       <View style={styles.body}>
         <Text style={featureLocation}>
-          {feature.properties?.county} County, {feature.properties?.state}
+          {feature.properties?.county} County
         </Text>
         <Text style={featureCoordinate}>
           {feature.properties?.latitude.toFixed(3)}°{" "}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Card } from "react-native-elements";
 import {
   borderRadius4,
@@ -15,16 +15,15 @@ import {
   shadowReset,
 } from "../../../common/styles";
 import { getFeaturePhoto } from "../../../common/helpers";
-import { ICheckIn, ISummit } from "../../../services";
 import StaticMapBackground from "../StaticMapBackground";
-import { CheckInCardContent, FeatureCardContent } from "./components";
+import { FeatureCardContent } from "./components";
 import { defaultDimensions } from "./constants";
-import { IHorizontalDetailsCard } from "./interfaces";
+import { IVerticalDetailsCard } from "./interfaces";
 
-const HorizontalDetailsCard = ({
+const VerticalDetailsCard = ({
   dimensions = defaultDimensions,
   item,
-}: IHorizontalDetailsCard) => {
+}: IVerticalDetailsCard) => {
   // destructure item
   const { feature } = item;
 
@@ -40,17 +39,6 @@ const HorizontalDetailsCard = ({
     setFeaturePhoto(featurePhoto);
   }, []);
 
-  const renderCardContent = (item: ICheckIn | ISummit) => {
-    switch (item.type) {
-      case "filteredSummit":
-        return <FeatureCardContent item={item} />;
-      case "recentCheckIn":
-        return <CheckInCardContent item={item} />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <Card
       containerStyle={[styles.cardContainer, { ...dimensions }]}
@@ -58,35 +46,22 @@ const HorizontalDetailsCard = ({
     >
       {featurePhoto ? (
         // render feature photo if available
-        <Card.Image
-          containerStyle={[
-            styles.cardImageContainer,
-            {
-              borderBottomLeftRadius: 4,
-              borderTopLeftRadius: 4,
-              width: 128,
-            },
-          ]}
-          source={featurePhoto}
-          style={styles.cardImage}
-        />
+        <View style={styles.featurePhotoContainer}>
+          <Image source={featurePhoto} style={styles.featurePhoto} />
+        </View>
       ) : (
         // render static map by default
         <StaticMapBackground
-          containerStyles={{
-            borderBottomLeftRadius: 4,
-            borderTopLeftRadius: 4,
-            width: 128,
-          }}
+          containerStyles={styles.staticMapBackgroundContainer}
           feature={feature}
         />
       )}
-      {renderCardContent(item)}
+      <FeatureCardContent item={item} />
     </Card>
   );
 };
 
-export default HorizontalDetailsCard;
+export default VerticalDetailsCard;
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -98,15 +73,6 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     paddingLeft: 2,
   },
-  cardImage: {
-    height: "100%",
-    width: "100%",
-  },
-  cardImageContainer: {
-    height: "100%",
-    overflow: "hidden",
-    width: "100%",
-  },
   cardWrapper: {
     ...borderRadius4,
     ...marginReset,
@@ -114,8 +80,25 @@ const styles = StyleSheet.create({
     ...shadow,
     alignItems: "flex-start",
     backgroundColor: colors.white,
-    flexDirection: "row",
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
+  },
+  featurePhoto: {
+    height: "100%",
+    width: "100%",
+  },
+  featurePhotoContainer: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    height: 176,
+    overflow: "hidden",
+    width: 174,
+  },
+  staticMapBackgroundContainer: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    height: 176,
+    overflow: "hidden",
+    width: 174,
   },
 });

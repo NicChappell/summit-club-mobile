@@ -1,4 +1,4 @@
-import { Region } from "react-native-maps";
+import { LatLng, Region } from "react-native-maps";
 import { IMapBoundaries } from "../../common/interfaces";
 
 // Custom map style
@@ -89,6 +89,12 @@ export const customMapStyle = [
     ],
   },
 ];
+
+// The initial coordinate for a feature
+export const initialCoordinate: LatLng = {
+  latitude: 39.331557, // center latitude coordinate
+  longitude: -105.5704935, // center longitude coordinate
+};
 
 // The initial map boundaries to query against
 export const initialMapBoundaries: IMapBoundaries = {

@@ -5,4 +5,6 @@ export { default as FullDetailsCard } from "./FullDetailsCard";
 export { default as HorizontalDetailsCard } from "./HorizontalDetailsCard";
 export { default as PrivacyPolicy } from "./PrivacyPolicy";
 export { default as StaticMapBackground } from "./StaticMapBackground";
+export { default as SummitDetailsListItem } from "./SummitDetailsListItem";
 export { default as TermsAndConditions } from "./TermsAndConditions";
+export { default as VerticalDetailsCard } from "./VerticalDetailsCard";

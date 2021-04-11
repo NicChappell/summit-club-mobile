@@ -38,13 +38,9 @@ const HomeScreen = ({
   setFeature,
 }: Props) => {
   // state hooks
-  const [checkIns, setCheckIns] = useState<ICheckIn[] | undefined>();
-  const [featuredSummits, setFeaturedSummits] = useState<
-    ISummit[] | undefined
-  >();
-  const [popularSummits, setPopularSummits] = useState<
-    IPopularSummit[] | undefined
-  >();
+  const [checkIns, setCheckIns] = useState<ICheckIn[]>([]);
+  const [featuredSummits, setFeaturedSummits] = useState<ISummit[]>([]);
+  const [popularSummits, setPopularSummits] = useState<IPopularSummit[]>([]);
 
   // effect hooks
   useEffect(() => {
@@ -94,7 +90,7 @@ const HomeScreen = ({
   };
 
   const basicDetailsCardDimensions = { height: 128, width: 128 };
-  const fullDetailsCardDimensions = { height: 288, width: 288 };
+  const fullDetailsCardDimensions = { height: 208, width: 288 };
   const horizontalDetailsCardDimensions = {
     height: 128,
     width: 320,

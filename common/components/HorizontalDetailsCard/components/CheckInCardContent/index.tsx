@@ -35,7 +35,7 @@ const CheckInCardContent = ({ item }: ICheckInCardContent) => {
       <View style={styles.row}>
         <Text style={styles.featureName}>{feature.properties?.name}</Text>
         <Text style={featureLocation}>
-          {feature.properties?.county} County, {feature.properties?.state}
+          {feature.properties?.county} County
         </Text>
         <Text style={featureCoordinate}>
           {feature.properties?.latitude.toFixed(3)}°{" "}

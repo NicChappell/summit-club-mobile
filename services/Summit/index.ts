@@ -1,7 +1,11 @@
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { MOCK_FEATURE } from "../../data/mocks";
 
-export type SummitType = "featuredSummit" | "filteredSummit" | "popularSummit";
+export type SummitType =
+  | "featuredSummit"
+  | "filteredSummit"
+  | "nearbySummit"
+  | "popularSummit";
 
 export interface ISummit {
   /** Uniquely identifies the Summit record */
@@ -115,6 +119,105 @@ class Summit {
         {
           id: 5,
           type: "featuredSummit",
+          feature: MOCK_FEATURE,
+        },
+      ]);
+    } else {
+      return Promise.reject(new Error("unable to process request"));
+    }
+  }
+
+  /** Fetch array of popular summit data */
+  static getNearbySummits(): Promise<ISummit[]> {
+    // TODO: FIREBASE QUERY
+
+    if (true) {
+      return Promise.resolve([
+        {
+          id: 0,
+          type: "nearbySummit",
+          feature: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [-105.6162397, 40.2548614],
+            },
+            properties: {
+              feet: 14262,
+              id: 1,
+              meters: 4347,
+              latitude: 40.2548614,
+              longitude: -105.6162397,
+              name: "Longs Peak",
+              class: "Summit",
+              county: "Boulder",
+              state: "CO",
+              country: "United States",
+              continent: "North America",
+            },
+          },
+        },
+        {
+          id: 1,
+          type: "nearbySummit",
+          feature: MOCK_FEATURE,
+        },
+        {
+          id: 2,
+          type: "nearbySummit",
+          feature: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [-107.0664035, 39.1186541],
+            },
+            properties: {
+              feet: 14107,
+              id: 2,
+              meters: 4300,
+              latitude: 39.1186541,
+              longitude: -107.0664035,
+              name: "Snowmass Mountain",
+              class: "Summit",
+              county: "Gunnison",
+              state: "CO",
+              country: "United States",
+              continent: "North America",
+            },
+          },
+        },
+        {
+          id: 3,
+          type: "nearbySummit",
+          feature: MOCK_FEATURE,
+        },
+        {
+          id: 4,
+          type: "nearbySummit",
+          feature: {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: [-106.9870852, 39.076094],
+            },
+            properties: {
+              feet: 14016,
+              id: 3,
+              meters: 4272,
+              latitude: 39.076094,
+              longitude: -106.9870852,
+              name: "North Maroon Peak",
+              class: "Summit",
+              county: "Pitkin",
+              state: "CO",
+              country: "United States",
+              continent: "North America",
+            },
+          },
+        },
+        {
+          id: 5,
+          type: "nearbySummit",
           feature: MOCK_FEATURE,
         },
       ]);

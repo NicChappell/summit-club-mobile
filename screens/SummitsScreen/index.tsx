@@ -1,10 +1,9 @@
 import React from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { ErrorOverlay } from "../../common/components";
+import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
 import { colors } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
-import { SummitDetailsListItem } from "./components";
 import { ISummitsScreen } from "./interfaces";
 
 type Props = PropsFromRedux & ISummitsScreen;
@@ -45,9 +44,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.white,
     flex: 1,
-  },
-  listItemContainerStyle: {
-    // width: "100%",
   },
   listItemImage: {
     height: "100%",

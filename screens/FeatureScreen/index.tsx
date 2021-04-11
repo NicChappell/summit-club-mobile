@@ -1,11 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Button, Divider } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import { Point } from "geojson";
-import { ErrorOverlay, StaticMapBackground } from "../../common/components";
-import { customMapStyle } from "../../common/constants";
+import {
+  ErrorOverlay,
+  HorizontalDetailsCard,
+  StaticMapBackground,
+  VerticalDetailsCard,
+} from "../../common/components";
+import {
+  customMapStyle,
+  initialCoordinate,
+  initialRegion,
+} from "../../common/constants";
+import { IError } from "../../common/interfaces";
 import { getFeaturePhoto } from "../../common/helpers";
 import {
   colors,
@@ -13,9 +30,12 @@ import {
   featureElevation,
   featureLocation,
   featureName,
+  sectionTitle,
+  separator,
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
+import { CheckIn, ICheckIn, ISummit, Summit } from "../../services";
 import { IFeatureScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IFeatureScreen;
@@ -31,9 +51,36 @@ const FeatureScreen = ({
   const { feature } = features;
 
   // state hooks
-  const [coordinate, setCoordinate] = useState<LatLng>();
+  const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[]>([]);
+  const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
-  const [region, setRegion] = useState<Region>();
+  const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
+  const [region, setRegion] = useState<Region>(initialRegion);
+
+  // effect hooks
+  useEffect(() => {
+    CheckIn.getRecentCheckIns()
+      .then((recentCheckIns) => {
+        setRecentCheckIns(recentCheckIns);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
+
+    Summit.getNearbySummits()
+      .then((nearbySummits) => {
+        setNearbySummits(nearbySummits);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
+  }, []);
 
   useEffect(() => {
     if (feature) {
@@ -75,6 +122,15 @@ const FeatureScreen = ({
     navigation.navigate("CheckIn");
   };
 
+  const horizontalDetailsCardDimensions = {
+    height: 128,
+    width: 320,
+  };
+  const verticalDetailsCardDimensions = {
+    height: 240,
+    width: 176,
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <ErrorOverlay error={error} />
@@ -96,7 +152,13 @@ const FeatureScreen = ({
             <Text style={styles.featureName}>{feature.properties?.name}</Text>
             <Text style={featureLocation}>
               {feature.properties?.feet.toLocaleString()} ft ·{" "}
-              {feature.properties?.county} County, {feature.properties?.state}
+              {feature.properties?.county} County
+            </Text>
+            <Text style={featureCoordinate}>
+              {feature.properties?.latitude.toFixed(3)}°{" "}
+              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+              {feature.properties?.longitude.toFixed(3)}°{" "}
+              {feature.properties?.longitude > 0 ? "E" : "W"}
             </Text>
           </View>
           <Divider style={styles.divider} />
@@ -104,12 +166,12 @@ const FeatureScreen = ({
             <Text style={styles.featureDescription}>
               Last verified check-in: DD-MM-YYYY
             </Text>
-            <Text style={styles.featureDescription}>
-              or
-            </Text>
+            <Text style={styles.featureDescription}>or</Text>
             <Text style={styles.featureDescription}>Mark as complete: Y/N</Text>
             <Text style={styles.featureDescription}>
-              if user has verified check-in, show badge and data of last check-in. if user has not verified check-in, show component to manually mark as complete.
+              if user has verified check-in, show badge and data of last
+              check-in. if user has not verified check-in, show component to
+              manually mark as complete.
             </Text>
           </View>
           <Divider style={styles.divider} />
@@ -125,12 +187,6 @@ const FeatureScreen = ({
           <Divider style={styles.divider} />
           <View style={styles.section}>
             <Text style={styles.featureName}>Location</Text>
-            <Text style={featureCoordinate}>
-              {feature.properties?.latitude.toFixed(3)}°{" "}
-              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-              {feature.properties?.longitude.toFixed(3)}°{" "}
-              {feature.properties?.longitude > 0 ? "E" : "W"}
-            </Text>
             <View pointerEvents={"none"} style={styles.mapContainer}>
               {coordinate && region && (
                 <MapView
@@ -160,16 +216,69 @@ const FeatureScreen = ({
           <View style={styles.section}>
             <Text style={styles.featureName}>Merch</Text>
             <Text style={styles.featureDescription}>
-              somewhere include list of merch available if user has perviously summited
+              somewhere include list of merch available if user has perviously
+              summited
             </Text>
           </View>
           <Divider style={styles.divider} />
-          <View style={styles.section}>
-            <Text style={styles.featureName}>Recent check-ins</Text>
-          </View>
+          {recentCheckIns && (
+            <View style={styles.section}>
+              <Text style={sectionTitle}>Recent check-ins</Text>
+              <FlatList
+                ItemSeparatorComponent={() => (
+                  <View style={{ width: separator.width }} />
+                )}
+                data={recentCheckIns}
+                decelerationRate={0}
+                horizontal
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <HorizontalDetailsCard
+                    dimensions={{
+                      height: horizontalDetailsCardDimensions.height,
+                      width: horizontalDetailsCardDimensions.width,
+                    }}
+                    item={item}
+                  />
+                )}
+                showsHorizontalScrollIndicator={false}
+                snapToAlignment={"start"}
+                snapToInterval={
+                  horizontalDetailsCardDimensions.width + separator.width
+                }
+              />
+            </View>
+          )}
           <Divider style={styles.divider} />
           <View style={styles.section}>
-            <Text style={styles.featureName}>Summits nearby</Text>
+            {nearbySummits && (
+              <View style={styles.section}>
+                <Text style={sectionTitle}>Summits nearby</Text>
+                <FlatList
+                  ItemSeparatorComponent={() => (
+                    <View style={{ width: separator.width }} />
+                  )}
+                  data={nearbySummits}
+                  decelerationRate={0}
+                  horizontal
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <VerticalDetailsCard
+                      dimensions={{
+                        height: verticalDetailsCardDimensions.height,
+                        width: verticalDetailsCardDimensions.width,
+                      }}
+                      item={item}
+                    />
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  snapToAlignment={"start"}
+                  snapToInterval={
+                    verticalDetailsCardDimensions.width + separator.width
+                  }
+                />
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -214,8 +323,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   content: {
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    padding: 8,
   },
   divider: {
     backgroundColor: colors.black05,
@@ -237,6 +345,7 @@ const styles = StyleSheet.create({
   },
   featurePhotoContainer: {
     height: 256,
+    overflow: "hidden",
     width: "100%",
   },
   mapContainer: {

@@ -7,6 +7,12 @@ export const featureCoordinate = {
   fontSize: 14,
 } as TextStyle;
 
+export const featureDistance = {
+  color: colors.black,
+  fontFamily: "NunitoSans_400Regular",
+  fontSize: 14,
+} as TextStyle;
+
 export const featureElevation = {
   color: colors.black,
   fontFamily: "NunitoSans_400Regular",

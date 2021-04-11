@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { StaticMapBackground } from "../../../../common/components";
-import { getFeaturePhoto } from "../../../../common/helpers";
+import { getFeaturePhoto } from "../../helpers";
 import {
   colors,
   featureCoordinate,
   featureLocation,
   featureName,
-} from "../../../../common/styles";
+} from "../../styles";
+import StaticMapBackground from "../StaticMapBackground";
 import { ISummitDetailsListItem } from "./interfaces";
 
 const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
@@ -60,7 +60,8 @@ const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
           <View style={styles.leftColumn}>
             <Text style={featureName}>{feature.properties?.name}</Text>
             <Text style={featureLocation}>
-              {feature.properties?.county} County, {feature.properties?.state}
+              {feature.properties?.feet.toLocaleString()} ft ·{" "}
+              {feature.properties?.county} County
             </Text>
             <Text style={featureCoordinate}>
               {feature.properties?.latitude.toFixed(3)}°{" "}

@@ -9,7 +9,7 @@ export type ApparelType =
   | "pullover-hoodie"
   | "zip-hoodie";
 
-export type ColorType =
+export type ColorName =
   | "Asphalt"
   | "Baby Blue"
   | "Black"
@@ -42,7 +42,7 @@ export type ColorType =
   | "Red/White"
   | "Royal Blue/White";
 
-export type SizeType =
+export type Size =
   | "Small"
   | "Medium"
   | "Large"
@@ -62,31 +62,36 @@ export type SizeType =
   | "Unisex XL"
   | "Unisex 2XL";
 
-export type FitType = "Men" | "Women" | "Youth";
+export type Fit = "Men" | "Women" | "Youth" | "Unisex";
+
+export interface IVersion {
+  /** The version's photo */
+  photo: string;
+  /** The version's fit */
+  fit: Fit;
+  /** The version's color */
+  color: ColorName;
+  /** The version's price */
+  price: number;
+}
 
 export interface IApparel {
-  /** Uniquely identifies the Apparel item */
+  /** Uniquely identifies the product */
   id: number;
   /** Uniquely identifies the associated Feature */
   featureId: number;
-  /** Display name of the Apparel item */
-  name: string;
-  /** Type of the Apparel item */
+  /** Title of the product */
+  title: string;
+  /** Type of the product */
   type: ApparelType;
-  /** Description of the Apparel item */
+  /** Description of the product */
   description: string;
-  /** Price of the Apparel item */
-  price: number;
-  /** Color options for the Apparel item */
-  colors: ColorType[];
-  /** Size options for the Apparel item */
-  sizes: SizeType[];
-  /** Fit options for the Apparel item */
-  fits: FitType[];
+  /** Versions of the product */
+  versions: IVersion[];
 }
 
 class Merchandise {
-  /** Fetch list of Apparel */
+  /** Fetch list of ApparelType */
   static getApparel(): Promise<IApparel[]> {
     // TODO: FIREBASE QUERY
 
@@ -95,187 +100,232 @@ class Merchandise {
         {
           id: 0,
           featureId: 0,
-          name: "I Climbed Longs Peak",
+          title: "I Climbed Longs Peak",
           type: "standard-t-shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
-          price: 19.99,
-          colors: [
-            "Asphalt",
-            "Baby Blue",
-            "Black",
-            "Cranberry",
-            "Heather Grey",
-            "Kelly Green",
-            "Lemon",
-            "Navy",
-            "Olive",
-            "Orange",
+          versions: [
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "White",
+              price: 19.99,
+            },
           ],
-          sizes: [
-            "Small",
-            "Medium",
-            "Large",
-            "XL",
-            "2XL",
-            "3XL",
-            "Kids 2",
-            "Kids 3",
-            "Kids 4",
-            "Kids 6",
-            "Kids 8",
-            "Kids 10",
-            "Kids 12",
-          ],
-          fits: ["Men", "Women", "Youth"],
         },
         {
           id: 1,
           featureId: 1,
-          name: "I Climbed Longs Peak",
+          title: "I Climbed Longs Peak",
           type: "standard-t-shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
-          price: 19.99,
-          colors: [
-            "Asphalt",
-            "Baby Blue",
-            "Black",
-            "Cranberry",
-            "Heather Grey",
-            "Kelly Green",
-            "Lemon",
-            "Navy",
-            "Olive",
-            "Orange",
+          versions: [
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "White",
+              price: 19.99,
+            },
           ],
-          sizes: [
-            "Small",
-            "Medium",
-            "Large",
-            "XL",
-            "2XL",
-            "3XL",
-            "Kids 2",
-            "Kids 3",
-            "Kids 4",
-            "Kids 6",
-            "Kids 8",
-            "Kids 10",
-            "Kids 12",
-          ],
-          fits: ["Men", "Women", "Youth"],
         },
         {
           id: 2,
           featureId: 2,
-          name: "I Climbed Longs Peak",
+          title: "I Climbed Longs Peak",
           type: "standard-t-shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
-          price: 19.99,
-          colors: [
-            "Asphalt",
-            "Baby Blue",
-            "Black",
-            "Cranberry",
-            "Heather Grey",
-            "Kelly Green",
-            "Lemon",
-            "Navy",
-            "Olive",
-            "Orange",
+          versions: [
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "White",
+              price: 19.99,
+            },
           ],
-          sizes: [
-            "Small",
-            "Medium",
-            "Large",
-            "XL",
-            "2XL",
-            "3XL",
-            "Kids 2",
-            "Kids 3",
-            "Kids 4",
-            "Kids 6",
-            "Kids 8",
-            "Kids 10",
-            "Kids 12",
-          ],
-          fits: ["Men", "Women", "Youth"],
         },
         {
           id: 3,
           featureId: 3,
-          name: "I Climbed Longs Peak",
+          title: "I Climbed Longs Peak",
           type: "standard-t-shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
-          price: 19.99,
-          colors: [
-            "Asphalt",
-            "Baby Blue",
-            "Black",
-            "Cranberry",
-            "Heather Grey",
-            "Kelly Green",
-            "Lemon",
-            "Navy",
-            "Olive",
-            "Orange",
+          versions: [
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "White",
+              price: 19.99,
+            },
           ],
-          sizes: [
-            "Small",
-            "Medium",
-            "Large",
-            "XL",
-            "2XL",
-            "3XL",
-            "Kids 2",
-            "Kids 3",
-            "Kids 4",
-            "Kids 6",
-            "Kids 8",
-            "Kids 10",
-            "Kids 12",
-          ],
-          fits: ["Men", "Women", "Youth"],
         },
         {
           id: 4,
           featureId: 4,
-          name: "I Climbed Longs Peak",
+          title: "I Climbed Longs Peak",
           type: "standard-t-shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
-          price: 19.99,
-          colors: [
-            "Asphalt",
-            "Baby Blue",
-            "Black",
-            "Cranberry",
-            "Heather Grey",
-            "Kelly Green",
-            "Lemon",
-            "Navy",
-            "Olive",
-            "Orange",
+          versions: [
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Men",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Women",
+              color: "White",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "Heather Grey",
+              price: 19.99,
+            },
+            {
+              photo: "https://picsum.photos/800/600",
+              fit: "Youth",
+              color: "White",
+              price: 19.99,
+            },
           ],
-          sizes: [
-            "Small",
-            "Medium",
-            "Large",
-            "XL",
-            "2XL",
-            "3XL",
-            "Kids 2",
-            "Kids 3",
-            "Kids 4",
-            "Kids 6",
-            "Kids 8",
-            "Kids 10",
-            "Kids 12",
-          ],
-          fits: ["Men", "Women", "Youth"],
         },
       ]);
     } else {

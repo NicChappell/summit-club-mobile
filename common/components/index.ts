@@ -1,3 +1,4 @@
+export { default as ApparelDetailsCard } from "./ApparelDetailsCard";
 export { default as BasicDetailsCard } from "./BasicDetailsCard";
 export { default as DismissKeyboard } from "./DismissKeyboard";
 export { default as ErrorOverlay } from "./ErrorOverlay";

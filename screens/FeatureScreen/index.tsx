@@ -12,6 +12,7 @@ import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import { Point } from "geojson";
 import {
+  ApparelDetailsCard,
   ErrorOverlay,
   HorizontalDetailsCard,
   StaticMapBackground,
@@ -35,7 +36,14 @@ import {
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { CheckIn, ICheckIn, ISummit, Summit } from "../../services";
+import {
+  CheckIn,
+  IApparel,
+  ICheckIn,
+  ISummit,
+  Merchandise,
+  Summit,
+} from "../../services";
 import { IFeatureScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IFeatureScreen;
@@ -54,6 +62,7 @@ const FeatureScreen = ({
   const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[]>([]);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
+  const [apparel, setApparel] = useState<IApparel[]>([]);
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
   const [region, setRegion] = useState<Region>(initialRegion);
 
@@ -62,6 +71,17 @@ const FeatureScreen = ({
     CheckIn.getRecentCheckIns()
       .then((recentCheckIns) => {
         setRecentCheckIns(recentCheckIns);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
+
+    Merchandise.getApparel()
+      .then((apparel) => {
+        setApparel(apparel);
       })
       .catch((error: IError) => {
         setError({
@@ -187,8 +207,8 @@ const FeatureScreen = ({
           <Divider style={styles.divider} />
           <View style={styles.section}>
             <Text style={styles.featureName}>Location</Text>
-            <View pointerEvents={"none"} style={styles.mapContainer}>
-              {coordinate && region && (
+            {coordinate && region && (
+              <View pointerEvents={"none"} style={styles.mapContainer}>
                 <MapView
                   customMapStyle={customMapStyle}
                   provider={"google"}
@@ -203,67 +223,30 @@ const FeatureScreen = ({
                     strokeWidth={2.5}
                   />
                 </MapView>
-              )}
-            </View>
-            <Button
-              style={styles.button}
-              title="Check in"
-              titleStyle={styles.buttonTitle}
-              onPress={handleCheckInPress}
-            />
+                <Button
+                  style={styles.button}
+                  title="Check in"
+                  titleStyle={styles.buttonTitle}
+                  onPress={handleCheckInPress}
+                />
+              </View>
+            )}
           </View>
-          <Divider style={styles.divider} />
-          <View style={styles.section}>
-            <Text style={styles.featureName}>Merch</Text>
-            <Text style={styles.featureDescription}>
-              somewhere include list of merch available if user has perviously
-              summited
-            </Text>
-          </View>
-          <Divider style={styles.divider} />
-          {recentCheckIns && (
-            <View style={styles.section}>
-              <Text style={sectionTitle}>Recent check-ins</Text>
-              <FlatList
-                ItemSeparatorComponent={() => (
-                  <View style={{ width: separator.width }} />
-                )}
-                data={recentCheckIns}
-                decelerationRate={0}
-                horizontal
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                  <HorizontalDetailsCard
-                    dimensions={{
-                      height: horizontalDetailsCardDimensions.height,
-                      width: horizontalDetailsCardDimensions.width,
-                    }}
-                    item={item}
-                  />
-                )}
-                showsHorizontalScrollIndicator={false}
-                snapToAlignment={"start"}
-                snapToInterval={
-                  horizontalDetailsCardDimensions.width + separator.width
-                }
-              />
-            </View>
-          )}
-          <Divider style={styles.divider} />
-          <View style={styles.section}>
-            {nearbySummits && (
+          {apparel && (
+            <>
+              <Divider style={styles.divider} />
               <View style={styles.section}>
-                <Text style={sectionTitle}>Summits nearby</Text>
+                <Text style={sectionTitle}>Apparel</Text>
                 <FlatList
                   ItemSeparatorComponent={() => (
                     <View style={{ width: separator.width }} />
                   )}
-                  data={nearbySummits}
+                  data={apparel}
                   decelerationRate={0}
                   horizontal
                   keyExtractor={(item) => item.id.toString()}
                   renderItem={({ item }) => (
-                    <VerticalDetailsCard
+                    <ApparelDetailsCard
                       dimensions={{
                         height: verticalDetailsCardDimensions.height,
                         width: verticalDetailsCardDimensions.width,
@@ -278,8 +261,72 @@ const FeatureScreen = ({
                   }
                 />
               </View>
-            )}
-          </View>
+            </>
+          )}
+          {recentCheckIns && (
+            <>
+              <Divider style={styles.divider} />
+              <View style={styles.section}>
+                <Text style={sectionTitle}>Recent check-ins</Text>
+                <FlatList
+                  ItemSeparatorComponent={() => (
+                    <View style={{ width: separator.width }} />
+                  )}
+                  data={recentCheckIns}
+                  decelerationRate={0}
+                  horizontal
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <HorizontalDetailsCard
+                      dimensions={{
+                        height: horizontalDetailsCardDimensions.height,
+                        width: horizontalDetailsCardDimensions.width,
+                      }}
+                      item={item}
+                    />
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  snapToAlignment={"start"}
+                  snapToInterval={
+                    horizontalDetailsCardDimensions.width + separator.width
+                  }
+                />
+              </View>
+            </>
+          )}
+          {nearbySummits && (
+            <>
+              <Divider style={styles.divider} />
+              <View style={styles.section}>
+                <View style={styles.section}>
+                  <Text style={sectionTitle}>Summits nearby</Text>
+                  <FlatList
+                    ItemSeparatorComponent={() => (
+                      <View style={{ width: separator.width }} />
+                    )}
+                    data={nearbySummits}
+                    decelerationRate={0}
+                    horizontal
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                      <VerticalDetailsCard
+                        dimensions={{
+                          height: verticalDetailsCardDimensions.height,
+                          width: verticalDetailsCardDimensions.width,
+                        }}
+                        item={item}
+                      />
+                    )}
+                    showsHorizontalScrollIndicator={false}
+                    snapToAlignment={"start"}
+                    snapToInterval={
+                      verticalDetailsCardDimensions.width + separator.width
+                    }
+                  />
+                </View>
+              </View>
+            </>
+          )}
         </View>
       </View>
     </ScrollView>

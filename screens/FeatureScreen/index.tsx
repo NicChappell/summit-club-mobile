@@ -245,15 +245,7 @@ const FeatureScreen = ({
                   decelerationRate={0}
                   horizontal
                   keyExtractor={(item) => item.id.toString()}
-                  renderItem={({ item }) => (
-                    <ApparelDetailsCard
-                      dimensions={{
-                        height: verticalDetailsCardDimensions.height,
-                        width: verticalDetailsCardDimensions.width,
-                      }}
-                      item={item}
-                    />
-                  )}
+                  renderItem={({ item }) => <ApparelDetailsCard item={item} />}
                   showsHorizontalScrollIndicator={false}
                   snapToAlignment={"start"}
                   snapToInterval={

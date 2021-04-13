@@ -1,15 +1,15 @@
 export type ApparelType =
-  | "standard-t-shirt"
-  | "premium-t-shirt"
-  | "v-neck-t-shirt"
-  | "tank-top"
-  | "long-sleeve-t-shirt"
-  | "raglan"
-  | "sweatshirt"
-  | "pullover-hoodie"
-  | "zip-hoodie";
+  | "T-Shirt"
+  | "Premium T-Shirt"
+  | "V-Neck T-Shirt"
+  | "Tank Top"
+  | "Long Sleeve T-Shirt"
+  | "Raglan"
+  | "Sweatshirt"
+  | "Pullover Hoodie"
+  | "Zip Hoodie";
 
-export type ColorName =
+export type ApparelColor =
   | "Asphalt"
   | "Baby Blue"
   | "Black"
@@ -42,7 +42,7 @@ export type ColorName =
   | "Red/White"
   | "Royal Blue/White";
 
-export type Size =
+export type ApparelSize =
   | "Small"
   | "Medium"
   | "Large"
@@ -62,17 +62,17 @@ export type Size =
   | "Unisex XL"
   | "Unisex 2XL";
 
-export type Fit = "Men" | "Women" | "Youth" | "Unisex";
+export type ApparelFit = "Men" | "Women" | "Youth" | "Unisex";
 
-export interface IVersion {
+export interface IApparelVersion {
+  /** Uniquely identifies the version */
+  id: number;
   /** The version's photo */
   photo: string;
   /** The version's fit */
-  fit: Fit;
+  fit: ApparelFit;
   /** The version's color */
-  color: ColorName;
-  /** The version's price */
-  price: number;
+  color: ApparelColor;
 }
 
 export interface IApparel {
@@ -86,8 +86,10 @@ export interface IApparel {
   type: ApparelType;
   /** Description of the product */
   description: string;
+  /** Price of the product */
+  price: number;
   /** Versions of the product */
-  versions: IVersion[];
+  versions: IApparelVersion[];
 }
 
 class Merchandise {
@@ -101,45 +103,46 @@ class Merchandise {
           id: 0,
           featureId: 0,
           title: "I Climbed Longs Peak",
-          type: "standard-t-shirt",
+          type: "T-Shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
+          price: 19.99,
           versions: [
             {
+              id: 0,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 1,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 2,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 3,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 4,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 5,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "White",
-              price: 19.99,
             },
           ],
         },
@@ -147,45 +150,46 @@ class Merchandise {
           id: 1,
           featureId: 1,
           title: "I Climbed Longs Peak",
-          type: "standard-t-shirt",
+          type: "Premium T-Shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
+          price: 19.99,
           versions: [
             {
+              id: 0,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 1,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 2,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 3,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 4,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 5,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "White",
-              price: 19.99,
             },
           ],
         },
@@ -193,45 +197,46 @@ class Merchandise {
           id: 2,
           featureId: 2,
           title: "I Climbed Longs Peak",
-          type: "standard-t-shirt",
+          type: "Raglan",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
+          price: 19.99,
           versions: [
             {
+              id: 0,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 1,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 2,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 3,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 4,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 5,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "White",
-              price: 19.99,
             },
           ],
         },
@@ -239,45 +244,46 @@ class Merchandise {
           id: 3,
           featureId: 3,
           title: "I Climbed Longs Peak",
-          type: "standard-t-shirt",
+          type: "V-Neck T-Shirt",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
+          price: 19.99,
           versions: [
             {
+              id: 0,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 1,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 2,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 3,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 4,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 5,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "White",
-              price: 19.99,
             },
           ],
         },
@@ -285,45 +291,46 @@ class Merchandise {
           id: 4,
           featureId: 4,
           title: "I Climbed Longs Peak",
-          type: "standard-t-shirt",
+          type: "Pullover Hoodie",
           description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vehicula velit sed sagittis rhoncus. In tellus metus, imperdiet vel mattis vel, porta vehicula sapien.",
+          price: 19.99,
           versions: [
             {
+              id: 0,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 1,
               photo: "https://picsum.photos/800/600",
               fit: "Men",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 2,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 3,
               photo: "https://picsum.photos/800/600",
               fit: "Women",
               color: "White",
-              price: 19.99,
             },
             {
+              id: 4,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "Heather Grey",
-              price: 19.99,
             },
             {
+              id: 5,
               photo: "https://picsum.photos/800/600",
               fit: "Youth",
               color: "White",
-              price: 19.99,
             },
           ],
         },

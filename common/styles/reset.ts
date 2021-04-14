@@ -1,3 +1,10 @@
+export const borderRadiusReset = {
+  borderBottomLeftRadius: 0,
+  borderBottomRightRadius: 0,
+  borderTopLeftRadius: 0,
+  borderTopRightRadius: 0,
+};
+
 export const borderWidthReset = {
   borderBottomWidth: 0,
   borderLeftWidth: 0,

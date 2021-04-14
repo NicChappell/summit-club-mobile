@@ -3,6 +3,10 @@ export { default as Classification, IClassification } from "./Classification";
 export { default as Collection, ICollection } from "./Collection";
 export {
   default as Merchandise,
+  ApparelType,
+  ApparelColor,
+  ApparelSize,
+  ApparelFit,
   IApparel,
   IApparelVersion,
 } from "./Merchandise";

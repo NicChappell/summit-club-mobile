@@ -291,7 +291,7 @@ const FeatureScreen = ({
               <Divider style={styles.divider} />
               <View style={styles.section}>
                 <View style={styles.section}>
-                  <Text style={sectionTitle}>Summits nearby</Text>
+                  <Text style={sectionTitle}>Nearby summits</Text>
                   <FlatList
                     ItemSeparatorComponent={() => (
                       <View style={{ width: separator.width }} />

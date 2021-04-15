@@ -4,12 +4,14 @@ import {
   Image,
   ScrollView,
   StyleSheet,
+  Switch,
   Text,
   View,
 } from "react-native";
 import { Button, Divider } from "react-native-elements";
 import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { Point } from "geojson";
 import {
   ApparelDetailsCard,
@@ -60,6 +62,7 @@ const FeatureScreen = ({
 
   // state hooks
   const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[]>([]);
+  const [checkOff, setCheckOff] = useState<boolean>(false);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
   const [apparel, setApparel] = useState<IApparel[]>([]);
@@ -142,6 +145,10 @@ const FeatureScreen = ({
     navigation.navigate("CheckIn");
   };
 
+  const handleSwitchChange = () => {
+    setCheckOff(!checkOff);
+  };
+
   const horizontalDetailsCardDimensions = {
     height: 128,
     width: 320,
@@ -182,12 +189,28 @@ const FeatureScreen = ({
             </Text>
           </View>
           <Divider style={styles.divider} />
-          <View style={styles.section}>
+          <View style={styles.row}>
+            <Ionicons
+              name={"ios-shield-checkmark-outline"}
+              size={24}
+              color={colors.queenBlue}
+            />
             <Text style={styles.featureDescription}>
               Last verified check-in: DD-MM-YYYY
             </Text>
-            <Text style={styles.featureDescription}>or</Text>
-            <Text style={styles.featureDescription}>Mark as complete: Y/N</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.featureDescription}>Mark as complete:</Text>
+            <Switch
+              trackColor={{ false: colors.black05, true: colors.pistachio75 }}
+              thumbColor={colors.white}
+              ios_backgroundColor={colors.black05}
+              onValueChange={handleSwitchChange}
+              style={styles.switch}
+              value={checkOff}
+            />
+          </View>
+          <View style={styles.row}>
             <Text style={styles.featureDescription}>
               if user has verified check-in, show badge and data of last
               check-in. if user has not verified check-in, show component to
@@ -196,6 +219,7 @@ const FeatureScreen = ({
           </View>
           <Divider style={styles.divider} />
           <View style={styles.section}>
+            <Text style={sectionTitle}>Description</Text>
             <Text style={styles.featureDescription}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
               semper semper diam, porttitor mollis ipsum pharetra vel. Nulla
@@ -206,7 +230,7 @@ const FeatureScreen = ({
           </View>
           <Divider style={styles.divider} />
           <View style={styles.section}>
-            <Text style={styles.featureName}>Location</Text>
+            <Text style={sectionTitle}>Location</Text>
             {coordinate && region && (
               <View pointerEvents={"none"} style={styles.mapContainer}>
                 <MapView
@@ -248,9 +272,7 @@ const FeatureScreen = ({
                   renderItem={({ item }) => <ApparelDetailsCard item={item} />}
                   showsHorizontalScrollIndicator={false}
                   snapToAlignment={"start"}
-                  snapToInterval={
-                    256 + separator.width
-                  }
+                  snapToInterval={256 + separator.width}
                 />
               </View>
             </>
@@ -395,11 +417,22 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+  row: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   scrollView: {
     backgroundColor: colors.black01,
   },
   section: {
     alignItems: "flex-start",
     justifyContent: "space-between",
+  },
+  switch: {
+    borderColor: colors.queenBlue,
+    borderWidth: 2,
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+    marginRight: -4,
   },
 });

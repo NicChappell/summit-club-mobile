@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import { Button, ButtonGroup, Card } from "react-native-elements";
+import * as WebBrowser from "expo-web-browser";
 import {
   borderRadius4,
   borderRadiusReset,
@@ -66,6 +67,10 @@ const ApparelDetailsCard = ({ item }: IApparelDetailsCard) => {
     setSelectedFitTypeIndex(selectedFitTypeIndex);
 
     setSpotlight(filteredVersions[0]);
+  };
+
+  const handleOpenWithWebBrowser = () => {
+    WebBrowser.openBrowserAsync("https://www.amazon.com/dp/B08CFJYX42");
   };
 
   return (
@@ -144,7 +149,7 @@ const ApparelDetailsCard = ({ item }: IApparelDetailsCard) => {
         <Text style={styles.price}>{usdCurrencyFormatter.format(price)}</Text>
         <Button
           buttonStyle={styles.button}
-          onPress={() => console.log("TODO")}
+          onPress={handleOpenWithWebBrowser}
           title="Shop"
           titleStyle={styles.buttonTitle}
           type="solid"

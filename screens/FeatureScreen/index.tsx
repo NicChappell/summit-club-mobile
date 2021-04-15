@@ -249,7 +249,7 @@ const FeatureScreen = ({
                   showsHorizontalScrollIndicator={false}
                   snapToAlignment={"start"}
                   snapToInterval={
-                    verticalDetailsCardDimensions.width + separator.width
+                    256 + separator.width
                   }
                 />
               </View>

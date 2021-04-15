@@ -46,3 +46,9 @@ export const getFeaturePhoto = (name: string) => {
   // return null by default
   return null;
 };
+
+// USD currency formatter.
+export const usdCurrencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});

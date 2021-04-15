@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Button, ButtonGroup, Card } from "react-native-elements";
 import {
   borderRadius4,
@@ -17,100 +24,124 @@ import {
   shadow,
   shadowReset,
 } from "../../styles";
+import { usdCurrencyFormatter } from "../../../common/helpers";
 import { ApparelFit, IApparelVersion } from "../../../services";
 import { IApparelDetailsCard } from "./interfaces";
 
 const ApparelDetailsCard = ({ item }: IApparelDetailsCard) => {
   // destructure item
   const { description, price, title, type, versions } = item;
-  console.log(versions);
 
   // state hooks
-  const [filteredVersions, setFilteredVersions] = useState<IApparelVersion>(
-    versions[0]
+  const [filteredVersions, setFilteredVersions] = useState<IApparelVersion[]>(
+    []
   );
   const [selectedFitTypeIndex, setSelectedFitTypeIndex] = useState<number>(0);
-  const [fitTypes, setFitTypes] = useState<ApparelFit[]>([
-    "Men",
-    "Women",
-    "Youth",
-  ]);
+  const [fitTypes, setFitTypes] = useState<ApparelFit[]>([]);
   const [spotlight, setSpotlight] = useState<IApparelVersion>(versions[0]);
 
   // effect hooks
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // set fit types
+    const fitTypes = Array.from(
+      new Set(versions.map((version) => version.fit))
+    );
+    setFitTypes(fitTypes);
+  }, []);
 
-  const handleFitTypePress = (selectedFitTypeIndex: number) =>
+  // effect hooks
+  useEffect(() => {
+    const filteredVersions = versions.filter(
+      (version) => version.fit === fitTypes[selectedFitTypeIndex]
+    );
+    setFilteredVersions(filteredVersions);
+  }, [fitTypes]);
+
+  const handleFitTypePress = (selectedFitTypeIndex: number) => {
+    const filteredVersions = versions.filter(
+      (version) => version.fit === fitTypes[selectedFitTypeIndex]
+    );
+    setFilteredVersions(filteredVersions);
+
     setSelectedFitTypeIndex(selectedFitTypeIndex);
+
+    setSpotlight(filteredVersions[0]);
+  };
 
   return (
     <Card
       containerStyle={styles.cardContainer}
       wrapperStyle={styles.cardWrapper}
     >
-      <View style={[styles.section, { backgroundColor: "red" }]}>
-        <Text style={sectionTitle}>{type}</Text>
-        <View style={styles.row}>
-          <View style={styles.spotlightContainer}>
-            <Image
-              style={styles.spotlightPhoto}
-              source={{
-                uri: spotlight.photo,
-              }}
-            />
-          </View>
-          <View style={styles.versionsContainer}>
-            {versions && (
-              <FlatList
-                ItemSeparatorComponent={() => (
-                  <View style={{ height: separator.height }} />
-                )}
-                data={versions}
-                decelerationRate={0}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                  <Image
-                    style={styles.versionPhoto}
-                    source={{
-                      uri: item.photo,
-                    }}
-                  />
-                )}
-                showsVerticalScrollIndicator={false}
-                snapToAlignment={"start"}
-                snapToInterval={64 + separator.height}
-              />
-            )}
-          </View>
-        </View>
-      </View>
-      <View
-        style={[
-          styles.section,
-          { backgroundColor: "green", marginVertical: 16 },
-        ]}
-      >
-        <Text style={styles.sectionTitle}>Fit type:</Text>
-
-        <ButtonGroup
-          buttonStyle={styles.buttonGroupButton}
-          buttons={fitTypes}
-          containerStyle={styles.buttonGroupContainer}
-          innerBorderStyle={styles.buttonGroupInnerBorder}
-          onPress={handleFitTypePress}
-          selectedIndex={selectedFitTypeIndex}
-          selectedButtonStyle={styles.buttonGroupSelectedButton}
-          selectedTextStyle={styles.buttonGroupSelectedButtonText}
-          textStyle={styles.buttonGroupText}
-        />
-      </View>
-      <View style={[styles.row, { backgroundColor: "blue" }]}>
-        <View style={styles.details}>
-          <Text>{title}</Text>
-          <Text>
-            {type} {price}
+      <View>
+        <View style={[styles.section, { backgroundColor: "transparent" }]}>
+          <Text style={sectionTitle}>
+            {title} {type}
           </Text>
+          <View style={styles.row}>
+            <View style={styles.spotlightContainer}>
+              <Image
+                style={styles.spotlightPhoto}
+                source={{
+                  uri: spotlight.photo,
+                }}
+              />
+            </View>
+            <View style={styles.versionsContainer}>
+              {filteredVersions && (
+                <FlatList
+                  ItemSeparatorComponent={() => (
+                    <View style={{ height: separator.height }} />
+                  )}
+                  data={filteredVersions}
+                  decelerationRate={0}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => setSpotlight(item)}>
+                      <Image
+                        style={styles.versionPhoto}
+                        source={{
+                          uri: item.photo,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  showsVerticalScrollIndicator={false}
+                  snapToAlignment={"start"}
+                  snapToInterval={64 + separator.height}
+                />
+              )}
+            </View>
+          </View>
         </View>
+        <View
+          style={[
+            styles.section,
+            { backgroundColor: "transparent", marginVertical: 16 },
+          ]}
+        >
+          {fitTypes.length === 1 ? (
+            <Text style={styles.sectionTitle}>Fit type: {fitTypes[0]}</Text>
+          ) : (
+            <>
+              <Text style={styles.sectionTitle}>Fit type:</Text>
+              <ButtonGroup
+                buttonStyle={styles.buttonGroupButton}
+                buttons={fitTypes}
+                containerStyle={styles.buttonGroupContainer}
+                innerBorderStyle={styles.buttonGroupInnerBorder}
+                onPress={handleFitTypePress}
+                selectedIndex={selectedFitTypeIndex}
+                selectedButtonStyle={styles.buttonGroupSelectedButton}
+                selectedTextStyle={styles.buttonGroupSelectedButtonText}
+                textStyle={styles.buttonGroupText}
+              />
+            </>
+          )}
+        </View>
+      </View>
+      <View style={[styles.row, { backgroundColor: "transparent" }]}>
+        <Text style={styles.price}>{usdCurrencyFormatter.format(price)}</Text>
         <Button
           buttonStyle={styles.button}
           onPress={() => console.log("TODO")}
@@ -130,16 +161,16 @@ const styles = StyleSheet.create({
     ...borderRadius4,
     ...paddingReset,
     alignItems: "center",
-    backgroundColor: colors.queenBlue,
+    backgroundColor: colors.yellowOrange,
     justifyContent: "center",
-    height: 32,
-    paddingLeft: 8,
-    paddingRight: 8,
+    height: 40,
+    paddingLeft: 16,
+    paddingRight: 16,
   },
   buttonTitle: {
     color: colors.white,
     fontFamily: "NotoSansJP_500Medium",
-    fontSize: 14,
+    fontSize: 18,
   },
   buttonGroupButton: {
     backgroundColor: colors.white,
@@ -195,10 +226,10 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
   column: {},
-  details: {
-    alignItems: "flex-start",
-    flexDirection: "column",
-    justifyContent: "flex-start",
+  price: {
+    color: colors.queenBlue,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 24,
   },
   row: {
     alignItems: "center",
@@ -213,7 +244,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     ...sectionTitle,
-    color: colors.white,
+    color: colors.queenBlue,
     fontSize: 14,
     marginBottom: 4,
   },
@@ -226,7 +257,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   versionsContainer: {
-    backgroundColor: "purple",
     height: 144,
     width: 64,
   },

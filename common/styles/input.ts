@@ -26,5 +26,5 @@ export const inputStyle = {
   color: colors.black75,
   fontFamily: "NunitoSans_400Regular",
   fontSize: 18,
-  height: 48,
+  height: 46,
 };

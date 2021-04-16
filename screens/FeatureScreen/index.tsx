@@ -177,45 +177,30 @@ const FeatureScreen = ({
         <View style={styles.content}>
           <View style={styles.section}>
             <Text style={styles.featureName}>{feature.properties?.name}</Text>
-            <Text style={featureLocation}>
-              {feature.properties?.feet.toLocaleString()} ft ·{" "}
-              {feature.properties?.county} County
-            </Text>
-            <Text style={featureCoordinate}>
-              {feature.properties?.latitude.toFixed(3)}°{" "}
-              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-              {feature.properties?.longitude.toFixed(3)}°{" "}
-              {feature.properties?.longitude > 0 ? "E" : "W"}
-            </Text>
-          </View>
-          <Divider style={styles.divider} />
-          <View style={styles.row}>
-            <Ionicons
-              name={"ios-shield-checkmark-outline"}
-              size={24}
-              color={colors.queenBlue}
-            />
-            <Text style={styles.featureDescription}>
-              Last verified check-in: DD-MM-YYYY
-            </Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.featureDescription}>Mark as complete:</Text>
-            <Switch
-              trackColor={{ false: colors.black05, true: colors.pistachio75 }}
-              thumbColor={colors.white}
-              ios_backgroundColor={colors.black05}
-              onValueChange={handleSwitchChange}
-              style={styles.switch}
-              value={checkOff}
-            />
-          </View>
-          <View style={styles.row}>
-            <Text style={styles.featureDescription}>
-              if user has verified check-in, show badge and data of last
-              check-in. if user has not verified check-in, show component to
-              manually mark as complete.
-            </Text>
+            <View style={styles.row}>
+              <View style={styles.leftColumn}>
+                <Text style={featureLocation}>
+                  {feature.properties?.feet.toLocaleString()} ft ·{" "}
+                  {feature.properties?.county} County
+                </Text>
+                <Text style={featureCoordinate}>
+                  {feature.properties?.latitude.toFixed(3)}°{" "}
+                  {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+                  {feature.properties?.longitude.toFixed(3)}°{" "}
+                  {feature.properties?.longitude > 0 ? "E" : "W"}
+                </Text>
+              </View>
+              <View style={styles.rightColumn}>
+                <View style={styles.rightColumn}>
+                  <Ionicons
+                    name={"ios-shield-checkmark-outline"}
+                    size={24}
+                    color={colors.queenBlue}
+                  />
+                  <Text style={styles.verified}>Verified{"\n"}check-in</Text>
+                </View>
+              </View>
+            </View>
           </View>
           <Divider style={styles.divider} />
           <View style={styles.section}>
@@ -253,6 +238,22 @@ const FeatureScreen = ({
                   titleStyle={styles.buttonTitle}
                   onPress={handleCheckInPress}
                 />
+                <View style={styles.row}>
+                  <Text style={styles.featureDescription}>
+                    Mark as complete:
+                  </Text>
+                  <Switch
+                    trackColor={{
+                      false: colors.black05,
+                      true: colors.pistachio75,
+                    }}
+                    thumbColor={colors.white}
+                    ios_backgroundColor={colors.black05}
+                    onValueChange={handleSwitchChange}
+                    style={styles.switch}
+                    value={checkOff}
+                  />
+                </View>
               </View>
             )}
           </View>
@@ -312,32 +313,30 @@ const FeatureScreen = ({
             <>
               <Divider style={styles.divider} />
               <View style={styles.section}>
-                <View style={styles.section}>
-                  <Text style={sectionTitle}>Nearby summits</Text>
-                  <FlatList
-                    ItemSeparatorComponent={() => (
-                      <View style={{ width: separator.width }} />
-                    )}
-                    data={nearbySummits}
-                    decelerationRate={0}
-                    horizontal
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                      <VerticalDetailsCard
-                        dimensions={{
-                          height: verticalDetailsCardDimensions.height,
-                          width: verticalDetailsCardDimensions.width,
-                        }}
-                        item={item}
-                      />
-                    )}
-                    showsHorizontalScrollIndicator={false}
-                    snapToAlignment={"start"}
-                    snapToInterval={
-                      verticalDetailsCardDimensions.width + separator.width
-                    }
-                  />
-                </View>
+                <Text style={sectionTitle}>Nearby summits</Text>
+                <FlatList
+                  ItemSeparatorComponent={() => (
+                    <View style={{ width: separator.width }} />
+                  )}
+                  data={nearbySummits}
+                  decelerationRate={0}
+                  horizontal
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <VerticalDetailsCard
+                      dimensions={{
+                        height: verticalDetailsCardDimensions.height,
+                        width: verticalDetailsCardDimensions.width,
+                      }}
+                      item={item}
+                    />
+                  )}
+                  showsHorizontalScrollIndicator={false}
+                  snapToAlignment={"start"}
+                  snapToInterval={
+                    verticalDetailsCardDimensions.width + separator.width
+                  }
+                />
               </View>
             </>
           )}
@@ -409,6 +408,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
   },
+  leftColumn: {
+    alignItems: "flex-start",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
   mapContainer: {
     height: 256,
     width: "100%",
@@ -416,6 +421,11 @@ const styles = StyleSheet.create({
   map: {
     height: "100%",
     width: "100%",
+  },
+  rightColumn: {
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   row: {
     alignItems: "center",
@@ -434,5 +444,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
     marginRight: -4,
+  },
+  verified: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 12,
   },
 });

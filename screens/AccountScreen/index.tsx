@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Input, Text } from "react-native-elements";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Button, Input } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import {
@@ -11,6 +11,7 @@ import {
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
+import { DeleteAccountOverlay } from "./components";
 import { IAccountScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IAccountScreen;
@@ -18,14 +19,19 @@ type Props = PropsFromRedux & IAccountScreen;
 const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
   // destructure route params
   const { account } = route.params;
-  console.log(account);
 
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [visible, setVisible] = useState<boolean>(false);
 
   return (
     <DismissKeyboard>
       <ScrollView style={styles.scrollView}>
+        <DeleteAccountOverlay
+          username={account.username}
+          visible={visible}
+          setVisible={setVisible}
+        />
         <ErrorOverlay error={error} />
         <View style={styles.container}>
           <Text style={styles.header}>Account</Text>
@@ -53,18 +59,25 @@ const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
             secureTextEntry={true}
           />
           <Button
-            buttonStyle={styles.disabledButton}
+            buttonStyle={styles.button}
             containerStyle={styles.buttonContainer}
             onPress={() => console.log("TODO")}
             title="Reset password"
-            titleStyle={styles.disabledButtonTitle}
+            titleStyle={styles.buttonTitle}
           />
           <Button
-            buttonStyle={styles.disabledButton}
+            buttonStyle={styles.button}
             containerStyle={styles.buttonContainer}
             onPress={signOut}
             title="Sign out"
-            titleStyle={styles.disabledButtonTitle}
+            titleStyle={styles.buttonTitle}
+          />
+          <Button
+            buttonStyle={styles.button}
+            containerStyle={styles.buttonContainer}
+            onPress={() => setVisible(!visible)}
+            title="Delete account"
+            titleStyle={styles.buttonTitle}
           />
         </View>
       </ScrollView>
@@ -87,21 +100,21 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(AccountScreen);
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: colors.queenBlue,
+  },
   buttonContainer: {
     alignItems: "flex-start",
     marginHorizontal: 8,
   },
-  container: {
-    padding: 16,
-  },
-  disabledButton: {
-    backgroundColor: colors.queenBlue,
-  },
-  disabledButtonTitle: {
+  buttonTitle: {
     color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 18,
     paddingHorizontal: 8,
+  },
+  container: {
+    padding: 16,
   },
   header: {
     color: colors.queenBlue,

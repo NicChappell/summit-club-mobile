@@ -77,7 +77,7 @@ const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
                 size={24}
                 color={colors.queenBlue}
               />
-              <Text style={styles.verified}>Verified</Text>
+              <Text style={styles.verified}>Verified{"\n"}check-in</Text>
             </View>
           ) : null}
         </View>

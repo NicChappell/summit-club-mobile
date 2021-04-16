@@ -5,7 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";
-import { colors } from "../../styles";
+import { colors, paddingReset } from "../../styles";
 import { IErrorOverlay } from "./interfaces";
 
 type Props = PropsFromRedux & IErrorOverlay;
@@ -69,11 +69,11 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   button: {
+    ...paddingReset,
     alignItems: "center",
     backgroundColor: "transparent",
     height: 32,
     justifyContent: "center",
-    padding: 0,
     width: 32,
   },
   container: {

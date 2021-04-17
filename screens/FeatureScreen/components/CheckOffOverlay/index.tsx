@@ -1,25 +1,23 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
-import { connect, ConnectedProps } from "react-redux";
-import {
-  borderRadius4,
-  colors,
-  inputBorder,
-  inputContainer,
-  inputStyle,
-  paddingReset,
-} from "../../../../common/styles";
-import * as actions from "../../../../redux/actions";
-import { RootState } from "../../../../redux/reducers";
-import { ISignOutOverlay } from "./interfaces";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
+import { ICheckOffOverlay } from "./interfaces";
 
-type Props = PropsFromRedux & ISignOutOverlay;
+const CheckOffOverlay = ({
+  checkOff,
+  feature,
+  visible,
+  setVisible,
+}: ICheckOffOverlay) => {
+  // destructure feature
+  const {
+    properties: { name },
+  } = feature;
 
-const SignOutOverlay = ({ visible, setVisible }: Props) => {
   return (
     <Overlay
-      animationType="fade"
       backdropStyle={styles.backdrop}
       isVisible={visible}
       onBackdropPress={() => setVisible(!visible)}
@@ -27,26 +25,26 @@ const SignOutOverlay = ({ visible, setVisible }: Props) => {
     >
       <View style={styles.container}>
         <View style={styles.overlayTitle}>
-          <Text style={styles.header}>Sign out</Text>
+          <Button
+            buttonStyle={{ ...paddingReset }}
+            icon={
+              <Ionicons name={"ios-close"} size={24} color={colors.queenBlue} />
+            }
+            onPress={() => setVisible(!visible)}
+            type="clear"
+          />
         </View>
         <View style={styles.overlayBody}>
           <Text style={styles.paragraph}>
-            Are you sure you want to sign out?
+            {name} has been {checkOff ? "added to" : "removed from"} your
+            Summits
           </Text>
         </View>
         <View style={styles.overlayFooter}>
           <Button
-            buttonStyle={styles.cancelButton}
-            containerStyle={styles.buttonContainer}
+            buttonStyle={styles.closeButton}
             onPress={() => setVisible(!visible)}
-            title="Cancel"
-            titleStyle={styles.buttonTitle}
-          />
-          <Button
-            buttonStyle={styles.signOutButton}
-            containerStyle={styles.buttonContainer}
-            onPress={() => console.log("TODO")}
-            title="Sign out"
+            title="Close"
             titleStyle={styles.buttonTitle}
           />
         </View>
@@ -55,27 +53,14 @@ const SignOutOverlay = ({ visible, setVisible }: Props) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => {
-  return {};
-};
-
-const mapDispatchToProps = {};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(SignOutOverlay);
+export default CheckOffOverlay;
 
 const styles = StyleSheet.create({
   backdrop: {
-    alignItems: "center",
+    alignItems: "flex-start",
     backgroundColor: colors.black25,
     flex: 1,
-    justifyContent: "center",
-  },
-  buttonContainer: {
-    alignSelf: "flex-end",
+    justifyContent: "flex-end",
   },
   buttonTitle: {
     color: colors.white,
@@ -84,7 +69,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
-  cancelButton: {
+  closeButton: {
     ...borderRadius4,
     ...paddingReset,
     alignItems: "center",
@@ -95,29 +80,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "stretch",
     justifyContent: "center",
-  },
-  signOutButton: {
-    ...borderRadius4,
-    ...paddingReset,
-    alignItems: "center",
-    backgroundColor: colors.pistachio,
-    justifyContent: "center",
-  },
-  header: {
-    color: colors.queenBlue,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 24,
-  },
-  input: {
-    ...paddingReset,
-    height: 48,
-  },
-  inputContainer: {
-    ...inputBorder,
-    ...inputContainer,
-  },
-  inputStyle: {
-    ...inputStyle,
   },
   overlay: {
     ...borderRadius4,
@@ -134,7 +96,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.black05,
     borderTopWidth: 1,
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     padding: 16,
   },
   overlayTitle: {
@@ -142,7 +104,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.black05,
     borderBottomWidth: 1,
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
     padding: 16,
   },
   paragraph: {

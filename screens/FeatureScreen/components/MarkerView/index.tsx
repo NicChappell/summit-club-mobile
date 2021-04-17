@@ -10,11 +10,11 @@ export default MarkerView;
 
 const styles = StyleSheet.create({
   circle: {
-    borderColor: colors.queenBlue,
-    borderRadius: 48 / 2,
-    borderWidth: 3,
-    backgroundColor: colors.queenBlue50,
-    height: 48,
-    width: 48,
+    borderColor: colors.queenBlue75,
+    borderRadius: 36 / 2,
+    borderWidth: 2,
+    backgroundColor: colors.queenBlue25,
+    height: 36,
+    width: 36,
   },
 });

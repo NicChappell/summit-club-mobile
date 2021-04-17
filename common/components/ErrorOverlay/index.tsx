@@ -28,6 +28,7 @@ const ErrorOverlay = ({ error, clearError }: Props) => {
 
   return (
     <Overlay
+      animationType="fade"
       backdropStyle={styles.backdrop}
       isVisible={visible}
       onBackdropPress={closeOverlay}

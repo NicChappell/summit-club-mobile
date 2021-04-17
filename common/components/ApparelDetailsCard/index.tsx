@@ -129,7 +129,9 @@ const ApparelDetailsCard = ({ item }: IApparelDetailsCard) => {
             <Text style={styles.sectionTitle}>Fit type: {fitTypes[0]}</Text>
           ) : (
             <>
-              <Text style={styles.sectionTitle}>Fit type:</Text>
+              <Text style={styles.sectionTitle}>
+                Fit type: {fitTypes[selectedFitTypeIndex]}
+              </Text>
               <ButtonGroup
                 buttonStyle={styles.buttonGroupButton}
                 buttons={fitTypes}

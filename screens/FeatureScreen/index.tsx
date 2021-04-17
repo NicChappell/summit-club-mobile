@@ -6,10 +6,11 @@ import {
   StyleSheet,
   Switch,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { Button, Divider } from "react-native-elements";
-import MapView, { Circle, LatLng, Region } from "react-native-maps";
+import MapView, { LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Point } from "geojson";
@@ -28,13 +29,17 @@ import {
 import { IError } from "../../common/interfaces";
 import { getFeaturePhoto } from "../../common/helpers";
 import {
+  borderRadius4,
   colors,
   featureCoordinate,
   featureElevation,
   featureLocation,
   featureName,
+  paddingReset,
   sectionTitle,
   separator,
+  shadow,
+  shadowReset,
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -46,6 +51,7 @@ import {
   Merchandise,
   Summit,
 } from "../../services";
+import { CheckOffOverlay, MarkerView } from "./components";
 import { IFeatureScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IFeatureScreen;
@@ -56,17 +62,19 @@ const FeatureScreen = ({
   navigation,
   route,
   setError,
+  setFeature,
 }: Props) => {
   // destructure features
   const { feature } = features;
 
   // state hooks
-  const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[]>([]);
+  const [apparel, setApparel] = useState<IApparel[]>([]);
   const [checkOff, setCheckOff] = useState<boolean>(false);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
-  const [apparel, setApparel] = useState<IApparel[]>([]);
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
+  const [isCheckOffVisible, setIsCheckOffVisible] = useState<boolean>(false);
+  const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[]>([]);
   const [region, setRegion] = useState<Region>(initialRegion);
 
   // ref hooks
@@ -74,6 +82,7 @@ const FeatureScreen = ({
 
   // effect hooks
   useEffect(() => {
+    // fetch recent check-ins
     CheckIn.getRecentCheckIns()
       .then((recentCheckIns) => {
         setRecentCheckIns(recentCheckIns);
@@ -85,6 +94,7 @@ const FeatureScreen = ({
         });
       });
 
+    // fetch apparel
     Merchandise.getApparel()
       .then((apparel) => {
         setApparel(apparel);
@@ -96,6 +106,7 @@ const FeatureScreen = ({
         });
       });
 
+    // fetch nearby summits
     Summit.getNearbySummits()
       .then((nearbySummits) => {
         setNearbySummits(nearbySummits);
@@ -110,9 +121,8 @@ const FeatureScreen = ({
 
   useEffect(() => {
     if (feature) {
-      if (scrollViewRef) {
-        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-      }
+      // scroll to the top
+      scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
 
       // destructure feature
       const { geometry, properties } = feature;
@@ -152,8 +162,23 @@ const FeatureScreen = ({
     navigation.navigate("CheckIn");
   };
 
-  const handleSwitchChange = () => {
+  const handleCheckOffPress = () => {
+    // update check-off status
     setCheckOff(!checkOff);
+
+    // render modal
+    setIsCheckOffVisible(true);
+  };
+
+  const handleSummitPress = (item: ISummit) => {
+    // destructure item
+    const { feature } = item;
+
+    // update global state
+    setFeature(feature);
+
+    // scroll to the top
+    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   };
 
   const horizontalDetailsCardDimensions = {
@@ -168,6 +193,12 @@ const FeatureScreen = ({
   return (
     <ScrollView ref={scrollViewRef} style={styles.scrollView}>
       <ErrorOverlay error={error} />
+      <CheckOffOverlay
+        checkOff={checkOff}
+        feature={feature}
+        visible={isCheckOffVisible}
+        setVisible={setIsCheckOffVisible}
+      />
       <View style={styles.container}>
         {featurePhoto ? (
           // render feature photo if available
@@ -212,7 +243,7 @@ const FeatureScreen = ({
           <Divider style={styles.divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Description</Text>
-            <Text style={styles.featureDescription}>
+            <Text style={styles.paragraph}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
               semper semper diam, porttitor mollis ipsum pharetra vel. Nulla
               blandit eros a diam rhoncus rhoncus vitae ut neque. Sed sagittis,
@@ -224,45 +255,45 @@ const FeatureScreen = ({
           <View style={styles.section}>
             <Text style={sectionTitle}>Location</Text>
             {coordinate && region && (
-              <View pointerEvents={"none"} style={styles.mapContainer}>
+              <View style={styles.mapContainer}>
                 <MapView
                   customMapStyle={customMapStyle}
+                  pointerEvents={"none"}
                   provider={"google"}
                   region={region}
                   style={styles.map}
                 >
-                  <Circle
-                    center={coordinate}
-                    fillColor={colors.queenBlue50}
-                    radius={500}
-                    strokeColor={colors.queenBlue}
-                    strokeWidth={2.5}
-                  />
+                  <MarkerView />
                 </MapView>
-                <Button
-                  style={styles.button}
-                  title="Check in"
-                  titleStyle={styles.buttonTitle}
-                  onPress={handleCheckInPress}
-                />
-                <View style={styles.row}>
-                  <Text style={styles.featureDescription}>
-                    Mark as complete:
-                  </Text>
-                  <Switch
-                    trackColor={{
-                      false: colors.black05,
-                      true: colors.pistachio75,
-                    }}
-                    thumbColor={colors.white}
-                    ios_backgroundColor={colors.black05}
-                    onValueChange={handleSwitchChange}
-                    style={styles.switch}
-                    value={checkOff}
-                  />
-                </View>
               </View>
             )}
+          </View>
+          <View style={[styles.row, { marginTop: 16 }]}>
+            <Button
+              buttonStyle={styles.checkInButton}
+              onPress={handleCheckInPress}
+              title="Check in"
+              titleStyle={styles.checkInButtonTitle}
+              type="outline"
+            />
+            <View style={styles.checkOff}>
+              {checkOff ? (
+                <Text style={styles.paragraph}>Mark incomplete:</Text>
+              ) : (
+                <Text style={styles.paragraph}>Mark complete:</Text>
+              )}
+              <Switch
+                trackColor={{
+                  false: colors.black05,
+                  true: colors.pistachio75,
+                }}
+                thumbColor={colors.white}
+                ios_backgroundColor={colors.black05}
+                onValueChange={handleCheckOffPress}
+                style={styles.switch}
+                value={checkOff}
+              />
+            </View>
           </View>
           {apparel && (
             <>
@@ -330,13 +361,15 @@ const FeatureScreen = ({
                   horizontal
                   keyExtractor={(item) => item.id.toString()}
                   renderItem={({ item }) => (
-                    <VerticalDetailsCard
-                      dimensions={{
-                        height: verticalDetailsCardDimensions.height,
-                        width: verticalDetailsCardDimensions.width,
-                      }}
-                      item={item}
-                    />
+                    <TouchableOpacity onPress={() => handleSummitPress(item)}>
+                      <VerticalDetailsCard
+                        dimensions={{
+                          height: verticalDetailsCardDimensions.height,
+                          width: verticalDetailsCardDimensions.width,
+                        }}
+                        item={item}
+                      />
+                    </TouchableOpacity>
                   )}
                   showsHorizontalScrollIndicator={false}
                   snapToAlignment={"start"}
@@ -360,7 +393,10 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = { setError: actions.setError };
+const mapDispatchToProps = {
+  setError: actions.setError,
+  setFeature: actions.setFeature,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
@@ -374,15 +410,28 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     justifyContent: "center",
   },
-  button: {
-    backgroundColor: colors.zomp,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-  },
   buttonTitle: {
     color: colors.white,
     fontFamily: "NotoSansJP_500Medium",
     fontSize: 14,
+  },
+  checkInButton: {
+    ...borderRadius4,
+    ...paddingReset,
+    alignItems: "center",
+    backgroundColor: colors.queenBlue,
+    justifyContent: "center",
+  },
+  checkInButtonTitle: {
+    color: colors.white,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  checkOff: {
+    alignItems: "center",
+    flexDirection: "row",
   },
   container: {
     alignItems: "stretch",
@@ -396,11 +445,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.black05,
     height: 1,
     marginVertical: 20,
-  },
-  featureDescription: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 14,
   },
   featureName: {
     ...featureName,
@@ -422,12 +466,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   mapContainer: {
+    backgroundColor: colors.black01,
     height: 256,
     width: "100%",
   },
   map: {
+    alignItems: "center",
     height: "100%",
+    justifyContent: "center",
     width: "100%",
+  },
+  paragraph: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 16,
   },
   rightColumn: {
     alignItems: "center",

@@ -1,4 +1,4 @@
-export interface IResetPasswordOverlay {
+export interface IChangePasswordOverlay {
   /** The user's password */
   password: string;
   /** Controls component visibility */

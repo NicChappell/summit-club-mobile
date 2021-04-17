@@ -13,8 +13,8 @@ import {
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import {
+  ChangePasswordOverlay,
   DeleteAccountOverlay,
-  ResetPasswordOverlay,
   SignOutOverlay,
 } from "./components";
 import { IAccountScreen } from "./interfaces";
@@ -28,7 +28,7 @@ const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
   const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
-  const [isResetVisible, setIsResetVisible] = useState<boolean>(false);
+  const [isChangeVisible, setIsChangeVisible] = useState<boolean>(false);
   const [isSignOutVisible, setIsSignOutVisible] = useState<boolean>(false);
 
   return (
@@ -39,10 +39,10 @@ const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
           visible={isDeleteVisible}
           setVisible={setIsDeleteVisible}
         />
-        <ResetPasswordOverlay
+        <ChangePasswordOverlay
           password={account.password}
-          visible={isResetVisible}
-          setVisible={setIsResetVisible}
+          visible={isChangeVisible}
+          setVisible={setIsChangeVisible}
         />
         <SignOutOverlay
           visible={isSignOutVisible}
@@ -77,11 +77,11 @@ const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
             secureTextEntry={true}
           />
           <Button
-            buttonStyle={styles.resetButton}
+            buttonStyle={styles.changeButton}
             containerStyle={styles.buttonContainer}
-            onPress={() => setIsResetVisible(!isResetVisible)}
-            title="Reset password"
-            titleStyle={styles.resetButtonTitle}
+            onPress={() => setIsChangeVisible(!isChangeVisible)}
+            title="Change password"
+            titleStyle={styles.changeButtonTitle}
           />
           <View style={styles.buttonGroup}>
             <Button
@@ -130,12 +130,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
   },
-  resetButton: {
+  changeButton: {
     ...paddingReset,
     backgroundColor: "transparent",
     marginTop: 8,
   },
-  resetButtonTitle: {
+  changeButtonTitle: {
     color: colors.queenBlue,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 18,

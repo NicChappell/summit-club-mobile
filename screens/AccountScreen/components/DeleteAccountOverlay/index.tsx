@@ -44,6 +44,7 @@ const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
 
   return (
     <Overlay
+      animationType="fade"
       backdropStyle={styles.backdrop}
       isVisible={visible}
       onBackdropPress={() => setVisible(!visible)}
@@ -54,11 +55,11 @@ const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
           <Text style={styles.header}>Are you sure?</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.overlayBodyText}>
+          <Text style={styles.paragraph}>
             This action cannot be undone. This will permenently delete your
             account and all associated data.
           </Text>
-          <Text style={styles.overlayBodyText}>
+          <Text style={styles.paragraph}>
             Confirm your username to continue:
           </Text>
           <Input
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   cancelButton: {
+    ...borderRadius4,
     ...paddingReset,
     alignItems: "center",
     backgroundColor: colors.queenBlue,
@@ -137,14 +139,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   deleteButton: {
+    ...borderRadius4,
     ...paddingReset,
     alignItems: "center",
     backgroundColor: colors.redSalsa,
     justifyContent: "center",
   },
   disabledButton: {
+    ...borderRadius4,
     ...paddingReset,
-    backgroundColor: colors.redSalsa25,
+    backgroundColor: colors.redSalsa50,
   },
   header: {
     color: colors.queenBlue,
@@ -172,12 +176,6 @@ const styles = StyleSheet.create({
   overlayBody: {
     padding: 16,
   },
-  overlayBodyText: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
-    marginBottom: 8,
-  },
   overlayFooter: {
     alignItems: "center",
     borderTopColor: colors.black05,
@@ -193,5 +191,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     padding: 16,
+  },
+  paragraph: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 16,
+    marginBottom: 8,
   },
 });

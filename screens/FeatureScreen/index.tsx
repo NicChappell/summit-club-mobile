@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   FlatList,
   Image,
@@ -69,6 +69,9 @@ const FeatureScreen = ({
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
   const [region, setRegion] = useState<Region>(initialRegion);
 
+  // ref hooks
+  const scrollViewRef = useRef<ScrollView>(null);
+
   // effect hooks
   useEffect(() => {
     CheckIn.getRecentCheckIns()
@@ -107,6 +110,10 @@ const FeatureScreen = ({
 
   useEffect(() => {
     if (feature) {
+      if (scrollViewRef) {
+        scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
+      }
+
       // destructure feature
       const { geometry, properties } = feature;
 
@@ -159,7 +166,7 @@ const FeatureScreen = ({
   };
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <ScrollView ref={scrollViewRef} style={styles.scrollView}>
       <ErrorOverlay error={error} />
       <View style={styles.container}>
         {featurePhoto ? (

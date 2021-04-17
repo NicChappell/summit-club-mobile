@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  NativeSyntheticEvent,
-  StyleSheet,
-  Text,
-  TextInputChangeEventData,
-  View,
-} from "react-native";
-import { Button, Input, Overlay } from "react-native-elements";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, Overlay } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import {
   borderRadius4,
@@ -18,30 +12,11 @@ import {
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
-import { IDeleteAccountOverlay } from "./interfaces";
+import { ISignOutOverlay } from "./interfaces";
 
-type Props = PropsFromRedux & IDeleteAccountOverlay;
+type Props = PropsFromRedux & ISignOutOverlay;
 
-const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
-  // state hooks
-  const [disabled, setDisabled] = useState<boolean>(true);
-  const [usernameValue, setUsernameValue] = useState<string>("");
-
-  // effect hooks
-  useEffect(() => {
-    setDisabled(username !== usernameValue);
-  }, [usernameValue]);
-
-  const handleUsernameChange = (
-    event: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    // destructure event
-    const { text } = event.nativeEvent;
-
-    // update state
-    setUsernameValue(text);
-  };
-
+const SignOutOverlay = ({ visible, setVisible }: Props) => {
   return (
     <Overlay
       backdropStyle={styles.backdrop}
@@ -51,26 +26,12 @@ const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
     >
       <View style={styles.container}>
         <View style={styles.overlayTitle}>
-          <Text style={styles.header}>Are you sure?</Text>
+          <Text style={styles.header}>Sign out</Text>
         </View>
         <View style={styles.overlayBody}>
           <Text style={styles.overlayBodyText}>
-            This action cannot be undone. This will permenently delete your
-            account and all associated data.
+            Are you sure you want to sign out?
           </Text>
-          <Text style={styles.overlayBodyText}>
-            Confirm your username to continue:
-          </Text>
-          <Input
-            autoCapitalize="none"
-            containerStyle={styles.input}
-            inputContainerStyle={styles.inputContainer}
-            inputStyle={styles.inputStyle}
-            keyboardType="default"
-            onChange={handleUsernameChange}
-            placeholder={username}
-            value={usernameValue}
-          />
         </View>
         <View style={styles.overlayFooter}>
           <Button
@@ -83,11 +44,10 @@ const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
           <Button
             buttonStyle={styles.deleteButton}
             containerStyle={styles.buttonContainer}
-            disabled={disabled}
             disabledStyle={styles.disabledButton}
             disabledTitleStyle={styles.buttonTitle}
             onPress={() => console.log("TODO")}
-            title="Delete account"
+            title="Sign out"
             titleStyle={styles.buttonTitle}
           />
         </View>
@@ -106,7 +66,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(DeleteAccountOverlay);
+export default connector(SignOutOverlay);
 
 const styles = StyleSheet.create({
   backdrop: {
@@ -139,7 +99,7 @@ const styles = StyleSheet.create({
   deleteButton: {
     ...paddingReset,
     alignItems: "center",
-    backgroundColor: colors.redSalsa,
+    backgroundColor: colors.pistachio,
     justifyContent: "center",
   },
   disabledButton: {
@@ -176,7 +136,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
     fontSize: 16,
-    marginBottom: 8,
   },
   overlayFooter: {
     alignItems: "center",

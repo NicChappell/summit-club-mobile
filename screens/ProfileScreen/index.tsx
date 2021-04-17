@@ -40,7 +40,7 @@ const ProfileScreen = ({ error, navigation, route, user }: Props) => {
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
-      <View style={styles.mrah}>
+      <View style={styles.content}>
         <Avatar
           containerStyle={styles.avatarContainer}
           icon={{
@@ -155,7 +155,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(ProfileScreen);
 
 const styles = StyleSheet.create({
-  mrah: {
+  content: {
     alignItems: "center",
     justifyContent: "flex-start",
   },

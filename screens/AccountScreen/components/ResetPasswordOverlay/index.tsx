@@ -18,28 +18,45 @@ import {
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
-import { IDeleteAccountOverlay } from "./interfaces";
+import { IResetPasswordOverlay } from "./interfaces";
 
-type Props = PropsFromRedux & IDeleteAccountOverlay;
+type Props = PropsFromRedux & IResetPasswordOverlay;
 
-const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
+const ResetPasswordOverlay = ({ password, visible, setVisible }: Props) => {
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [usernameValue, setUsernameValue] = useState<string>("");
+  const [currentPasswordValue, setCurrentPasswordValue] = useState<string>("");
+  const [newPasswordValue, setNewPasswordValue] = useState<string>("");
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>("");
 
-  // effect hooks
-  useEffect(() => {
-    setDisabled(username !== usernameValue);
-  }, [usernameValue]);
-
-  const handleUsernameChange = (
+  const handleCurrentPasswordChange = (
     event: NativeSyntheticEvent<TextInputChangeEventData>
   ) => {
     // destructure event
     const { text } = event.nativeEvent;
 
     // update state
-    setUsernameValue(text);
+    setCurrentPasswordValue(text);
+  };
+
+  const handleNewPasswordChange = (
+    event: NativeSyntheticEvent<TextInputChangeEventData>
+  ) => {
+    // destructure event
+    const { text } = event.nativeEvent;
+
+    // update state
+    setNewPasswordValue(text);
+  };
+
+  const handleConfirmPasswordChange = (
+    event: NativeSyntheticEvent<TextInputChangeEventData>
+  ) => {
+    // destructure event
+    const { text } = event.nativeEvent;
+
+    // update state
+    setConfirmPasswordValue(text);
   };
 
   return (
@@ -51,25 +68,44 @@ const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
     >
       <View style={styles.container}>
         <View style={styles.overlayTitle}>
-          <Text style={styles.header}>Are you sure?</Text>
+          <Text style={styles.header}>Reset password</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.overlayBodyText}>
-            This action cannot be undone. This will permenently delete your
-            account and all associated data.
-          </Text>
-          <Text style={styles.overlayBodyText}>
-            Confirm your username to continue:
-          </Text>
           <Input
-            autoCapitalize="none"
             containerStyle={styles.input}
-            inputContainerStyle={styles.inputContainer}
+            inputContainerStyle={[
+              styles.inputContainer,
+              { backgroundColor: colors.black05 },
+            ]}
             inputStyle={styles.inputStyle}
-            keyboardType="default"
-            onChange={handleUsernameChange}
-            placeholder={username}
-            value={usernameValue}
+            label="Current password"
+            labelStyle={styles.labelStyle}
+            onChange={handleCurrentPasswordChange}
+            secureTextEntry={true}
+          />
+          <Input
+            containerStyle={styles.input}
+            inputContainerStyle={[
+              styles.inputContainer,
+              { backgroundColor: colors.black05 },
+            ]}
+            inputStyle={styles.inputStyle}
+            label="New password"
+            labelStyle={styles.labelStyle}
+            onChange={handleNewPasswordChange}
+            secureTextEntry={true}
+          />
+          <Input
+            containerStyle={styles.input}
+            inputContainerStyle={[
+              styles.inputContainer,
+              { backgroundColor: colors.black05 },
+            ]}
+            inputStyle={styles.inputStyle}
+            label="Confirm new password"
+            labelStyle={styles.labelStyle}
+            onChange={handleConfirmPasswordChange}
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.overlayFooter}>
@@ -87,7 +123,7 @@ const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
             disabledStyle={styles.disabledButton}
             disabledTitleStyle={styles.buttonTitle}
             onPress={() => console.log("TODO")}
-            title="Delete account"
+            title="Reset password"
             titleStyle={styles.buttonTitle}
           />
         </View>
@@ -106,7 +142,7 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(DeleteAccountOverlay);
+export default connector(ResetPasswordOverlay);
 
 const styles = StyleSheet.create({
   backdrop: {
@@ -139,12 +175,12 @@ const styles = StyleSheet.create({
   deleteButton: {
     ...paddingReset,
     alignItems: "center",
-    backgroundColor: colors.redSalsa,
+    backgroundColor: colors.pistachio,
     justifyContent: "center",
   },
   disabledButton: {
     ...paddingReset,
-    backgroundColor: colors.redSalsa25,
+    backgroundColor: colors.pistachio50,
   },
   header: {
     color: colors.queenBlue,
@@ -153,7 +189,8 @@ const styles = StyleSheet.create({
   },
   input: {
     ...paddingReset,
-    height: 48,
+    height: 72,
+    marginVertical: 8,
   },
   inputContainer: {
     ...inputBorder,
@@ -161,6 +198,13 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     ...inputStyle,
+  },
+  labelStyle: {
+    color: colors.queenBlue,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 16,
+    lineHeight: 20,
+    marginBottom: 4,
   },
   overlay: {
     ...borderRadius4,
@@ -170,7 +214,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   overlayBody: {
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   overlayBodyText: {
     color: colors.black,

@@ -58,6 +58,7 @@ export default TermsAndConditions;
 const styles = StyleSheet.create({
   backdrop: {
     alignItems: "center",
+    backgroundColor: colors.black25,
     flex: 1,
     justifyContent: "center",
   },

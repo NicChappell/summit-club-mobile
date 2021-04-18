@@ -16,7 +16,7 @@ import { ISignOutOverlay } from "./interfaces";
 
 type Props = PropsFromRedux & ISignOutOverlay;
 
-const SignOutOverlay = ({ visible, setVisible }: Props) => {
+const SignOutOverlay = ({ setVisible, signOut, visible }: Props) => {
   return (
     <Overlay
       animationType="fade"
@@ -45,7 +45,7 @@ const SignOutOverlay = ({ visible, setVisible }: Props) => {
           <Button
             buttonStyle={styles.signOutButton}
             containerStyle={styles.buttonContainer}
-            onPress={() => console.log("TODO")}
+            onPress={signOut}
             title="Sign out"
             titleStyle={styles.buttonTitle}
           />
@@ -59,7 +59,7 @@ const mapStateToProps = (state: RootState) => {
   return {};
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { signOut: actions.signOut };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

@@ -1,13 +1,149 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-elements";
+import { StyleSheet, Text, View } from "react-native";
+import { Button } from "react-native-elements";
+import { connect, ConnectedProps } from "react-redux";
 import { TabNavigationHeader } from "../../common/navigation";
+import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
+import * as actions from "../../redux/actions";
+import { RootState } from "../../redux/reducers";
+import { executeSql, FeaturesRef } from "../../services";
 import { IDownloadScreen } from "./interfaces";
 
-const DownloadScreen = ({ navigation, route }: IDownloadScreen) => {
+type Props = PropsFromRedux & IDownloadScreen;
+
+const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
+  const createFeatureTable = async () => {
+    // start loading animation
+    // TODO: START LOADING ANIMATION
+
+    try {
+      const sqlStatement = `
+        CREATE TABLE IF NOT EXISTS feature (
+          class TEXT,
+          continent TEXT,
+          country TEXT,
+          county TEXT,
+          feet INTEGER,
+          id INTEGER,
+          latitude REAL,
+          longitude REAL,
+          meters INTEGER,
+          name TEXT,
+          state TEXT
+        );
+      `;
+
+      const mrah = await executeSql!(sqlStatement, []);
+      console.log(mrah);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+
+    // stop loading animation
+    // TODO: STOP LOADING ANIMATION
+  };
+
+  const dropFeatureTable = async () => {
+    // start loading animation
+    // TODO: START LOADING ANIMATION
+
+    try {
+      const mrah = await executeSql!(`DROP TABLE IF EXISTS feature;`, []);
+      console.log(mrah);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+
+    // stop loading animation
+    // TODO: STOP LOADING ANIMATION
+  };
+
+  const populateFeatureTable = async () => {
+    // start loading animation
+    // TODO: START LOADING ANIMATION
+
+    try {
+      // retrieve data from firestore
+      const snapshot = await FeaturesRef.where(
+        "properties.class",
+        "==",
+        "Summit"
+      ).get();
+
+      // collect firestore documents
+      const documents: firebase.firestore.DocumentData[] = [];
+      snapshot.forEach((doc) => {
+        // retrieve all document fields as an object
+        // NOTE: each document is equivalent to a Feature object
+        const document = doc.data();
+
+        // add document id to feature properties
+        document.properties.id = doc.id;
+
+        // push document into documents array
+        documents.push(document);
+      });
+
+      // wait for all database transactions to finish
+      const sqlStatement = `
+        INSERT INTO feature (
+          class,
+          continent,
+          country,
+          county,
+          feet,
+          id,
+          latitude,
+          longitude,
+          meters,
+          name,
+          state
+        ) VALUES (
+          ?,?,?,?,?,?,?,?,?,?,?
+        );
+      `;
+      for (const document of documents) {
+        // destructure properties from document
+        const { properties } = document;
+
+        // format arguments
+        const args = [
+          properties.class,
+          properties.continent,
+          properties.country,
+          properties.county,
+          properties.feet,
+          properties.id,
+          properties.latitude,
+          properties.longitude,
+          properties.meters,
+          properties.name,
+          properties.state,
+        ];
+
+        await executeSql(sqlStatement, args);
+      }
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+
+    // stop loading animation
+    // TODO: STOP LOADING ANIMATION
+  };
+
   return (
     <View style={styles.container}>
+      <ErrorOverlay error={error} />
       <TabNavigationHeader navigation={navigation} route={route} />
       <Text>This is top text.</Text>
       <View>
@@ -16,6 +152,9 @@ const DownloadScreen = ({ navigation, route }: IDownloadScreen) => {
           This is where I will have options to download content for offline
           experience
         </Text>
+        <Button onPress={createFeatureTable} title="Create feature table" />
+        <Button onPress={dropFeatureTable} title="Drop feature table" />
+        <Button onPress={populateFeatureTable} title="Populate feature table" />
         <Text>
           I'll still have some content download automatically, but this is where
           you can choose to download more sets of map tiles beyond the default
@@ -26,7 +165,21 @@ const DownloadScreen = ({ navigation, route }: IDownloadScreen) => {
   );
 };
 
-export default DownloadScreen;
+const mapStateToProps = (state: RootState) => {
+  return {
+    error: state.error,
+  };
+};
+
+const mapDispatchToProps = {
+  setError: actions.setError,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(DownloadScreen);
 
 const styles = StyleSheet.create({
   container: {

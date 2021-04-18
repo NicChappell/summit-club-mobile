@@ -84,7 +84,7 @@ const ApparelDetailsCard = ({ item }: IApparelDetailsCard) => {
             {title} {type}
           </Text>
           <View style={styles.row}>
-            <View style={styles.spotlightContainer}>
+            <View style={styles.spotlightPhotoContainer}>
               <Image
                 style={styles.spotlightPhoto}
                 source={{
@@ -103,12 +103,14 @@ const ApparelDetailsCard = ({ item }: IApparelDetailsCard) => {
                   keyExtractor={(item) => item.id.toString()}
                   renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => setSpotlight(item)}>
-                      <Image
-                        style={styles.versionPhoto}
-                        source={{
-                          uri: item.photo,
-                        }}
-                      />
+                      <View style={styles.versionPhotoContainer}>
+                        <Image
+                          style={styles.versionPhoto}
+                          source={{
+                            uri: item.photo,
+                          }}
+                        />
+                      </View>
                     </TouchableOpacity>
                   )}
                   showsVerticalScrollIndicator={false}
@@ -255,20 +257,28 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 4,
   },
-  spotlightContainer: {
-    height: 144,
-    width: 144,
-  },
   spotlightPhoto: {
     height: "100%",
     width: "100%",
+  },
+  spotlightPhotoContainer: {
+    ...borderRadius4,
+    height: 144,
+    overflow: "hidden",
+    width: 144,
   },
   versionsContainer: {
     height: 144,
     width: 64,
   },
   versionPhoto: {
+    height: "100%",
+    width: "100%",
+  },
+  versionPhotoContainer: {
+    ...borderRadius4,
     height: 64,
+    overflow: "hidden",
     width: 64,
   },
 });

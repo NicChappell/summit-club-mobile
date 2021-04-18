@@ -21,7 +21,7 @@ import { IAccountScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IAccountScreen;
 
-const AccountScreen = ({ error, navigation, route, signOut }: Props) => {
+const AccountScreen = ({ error, navigation, route }: Props) => {
   // destructure route params
   const { account } = route.params;
 
@@ -111,7 +111,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = { signOut: actions.signOut };
+const mapDispatchToProps = {};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

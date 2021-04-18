@@ -1,5 +1,5 @@
 import { Feature } from "geojson";
-import { MOCK_USER } from "../../data/mocks";
+import { MOCK_USER } from "../data/mocks";
 
 export interface IUserAccount {
   /** The user's username */

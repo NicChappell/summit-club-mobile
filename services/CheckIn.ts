@@ -1,6 +1,6 @@
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { IUser } from "../../services/User";
-import { MOCK_USER } from "../../data/mocks";
+import { IUser } from "../services/User";
+import { MOCK_USER } from "../data/mocks";
 
 export type CheckInType = "recentCheckIn" | "userCheckIn";
 

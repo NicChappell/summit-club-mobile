@@ -18,6 +18,7 @@ const CheckOffOverlay = ({
 
   return (
     <Overlay
+      animationType="fade"
       backdropStyle={styles.backdrop}
       isVisible={visible}
       onBackdropPress={() => setVisible(!visible)}

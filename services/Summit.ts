@@ -1,5 +1,5 @@
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { MOCK_FEATURE } from "../../data/mocks";
+import { MOCK_FEATURE } from "../data/mocks";
 
 export type SummitType =
   | "featuredSummit"
@@ -368,7 +368,7 @@ class Summit {
   }
 
   /** Query local Features database */
-  static query(): Promise<ISummit[]> {
+  static query(params: any): Promise<ISummit[]> {
     // TODO: SQLITE DATABASE QUERY
 
     if (true) {

@@ -5,18 +5,21 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";
-import { colors, paddingReset } from "../../styles";
+import { borderRadius4, colors, paddingReset } from "../../styles";
 import { IErrorOverlay } from "./interfaces";
 
 type Props = PropsFromRedux & IErrorOverlay;
 
 const ErrorOverlay = ({ error, clearError }: Props) => {
+  // destructure error
+  const { code, message } = error;
+
   // state hooks
   const [visible, setVisible] = useState<boolean>(false);
 
   // effect hooks
   useEffect(() => {
-    if (error.code || error.message) {
+    if (code || message) {
       setVisible(true);
     }
   }, [error]);
@@ -35,14 +38,22 @@ const ErrorOverlay = ({ error, clearError }: Props) => {
       overlayStyle={styles.overlay}
     >
       <View style={styles.container}>
-        <Button
-          buttonStyle={styles.button}
-          containerStyle={styles.buttonContainer}
-          icon={<Ionicons name={"ios-close"} size={24} color={colors.black} />}
-          onPress={closeOverlay}
-        />
-        <Text style={styles.message}>{error.code}</Text>
-        <Text style={styles.message}>{error.message}</Text>
+        <View style={styles.overlayTitle}>
+          <Text style={styles.header}>An error occurred</Text>
+        </View>
+        <View style={styles.overlayBody}>
+          {code && <Text style={styles.paragraph}>{code}</Text>}
+          {message && <Text style={styles.paragraph}>{message}</Text>}
+        </View>
+        <View style={styles.overlayFooter}>
+          <Button
+            buttonStyle={styles.button}
+            containerStyle={styles.buttonContainer}
+            onPress={() => setVisible(!visible)}
+            title="Close"
+            titleStyle={styles.buttonTitle}
+          />
+        </View>
       </View>
     </Overlay>
   );
@@ -67,29 +78,62 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+  button: {
+    ...borderRadius4,
+    ...paddingReset,
+    alignItems: "center",
+    backgroundColor: colors.queenBlue,
+    justifyContent: "center",
+    marginRight: 16,
+  },
   buttonContainer: {
     alignSelf: "flex-end",
   },
-  button: {
-    ...paddingReset,
-    alignItems: "center",
-    backgroundColor: "transparent",
-    height: 32,
-    justifyContent: "center",
-    width: 32,
+  buttonTitle: {
+    color: colors.white,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   container: {
-    alignItems: "center",
+    alignItems: "stretch",
     justifyContent: "center",
   },
+  header: {
+    color: colors.queenBlue,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 24,
+  },
   overlay: {
+    ...borderRadius4,
+    ...paddingReset,
     alignSelf: "stretch",
-    margin: 32,
+    margin: 24,
+    overflow: "hidden",
+  },
+  overlayBody: {
     padding: 16,
   },
-  message: {
-    color: colors.orangeRed,
-    paddingBottom: 32,
-    paddingHorizontal: 32,
+  overlayFooter: {
+    alignItems: "center",
+    borderTopColor: colors.black05,
+    borderTopWidth: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    padding: 16,
+  },
+  overlayTitle: {
+    alignItems: "center",
+    borderBottomColor: colors.black05,
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    padding: 16,
+  },
+  paragraph: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 16,
   },
 });

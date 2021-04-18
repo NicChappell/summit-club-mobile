@@ -64,7 +64,7 @@ const HorizontalDetailsCard = ({
             {
               borderBottomLeftRadius: 4,
               borderTopLeftRadius: 4,
-              width: 128,
+              width: 96,
             },
           ]}
           source={featurePhoto}

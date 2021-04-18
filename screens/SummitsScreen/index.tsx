@@ -3,15 +3,27 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
 import { colors } from "../../common/styles";
+import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
+import { IUserSummit } from "../../services";
 import { ISummitsScreen } from "./interfaces";
 
 type Props = PropsFromRedux & ISummitsScreen;
 
-const SummitsScreen = ({ error, navigation, route }: Props) => {
+const SummitsScreen = ({ error, navigation, route, setFeature }: Props) => {
   // destructure route params
   const { summits } = route.params;
-  console.log(summits);
+
+  const handleSummitPress = (item: IUserSummit) => {
+    // destructure item
+    const { feature } = item;
+
+    // update global state
+    setFeature(feature);
+
+    // navigate to Feature screen
+    navigation.navigate("Feature", { screen: "Feature" });
+  };
 
   return (
     <View style={styles.container}>
@@ -19,7 +31,13 @@ const SummitsScreen = ({ error, navigation, route }: Props) => {
       <FlatList
         data={summits}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <SummitDetailsListItem item={item} />}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity onPress={() => handleSummitPress(item)}>
+              <SummitDetailsListItem item={item} />
+            </TouchableOpacity>
+          );
+        }}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -32,7 +50,9 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setFeature: actions.setFeature,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

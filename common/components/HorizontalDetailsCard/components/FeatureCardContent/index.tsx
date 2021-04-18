@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { Button } from "react-native-elements";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import {
   colors,
   featureCoordinate,
@@ -16,30 +16,28 @@ const FeatureCardContent = ({ item }: IFeatureCardContent) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={styles.leftColumn}>
         <Text style={featureName}>{feature.properties?.name}</Text>
-        <Text style={featureElevation}>
-          {feature.properties?.feet.toLocaleString()} ft
-        </Text>
+        <View>
+          <Text style={featureLocation}>
+            {feature.properties?.feet.toLocaleString()} ft ·{" "}
+            {feature.properties?.county} County
+          </Text>
+          <Text style={featureCoordinate}>
+            {feature.properties?.latitude.toFixed(3)}°{" "}
+            {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+            {feature.properties?.longitude.toFixed(3)}°{" "}
+            {feature.properties?.longitude > 0 ? "E" : "W"}
+          </Text>
+        </View>
       </View>
-      <View style={styles.body}>
-        <Text style={featureLocation}>
-          {feature.properties?.county} County
-        </Text>
-        <Text style={featureCoordinate}>
-          {feature.properties?.latitude.toFixed(3)}°{" "}
-          {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-          {feature.properties?.longitude.toFixed(3)}°{" "}
-          {feature.properties?.longitude > 0 ? "E" : "W"}
-        </Text>
-      </View>
-      <View style={styles.footer}>
-        <Button
-          disabledStyle={styles.button}
-          disabled={true}
-          title="Explore"
-          disabledTitleStyle={styles.buttonTitle}
+      <View style={styles.rightColumn}>
+        <Ionicons
+          name={"ios-shield-checkmark-outline"}
+          size={24}
+          color={colors.queenBlue}
         />
+        <Text style={styles.verified}>Verified{"\n"}check-in</Text>
       </View>
     </View>
   );
@@ -48,53 +46,31 @@ const FeatureCardContent = ({ item }: IFeatureCardContent) => {
 export default FeatureCardContent;
 
 const styles = StyleSheet.create({
-  body: {
+  container: {
     alignItems: "flex-start",
     alignSelf: "stretch",
+    flex: 1,
+    flexDirection: "row",
     justifyContent: "center",
-  },
-  button: {
-    backgroundColor: colors.zomp,
     paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingVertical: 12,
   },
-  buttonTitle: {
-    color: colors.white,
-    fontFamily: "NotoSansJP_500Medium",
-    fontSize: 14,
-  },
-  container: {
+  leftColumn: {
     alignItems: "flex-start",
     alignSelf: "stretch",
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-between",
-    padding: 8,
   },
-  date: {
+  rightColumn: {
+    alignItems: "center",
+    alignSelf: "stretch",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  verified: {
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
-    fontSize: 14,
-  },
-  featureName: {
-    ...featureName,
-    fontSize: 14,
-  },
-  footer: {
-    alignItems: "baseline",
-    alignSelf: "stretch",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  header: {
-    alignItems: "baseline",
-    alignSelf: "stretch",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  userName: {
-    color: colors.black,
-    fontFamily: "NotoSansJP_500Medium",
-    fontSize: 18,
+    fontSize: 12,
   },
 });

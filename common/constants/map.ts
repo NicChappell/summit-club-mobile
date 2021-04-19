@@ -97,6 +97,7 @@ export const initialCoordinate: LatLng = {
 };
 
 // The initial map boundaries to query against
+// TODO: THIS CAN PROBABLY BE DELETED IN FAVOR OF DUPLICATE VAR IN SUMMITS SERVICE
 export const initialMapBoundaries: IMapBoundaries = {
   northEast: {
     latitude: 41.003906 + 1, // northeast latitude coordinate +1°

@@ -65,6 +65,7 @@
  * Well: Manmade shaft or hole in the Earth's surface used to obtain fluid or gaseous materials.
  * Woods: Small area covered with a dense growth of trees; does not include an area of trees under the administration of a political agency (see "forest").
  */
+// TODO REPLACE THIS WITH THE OTHER TYPE DEFINTION FROM THE SERVCE
 export type Classification =
   | "Airport"
   | "Arch"

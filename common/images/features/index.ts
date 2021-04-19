@@ -18,28 +18,28 @@ export const LITTLE_BEAR_PEAK = require("./little-bear-peak.jpg");
 export const LONGS_PEAK = require("./longs-peak.jpg");
 export const MAROON_PEAK = require("./maroon-peak.jpg");
 export const MISSOURI_MOUNTAIN = require("./missouri-mountain.jpg");
-export const MT_ANTERO = require("./mt-antero.jpg");
-export const MT_BELFORD = require("./mt-belford.jpg");
-export const MT_BIERSTADT = require("./mt-bierstadt.jpg");
-export const MT_BROSS = require("./mt-bross.jpg");
-export const MT_CAMERON = require("./mt-cameron.jpg");
-export const MT_COLUMBIA = require("./mt-columbia.jpg");
-export const MT_DEMOCRAT = require("./mt-democrat.jpg");
-export const MT_ELBERT = require("./mt-elbert.jpg");
-export const MT_EOLUS = require("./mt-eolus.jpg");
-export const MT_EVANS = require("./mt-evans.jpg");
-export const MT_HARVARD = require("./mt-harvard.jpg");
-export const MT_LINCOLN = require("./mt-lincoln.jpg");
-export const MT_LINDSEY = require("./mt-lindsey.jpg");
-export const MT_MASSIVE = require("./mt-massive.jpg");
-export const MT_OF_THE_HOLY_CROSS = require("./mt-of-the-holy-cross.jpg");
-export const MT_OXFORD = require("./mt-oxford.jpg");
-export const MT_PRINCETON = require("./mt-princeton.jpg");
-export const MT_SHAVANO = require("./mt-shavano.jpg");
-export const MT_SHERMAN = require("./mt-sherman.jpg");
-export const MT_SNEFFELS = require("./mt-sneffels.jpg");
-export const MT_WILSON = require("./mt-wilson.jpg");
-export const MT_YALE = require("./mt-yale.jpg");
+export const MOUNT_ANTERO = require("./mount-antero.jpg");
+export const MOUNT_BELFORD = require("./mount-belford.jpg");
+export const MOUNT_BIERSTADT = require("./mount-bierstadt.jpg");
+export const MOUNT_BROSS = require("./mount-bross.jpg");
+export const MOUNT_CAMERON = require("./mount-cameron.jpg");
+export const MOUNT_COLUMBIA = require("./mount-columbia.jpg");
+export const MOUNT_DEMOCRAT = require("./mount-democrat.jpg");
+export const MOUNT_ELBERT = require("./mount-elbert.jpg");
+export const MOUNT_EOLUS = require("./mount-eolus.jpg");
+export const MOUNT_EVANS = require("./mount-evans.jpg");
+export const MOUNT_HARVARD = require("./mount-harvard.jpg");
+export const MOUNT_LINCOLN = require("./mount-lincoln.jpg");
+export const MOUNT_LINDSEY = require("./mount-lindsey.jpg");
+export const MOUNT_MASSIVE = require("./mount-massive.jpg");
+export const MOUNT_OF_THE_HOLY_CROSS = require("./mount-of-the-holy-cross.jpg");
+export const MOUNT_OXFORD = require("./mount-oxford.jpg");
+export const MOUNT_PRINCETON = require("./mount-princeton.jpg");
+export const MOUNT_SHAVANO = require("./mount-shavano.jpg");
+export const MOUNT_SHERMAN = require("./mount-sherman.jpg");
+export const MOUNT_SNEFFELS = require("./mount-sneffels.jpg");
+export const MOUNT_WILSON = require("./mount-wilson.jpg");
+export const MOUNT_YALE = require("./mount-yale.jpg");
 export const NORTH_EOLUS = require("./north-eolus.jpg");
 export const NORTH_MAROON_PEAK = require("./north-maroon-peak.jpg");
 export const PIKES_PEAK = require("./pikes-peak.jpg");
@@ -78,28 +78,28 @@ export const featurePhotos = [
   { name: "Longs Peak", photo: LONGS_PEAK },
   { name: "Maroon Peak", photo: MAROON_PEAK },
   { name: "Missouri Mountain", photo: MISSOURI_MOUNTAIN },
-  { name: "Mt. Antero", photo: MT_ANTERO },
-  { name: "Mt. Belford", photo: MT_BELFORD },
-  { name: "Mt. Bierstadt", photo: MT_BIERSTADT },
-  { name: "Mt. Bross", photo: MT_BROSS },
-  { name: "Mt. Cameron", photo: MT_CAMERON },
-  { name: "Mt. Columbia", photo: MT_COLUMBIA },
-  { name: "Mt. Democrat", photo: MT_DEMOCRAT },
-  { name: "Mt. Elbert", photo: MT_ELBERT },
-  { name: "Mt. Eolus", photo: MT_EOLUS },
-  { name: "Mt. Evans", photo: MT_EVANS },
-  { name: "Mt. Harvard", photo: MT_HARVARD },
-  { name: "Mt. Lincoln", photo: MT_LINCOLN },
-  { name: "Mt. Lindsey", photo: MT_LINDSEY },
-  { name: "Mt. Massive", photo: MT_MASSIVE },
-  { name: "Mt. of the Holy Cross", photo: MT_OF_THE_HOLY_CROSS },
-  { name: "Mt. Oxford", photo: MT_OXFORD },
-  { name: "Mt. Princeton", photo: MT_PRINCETON },
-  { name: "Mt. Shavano", photo: MT_SHAVANO },
-  { name: "Mt. Sherman", photo: MT_SHERMAN },
-  { name: "Mt. Sneffels", photo: MT_SNEFFELS },
-  { name: "Mt. Wilson", photo: MT_WILSON },
-  { name: "Mt. Yale", photo: MT_YALE },
+  { name: "Mount Antero", photo: MOUNT_ANTERO },
+  { name: "Mount Belford", photo: MOUNT_BELFORD },
+  { name: "Mount Bierstadt", photo: MOUNT_BIERSTADT },
+  { name: "Mount Bross", photo: MOUNT_BROSS },
+  { name: "Mount Cameron", photo: MOUNT_CAMERON },
+  { name: "Mount Columbia", photo: MOUNT_COLUMBIA },
+  { name: "Mount Democrat", photo: MOUNT_DEMOCRAT },
+  { name: "Mount Elbert", photo: MOUNT_ELBERT },
+  { name: "Mount Eolus", photo: MOUNT_EOLUS },
+  { name: "Mount Evans", photo: MOUNT_EVANS },
+  { name: "Mount Harvard", photo: MOUNT_HARVARD },
+  { name: "Mount Lincoln", photo: MOUNT_LINCOLN },
+  { name: "Mount Lindsey", photo: MOUNT_LINDSEY },
+  { name: "Mount Massive", photo: MOUNT_MASSIVE },
+  { name: "Mount of the Holy Cross", photo: MOUNT_OF_THE_HOLY_CROSS },
+  { name: "Mount Oxford", photo: MOUNT_OXFORD },
+  { name: "Mount Princeton", photo: MOUNT_PRINCETON },
+  { name: "Mount Shavano", photo: MOUNT_SHAVANO },
+  { name: "Mount Sherman", photo: MOUNT_SHERMAN },
+  { name: "Mount Sneffels", photo: MOUNT_SNEFFELS },
+  { name: "Mount Wilson", photo: MOUNT_WILSON },
+  { name: "Mount Yale", photo: MOUNT_YALE },
   { name: "North Eolus", photo: NORTH_EOLUS },
   { name: "North Maroon Peak", photo: NORTH_MAROON_PEAK },
   { name: "Pikes Peak", photo: PIKES_PEAK },

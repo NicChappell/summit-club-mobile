@@ -23,6 +23,7 @@ export interface IError {
   message?: string;
 }
 
+// TODO: THIS CAN PROBABLY BE DELETED IN FAVOR OF DUPLICATE INTERFACE IN SUMMITS SERVICE
 export interface IMapBoundaries {
   /** Northeast map boundary coordinate */
   northEast: LatLng;
@@ -49,6 +50,7 @@ export interface IFeatureFilters {
   countiesOverlay?: boolean;
 }
 
+// TODO DELETE THIS DEFINITION AND REPLACE WITH SERVICE'S INTERFACE
 export interface ISQLResult {
   /** Feature class definition */
   class: Classification;

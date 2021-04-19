@@ -7,12 +7,31 @@ import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { executeSql, FeaturesRef } from "../../services";
+import { executeSql, FeaturesRef, Summit } from "../../services";
 import { IDownloadScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IDownloadScreen;
 
 const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
+  const countFeatureRows = async () => {
+    try {
+      const resultSet = await executeSql(`SELECT COUNT(*) FROM feature;`);
+
+      // destructure ResultSet
+      const { _array }: any = resultSet.rows;
+
+      // get count from ResultSet array
+      const count = _array[0]["COUNT(*)"];
+
+      return count;
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+  };
+
   const createFeatureTable = async () => {
     // start loading animation
     // TODO: START LOADING ANIMATION
@@ -34,7 +53,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
         );
       `;
 
-      const mrah = await executeSql!(sqlStatement, []);
+      const mrah = await executeSql(sqlStatement);
       console.log(mrah);
     } catch (error) {
       setError({
@@ -52,7 +71,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     // TODO: START LOADING ANIMATION
 
     try {
-      const mrah = await executeSql!(`DROP TABLE IF EXISTS feature;`, []);
+      const mrah = await executeSql(`DROP TABLE IF EXISTS feature;`);
       console.log(mrah);
     } catch (error) {
       setError({
@@ -70,6 +89,14 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     // TODO: START LOADING ANIMATION
 
     try {
+      // TODO: FIRST NEED TO QUERY TABLE TO MAKE SURE I DON'T WRITE DUPLICATE DATA
+      // return early if table data already exists
+      const count = await countFeatureRows();
+      if (count) {
+        console.log(count);
+        return;
+      }
+
       // retrieve data from firestore
       const snapshot = await FeaturesRef.where(
         "properties.class",
@@ -141,6 +168,26 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     // TODO: STOP LOADING ANIMATION
   };
 
+  const testQueryHandler = async () => {
+    // start loading animation
+    // TODO: START LOADING ANIMATION
+
+    try {
+      // retrieve data from firestore
+      const summits = await Summit.query();
+
+      console.log(summits);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
+
+    // stop loading animation
+    // TODO: STOP LOADING ANIMATION
+  };
+
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
@@ -155,6 +202,8 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
         <Button onPress={createFeatureTable} title="Create feature table" />
         <Button onPress={dropFeatureTable} title="Drop feature table" />
         <Button onPress={populateFeatureTable} title="Populate feature table" />
+        <Button onPress={countFeatureRows} title="Count feature rows" />
+        <Button onPress={testQueryHandler} title="Test query" />
         <Text>
           I'll still have some content download automatically, but this is where
           you can choose to download more sets of map tiles beyond the default

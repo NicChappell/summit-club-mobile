@@ -2,6 +2,7 @@ import * as SQLite from "expo-sqlite";
 import { featurePhotos } from "../images/features";
 
 // asynchronous sqlite transaction wrapper function
+// TODO CAN PROBABLY DELETE THIS IN FAVOR OF EQUIVALENT SERVICE FUNCTION
 export const executeSql = async (
   featuresDatabase: SQLite.WebSQLDatabase,
   sqlStatement: string,

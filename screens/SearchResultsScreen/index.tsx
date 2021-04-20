@@ -6,7 +6,7 @@ import { IError } from "../../common/interfaces";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { ISummit, IPopularSummit, Summit } from "../../services";
+import { ISummit, IPopularSummit, Summit, defaultBounds } from "../../services";
 import { ISearchResultsScreen } from "./interfaces";
 
 type Props = PropsFromRedux & ISearchResultsScreen;
@@ -17,7 +17,13 @@ const SearchResultsScreen = ({ error, navigation, route, setError }: Props) => {
 
   // effect hooks
   useEffect(() => {
-    Summit.query()
+    Summit.query({
+      bounds: defaultBounds,
+      filters: "",
+      orderBy: "DESC",
+      limit: 64,
+      offset: 0,
+    })
       .then((filteredSummits) => {
         setFilteredSummits(filteredSummits);
       })

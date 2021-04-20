@@ -18,7 +18,13 @@ import { TabNavigationHeader } from "../../common/navigation";
 import { colors, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { Collection, ICollection, ISummit, Summit } from "../../services";
+import {
+  Collection,
+  ICollection,
+  ISummit,
+  Summit,
+  defaultBounds,
+} from "../../services";
 import { IExploreScreen } from "./interfaces";
 import { SortMethod, SortMethodIcon } from "./types";
 
@@ -55,7 +61,13 @@ const ExploreScreen = ({
         });
       });
 
-    Summit.query()
+    Summit.query({
+      bounds: defaultBounds,
+      filters: "",
+      orderBy: "DESC",
+      limit: 64,
+      offset: 0,
+    })
       .then((queriedSummits) => {
         // update state
         setFilteredSummits(queriedSummits);
@@ -98,7 +110,13 @@ const ExploreScreen = ({
   const fetchMoreSummits = async () => {
     try {
       // query filtered summits
-      const queriedSummits = await Summit.query();
+      const queriedSummits = await Summit.query({
+        bounds: defaultBounds,
+        filters: "",
+        orderBy: "DESC",
+        limit: 64,
+        offset: filteredSummits.length,
+      });
 
       // update state
       setFilteredSummits([...filteredSummits, ...queriedSummits]);

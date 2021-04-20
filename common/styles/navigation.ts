@@ -11,7 +11,6 @@ export const navigationHeaderButton = {
 
 export const navigationHeaderCenterComponent = {
   alignItems: "center",
-  // alignSelf: "stretch",
   height: 64,
   justifyContent: "center",
 } as ViewStyle;

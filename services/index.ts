@@ -13,7 +13,18 @@ export {
   IApparel,
   IApparelVersion,
 } from "./Merchandise";
-export { default as Summit, IPopularSummit, ISummit } from "./Summit";
+export {
+  default as Summit,
+  FeatureClassification,
+  SummitType,
+  IBounds,
+  ISummit,
+  IQueryParams,
+  IQueryResult,
+  IPopularSummit,
+  defaultBounds,
+  processResultSet,
+} from "./Summit";
 export {
   default as User,
   IUserAccount,

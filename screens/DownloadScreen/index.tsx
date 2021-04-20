@@ -7,7 +7,7 @@ import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { executeSql, FeaturesRef, Summit } from "../../services";
+import { executeSql, FeaturesRef, Summit, defaultBounds } from "../../services";
 import { IDownloadScreen } from "./interfaces";
 
 type Props = PropsFromRedux & IDownloadScreen;
@@ -174,7 +174,13 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
 
     try {
       // retrieve data from firestore
-      const summits = await Summit.query();
+      const summits = await Summit.query({
+        bounds: defaultBounds,
+        filters: "",
+        orderBy: "DESC",
+        limit: 64,
+        offset: 0,
+      });
 
       console.log(summits);
     } catch (error) {

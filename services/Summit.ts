@@ -169,7 +169,20 @@ export interface ISummit {
   feature: Feature<Geometry, GeoJsonProperties>;
 }
 
-export interface IFeatureQueryResult {
+export interface IQueryParams {
+  /** Map boundary coordinates */
+  bounds: IBounds;
+  /** Filter expression */
+  filters: string;
+  /** Order of the results */
+  orderBy: "ASC" | "DESC";
+  /** Number of rows to return */
+  limit: number;
+  /** Number of rows to ignore */
+  offset: number;
+}
+
+export interface IQueryResult {
   /** Feature class definition */
   class: FeatureClassification;
   /** Name of a continent */
@@ -205,7 +218,7 @@ export interface IPopularSummit extends ISummit {
   checkInsAllTime: number;
 }
 
-export const initBounds: IBounds = {
+export const defaultBounds: IBounds = {
   northEast: {
     latitude: 41.003906, // northeast latitude coordinate
     longitude: -102.042974, // northeast longitude coordinate
@@ -221,7 +234,7 @@ export const processResultSet = (resultSet: SQLResultSet) => {
   const { _array }: any = resultSet.rows;
 
   // convert ResultSet array into GeoJSON Features
-  const features = _array.map((result: IFeatureQueryResult) => {
+  const features = _array.map((result: IQueryResult) => {
     // create a GeoJSON Geometry from result coordinates
     const geometry: Geometry = {
       type: "Point",
@@ -587,12 +600,17 @@ class Summit {
 
   /** Fetch array of filtered summits */
   static async query(
-    bounds: IBounds = initBounds,
-    filters: string = "",
-    orderBy: "ASC" | "DESC" = "DESC",
-    limit: number = 64,
-    offset: number = 0
+    params: IQueryParams = {
+      bounds: defaultBounds,
+      filters: "",
+      orderBy: "DESC",
+      limit: 64,
+      offset: 0,
+    }
   ): Promise<ISummit[]> {
+    // destructure params
+    const { bounds, filters, orderBy, limit, offset } = params;
+
     // destructure boundaries
     const northEast = bounds.northEast;
     const southWest = bounds.southWest;
@@ -616,8 +634,8 @@ class Summit {
         AND longitude > ${swLng}
       ) ${filters}
       ORDER BY meters ${orderBy}
-      LIMIT ${limit};
-      OFFSET ${offset}
+      LIMIT ${limit}
+      OFFSET ${offset};
     `;
 
     // execute sql statement

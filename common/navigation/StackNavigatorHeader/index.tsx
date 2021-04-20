@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { StatusBar, View, Text } from "react-native";
-import { SearchBar } from "react-native-elements";
+import { StatusBar, View, Text, TouchableOpacity } from "react-native";
+import { Button, SearchBar } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { StackHeaderProps } from "@react-navigation/stack";
@@ -15,8 +15,13 @@ import {
   searchBarContainer,
   searchBarInput,
   searchBarInputContainer,
-  searchBarLeftIconContainer,
-  searchBarRightIconContainer,
+  searchBarIconContainer,
+  searchBarWrapper,
+  searchButton,
+  searchButtonTitle,
+  searchSuggestion,
+  searchSuggestions,
+  searchSuggestionsContainer,
 } from "../../styles";
 import {
   LeftStackNavigatorControl,
@@ -38,9 +43,31 @@ const StackNavigatorHeader = ({
   const searchBarRef = useRef<SearchBar>(null);
 
   // state hooks
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<string[]>([]);
 
-  const handleChangeText = (text: string) => setSearchInput(text);
+  const handleBlur = () => setIsVisible(false);
+
+  const handleChangeText = (text: string) => {
+    setSearchInput(text);
+
+    text
+      ? setSearchResults([
+          "Blanca Peak",
+          "Capitol Peak",
+          "Castle Peak",
+          "Challenger Point",
+          "Conundrum Peak",
+          "Crestone Needle",
+          "Crestone Peak",
+          "Culebra Peak",
+          "El Diente Peak",
+          "Ellingwood Point",
+          "Grays Peak",
+        ])
+      : setSearchResults([]);
+  };
 
   const handleClearIconPress = () => {
     // return early if searchBarRef is null
@@ -50,7 +77,9 @@ const StackNavigatorHeader = ({
     searchBarRef.current!.clear();
   };
 
-  const handleSubmitEditing = () => {
+  const handleFocus = () => setIsVisible(true);
+
+  const handleSearch = () => {
     // navigate to Search Results screen
     navigation.navigate("SearchResults");
   };
@@ -61,30 +90,55 @@ const StackNavigatorHeader = ({
     >
       <StatusBar barStyle="dark-content" />
       {name === "Home" ? (
-        <SearchBar
-          clearIcon={
-            <Ionicons
-              name={"ios-close"}
-              size={22}
-              color={colors.queenBlue}
-              onPress={handleClearIconPress}
+        <View style={searchBarWrapper}>
+          <SearchBar
+            clearIcon={
+              <Ionicons
+                name={"ios-close"}
+                size={22}
+                color={colors.queenBlue}
+                onPress={handleClearIconPress}
+              />
+            }
+            containerStyle={searchBarContainer}
+            inputContainerStyle={searchBarInputContainer}
+            inputStyle={searchBarInput}
+            leftIconContainerStyle={searchBarIconContainer}
+            onBlur={handleBlur}
+            onChangeText={handleChangeText}
+            onFocus={handleFocus}
+            onSubmitEditing={handleSearch}
+            placeholder="Find your next adventure"
+            ref={searchBarRef}
+            returnKeyType={"search"}
+            rightIconContainerStyle={searchBarIconContainer}
+            searchIcon={
+              <Ionicons
+                name={"ios-search"}
+                size={22}
+                color={colors.queenBlue}
+              />
+            }
+            value={searchInput}
+          />
+          {isVisible && (
+            <Button
+              buttonStyle={searchButton}
+              onPress={handleSearch}
+              title="Search"
+              titleStyle={searchButtonTitle}
             />
-          }
-          containerStyle={searchBarContainer}
-          inputContainerStyle={searchBarInputContainer}
-          inputStyle={searchBarInput}
-          leftIconContainerStyle={searchBarLeftIconContainer}
-          onChangeText={handleChangeText}
-          onSubmitEditing={handleSubmitEditing}
-          placeholder="Find your next adventure"
-          ref={searchBarRef}
-          returnKeyType={"search"}
-          rightIconContainerStyle={searchBarRightIconContainer}
-          searchIcon={
-            <Ionicons name={"ios-search"} size={22} color={colors.queenBlue} />
-          }
-          value={searchInput}
-        />
+          )}
+          <View style={searchSuggestionsContainer}>
+            <View style={searchSuggestions}>
+              {searchResults.slice(7).map((searchResult, index) => (
+                <TouchableOpacity key={index} onPress={handleSearch}>
+                  <Text style={searchSuggestion}>{searchResult}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        </View>
       ) : (
         <View style={navigationHeaderContainer}>
           <View style={navigationHeaderLeftComponent}>

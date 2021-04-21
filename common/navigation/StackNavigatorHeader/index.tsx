@@ -47,26 +47,41 @@ const StackNavigatorHeader = ({
   const [searchInput, setSearchInput] = useState<string>("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
 
-  const handleBlur = () => setIsVisible(false);
+  // boolean conditions
+  const renderSuggestions = searchResults.length > 0;
+
+  const trieText = (text: string) => {
+    if (text) {
+      return [
+        "Blanca Peak",
+        "Capitol Peak",
+        "Castle Peak",
+        "Challenger Point",
+        "Conundrum Peak",
+        "Crestone Needle",
+        "Crestone Peak",
+        "Culebra Peak",
+        "El Diente Peak",
+        "Ellingwood Point",
+        "Grays Peak",
+      ];
+    }
+    return [];
+  };
+
+  const handleBlur = () => {
+    setIsVisible(false);
+    setSearchResults([]);
+  };
 
   const handleChangeText = (text: string) => {
-    setSearchInput(text);
+    // retrieve matching keys from search Trie
+    const searchResults = trieText(text);
+    console.log(searchResults);
+    console.log(searchResults.slice(0, text.length));
 
-    text
-      ? setSearchResults([
-          "Blanca Peak",
-          "Capitol Peak",
-          "Castle Peak",
-          "Challenger Point",
-          "Conundrum Peak",
-          "Crestone Needle",
-          "Crestone Peak",
-          "Culebra Peak",
-          "El Diente Peak",
-          "Ellingwood Point",
-          "Grays Peak",
-        ])
-      : setSearchResults([]);
+    setSearchInput(text);
+    setSearchResults(searchResults.slice(0, text.length));
   };
 
   const handleClearIconPress = () => {
@@ -77,7 +92,13 @@ const StackNavigatorHeader = ({
     searchBarRef.current!.clear();
   };
 
-  const handleFocus = () => setIsVisible(true);
+  const handleFocus = () => {
+    // retrieve matching keys from search Trie
+    const searchResults = trieText(searchInput);
+
+    setIsVisible(true);
+    setSearchResults(searchResults.slice(0, searchInput.length));
+  };
 
   const handleSearch = () => {
     // navigate to Search Results screen
@@ -101,7 +122,15 @@ const StackNavigatorHeader = ({
               />
             }
             containerStyle={searchBarContainer}
-            inputContainerStyle={searchBarInputContainer}
+            inputContainerStyle={
+              renderSuggestions
+                ? {
+                    ...searchBarInputContainer,
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                  }
+                : searchBarInputContainer
+            }
             inputStyle={searchBarInput}
             leftIconContainerStyle={searchBarIconContainer}
             onBlur={handleBlur}
@@ -129,15 +158,17 @@ const StackNavigatorHeader = ({
               titleStyle={searchButtonTitle}
             />
           )}
-          <View style={searchSuggestionsContainer}>
-            <View style={searchSuggestions}>
-              {searchResults.slice(7).map((searchResult, index) => (
-                <TouchableOpacity key={index} onPress={handleSearch}>
-                  <Text style={searchSuggestion}>{searchResult}</Text>
-                </TouchableOpacity>
-              ))}
+          {renderSuggestions && (
+            <View style={searchSuggestionsContainer}>
+              <View style={searchSuggestions}>
+                {searchResults.map((searchResult, index) => (
+                  <TouchableOpacity key={index} onPress={handleSearch}>
+                    <Text style={searchSuggestion}>{searchResult}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
             </View>
-          </View>
+          )}
         </View>
       ) : (
         <View style={navigationHeaderContainer}>

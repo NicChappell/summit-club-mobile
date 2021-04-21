@@ -26,6 +26,7 @@ export const searchBarInput = {
 } as TextStyle;
 
 export const searchBarInputContainer = {
+  ...borderRadius4,
   ...inputBorder,
   ...inputContainer,
   alignItems: "stretch",
@@ -66,8 +67,7 @@ export const searchButtonTitle = {
 } as TextStyle;
 
 export const searchSuggestion = {
-  backgroundColor: "pink",
-  color: colors.black75,
+  color: colors.black50,
   fontFamily: "NunitoSans_400Regular",
   fontSize: 18,
 } as TextStyle;
@@ -75,10 +75,10 @@ export const searchSuggestion = {
 export const searchSuggestions = {
   alignItems: "stretch",
   backgroundColor: colors.white,
-  borderBottomColor: colors.black25,
   borderBottomLeftRadius: 4,
   borderBottomRightRadius: 4,
   borderBottomWidth: 1,
+  borderBottomColor: colors.black25,
   borderLeftWidth: 1,
   borderLeftColor: colors.black25,
   borderRightWidth: 1,

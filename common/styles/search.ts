@@ -19,6 +19,7 @@ export const searchBarContainer = {
 } as ViewStyle;
 
 export const searchBarInput = {
+  ...borderWidthReset,
   ...inputStyle,
   ...marginReset,
   ...paddingReset,
@@ -26,6 +27,7 @@ export const searchBarInput = {
 } as TextStyle;
 
 export const searchBarInputContainer = {
+  ...borderWidthReset,
   ...borderRadius4,
   ...inputBorder,
   ...inputContainer,
@@ -78,11 +80,11 @@ export const searchSuggestions = {
   borderBottomLeftRadius: 4,
   borderBottomRightRadius: 4,
   borderBottomWidth: 1,
-  borderBottomColor: colors.black25,
+  borderBottomColor: colors.black50,
   borderLeftWidth: 1,
-  borderLeftColor: colors.black25,
+  borderLeftColor: colors.black50,
   borderRightWidth: 1,
-  borderRightColor: colors.black25,
+  borderRightColor: colors.black50,
   justifyContent: "flex-start",
   paddingHorizontal: 56,
 } as ViewStyle;

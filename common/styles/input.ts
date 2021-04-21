@@ -13,7 +13,6 @@ export const inputBorder = {
 
 export const inputContainer = {
   backgroundColor: colors.white,
-  borderRadius: 4,
   paddingHorizontal: 8,
 };
 

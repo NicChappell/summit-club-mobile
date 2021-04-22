@@ -1,7 +1,12 @@
 import { TextStyle, ViewStyle } from "react-native";
 import { borderRadius4 } from "./border";
 import { colors } from "./colors";
-import { borderWidthReset, paddingReset, marginReset } from "./reset";
+import {
+  borderRadiusReset,
+  borderWidthReset,
+  paddingReset,
+  marginReset,
+} from "./reset";
 import {
   inputBorder,
   inputContainer,
@@ -27,8 +32,8 @@ export const searchBarInput = {
 } as TextStyle;
 
 export const searchBarInputContainer = {
+  ...borderRadiusReset,
   ...borderWidthReset,
-  ...borderRadius4,
   ...inputBorder,
   ...inputContainer,
   alignItems: "stretch",
@@ -77,14 +82,12 @@ export const searchSuggestion = {
 export const searchSuggestions = {
   alignItems: "stretch",
   backgroundColor: colors.white,
-  borderBottomLeftRadius: 4,
-  borderBottomRightRadius: 4,
   borderBottomWidth: 1,
-  borderBottomColor: colors.black50,
+  borderBottomColor: colors.black25,
   borderLeftWidth: 1,
-  borderLeftColor: colors.black50,
+  borderLeftColor: colors.black25,
   borderRightWidth: 1,
-  borderRightColor: colors.black50,
+  borderRightColor: colors.black25,
   justifyContent: "flex-start",
   paddingHorizontal: 56,
 } as ViewStyle;

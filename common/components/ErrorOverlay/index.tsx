@@ -12,14 +12,14 @@ type Props = PropsFromRedux & IErrorOverlay;
 
 const ErrorOverlay = ({ error, clearError }: Props) => {
   // destructure error
-  const { code, message } = error;
+  const { message } = error;
 
   // state hooks
   const [visible, setVisible] = useState<boolean>(false);
 
   // effect hooks
   useEffect(() => {
-    if (code || message) {
+    if (message) {
       setVisible(true);
     }
   }, [error]);
@@ -39,11 +39,16 @@ const ErrorOverlay = ({ error, clearError }: Props) => {
     >
       <View style={styles.container}>
         <View style={styles.overlayTitle}>
-          <Text style={styles.header}>An error occurred</Text>
+          <Text style={styles.header}>Uh-oh!</Text>
         </View>
         <View style={styles.overlayBody}>
-          {code && <Text style={styles.paragraph}>{code}</Text>}
-          {message && <Text style={styles.paragraph}>{message}</Text>}
+          {message ? (
+            <Text style={styles.paragraph}>{message}</Text>
+          ) : (
+            <Text style={styles.paragraph}>
+              An error occurred, please try again later.
+            </Text>
+          )}
         </View>
         <View style={styles.overlayFooter}>
           <Button

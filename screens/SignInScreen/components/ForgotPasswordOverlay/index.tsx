@@ -1,36 +1,27 @@
 import React, { useEffect, useState } from "react";
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Button, Card, Input } from "react-native-elements";
+import { StyleSheet, Text, View } from "react-native";
+import { Button, Input, Overlay } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
-import * as actions from "../../redux/actions";
-import { DismissKeyboard, ErrorOverlay } from "../../common/components";
-import { forgotPasswordSchema } from "../../common/schemas";
+import { forgotPasswordSchema } from "../../../../common/schemas";
 import {
   borderRadius4,
-  borderWidthReset,
   colors,
   inputBorder,
   inputContainer,
   inputStyle,
   paddingReset,
-  marginReset,
-  shadow,
-  shadowReset,
-} from "../../common/styles";
-import { RootState } from "../../redux/reducers";
-import { IForgotPasswordScreen } from "./interfaces";
+} from "../../../../common/styles";
+import * as actions from "../../../../redux/actions";
+import { RootState } from "../../../../redux/reducers";
+import { IForgotPasswordOverlay } from "./interfaces";
 
-type Props = PropsFromRedux & IForgotPasswordScreen;
+type Props = PropsFromRedux & IForgotPasswordOverlay;
 
-const ForgotPasswordScreen = ({ error, navigation, route }: Props) => {
+const ForgotPasswordOverlay = ({ error, visible, setVisible }: Props) => {
   // state hooks
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [emailValue, setEmailValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // effect hooks
@@ -50,15 +41,24 @@ const ForgotPasswordScreen = ({ error, navigation, route }: Props) => {
   };
 
   return (
-    <DismissKeyboard>
+    <Overlay
+      animationType="fade"
+      backdropStyle={styles.backdrop}
+      isVisible={visible}
+      onBackdropPress={() => setVisible(!visible)}
+      overlayStyle={styles.overlay}
+    >
       <View style={styles.container}>
-        <ErrorOverlay error={error} />
-        <Card
-          containerStyle={styles.cardContainer}
-          wrapperStyle={styles.cardWrapper}
-        >
-          <Text>Enter the email address associated with your account.</Text>
-          <Text>We will send you a link to reset your password.</Text>
+        <View style={styles.overlayTitle}>
+          <Text style={styles.header}>Forgot password</Text>
+        </View>
+        <View style={styles.overlayBody}>
+          <Text style={styles.paragraph}>
+            Enter the email address associated with your account.
+          </Text>
+          <Text style={styles.paragraph}>
+            We will send you a link to reset your password.
+          </Text>
           <Formik
             validationSchema={forgotPasswordSchema}
             initialValues={{ email: "" }}
@@ -105,9 +105,28 @@ const ForgotPasswordScreen = ({ error, navigation, route }: Props) => {
               </>
             )}
           </Formik>
-        </Card>
+        </View>
+        <View style={styles.overlayFooter}>
+          <Button
+            buttonStyle={styles.cancelButton}
+            containerStyle={styles.buttonContainer}
+            onPress={() => setVisible(!visible)}
+            title="Cancel"
+            titleStyle={styles.buttonTitle}
+          />
+          <Button
+            buttonStyle={styles.submitButton}
+            containerStyle={styles.buttonContainer}
+            disabled={disabled}
+            disabledStyle={styles.disabledButton}
+            disabledTitleStyle={styles.buttonTitle}
+            onPress={() => console.log("TODO")}
+            title="Submit"
+            titleStyle={styles.buttonTitle}
+          />
+        </View>
       </View>
-    </DismissKeyboard>
+    </Overlay>
   );
 };
 
@@ -117,61 +136,42 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = { signIn: actions.signIn };
+const mapDispatchToProps = {};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(ForgotPasswordScreen);
+export default connector(ForgotPasswordOverlay);
 
 const styles = StyleSheet.create({
-  body: {
-    alignItems: "stretch",
-  },
-  forgotPasswordButton: {
-    ...borderRadius4,
-    ...paddingReset,
+  backdrop: {
     alignItems: "center",
-    backgroundColor: "transparent",
+    backgroundColor: colors.black25,
+    flex: 1,
     justifyContent: "center",
   },
-  forgotPasswordButtonContainer: {
+  buttonContainer: {
     alignSelf: "flex-end",
   },
-  forgotPasswordButtonTitle: {
-    color: colors.queenBlue,
+  buttonTitle: {
+    color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
+  cancelButton: {
+    ...borderRadius4,
+    ...paddingReset,
+    alignItems: "center",
+    backgroundColor: colors.queenBlue,
+    justifyContent: "center",
+    marginRight: 16,
+  },
   container: {
     alignItems: "stretch",
-    backgroundColor: colors.black01,
-    flex: 1,
     justifyContent: "center",
-    padding: 16,
-  },
-  cardContainer: {
-    ...borderWidthReset,
-    ...marginReset,
-    ...paddingReset,
-    ...shadowReset,
-    backgroundColor: "transparent",
-    paddingBottom: 2,
-    paddingLeft: 2,
-  },
-  cardWrapper: {
-    ...borderRadius4,
-    ...marginReset,
-    ...paddingReset,
-    ...shadow,
-    backgroundColor: colors.white,
-    paddingBottom: 16,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
   },
   createAccountButton: {
     ...borderRadius4,
@@ -202,14 +202,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
   },
-  footer: {
-    alignItems: "baseline",
-    flexDirection: "row",
-    justifyContent: "center",
-    marginVertical: 8,
-  },
   header: {
-    marginVertical: 32,
+    color: colors.queenBlue,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 24,
   },
   input: {
     ...paddingReset,
@@ -235,16 +231,31 @@ const styles = StyleSheet.create({
   inputStyle: {
     ...inputStyle,
   },
-  rightIconContainer: {
-    ...marginReset,
+  overlay: {
+    ...borderRadius4,
     ...paddingReset,
-    paddingLeft: 8,
-    paddingRight: 8,
+    alignSelf: "stretch",
+    margin: 24,
+    overflow: "hidden",
   },
-  title: {
-    color: colors.queenBlue,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 32,
+  overlayBody: {
+    padding: 16,
+  },
+  overlayFooter: {
+    alignItems: "center",
+    borderTopColor: colors.black05,
+    borderTopWidth: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    padding: 16,
+  },
+  overlayTitle: {
+    alignItems: "center",
+    borderBottomColor: colors.black05,
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    padding: 16,
   },
   paragraph: {
     color: colors.black,
@@ -252,14 +263,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
   },
-  signIn: {
-    color: colors.queenBlue,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-  },
-  subtitle: {
-    color: colors.black50,
-    fontFamily: "NotoSansJP_700Bold",
-    fontSize: 20,
+  submitButton: {
+    ...borderRadius4,
+    ...paddingReset,
+    alignItems: "center",
+    backgroundColor: colors.pistachio,
+    justifyContent: "center",
   },
 });

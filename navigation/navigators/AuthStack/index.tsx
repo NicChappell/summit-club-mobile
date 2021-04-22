@@ -29,6 +29,7 @@ const AuthStack = () => {
         component={SignInScreen}
         name="SignIn"
         options={{
+          headerShown: false,
           title: "Sign In",
         }}
       />
@@ -36,6 +37,7 @@ const AuthStack = () => {
         component={SignUpScreen}
         name="SignUp"
         options={{
+          headerShown: false,
           title: "Sign Up",
         }}
       />

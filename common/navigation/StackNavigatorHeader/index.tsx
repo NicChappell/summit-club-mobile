@@ -122,15 +122,7 @@ const StackNavigatorHeader = ({
               />
             }
             containerStyle={searchBarContainer}
-            inputContainerStyle={
-              renderSuggestions
-                ? {
-                    ...searchBarInputContainer,
-                    borderBottomLeftRadius: 0,
-                    borderBottomRightRadius: 0,
-                  }
-                : searchBarInputContainer
-            }
+            inputContainerStyle={searchBarInputContainer}
             inputStyle={searchBarInput}
             leftIconContainerStyle={searchBarIconContainer}
             onBlur={handleBlur}

@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Button, Card, CheckBox, Input } from "react-native-elements";
+import {
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Button, Card, Input } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
 import * as actions from "../../redux/actions";
-import {
-  DismissKeyboard,
-  ErrorOverlay,
-  TermsAndConditions,
-} from "../../common/components";
+import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { IAuthCredentials } from "../../common/interfaces";
 import { signUpSchema } from "../../common/schemas";
 import {
@@ -25,7 +27,6 @@ import {
   shadowReset,
 } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
-import { CheckBoxTitle } from "./components";
 import { ISignUpScreen } from "./interfaces";
 
 type Props = PropsFromRedux & ISignUpScreen;
@@ -33,10 +34,6 @@ type Props = PropsFromRedux & ISignUpScreen;
 const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
   // state hooks
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [
-    isTermsAndConditionsVisible,
-    setIsTermsAndConditionsVisible,
-  ] = useState<boolean>(false);
   const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
 
   // effect hooks
@@ -58,113 +55,97 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
   return (
     <DismissKeyboard>
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         <ErrorOverlay error={error} />
-        <TermsAndConditions
-          visible={isTermsAndConditionsVisible}
-          setVisible={setIsTermsAndConditionsVisible}
-        />
-        <Card
-          containerStyle={styles.cardContainer}
-          wrapperStyle={styles.cardWrapper}
-        >
-          <Formik
-            validationSchema={signUpSchema}
-            initialValues={{ email: "", password: "", terms: false }}
-            onSubmit={handleSubmit}
+        <View style={styles.top}>
+          <Text style={styles.title}>Create account</Text>
+          <Text style={styles.subtitle}>Sign up to get started</Text>
+          <Card
+            containerStyle={styles.cardContainer}
+            wrapperStyle={styles.cardWrapper}
           >
-            {({
-              dirty,
-              errors,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isValid,
-              setFieldValue,
-              touched,
-              values,
-            }) => (
-              <>
-                <Input
-                  autoCapitalize="none"
-                  containerStyle={styles.input}
-                  errorMessage={
-                    errors.email && touched.email ? errors.email : undefined
-                  }
-                  errorStyle={styles.inputError}
-                  inputContainerStyle={styles.inputContainer}
-                  inputStyle={styles.inputStyle}
-                  keyboardType="email-address"
-                  label="Email"
-                  labelStyle={styles.inputLabel}
-                  onBlur={handleBlur("email")}
-                  onChangeText={handleChange("email")}
-                  value={values.email}
-                />
-                <Input
-                  autoCapitalize="none"
-                  containerStyle={styles.input}
-                  errorMessage={
-                    errors.password && touched.password
-                      ? errors.password
-                      : undefined
-                  }
-                  errorStyle={styles.inputError}
-                  inputContainerStyle={styles.inputContainer}
-                  inputStyle={styles.inputStyle}
-                  keyboardType="default"
-                  label="Password"
-                  labelStyle={styles.inputLabel}
-                  onBlur={handleBlur("password")}
-                  onChangeText={handleChange("password")}
-                  rightIcon={
-                    <Ionicons
-                      name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
-                      size={24}
-                      color={colors.black75}
-                      onPress={() => setSecureTextEntry(!secureTextEntry)}
-                    />
-                  }
-                  rightIconContainerStyle={styles.rightIconContainer}
-                  secureTextEntry={secureTextEntry}
-                  value={values.password}
-                />
-                <CheckBox
-                  title={
-                    <CheckBoxTitle
-                      setVisible={setIsTermsAndConditionsVisible}
-                    />
-                  }
-                  checked={values.terms}
-                  onIconPress={() => setFieldValue("terms", !values.terms)}
-                />
-                <Button
-                  buttonStyle={styles.createAccountButton}
-                  containerStyle={styles.createAccountButtonContainer}
-                  disabled={!isValid || !dirty}
-                  disabledStyle={styles.disabledButton}
-                  disabledTitleStyle={styles.disabledButtonTitle}
-                  title="Create account"
-                  titleStyle={styles.createAccountButtonTitle}
-                  loading={isLoading}
-                  onPress={handleSubmit as any}
-                />
-              </>
-            )}
-          </Formik>
-        </Card>
-        <View style={styles.buttonGroup}>
-          <Button
-            buttonStyle={styles.clearButton}
-            onPress={() => navigation.navigate("SignIn")}
-            title="Sign in"
-            titleStyle={styles.clearButtonTitle}
-          />
-          <Button
-            buttonStyle={styles.clearButton}
-            onPress={() => navigation.navigate("ForgotPassword")}
-            title="Forgot password"
-            titleStyle={styles.clearButtonTitle}
-          />
+            <Formik
+              validationSchema={signUpSchema}
+              initialValues={{ email: "", password: "", terms: false }}
+              onSubmit={handleSubmit}
+            >
+              {({
+                dirty,
+                errors,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isValid,
+                setFieldValue,
+                touched,
+                values,
+              }) => (
+                <>
+                  <Input
+                    autoCapitalize="none"
+                    containerStyle={styles.input}
+                    errorMessage={
+                      errors.email && touched.email ? errors.email : undefined
+                    }
+                    errorStyle={styles.inputError}
+                    inputContainerStyle={styles.inputContainer}
+                    inputStyle={styles.inputStyle}
+                    keyboardType="email-address"
+                    label="Email"
+                    labelStyle={styles.inputLabel}
+                    onBlur={handleBlur("email")}
+                    onChangeText={handleChange("email")}
+                    value={values.email}
+                  />
+                  <Input
+                    autoCapitalize="none"
+                    containerStyle={styles.input}
+                    errorMessage={
+                      errors.password && touched.password
+                        ? errors.password
+                        : undefined
+                    }
+                    errorStyle={styles.inputError}
+                    inputContainerStyle={styles.inputContainer}
+                    inputStyle={styles.inputStyle}
+                    keyboardType="default"
+                    label="Password"
+                    labelStyle={styles.inputLabel}
+                    onBlur={handleBlur("password")}
+                    onChangeText={handleChange("password")}
+                    rightIcon={
+                      <Ionicons
+                        name={secureTextEntry ? "ios-eye-off" : "ios-eye"}
+                        size={24}
+                        color={colors.black75}
+                        onPress={() => setSecureTextEntry(!secureTextEntry)}
+                      />
+                    }
+                    rightIconContainerStyle={styles.rightIconContainer}
+                    secureTextEntry={secureTextEntry}
+                    value={values.password}
+                  />
+                  <Button
+                    buttonStyle={styles.createAccountButton}
+                    containerStyle={styles.createAccountButtonContainer}
+                    disabled={!isValid || !dirty}
+                    disabledStyle={styles.disabledButton}
+                    disabledTitleStyle={styles.disabledButtonTitle}
+                    title="Sign up"
+                    titleStyle={styles.createAccountButtonTitle}
+                    loading={isLoading}
+                    onPress={handleSubmit as any}
+                  />
+                </>
+              )}
+            </Formik>
+          </Card>
+        </View>
+        <View style={styles.bottom}>
+          <Text style={styles.paragraph}>I'm already a member, </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+            <Text style={styles.signIn}>Sign In</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </DismissKeyboard>
@@ -186,20 +167,23 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(SignUpScreen);
 
 const styles = StyleSheet.create({
-  buttonGroup: {
-    alignItems: "center",
+  bottom: {
+    alignItems: "baseline",
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginTop: 16,
+    justifyContent: "center",
+    marginBottom: 8,
   },
-  clearButton: {
+  forgotPasswordButton: {
     ...borderRadius4,
     ...paddingReset,
     alignItems: "center",
     backgroundColor: "transparent",
     justifyContent: "center",
   },
-  clearButtonTitle: {
+  forgotPasswordButtonContainer: {
+    alignSelf: "flex-end",
+  },
+  forgotPasswordButtonTitle: {
     color: colors.queenBlue,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
@@ -210,7 +194,7 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     backgroundColor: colors.black01,
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-between",
     padding: 16,
   },
   cardContainer: {
@@ -219,6 +203,7 @@ const styles = StyleSheet.create({
     ...paddingReset,
     ...shadowReset,
     backgroundColor: "transparent",
+    marginTop: 64,
     paddingBottom: 2,
     paddingLeft: 2,
   },
@@ -242,7 +227,6 @@ const styles = StyleSheet.create({
   },
   createAccountButtonContainer: {
     alignSelf: "flex-start",
-    marginTop: 16,
   },
   createAccountButtonTitle: {
     color: colors.white,
@@ -292,5 +276,29 @@ const styles = StyleSheet.create({
     ...paddingReset,
     paddingLeft: 8,
     paddingRight: 8,
+  },
+  title: {
+    color: colors.queenBlue,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 32,
+  },
+  paragraph: {
+    color: colors.black,
+    fontFamily: "NunitoSans_400Regular",
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  signIn: {
+    color: colors.queenBlue,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 16,
+  },
+  subtitle: {
+    color: colors.black50,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 20,
+  },
+  top: {
+    marginTop: 32,
   },
 });

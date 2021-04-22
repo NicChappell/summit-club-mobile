@@ -96,13 +96,6 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "center",
   },
-  signOutButton: {
-    ...borderRadius4,
-    ...paddingReset,
-    alignItems: "center",
-    backgroundColor: colors.pistachio,
-    justifyContent: "center",
-  },
   header: {
     color: colors.queenBlue,
     fontFamily: "NotoSansJP_700Bold",
@@ -149,5 +142,12 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
     fontSize: 16,
+  },
+  signOutButton: {
+    ...borderRadius4,
+    ...paddingReset,
+    alignItems: "center",
+    backgroundColor: colors.pistachio,
+    justifyContent: "center",
   },
 });

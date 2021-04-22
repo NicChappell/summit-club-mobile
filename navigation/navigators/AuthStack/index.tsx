@@ -1,23 +1,46 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { StackNavigatorHeader } from "../../../common/navigation";
 import {
-    ForgotPasswordScreen,
-    SignInScreen,
-    SignUpScreen
-} from '../../../screens';
-import { AuthStackParamList } from './types';
+  ForgotPasswordScreen,
+  SignInScreen,
+  SignUpScreen,
+} from "../../../screens";
+import { AuthStackParamList } from "./types";
 
 // new stack navigator
 const Stack = createStackNavigator<AuthStackParamList>();
 
 const AuthStack = () => {
-    return (
-        <Stack.Navigator initialRouteName="SignIn">
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        </Stack.Navigator>
-    )
-}
+  return (
+    <Stack.Navigator
+      headerMode="screen"
+      initialRouteName="SignUp"
+      screenOptions={{ header: StackNavigatorHeader }}
+    >
+      <Stack.Screen
+        component={ForgotPasswordScreen}
+        name="ForgotPassword"
+        options={{
+          title: "Forgot Password",
+        }}
+      />
+      <Stack.Screen
+        component={SignInScreen}
+        name="SignIn"
+        options={{
+          title: "Sign In",
+        }}
+      />
+      <Stack.Screen
+        component={SignUpScreen}
+        name="SignUp"
+        options={{
+          title: "Sign Up",
+        }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 export default AuthStack;

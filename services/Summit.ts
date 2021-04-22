@@ -599,6 +599,7 @@ class Summit {
   }
 
   /** Fetch array of filtered summits */
+  // TODO: SOME WAY OF MAKING THESE THINGS OPTIONAL / USE DEFAULTS IF VALUES NOT PROVIDED
   static async query(
     params: IQueryParams = {
       bounds: defaultBounds,

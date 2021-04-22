@@ -113,7 +113,6 @@ const SignInScreen = ({ error, navigation, route, signIn }: Props) => {
             onPress={() => navigation.navigate("ForgotPassword")}
           />
         </View>
-        <Text>This is bottom text.</Text>
       </SafeAreaView>
     </DismissKeyboard>
   );
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.white,
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   cardWrapper: {
     alignSelf: "stretch",

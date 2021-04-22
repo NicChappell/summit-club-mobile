@@ -3,12 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay } from "../../common/components";
-import {
-  colors,
-  inputBorder,
-  inputContainer,
-  inputStyle,
-} from "../../common/styles";
+import { colors } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { getInitials } from "./helpers";
 import { IProfileScreen } from "./interfaces";
@@ -171,48 +166,10 @@ const styles = StyleSheet.create({
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 36,
   },
-  disabledButton: {
-    backgroundColor: colors.queenBlue,
-  },
-  saveButton: {
-    backgroundColor: colors.pistachio,
-  },
-  cancelButton: {
-    borderColor: colors.queenBlue,
-  },
-  cancelButtonTitle: {
-    color: colors.queenBlue,
-  },
-  buttonContainer: {
-    alignItems: "flex-start",
-    marginHorizontal: 8,
-  },
-  buttonTitle: {
-    color: colors.white,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 18,
-    paddingHorizontal: 8,
-  },
-  buttonView: {
-    flexDirection: "row",
-  },
   container: {
     backgroundColor: colors.white,
     flex: 1,
     padding: 16,
-  },
-  inputContainer: {
-    ...inputBorder,
-    ...inputContainer,
-  },
-  inputStyle: {
-    ...inputStyle,
-  },
-  labelStyle: {
-    color: colors.queenBlue,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-    marginBottom: 4,
   },
   listItemBorderBottom: {
     borderBottomColor: colors.queenBlue25,
@@ -230,16 +187,5 @@ const styles = StyleSheet.create({
     color: colors.queenBlue,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 18,
-  },
-  section: {},
-  sectionHeader: {
-    color: colors.queenBlue,
-    fontFamily: "NunitoSans_700Bold",
-    fontSize: 24,
-    marginBottom: 16,
-    marginHorizontal: 8,
-  },
-  row: {
-    flexDirection: "row",
   },
 });

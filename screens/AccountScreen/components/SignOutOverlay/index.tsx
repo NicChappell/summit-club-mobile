@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     ...borderRadius4,
     ...paddingReset,
     alignSelf: "stretch",
-    margin: 24,
+    margin: 16,
     overflow: "hidden",
   },
   overlayBody: {

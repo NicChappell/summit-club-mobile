@@ -48,84 +48,72 @@ const ForgotPasswordOverlay = ({ error, visible, setVisible }: Props) => {
       onBackdropPress={() => setVisible(!visible)}
       overlayStyle={styles.overlay}
     >
-      <View style={styles.container}>
-        <View style={styles.overlayTitle}>
-          <Text style={styles.header}>Forgot password</Text>
-        </View>
-        <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>
-            Enter the email address associated with your account.
-          </Text>
-          <Text style={styles.paragraph}>
-            We will send you a link to reset your password.
-          </Text>
-          <Formik
-            validationSchema={forgotPasswordSchema}
-            initialValues={{ email: "" }}
-            onSubmit={handleSubmit}
-          >
-            {({
-              dirty,
-              errors,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isValid,
-              touched,
-              values,
-            }) => (
-              <>
-                <Input
-                  autoCapitalize="none"
-                  containerStyle={styles.input}
-                  errorMessage={
-                    errors.email && touched.email ? errors.email : undefined
-                  }
-                  errorStyle={styles.inputError}
-                  inputContainerStyle={styles.inputContainer}
-                  inputStyle={styles.inputStyle}
-                  keyboardType="email-address"
-                  label="Email"
-                  labelStyle={styles.inputLabel}
-                  onBlur={handleBlur("email")}
-                  onChangeText={handleChange("email")}
-                  value={values.email}
-                />
-                <Button
-                  buttonStyle={styles.createAccountButton}
-                  containerStyle={styles.createAccountButtonContainer}
-                  disabled={!isValid || !dirty}
-                  disabledStyle={styles.disabledButton}
-                  disabledTitleStyle={styles.disabledButtonTitle}
-                  title="Submit"
-                  titleStyle={styles.createAccountButtonTitle}
-                  loading={isLoading}
-                  onPress={handleSubmit as any}
-                />
-              </>
-            )}
-          </Formik>
-        </View>
-        <View style={styles.overlayFooter}>
-          <Button
-            buttonStyle={styles.cancelButton}
-            containerStyle={styles.buttonContainer}
-            onPress={() => setVisible(!visible)}
-            title="Cancel"
-            titleStyle={styles.buttonTitle}
-          />
-          <Button
-            buttonStyle={styles.submitButton}
-            containerStyle={styles.buttonContainer}
-            disabled={disabled}
-            disabledStyle={styles.disabledButton}
-            disabledTitleStyle={styles.buttonTitle}
-            onPress={() => console.log("TODO")}
-            title="Submit"
-            titleStyle={styles.buttonTitle}
-          />
-        </View>
-      </View>
+      <Formik
+        validationSchema={forgotPasswordSchema}
+        initialValues={{ email: "" }}
+        onSubmit={handleSubmit}
+      >
+        {({
+          dirty,
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isValid,
+          touched,
+          values,
+        }) => (
+          <View style={styles.container}>
+            <View style={styles.overlayTitle}>
+              <Text style={styles.header}>Forgot password</Text>
+            </View>
+            <View style={styles.overlayBody}>
+              <Text style={styles.paragraph}>
+                Enter the email address associated with your account.
+              </Text>
+              <Text style={styles.paragraph}>
+                We will send you a link to reset your password.
+              </Text>
+              <Input
+                autoCapitalize="none"
+                containerStyle={styles.input}
+                errorMessage={
+                  errors.email && touched.email ? errors.email : undefined
+                }
+                errorStyle={styles.inputError}
+                inputContainerStyle={styles.inputContainer}
+                inputStyle={styles.inputStyle}
+                keyboardType="email-address"
+                label="Email"
+                labelStyle={styles.inputLabel}
+                onBlur={handleBlur("email")}
+                onChangeText={handleChange("email")}
+                value={values.email}
+              />
+            </View>
+            <View style={styles.overlayFooter}>
+              <Button
+                buttonStyle={styles.cancelButton}
+                containerStyle={styles.buttonContainer}
+                onPress={() => setVisible(!visible)}
+                title="Cancel"
+                titleStyle={styles.buttonTitle}
+              />
+              <Button
+                buttonStyle={styles.submitButton}
+                containerStyle={styles.buttonContainer}
+                disabled={!isValid || !dirty}
+                disabledStyle={styles.disabledButton}
+                disabledTitleStyle={styles.disabledButtonTitle}
+                title="Submit"
+                titleStyle={styles.buttonTitle}
+                loading={isLoading}
+                onPress={handleSubmit as any}
+              />
+            </View>
+          </View>
+        )}
+      </Formik>
     </Overlay>
   );
 };
@@ -173,23 +161,6 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "center",
   },
-  createAccountButton: {
-    ...borderRadius4,
-    ...paddingReset,
-    alignItems: "center",
-    backgroundColor: colors.queenBlue,
-    justifyContent: "center",
-  },
-  createAccountButtonContainer: {
-    alignSelf: "flex-start",
-  },
-  createAccountButtonTitle: {
-    color: colors.white,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
   disabledButton: {
     ...borderRadius4,
     ...paddingReset,
@@ -235,7 +206,7 @@ const styles = StyleSheet.create({
     ...borderRadius4,
     ...paddingReset,
     alignSelf: "stretch",
-    margin: 24,
+    margin: 16,
     overflow: "hidden",
   },
   overlayBody: {

@@ -214,9 +214,11 @@ const FeatureScreen = ({
         )}
         <View style={styles.content}>
           <View style={styles.section}>
-            <Text style={styles.featureName}>{feature.properties?.name}</Text>
             <View style={styles.row}>
               <View style={styles.leftColumn}>
+                <Text style={styles.featureName}>
+                  {feature.properties?.name}
+                </Text>
                 <Text style={featureLocation}>
                   {feature.properties?.feet.toLocaleString()} ft ·{" "}
                   {feature.properties?.county} County

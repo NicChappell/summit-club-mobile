@@ -10,6 +10,9 @@ import { RootState } from "../../redux/reducers";
 import { executeSql, FeaturesRef, Summit, defaultBounds } from "../../services";
 import { IDownloadScreen } from "./interfaces";
 
+import * as Location from "expo-location";
+import * as Permissions from "expo-permissions";
+
 type Props = PropsFromRedux & IDownloadScreen;
 
 const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
@@ -194,6 +197,25 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     // TODO: STOP LOADING ANIMATION
   };
 
+  const getLocation = async () => {
+    // need some mechanism to check for location permission first
+    // at app load, check for user permissions
+    // whatever the permission status is, store in REDUX
+    // first thing is to check Redux for permission
+    // if granted, get location
+    // if not granted, add flow to re-request user permission
+    // might need something stored locally using async storage to check if already asked once
+    // if haven't asked can ask for first time
+    // if already asked, instructions to go into settings and update manually
+
+    try {
+      const location = await Location.getCurrentPositionAsync({});
+      console.log(location);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
@@ -210,6 +232,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
         <Button onPress={populateFeatureTable} title="Populate feature table" />
         <Button onPress={countFeatureRows} title="Count feature rows" />
         <Button onPress={testQueryHandler} title="Test query" />
+        <Button onPress={getLocation} title="Get location" />
         <Text>
           I'll still have some content download automatically, but this is where
           you can choose to download more sets of map tiles beyond the default

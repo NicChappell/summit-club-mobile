@@ -1,6 +1,5 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React, { useEffect } from "react";
+import { StyleSheet, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../redux/actions";
 import TourSlides from "./components/TourSlides";
@@ -25,9 +24,9 @@ const SLIDE_DATA: ITourSlide[] = [
 
 const TourScreen = ({ completeTour, navigation, route }: Props) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <TourSlides data={SLIDE_DATA} onComplete={completeTour} />
-    </SafeAreaView>
+    </View>
   );
 };
 

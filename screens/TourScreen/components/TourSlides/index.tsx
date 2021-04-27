@@ -1,22 +1,50 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import { ITourSlides } from "./interfaces";
 
-import * as Permissions from "expo-permissions";
+import * as Location from "expo-location";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const TourSlides = ({ data, onComplete }: ITourSlides) => {
-  // permission hooks
-  const [
-    permission,
-    askForPermission,
-    getPermission,
-  ] = Permissions.usePermissions(Permissions.LOCATION);
-  console.log("permission: ", permission);
-  console.log("askForPermission: ", askForPermission);
-  console.log("getPermission: ", getPermission);
+  // // permission hooks
+  // const [
+  //   permission,
+  //   askForPermission,
+  //   getPermission,
+  // ] = Permissions.usePermissions(Permissions.LOCATION);
+  // console.log("permission: ", permission);
+  // console.log("askForPermission: ", askForPermission);
+  // console.log("getPermission: ", getPermission);
+
+  // effect hooks
+  useEffect(() => {
+    Location.requestForegroundPermissionsAsync()
+      .then((permissions) => {
+        console.log(permissions);
+
+        return Location.getForegroundPermissionsAsync();
+      })
+      .then((permissions) => {
+        console.log(permissions);
+
+        return Location.getCurrentPositionAsync();
+      })
+      .then((location) => {
+        // LocationAccuracy
+        // Accuracy.Lowest  1  Accurate to the nearest three kilometers.
+        // Accuracy.Low  2  Accurate to the nearest kilometer.
+        // Accuracy.Balanced  3  Accurate to within one hundred meters.
+        // Accuracy.High  4  Accurate to within ten meters of the desired target.
+        // Accuracy.Highest  5  The best level of accuracy available.
+        // Accuracy.BestForNavigation  6  The highest possible accuracy that uses additional sensor data to facilitate navigation apps.
+        console.log(location);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const next = (index: number) => {
     if (index === data.length - 1) {
@@ -41,7 +69,7 @@ const TourSlides = ({ data, onComplete }: ITourSlides) => {
             <Button
               title="Grant permission"
               buttonStyle={styles.buttonStyle}
-              onPress={askForPermission}
+              onPress={() => console.log("TODO")}
             />
             <Text style={styles.textStyle}>{slide.text}</Text>
             {next(index)}

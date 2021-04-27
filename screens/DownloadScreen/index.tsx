@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
+import firebase from "firebase/app";
 import { TabNavigationHeader } from "../../common/navigation";
 import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
@@ -11,7 +12,6 @@ import { executeSql, FeaturesRef, Summit, defaultBounds } from "../../services";
 import { IDownloadScreen } from "./interfaces";
 
 import * as Location from "expo-location";
-import * as Permissions from "expo-permissions";
 
 type Props = PropsFromRedux & IDownloadScreen;
 

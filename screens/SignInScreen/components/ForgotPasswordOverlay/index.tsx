@@ -69,10 +69,8 @@ const ForgotPasswordOverlay = ({ error, visible, setVisible }: Props) => {
             </View>
             <View style={styles.overlayBody}>
               <Text style={styles.paragraph}>
-                Enter the email address associated with your account.
-              </Text>
-              <Text style={styles.paragraph}>
-                We will send you a link to reset your password.
+                Enter the email address associated with your account and we will
+                send you a link to reset your password.
               </Text>
               <Input
                 autoCapitalize="none"
@@ -108,6 +106,7 @@ const ForgotPasswordOverlay = ({ error, visible, setVisible }: Props) => {
                 title="Submit"
                 titleStyle={styles.buttonTitle}
                 loading={isLoading}
+                loadingStyle={styles.loadingButton}
                 onPress={handleSubmit as any}
               />
             </View>
@@ -133,6 +132,9 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(ForgotPasswordOverlay);
 
 const styles = StyleSheet.create({
+  loadingButton: {
+    backgroundColor: colors.pistachio,
+  },
   backdrop: {
     alignItems: "center",
     backgroundColor: colors.black25,
@@ -146,25 +148,23 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
   },
   cancelButton: {
     ...borderRadius4,
     ...paddingReset,
     alignItems: "center",
     backgroundColor: colors.queenBlue,
+    height: 40,
     justifyContent: "center",
     marginRight: 16,
+    width: 100,
   },
   container: {
     alignItems: "stretch",
     justifyContent: "center",
   },
   disabledButton: {
-    ...borderRadius4,
-    ...paddingReset,
-    backgroundColor: colors.queenBlue50,
+    backgroundColor: colors.pistachio50,
   },
   disabledButtonTitle: {
     color: colors.white,
@@ -239,6 +239,8 @@ const styles = StyleSheet.create({
     ...paddingReset,
     alignItems: "center",
     backgroundColor: colors.pistachio,
+    height: 40,
     justifyContent: "center",
+    width: 100,
   },
 });

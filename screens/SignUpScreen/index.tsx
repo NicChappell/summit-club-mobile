@@ -58,12 +58,11 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
         <StatusBar barStyle="dark-content" />
         <ErrorOverlay error={error} />
         <View style={styles.top}>
-          <Text style={styles.title}>Create account</Text>
-          <Text style={styles.subtitle}>Sign up to get started</Text>
-          <Card
-            containerStyle={styles.cardContainer}
-            wrapperStyle={styles.cardWrapper}
-          >
+          <View style={styles.section}>
+            <Text style={styles.title}>Create account</Text>
+            <Text style={styles.subtitle}>Sign up to get started</Text>
+          </View>
+          <View style={styles.section}>
             <Formik
               validationSchema={signUpSchema}
               initialValues={{ email: "", password: "", terms: false }}
@@ -126,20 +125,20 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
                     value={values.password}
                   />
                   <Button
-                    buttonStyle={styles.createAccountButton}
-                    containerStyle={styles.createAccountButtonContainer}
+                    buttonStyle={styles.signUpButton}
+                    containerStyle={styles.signUpButtonContainer}
                     disabled={!isValid || !dirty}
                     disabledStyle={styles.disabledButton}
                     disabledTitleStyle={styles.disabledButtonTitle}
                     title="Sign up"
-                    titleStyle={styles.createAccountButtonTitle}
+                    titleStyle={styles.signUpButtonTitle}
                     loading={isLoading}
                     onPress={handleSubmit as any}
                   />
                 </>
               )}
             </Formik>
-          </Card>
+          </View>
         </View>
         <View style={styles.bottom}>
           <Text style={styles.paragraph}>I'm already a member, </Text>
@@ -173,67 +172,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 8,
   },
-  forgotPasswordButton: {
-    ...borderRadius4,
-    ...paddingReset,
-    alignItems: "center",
-    backgroundColor: "transparent",
-    justifyContent: "center",
-  },
-  forgotPasswordButtonContainer: {
-    alignSelf: "flex-end",
-  },
-  forgotPasswordButtonTitle: {
-    color: colors.queenBlue,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
   container: {
     alignItems: "stretch",
     backgroundColor: colors.black01,
     flex: 1,
     justifyContent: "space-between",
     padding: 16,
-  },
-  cardContainer: {
-    ...borderWidthReset,
-    ...marginReset,
-    ...paddingReset,
-    ...shadowReset,
-    backgroundColor: "transparent",
-    marginTop: 64,
-    paddingBottom: 2,
-    paddingLeft: 2,
-  },
-  cardWrapper: {
-    ...borderRadius4,
-    ...marginReset,
-    ...paddingReset,
-    ...shadow,
-    backgroundColor: colors.white,
-    paddingBottom: 16,
-    paddingLeft: 16,
-    paddingRight: 16,
-    paddingTop: 16,
-  },
-  createAccountButton: {
-    ...borderRadius4,
-    ...paddingReset,
-    alignItems: "center",
-    backgroundColor: colors.queenBlue,
-    justifyContent: "center",
-  },
-  createAccountButtonContainer: {
-    alignSelf: "flex-start",
-  },
-  createAccountButtonTitle: {
-    color: colors.white,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
   },
   disabledButton: {
     ...borderRadius4,
@@ -288,10 +232,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
   },
+  section: {
+    marginTop: 48,
+  },
   signIn: {
     color: colors.queenBlue,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
+  },
+  signUpButton: {
+    ...borderRadius4,
+    ...paddingReset,
+    alignItems: "center",
+    backgroundColor: colors.queenBlue,
+    justifyContent: "center",
+  },
+  signUpButtonContainer: {
+    alignSelf: "flex-start",
+  },
+  signUpButtonTitle: {
+    color: colors.white,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
   subtitle: {
     color: colors.black50,

@@ -12,8 +12,8 @@ const StaticMapBackground = ({
   overlay,
 }: IStaticMapBackground) => {
   // state hooks
-  const [coordinate, setCoordinate] = useState<LatLng | undefined>(undefined);
-  const [region, setRegion] = useState<Region | undefined>(undefined);
+  const [coordinate, setCoordinate] = useState<LatLng>();
+  const [region, setRegion] = useState<Region>();
 
   // effect hooks
   useEffect(() => {

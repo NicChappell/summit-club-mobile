@@ -54,6 +54,8 @@ import {
 import { CheckOffOverlay, MarkerView } from "./components";
 import { IFeatureScreen } from "./interfaces";
 
+import Mountain from "../../common/icons/mountain-15.svg";
+
 type Props = PropsFromRedux & IFeatureScreen;
 
 const FeatureScreen = ({
@@ -245,6 +247,9 @@ const FeatureScreen = ({
           <Divider style={styles.divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Description</Text>
+            <View style={{ backgroundColor: "red" }}>
+              <Mountain fill={colors.zomp} />
+            </View>
             <Text style={styles.paragraph}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
               semper semper diam, porttitor mollis ipsum pharetra vel. Nulla

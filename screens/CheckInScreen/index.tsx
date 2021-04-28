@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import MapView, {
   Callout,
   Camera,
+  Circle,
   LatLng,
   MapEvent,
   Marker,
@@ -24,15 +25,55 @@ import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { ICheckInScreen } from "./interfaces";
 
+import * as Location from "expo-location";
+import Mountain from "../../common/icons/mountain-15.svg";
+
 type Props = PropsFromRedux & ICheckInScreen;
 
 const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
+  const [coordinate, setCoordinate] = useState<LatLng>();
   const [disabled, setDisabled] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // ref hooks
   const mapRef = useRef<MapView>(null);
+
+  // effect hooks
+  useEffect(() => {
+    Location.getForegroundPermissionsAsync()
+      .then((permissions) => {
+        console.log(permissions);
+
+        return Location.getCurrentPositionAsync();
+      })
+      .then(({ coords }) => {
+        // Location Accuracy
+        // Lowest  1  Accurate to the nearest three kilometers.
+        // Low  2  Accurate to the nearest kilometer.
+        // Balanced  3  Accurate to within one hundred meters.
+        // High  4  Accurate to within ten meters of the desired target.
+        // Highest  5  The best level of accuracy available.
+        // BestForNavigation  6  The highest possible accuracy that uses additional sensor data to facilitate navigation apps.
+        console.log(coords);
+
+        // format marker coordinate
+        const coordinate: LatLng = {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        };
+
+        // update state
+        setCoordinate(coordinate);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // do something
+  }, [coordinate]);
 
   const handleRegionChange = (region: Region) => {};
 
@@ -51,7 +92,18 @@ const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
         provider={"google"}
         ref={mapRef}
         style={styles.map}
-      />
+      >
+        {coordinate && (
+          <Circle
+            center={coordinate}
+            fillColor={colors.queenBlue50}
+            radius={500}
+            strokeColor={colors.queenBlue}
+            strokeWidth={2.5}
+          />
+        )}
+      </MapView>
+      <Mountain fill={colors.zomp} />
       <View style={styles.checkInContainer}>
         <Button
           buttonStyle={styles.checkInButton}

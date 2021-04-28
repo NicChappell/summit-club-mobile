@@ -8,16 +8,6 @@ import * as Location from "expo-location";
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
 const TourSlides = ({ data, onComplete }: ITourSlides) => {
-  // // permission hooks
-  // const [
-  //   permission,
-  //   askForPermission,
-  //   getPermission,
-  // ] = Permissions.usePermissions(Permissions.LOCATION);
-  // console.log("permission: ", permission);
-  // console.log("askForPermission: ", askForPermission);
-  // console.log("getPermission: ", getPermission);
-
   // effect hooks
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()

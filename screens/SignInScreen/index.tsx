@@ -135,10 +135,11 @@ const SignInScreen = ({ error, navigation, route, signIn }: Props) => {
                       containerStyle={styles.signInButtonContainer}
                       disabled={!isValid || !dirty}
                       disabledStyle={styles.disabledButton}
-                      disabledTitleStyle={styles.disabledButtonTitle}
+                      disabledTitleStyle={styles.SignInButtonTitle}
                       title="Sign in"
-                      titleStyle={styles.signInButtonTitle}
+                      titleStyle={styles.SignInButtonTitle}
                       loading={isLoading}
+                      loadingStyle={styles.loadingButton}
                       onPress={handleSubmit as any}
                     />
                     <Button
@@ -199,23 +200,13 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   disabledButton: {
-    ...borderRadius4,
-    ...paddingReset,
     backgroundColor: colors.queenBlue50,
-  },
-  disabledButtonTitle: {
-    color: colors.white,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
   },
   forgotPasswordButton: {
     ...borderRadius4,
     ...paddingReset,
-    alignItems: "center",
     backgroundColor: "transparent",
-    justifyContent: "center",
+    height: 40,
   },
   forgotPasswordButtonContainer: {
     alignSelf: "flex-end",
@@ -224,8 +215,6 @@ const styles = StyleSheet.create({
     color: colors.queenBlue,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
   },
   input: {
     ...paddingReset,
@@ -251,6 +240,9 @@ const styles = StyleSheet.create({
   inputStyle: {
     ...inputStyle,
   },
+  loadingButton: {
+    backgroundColor: colors.queenBlue,
+  },
   rightIconContainer: {
     ...marginReset,
     ...paddingReset,
@@ -274,19 +266,17 @@ const styles = StyleSheet.create({
   signInButton: {
     ...borderRadius4,
     ...paddingReset,
-    alignItems: "center",
     backgroundColor: colors.queenBlue,
-    justifyContent: "center",
+    height: 40,
+    width: 100,
   },
   signInButtonContainer: {
     alignSelf: "flex-start",
   },
-  signInButtonTitle: {
+  SignInButtonTitle: {
     color: colors.white,
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
   },
   signUp: {
     color: colors.queenBlue,

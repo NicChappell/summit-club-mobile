@@ -102,7 +102,7 @@ const ForgotPasswordOverlay = ({ error, visible, setVisible }: Props) => {
                 containerStyle={styles.buttonContainer}
                 disabled={!isValid || !dirty}
                 disabledStyle={styles.disabledButton}
-                disabledTitleStyle={styles.disabledButtonTitle}
+                disabledTitleStyle={styles.buttonTitle}
                 title="Submit"
                 titleStyle={styles.buttonTitle}
                 loading={isLoading}
@@ -132,9 +132,6 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(ForgotPasswordOverlay);
 
 const styles = StyleSheet.create({
-  loadingButton: {
-    backgroundColor: colors.pistachio,
-  },
   backdrop: {
     alignItems: "center",
     backgroundColor: colors.black25,
@@ -155,7 +152,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.queenBlue,
     height: 40,
-    justifyContent: "center",
     marginRight: 16,
     width: 100,
   },
@@ -165,13 +161,6 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     backgroundColor: colors.pistachio50,
-  },
-  disabledButtonTitle: {
-    color: colors.white,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
   },
   header: {
     color: colors.queenBlue,
@@ -201,6 +190,9 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     ...inputStyle,
+  },
+  loadingButton: {
+    backgroundColor: colors.pistachio,
   },
   overlay: {
     ...borderRadius4,
@@ -240,7 +232,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.pistachio,
     height: 40,
-    justifyContent: "center",
     width: 100,
   },
 });

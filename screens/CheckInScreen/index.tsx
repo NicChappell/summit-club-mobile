@@ -16,6 +16,7 @@ import { customMapStyle, initialRegion } from "../../common/constants";
 import {
   borderRadius4,
   colors,
+  paddingReset,
   shadow,
   shadowReset,
 } from "../../common/styles";
@@ -28,6 +29,7 @@ type Props = PropsFromRedux & ICheckInScreen;
 const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // ref hooks
   const mapRef = useRef<MapView>(null);
@@ -50,16 +52,18 @@ const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
         ref={mapRef}
         style={styles.map}
       />
-      <View style={styles.checkIn}>
+      <View style={styles.checkInContainer}>
         <Button
           buttonStyle={styles.checkInButton}
-          containerStyle={styles.checkInButtonContainer}
+          containerStyle={styles.buttonContainer}
           disabled={disabled}
-          disabledStyle={styles.disabledButtonStyle}
-          disabledTitleStyle={styles.disabledButtonTitleStyle}
+          disabledStyle={styles.disabledButton}
+          disabledTitleStyle={styles.disabledButtonTitle}
+          loading={isLoading}
+          loadingStyle={styles.loadingButton}
           onPress={() => console.log("TODO")}
           title="Check in"
-          titleStyle={styles.checkInButtonTitle}
+          titleStyle={styles.buttonTitle}
           type="outline"
         />
       </View>
@@ -84,28 +88,30 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(CheckInScreen);
 
 const styles = StyleSheet.create({
-  checkIn: {
+  buttonContainer: {
+    ...borderRadius4,
+    backgroundColor: colors.white,
+  },
+  buttonTitle: {
+    color: colors.queenBlue,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 18,
+  },
+  checkInButton: {
+    ...borderRadius4,
+    ...paddingReset,
+    backgroundColor: colors.white,
+    borderColor: colors.queenBlue,
+    borderWidth: 1,
+    height: 44,
+    width: 112,
+  },
+  checkInContainer: {
     ...borderRadius4,
     ...shadow,
     bottom: 32,
     position: "absolute",
     zIndex: 1,
-  },
-  checkInButton: {
-    ...borderRadius4,
-    ...shadowReset,
-    backgroundColor: colors.white,
-    borderColor: colors.queenBlue,
-    borderWidth: 1,
-  },
-  checkInButtonContainer: {
-    ...borderRadius4,
-    backgroundColor: colors.white,
-  },
-  checkInButtonTitle: {
-    color: colors.queenBlue,
-    fontFamily: "NunitoSans_600SemiBold",
-    fontSize: 18,
   },
   container: {
     alignItems: "center",
@@ -113,11 +119,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  disabledButtonStyle: {
-    borderColor: colors.black25,
+  disabledButton: {
+    backgroundColor: colors.white,
+    borderColor: colors.queenBlue50,
   },
-  disabledButtonTitleStyle: {
-    color: colors.black25,
+  disabledButtonTitle: {
+    color: colors.queenBlue50,
+    fontFamily: "NunitoSans_600SemiBold",
+    fontSize: 18,
+  },
+  loadingButton: {
+    backgroundColor: colors.white,
   },
   map: {
     height: "100%",

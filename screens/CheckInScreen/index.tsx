@@ -12,6 +12,7 @@ import MapView, {
   Region,
 } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
+import { Point } from "geojson";
 import { ErrorOverlay } from "../../common/components";
 import { customMapStyle, initialRegion } from "../../common/constants";
 import {
@@ -26,15 +27,26 @@ import { RootState } from "../../redux/reducers";
 import { ICheckInScreen } from "./interfaces";
 
 import * as Location from "expo-location";
-import Mountain from "../../common/icons/mountain-15.svg";
+import MarkerIcon from "../../common/icons/marker-15.svg";
+import MountainIcon from "../../common/icons/mountain-15.svg";
 
 type Props = PropsFromRedux & ICheckInScreen;
 
-const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
+const CheckInScreen = ({
+  error,
+  features,
+  navigation,
+  route,
+  setError,
+}: Props) => {
+  // destructure features
+  const { feature } = features;
+
   // state hooks
-  const [coordinate, setCoordinate] = useState<LatLng>();
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [featureCoordinate, setFeatureCoordinate] = useState<LatLng>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userCoordinate, setUserCoordinate] = useState<LatLng>();
 
   // ref hooks
   const mapRef = useRef<MapView>(null);
@@ -64,7 +76,7 @@ const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
         };
 
         // update state
-        setCoordinate(coordinate);
+        setUserCoordinate(coordinate);
       })
       .catch((error) => {
         console.log(error);
@@ -72,8 +84,23 @@ const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
   }, []);
 
   useEffect(() => {
-    // do something
-  }, [coordinate]);
+    if (feature) {
+      // destructure feature
+      const { geometry, properties } = feature;
+
+      // destructure geometry
+      const coordinates = (geometry as Point).coordinates;
+
+      // format marker coordinate
+      const coordinate: LatLng = {
+        latitude: coordinates[1],
+        longitude: coordinates[0],
+      };
+
+      // update state
+      setFeatureCoordinate(coordinate);
+    }
+  }, [feature]);
 
   const handleRegionChange = (region: Region) => {};
 
@@ -93,17 +120,17 @@ const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
         ref={mapRef}
         style={styles.map}
       >
-        {coordinate && (
-          <Circle
-            center={coordinate}
-            fillColor={colors.queenBlue50}
-            radius={500}
-            strokeColor={colors.queenBlue}
-            strokeWidth={2.5}
-          />
+        {featureCoordinate && (
+          <Marker coordinate={featureCoordinate}>
+            <MountainIcon fill={colors.queenBlue} height={32} width={32} />
+          </Marker>
+        )}
+        {userCoordinate && (
+          <Marker coordinate={userCoordinate}>
+            <MarkerIcon fill={colors.queenBlue} height={32} width={32} />
+          </Marker>
         )}
       </MapView>
-      <Mountain fill={colors.zomp} />
       <View style={styles.checkInContainer}>
         <Button
           buttonStyle={styles.checkInButton}
@@ -126,6 +153,7 @@ const CheckInScreen = ({ error, navigation, route, setError }: Props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
+    features: state.features,
   };
 };
 

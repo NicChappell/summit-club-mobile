@@ -11,8 +11,7 @@ import {
   Position,
 } from "geojson";
 import { LatLng } from "react-native-maps";
-import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
-import * as helpers from "@turf/helpers";
+import * as turf from "@turf/turf";
 import { initialMapBoundaries } from "../../common/constants";
 import { executeSql } from "../../common/helpers";
 import {
@@ -174,12 +173,12 @@ export const getCurrentCounty = (
     // NOTE: coordinates is an array of three-dimensional arrays
     const [polygonCoordiantes] = coordinates;
 
-    // use turf helpers to format params
-    const pt = helpers.point(point);
-    const poly = helpers.polygon(polygonCoordiantes);
+    // use turf to format params
+    const pt = turf.point(point);
+    const poly = turf.polygon(polygonCoordiantes);
 
     // return true if point falls within polygon coordinates
-    return booleanPointInPolygon(pt, poly);
+    return turf.booleanPointInPolygon(pt, poly);
   });
 };
 
@@ -335,7 +334,7 @@ export const processResult = (resultSet: SQLite.SQLResultSet) => {
   const properties: GeoJsonProperties = { ...result };
 
   // create a GeoJSON Feature
-  const feature: Feature = helpers.feature(geometry, properties);
+  const feature: Feature = turf.feature(geometry, properties);
 
   return feature;
 };
@@ -356,13 +355,13 @@ export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
     const properties: GeoJsonProperties = { ...result };
 
     // create a GeoJSON Feature
-    const feature: Feature = helpers.feature(geometry, properties);
+    const feature: Feature = turf.feature(geometry, properties);
 
     return feature;
   });
 
   // create GeoJSON FeatureCollection from GeoJSON Features
-  const featureCollection: FeatureCollection<Point> = helpers.featureCollection(
+  const featureCollection: FeatureCollection<Point> = turf.featureCollection(
     features
   );
 

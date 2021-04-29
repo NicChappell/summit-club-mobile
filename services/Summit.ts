@@ -9,7 +9,7 @@ import {
   Point,
   Position,
 } from "geojson";
-import * as helpers from "@turf/helpers";
+import * as turf from "@turf/turf";
 import { executeSql } from "./database";
 import { MOCK_FEATURE } from "../data/mocks";
 
@@ -245,13 +245,13 @@ export const processResultSet = (resultSet: SQLResultSet) => {
     const properties: GeoJsonProperties = { ...result };
 
     // create a GeoJSON Feature
-    const feature: Feature = helpers.feature(geometry, properties);
+    const feature: Feature = turf.feature(geometry, properties);
 
     return feature;
   });
 
   // create a GeoJSON FeatureCollection from GeoJSON Features
-  const featureCollection: FeatureCollection<Point> = helpers.featureCollection(
+  const featureCollection: FeatureCollection<Point> = turf.featureCollection(
     features
   );
 

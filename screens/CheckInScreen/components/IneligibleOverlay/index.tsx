@@ -13,18 +13,35 @@ const IneligibleOverlay = ({
   const miles = distance / 1.609;
 
   // set message
-  let message = "";
+  let content: { title: string; message: string } = {
+    title: "",
+    message: "",
+  };
   if (miles < 0.25) {
-    message =
-      "You're almost there! There's less than 0.25 miles to the summit.";
+    content = {
+      title: "You're almost there!",
+      message: "There's less than 0.25 miles to the summit",
+    };
   } else if (miles < 0.5) {
-    message = "Keep going! You're just 0.50 miles from the summit.";
+    content = {
+      title: "Keep going!",
+      message: "You're just 0.50 miles from the summit.",
+    };
   } else if (miles < 0.75) {
-    message = "Getting closer! Only 0.75 miles to the summit.";
+    content = {
+      title: "Getting closer!",
+      message: "Only 0.75 miles to the summit.",
+    };
   } else if (miles < 1.0) {
-    message = "The final stretch! The summit is less than 1 mile away.";
+    content = {
+      title: "The final stretch!",
+      message: "The summit is less than 1 mile away.",
+    };
   } else {
-    message = `You are ${miles.toFixed(2)} miles away from the summit.`;
+    content = {
+      title: "Ineligible",
+      message: `You are ${miles.toFixed(2)} miles away from the summit.`,
+    };
   }
 
   return (
@@ -37,10 +54,10 @@ const IneligibleOverlay = ({
     >
       <View style={styles.container}>
         <View style={styles.overlayTitle}>
-          <Text style={styles.header}>Ineligible</Text>
+          <Text style={styles.header}>{content.title}</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>{message}</Text>
+          <Text style={styles.paragraph}>{content.message}</Text>
         </View>
         <View style={styles.overlayFooter}>
           <Button

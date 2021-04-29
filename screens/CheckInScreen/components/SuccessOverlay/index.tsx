@@ -1,32 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
-import { IIneligibleOverlay } from "./interfaces";
+import { ISuccessOverlay } from "./interfaces";
 
-const IneligibleOverlay = ({
-  distance,
-  visible,
-  setVisible,
-}: IIneligibleOverlay) => {
-  // convert distance to miles
-  const miles = distance / 1.609;
-
-  // set message
-  let message = "";
-  if (miles < 0.25) {
-    message =
-      "You're almost there! There's less than 0.25 miles to the summit.";
-  } else if (miles < 0.5) {
-    message = "Keep going! You're just 0.50 miles from the summit.";
-  } else if (miles < 0.75) {
-    message = "Getting closer! Only 0.75 miles to the summit.";
-  } else if (miles < 1.0) {
-    message = "The final stretch! The summit is less than 1 mile away.";
-  } else {
-    message = `You are ${miles.toFixed(2)} miles away from the summit.`;
-  }
-
+const SuccessOverlay = ({ visible, setVisible }: ISuccessOverlay) => {
   return (
     <Overlay
       animationType="fade"
@@ -37,10 +16,19 @@ const IneligibleOverlay = ({
     >
       <View style={styles.container}>
         <View style={styles.overlayTitle}>
-          <Text style={styles.header}>Ineligible</Text>
+          <Text style={styles.header}>You did it!</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>{message}</Text>
+          <Ionicons
+            name={"ios-shield-checkmark-outline"}
+            size={128}
+            color={colors.queenBlue}
+            style={{ alignSelf: "center" }}
+          />
+          <Text style={styles.paragraph}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget
+            ante cursus, dictum ligula ac, euismod nibh.
+          </Text>
         </View>
         <View style={styles.overlayFooter}>
           <Button
@@ -55,7 +43,7 @@ const IneligibleOverlay = ({
   );
 };
 
-export default IneligibleOverlay;
+export default SuccessOverlay;
 
 const styles = StyleSheet.create({
   backdrop: {

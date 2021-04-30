@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import MapView, {
   Callout,
@@ -56,6 +56,7 @@ const CheckInScreen = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccessVisible, setIsSuccessVisible] = useState<boolean>(false);
   const [initialRegion, setInitialRegion] = useState<Region>();
+  const [status, setStatus] = useState<string>("");
   const [uncertaintyRadius, setUncertaintyRadius] = useState<number>(0);
   const [userCoordinate, setUserCoordinate] = useState<LatLng>();
 
@@ -64,14 +65,23 @@ const CheckInScreen = ({
 
   // effect hooks
   useEffect(() => {
+    // set initial status
+    setStatus("Checking permissions");
+
     Location.getForegroundPermissionsAsync()
       .then((permissions) => {
         console.log("permissions: ", permissions);
+
+        // update status
+        setStatus("Getting current location");
 
         return Location.getCurrentPositionAsync();
       })
       .then(({ coords }) => {
         console.log("coords: ", coords);
+
+        // update status
+        setStatus("Calculating uncertainty");
 
         // calculate uncertainty radius
         let uncertaintyRadius: number;
@@ -97,6 +107,9 @@ const CheckInScreen = ({
             uncertaintyRadius = 0;
         }
         setUncertaintyRadius(uncertaintyRadius);
+
+        // update status
+        setStatus("Setting current location");
 
         // format user coordinate
         const coordinate: LatLng = {
@@ -133,6 +146,9 @@ const CheckInScreen = ({
 
   useEffect(() => {
     if (featureCoordinate && userCoordinate && mapRef) {
+      // update status
+      setStatus("Calculating distance");
+
       // find center point
       const features = turf.points([
         [featureCoordinate.longitude, featureCoordinate.latitude],
@@ -269,7 +285,10 @@ const CheckInScreen = ({
           </View>
         </>
       ) : (
-        <ActivityIndicator size="large" color={colors.queenBlue} />
+        <>
+          <ActivityIndicator size="large" color={colors.queenBlue} />
+          <Text style={styles.status}>{status}</Text>
+        </>
       )}
     </View>
   );
@@ -344,5 +363,9 @@ const styles = StyleSheet.create({
   map: {
     height: "100%",
     width: "100%",
+  },
+  status: {
+    color: colors.black75,
+    margin: 8,
   },
 });

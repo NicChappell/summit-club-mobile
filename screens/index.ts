@@ -4,7 +4,6 @@ export { default as ContactScreen } from "./ContactScreen";
 export { default as DownloadScreen } from "./DownloadScreen";
 export { default as ExploreScreen } from "./ExploreScreen";
 export { default as FeatureScreen } from "./FeatureScreen";
-export { default as ForgotPasswordScreen } from "./ForgotPasswordScreen";
 export { default as HomeScreen } from "./HomeScreen";
 export { default as MapScreen } from "./MapScreen";
 export { default as ProfileScreen } from "./ProfileScreen";

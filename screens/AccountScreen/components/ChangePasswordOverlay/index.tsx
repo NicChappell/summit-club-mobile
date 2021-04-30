@@ -82,6 +82,7 @@ const ChangePasswordOverlay = ({ password, visible, setVisible }: Props) => {
             label="Current password"
             labelStyle={styles.labelStyle}
             onChange={handleCurrentPasswordChange}
+            returnKeyType="send"
             secureTextEntry={true}
           />
           <Input

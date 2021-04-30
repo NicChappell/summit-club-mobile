@@ -1,7 +1,6 @@
 - AuthStack
     - SignIn: SignInScreen
     - SignUp: SignUpScreen
-    - ForgotPassword: ForgotPasswordScreen
 
 - ExploreDrawer
     - Explore: ExploreTabs

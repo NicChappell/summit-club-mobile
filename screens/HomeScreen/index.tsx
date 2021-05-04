@@ -14,6 +14,7 @@ import {
   ErrorOverlay,
   FullDetailsCard,
   HorizontalDetailsCard,
+  VerticalDetailsCard,
 } from "../../common/components";
 import { IError } from "../../common/interfaces";
 import { colors, sectionTitle, separator } from "../../common/styles";
@@ -89,11 +90,17 @@ const HomeScreen = ({
     navigation.navigate("Feature", { screen: "Feature" });
   };
 
-  const basicDetailsCardDimensions = { height: 128, width: 128 };
-  const fullDetailsCardDimensions = { height: 208, width: 288 };
   const horizontalDetailsCardDimensions = {
     height: 128,
     width: 320,
+  };
+  const fullDetailsCardDimensions = {
+    height: 208,
+    width: 288,
+  };
+  const verticalDetailsCardDimensions = {
+    height: 240,
+    width: 176,
   };
 
   return (
@@ -115,10 +122,10 @@ const HomeScreen = ({
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => handleSummitPress(item)}>
-                <BasicDetailsCard
+                <VerticalDetailsCard
                   dimensions={{
-                    height: basicDetailsCardDimensions.height,
-                    width: basicDetailsCardDimensions.width,
+                    height: verticalDetailsCardDimensions.height,
+                    width: verticalDetailsCardDimensions.width,
                   }}
                   item={item}
                 />
@@ -126,7 +133,7 @@ const HomeScreen = ({
             )}
             showsHorizontalScrollIndicator={false}
             snapToAlignment={"start"}
-            snapToInterval={basicDetailsCardDimensions.width + separator.width}
+            snapToInterval={verticalDetailsCardDimensions.width + separator.width}
           />
         </View>
         <View style={styles.section}>

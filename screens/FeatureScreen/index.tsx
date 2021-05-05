@@ -52,7 +52,7 @@ import {
   Summit,
 } from "../../services";
 import { CheckOffOverlay, MarkerView } from "./components";
-import { IFeatureScreen } from "./interfaces";
+import { IFeatureScreen } from "./types";
 
 type Props = PropsFromRedux & IFeatureScreen;
 
@@ -186,7 +186,7 @@ const FeatureScreen = ({
     width: 320,
   };
   const verticalDetailsCardDimensions = {
-    height: 240,
+    height: "auto",
     width: 176,
   };
 

@@ -7,26 +7,40 @@ import {
   featureLocation,
   featureName,
 } from "../../../../../common/styles";
-import { IFeatureCardContent } from "./interfaces";
+import { IFeatureCardContent } from "./types";
 
 const FeatureCardContent = ({ item }: IFeatureCardContent) => {
   // destructure item
-  const { feature } = item;
+  const { feature, type } = item;
+  console.log("type: ", type);
 
-  return (
-    <View style={styles.container}>
-      <Text numberOfLines={1} style={styles.featureName}>
-        {feature.properties?.name}
-      </Text>
-      <View style={styles.section}>
-        <Text style={styles.featureLocation}>
-          {feature.properties?.feet.toLocaleString()} ft
-        </Text>
-        <Text style={styles.featureDistance}>·</Text>
-        <Text style={styles.featureDistance}>14.1 mi away</Text>
-      </View>
-    </View>
-  );
+  switch (type) {
+    case "featuredSummit":
+      return (
+        <View style={styles.container}>
+          <Text numberOfLines={1} style={styles.featureName}>
+            {feature.properties?.name}
+          </Text>
+        </View>
+      );
+    case "nearbySummit":
+      return (
+        <View style={styles.container}>
+          <Text numberOfLines={1} style={styles.featureName}>
+            {feature.properties?.name}
+          </Text>
+          <View style={styles.section}>
+            <Text style={styles.featureLocation}>
+              {feature.properties?.feet.toLocaleString()} ft
+            </Text>
+            <Text style={styles.featureDistance}>·</Text>
+            <Text style={styles.featureDistance}>14.1 mi away</Text>
+          </View>
+        </View>
+      );
+    default:
+      return null;
+  }
 };
 
 export default FeatureCardContent;
@@ -58,5 +72,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     flexDirection: "row",
     justifyContent: "space-between",
+    paddingTop: 4,
   },
 });

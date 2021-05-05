@@ -161,12 +161,12 @@ export interface IBounds {
 }
 
 export interface ISummit {
+  /** The Feature profile */
+  feature: Feature<Geometry, GeoJsonProperties>;
   /** Uniquely identifies the Summit record */
   id: number;
   /** Type of Summit */
   type: SummitType;
-  /** The Feature profile */
-  feature: Feature<Geometry, GeoJsonProperties>;
 }
 
 export interface IQueryParams {

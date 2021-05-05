@@ -99,7 +99,7 @@ const HomeScreen = ({
     width: 288,
   };
   const verticalDetailsCardDimensions = {
-    height: 240,
+    height: "auto",
     width: 176,
   };
 

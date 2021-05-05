@@ -59,14 +59,14 @@ const HorizontalDetailsCard = ({
   switch (item.type) {
     case "filteredSummit":
       imageDimensions = {
-        height: 96,
-        width: 94,
+        height: 94,
+        width: 96,
       };
       break;
     case "recentCheckIn":
       imageDimensions = {
-        height: 128,
-        width: 126,
+        height: 126,
+        width: 128,
       };
       break;
     default:

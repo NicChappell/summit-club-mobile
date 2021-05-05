@@ -17,7 +17,9 @@ const FeatureCardContent = ({ item }: IFeatureCardContent) => {
   return (
     <View style={styles.container}>
       <View style={styles.leftColumn}>
-        <Text style={featureName}>{feature.properties?.name}</Text>
+        <Text numberOfLines={1} style={featureName}>
+          {feature.properties?.name}
+        </Text>
         <View>
           <Text style={featureLocation}>
             {feature.properties?.feet.toLocaleString()} ft ·{" "}

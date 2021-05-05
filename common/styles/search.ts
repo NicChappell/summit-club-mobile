@@ -20,7 +20,6 @@ export const searchBarContainer = {
   ...paddingReset,
   backgroundColor: colors.white,
   flex: 1,
-  marginRight: 8,
 } as ViewStyle;
 
 export const searchBarInput = {
@@ -64,6 +63,7 @@ export const searchButton = {
   backgroundColor: colors.queenBlue,
   height: 40,
   justifyContent: "center",
+  marginLeft: 8,
   width: 72,
 } as ViewStyle;
 

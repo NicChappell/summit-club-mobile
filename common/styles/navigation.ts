@@ -18,7 +18,8 @@ export const navigationHeaderCenterComponent = {
 export const navigationHeaderContainer = {
   ...paddingReset,
   ...marginReset,
-  backgroundColor: colors.white,
+  alignItems: "flex-end",
+  backgroundColor: "transparent",
   flexDirection: "row",
   height: 64,
   justifyContent: "space-between",

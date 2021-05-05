@@ -4,7 +4,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
-import { IBlankScreen } from "./interfaces";
+import { IBlankScreen } from "./types";
 
 type Props = PropsFromRedux & IBlankScreen;
 

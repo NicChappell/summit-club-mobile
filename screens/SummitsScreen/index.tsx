@@ -6,7 +6,7 @@ import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { IUserSummit } from "../../services";
-import { ISummitsScreen } from "./interfaces";
+import { ISummitsScreen } from "./types";
 
 type Props = PropsFromRedux & ISummitsScreen;
 

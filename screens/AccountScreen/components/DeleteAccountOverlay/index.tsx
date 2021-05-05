@@ -18,7 +18,7 @@ import {
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
-import { IDeleteAccountOverlay } from "./interfaces";
+import { IDeleteAccountOverlay } from "./types";
 
 type Props = PropsFromRedux & IDeleteAccountOverlay;
 

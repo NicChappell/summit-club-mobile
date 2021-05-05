@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../../../../common/styles";
-import { IMarkerView } from "./interfaces";
+import { IMarkerView } from "./types";
 
 const MarkerView = ({ properties }: IMarkerView) => {
   // destructure feature properties

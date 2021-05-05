@@ -38,7 +38,7 @@ import {
   queryFeaturesTable,
   resetResultSet,
 } from "./helpers";
-import { IMapScreen } from "./interfaces";
+import { IMapScreen } from "./types";
 
 import { COLORADO_COUNTIES } from "./STUB";
 

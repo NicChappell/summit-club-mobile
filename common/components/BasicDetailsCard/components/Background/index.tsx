@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { borderRadius4, colors } from "../../../../../common/styles";
-import { IBackground } from "./interfaces";
+import { IBackground } from "./types";
 
 const Background = ({ item }: IBackground) => {
   switch (item.type) {

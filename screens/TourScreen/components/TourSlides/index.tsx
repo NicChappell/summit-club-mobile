@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
-import { ITourSlides } from "./interfaces";
+import { ITourSlides } from "./types";
 
 import * as Location from "expo-location";
 

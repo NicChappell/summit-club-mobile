@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../redux/actions";
 import TourSlides from "./components/TourSlides";
-import { ITourScreen } from "./interfaces";
+import { ITourScreen } from "./types";
 
 type Props = PropsFromRedux & ITourScreen;
 

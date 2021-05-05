@@ -12,7 +12,7 @@ import {
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
-import { ISignOutOverlay } from "./interfaces";
+import { ISignOutOverlay } from "./types";
 
 type Props = PropsFromRedux & ISignOutOverlay;
 

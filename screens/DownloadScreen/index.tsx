@@ -9,7 +9,7 @@ import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { executeSql, FeaturesRef, Summit, defaultBounds } from "../../services";
-import { IDownloadScreen } from "./interfaces";
+import { IDownloadScreen } from "./types";
 
 import * as Location from "expo-location";
 

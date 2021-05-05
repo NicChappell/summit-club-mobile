@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
-import { ICheckOffOverlay } from "./interfaces";
+import { ICheckOffOverlay } from "./types";
 
 const CheckOffOverlay = ({
   checkOff,

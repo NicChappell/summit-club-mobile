@@ -6,7 +6,7 @@ import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { getInitials } from "./helpers";
-import { IProfileScreen } from "./interfaces";
+import { IProfileScreen } from "./types";
 
 // Profile Screen:
 //     - Summits Link --> Summits Screen

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../common/styles";
-import { ICalloutView } from "./interfaces";
+import { ICalloutView } from "./types";
 
 const CONTENT_HEIGHT = 112.5;
 const CONTENT_WIDTH = 150;

@@ -27,7 +27,7 @@ import {
   shadowReset,
 } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
-import { ISignUpScreen } from "./interfaces";
+import { ISignUpScreen } from "./types";
 
 type Props = PropsFromRedux & ISignUpScreen;
 

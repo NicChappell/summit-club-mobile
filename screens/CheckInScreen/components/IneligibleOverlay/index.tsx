@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
-import { IIneligibleOverlay } from "./interfaces";
+import { IIneligibleOverlay } from "./types";
 
 const IneligibleOverlay = ({
   distance,

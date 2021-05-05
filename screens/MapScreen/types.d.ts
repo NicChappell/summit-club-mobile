@@ -8,3 +8,10 @@ export type MapScreenNavigationProp = StackNavigationProp<
 >;
 
 export type MapScreenRouteProp = RouteProp<ExploreTabsParamList, "Map">;
+
+export interface IMapScreen {
+  /** Contains various convenience functions that dispatch navigation actions */
+  navigation: MapScreenNavigationProp;
+  /** Contains various information regarding current route */
+  route: MapScreenRouteProp;
+}

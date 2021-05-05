@@ -7,7 +7,7 @@ import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import { ISummit, IPopularSummit, Summit, defaultBounds } from "../../services";
-import { ISearchResultsScreen } from "./interfaces";
+import { ISearchResultsScreen } from "./types";
 
 type Props = PropsFromRedux & ISearchResultsScreen;
 

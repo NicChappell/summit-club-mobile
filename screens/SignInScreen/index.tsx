@@ -28,7 +28,7 @@ import {
 } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { ForgotPasswordOverlay } from "./components";
-import { ISignInScreen } from "./interfaces";
+import { ISignInScreen } from "./types";
 
 type Props = PropsFromRedux & ISignInScreen;
 

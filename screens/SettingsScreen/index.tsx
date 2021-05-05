@@ -6,7 +6,7 @@ import { DismissKeyboard, ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { ISettingsScreen } from "./interfaces";
+import { ISettingsScreen } from "./types";
 
 type Props = PropsFromRedux & ISettingsScreen;
 

@@ -19,7 +19,7 @@ import {
   IMapBoundaries,
   IFeatureFilters,
   ISQLResult,
-} from "../../common/interfaces";
+} from "../../common/types";
 
 export const countFeatureRows = async (
   featuresDatabase: SQLite.WebSQLDatabase,

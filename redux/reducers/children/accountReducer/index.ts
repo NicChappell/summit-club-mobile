@@ -3,7 +3,7 @@ import {
   RESET_TOUR,
   SKIP_TOUR,
 } from "../../../actions/account/types";
-import { IAction } from "../../../../common/interfaces";
+import { IAction } from "../../../../common/types";
 import { initState } from "./constants";
 
 const authReducer = (state = initState, action: IAction) => {

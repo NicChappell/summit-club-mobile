@@ -25,7 +25,7 @@ import {
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { ICheckInScreen } from "./interfaces";
+import { ICheckInScreen } from "./types";
 
 import * as Location from "expo-location";
 import * as turf from "@turf/turf";

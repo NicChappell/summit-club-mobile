@@ -3,7 +3,7 @@ import {
   SET_FEATURED_SUMMITS,
   SET_POPULAR_SUMMITS,
 } from "../../../actions/summits/types";
-import { IAction } from "../../../../common/interfaces";
+import { IAction } from "../../../../common/types";
 import { initState } from "./constants";
 
 const summitsReducer = (state = initState, action: IAction) => {

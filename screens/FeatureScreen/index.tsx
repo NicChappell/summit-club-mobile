@@ -26,7 +26,7 @@ import {
   initialCoordinate,
   initialRegion,
 } from "../../common/constants";
-import { IError } from "../../common/interfaces";
+import { IError } from "../../common/types";
 import { getFeaturePhoto } from "../../common/helpers";
 import {
   borderRadius4,

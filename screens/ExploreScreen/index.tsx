@@ -13,7 +13,7 @@ import {
   ErrorOverlay,
   HorizontalDetailsCard,
 } from "../../common/components";
-import { IError } from "../../common/interfaces";
+import { IError } from "../../common/types";
 import { TabNavigationHeader } from "../../common/navigation";
 import { colors, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";

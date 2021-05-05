@@ -19,7 +19,7 @@ import {
   initialMapBoundaries,
   initialRegion,
 } from "../../common/constants";
-import { IMapBoundaries } from "../../common/interfaces";
+import { IMapBoundaries } from "../../common/types";
 import { TabNavigationHeader } from "../../common/navigation";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";

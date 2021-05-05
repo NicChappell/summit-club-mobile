@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
-import { IError } from "../../common/interfaces";
+import { IError } from "../../common/types";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";

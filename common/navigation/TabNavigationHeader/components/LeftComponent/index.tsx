@@ -7,7 +7,7 @@ import {
   navigationHeaderButton,
   navigationHeaderLeftComponent,
 } from "../../../../styles";
-import { ILeftComponent } from "./interfaces";
+import { ILeftComponent } from "./types";
 
 const LeftComponent = ({ navigation, route }: ILeftComponent) => {
   // destructure route

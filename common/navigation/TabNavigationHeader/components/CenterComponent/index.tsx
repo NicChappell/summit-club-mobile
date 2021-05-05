@@ -4,7 +4,7 @@ import {
   navigationHeaderCenterComponent,
   navigationHeaderTitle,
 } from "../../../../styles";
-import { ICenterComponent } from "./interfaces";
+import { ICenterComponent } from "./types";
 
 const CenterComponent = ({ title }: ICenterComponent) => {
   return (

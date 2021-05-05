@@ -4,7 +4,7 @@ import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
-import { IError } from "../common/interfaces";
+import { IError } from "../common/types";
 import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
 import { IAuthState } from "../redux/reducers/children/authReducer/types";

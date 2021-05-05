@@ -1,5 +1,5 @@
 import { RESET_USER, SET_USER } from "../../../actions/user/types";
-import { IAction } from "../../../../common/interfaces";
+import { IAction } from "../../../../common/types";
 import { initState } from "./constants";
 
 const userReducer = (state = initState, action: IAction) => {

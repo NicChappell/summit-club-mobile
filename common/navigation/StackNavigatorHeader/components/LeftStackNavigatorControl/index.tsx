@@ -3,7 +3,7 @@ import { TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { DrawerActions } from "@react-navigation/native";
 import { colors, navigationHeaderButton } from "../../../../styles";
-import { IStackNavigatorControl } from "./interfaces";
+import { IStackNavigatorControl } from "./types";
 
 const LeftStackNavigatorControl = ({
   navigation,

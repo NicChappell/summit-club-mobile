@@ -1,5 +1,5 @@
 import { LatLng, Region } from "react-native-maps";
-import { IMapBoundaries } from "../../common/interfaces";
+import { IMapBoundaries } from "../../common/types";
 
 // Custom map style
 export const customMapStyle = [

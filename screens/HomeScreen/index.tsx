@@ -16,7 +16,7 @@ import {
   HorizontalDetailsCard,
   VerticalDetailsCard,
 } from "../../common/components";
-import { IError } from "../../common/interfaces";
+import { IError } from "../../common/types";
 import { colors, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -27,6 +27,7 @@ import {
   IPopularSummit,
   Summit,
 } from "../../services";
+import { CheckInOverlay } from "./components";
 import { IHomeScreen } from "./types";
 
 type Props = PropsFromRedux & IHomeScreen;
@@ -41,6 +42,7 @@ const HomeScreen = ({
   // state hooks
   const [checkIns, setCheckIns] = useState<ICheckIn[]>([]);
   const [featuredSummits, setFeaturedSummits] = useState<ISummit[]>([]);
+  const [isCheckInVisible, setIsCheckInVisible] = useState<boolean>(false);
   const [popularSummits, setPopularSummits] = useState<IPopularSummit[]>([]);
 
   // effect hooks
@@ -109,6 +111,10 @@ const HomeScreen = ({
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
       >
+        <CheckInOverlay
+          visible={isCheckInVisible}
+          setVisible={setIsCheckInVisible}
+        />
         <ErrorOverlay error={error} />
         <View style={styles.container}>
           <View style={styles.section}>
@@ -151,13 +157,17 @@ const HomeScreen = ({
               horizontal
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <HorizontalDetailsCard
-                  dimensions={{
-                    height: horizontalDetailsCardDimensions.height,
-                    width: horizontalDetailsCardDimensions.width,
-                  }}
-                  item={item}
-                />
+                <TouchableOpacity
+                  onPress={() => setIsCheckInVisible(!isCheckInVisible)}
+                >
+                  <HorizontalDetailsCard
+                    dimensions={{
+                      height: horizontalDetailsCardDimensions.height,
+                      width: horizontalDetailsCardDimensions.width,
+                    }}
+                    item={item}
+                  />
+                </TouchableOpacity>
               )}
               showsHorizontalScrollIndicator={false}
               snapToAlignment={"start"}

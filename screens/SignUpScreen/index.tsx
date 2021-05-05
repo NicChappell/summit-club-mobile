@@ -12,7 +12,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
 import * as actions from "../../redux/actions";
 import { DismissKeyboard, ErrorOverlay } from "../../common/components";
-import { IAuthCredentials } from "../../common/interfaces";
+import { IAuthCredentials } from "../../common/types";
 import { signUpSchema } from "../../common/schemas";
 import {
   borderRadius4,

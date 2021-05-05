@@ -1,4 +1,4 @@
-import { IFeatureFilters } from "../interfaces";
+import { IFeatureFilters } from "../types";
 
 // Elevation of Mount Elbert according to GNIS database
 export const maxElevation = 14426;

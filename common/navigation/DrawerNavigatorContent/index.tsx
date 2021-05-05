@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
-import { IFeatureFilters } from "../../../common/interfaces";
+import { IFeatureFilters } from "../../../common/types";
 import { colors } from "../../../common/styles";
 import { ElevationTier } from "../../../common/types";
 import * as actions from "../../../redux/actions";

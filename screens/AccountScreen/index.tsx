@@ -17,7 +17,7 @@ import {
   DeleteAccountOverlay,
   SignOutOverlay,
 } from "./components";
-import { IAccountScreen } from "./interfaces";
+import { IAccountScreen } from "./types";
 
 type Props = PropsFromRedux & IAccountScreen;
 

@@ -1,4 +1,4 @@
-import { ITourSlide } from "../../interfaces";
+import { ITourSlide } from "../../types";
 
 export interface ITourSlides {
   /** array of slide data */

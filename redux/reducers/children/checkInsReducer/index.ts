@@ -2,7 +2,7 @@ import {
   RESET_CHECK_INS,
   SET_RECENT_CHECK_INS,
 } from "../../../actions/checkIns/types";
-import { IAction } from "../../../../common/interfaces";
+import { IAction } from "../../../../common/types";
 import { initState } from "./constants";
 
 const checkInsReducer = (state = initState, action: IAction) => {

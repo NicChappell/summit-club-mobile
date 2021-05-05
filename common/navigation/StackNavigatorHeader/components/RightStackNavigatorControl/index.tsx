@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors, navigationHeaderButton } from "../../../../styles";
-import { IStackNavigatorControl } from "./interfaces";
+import { IStackNavigatorControl } from "./types";
 
 const RightStackNavigatorControl = ({
   navigation,

@@ -6,7 +6,7 @@ import {
   navigationHeaderButton,
   navigationHeaderRightComponent,
 } from "../../../../styles";
-import { IRightComponent } from "./interfaces";
+import { IRightComponent } from "./types";
 
 const RightComponent = ({ navigation, route }: IRightComponent) => {
   // destructure route

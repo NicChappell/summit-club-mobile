@@ -10,7 +10,7 @@ import {
   inputStyle,
 } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
-import { IContactScreen } from "./interfaces";
+import { IContactScreen } from "./types";
 
 type Props = PropsFromRedux & IContactScreen;
 

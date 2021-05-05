@@ -1,4 +1,4 @@
-import { IError } from "../../../common/interfaces";
+import { IError } from "../../interfaces";
 
 export interface IErrorOverlay {
   /** functions that dispatches a redux action to reset global error state */

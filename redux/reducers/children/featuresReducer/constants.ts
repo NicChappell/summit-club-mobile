@@ -1,6 +1,6 @@
 import { defaultFeatureFilters } from "../../../../common/constants";
 
-import { IFeaturesState } from "./interfaces";
+import { IFeaturesState } from "./types";
 
 export const initState: IFeaturesState = {
   feature: undefined,

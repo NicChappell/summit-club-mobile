@@ -7,7 +7,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { IError } from "../common/interfaces";
 import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
-import { IAuthState } from "../redux/reducers/children/authReducer/interfaces";
+import { IAuthState } from "../redux/reducers/children/authReducer/types";
 import { User } from "../services";
 import { AuthStack, MainTabs } from "./navigators";
 

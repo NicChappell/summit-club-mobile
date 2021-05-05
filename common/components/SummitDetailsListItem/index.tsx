@@ -10,7 +10,7 @@ import {
   featureName,
 } from "../../styles";
 import StaticMapBackground from "../StaticMapBackground";
-import { ISummitDetailsListItem } from "./interfaces";
+import { ISummitDetailsListItem } from "./types";
 
 const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
   // destructure item

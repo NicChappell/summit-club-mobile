@@ -4,7 +4,7 @@ import MapView, { Circle, LatLng, Region } from "react-native-maps";
 import { Point } from "geojson";
 import { customMapStyle } from "../../../common/constants";
 import { colors } from "../../../common/styles";
-import { IStaticMapBackground } from "./interfaces";
+import { IStaticMapBackground } from "./types";
 
 const StaticMapBackground = ({
   containerStyles,

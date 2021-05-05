@@ -1,4 +1,4 @@
-import { IUserState } from "./interfaces";
+import { IUserState } from "./types";
 
 export const initState: IUserState = {
   account: undefined,

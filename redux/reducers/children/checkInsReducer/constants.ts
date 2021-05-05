@@ -1,4 +1,4 @@
-import { ICheckInsState } from "./interfaces";
+import { ICheckInsState } from "./types";
 
 export const initState: ICheckInsState = {
   recentCheckIns: undefined,

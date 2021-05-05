@@ -7,7 +7,7 @@ import {
   navigationHeaderWrapper,
 } from "../../styles";
 import { CenterComponent, LeftComponent, RightComponent } from "./components";
-import { ITabNavigationHeader } from "./interfaces";
+import { ITabNavigationHeader } from "./types";
 
 const TabNavigationHeader = ({ navigation, route }: ITabNavigationHeader) => {
   return (

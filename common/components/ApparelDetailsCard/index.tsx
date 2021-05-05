@@ -27,7 +27,7 @@ import {
 } from "../../styles";
 import { usdCurrencyFormatter } from "../../../common/helpers";
 import { ApparelFit, IApparelVersion } from "../../../services";
-import { IApparelDetailsCard } from "./interfaces";
+import { IApparelDetailsCard } from "./types";
 
 const ApparelDetailsCard = ({ item }: IApparelDetailsCard) => {
   // destructure item

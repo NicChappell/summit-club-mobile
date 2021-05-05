@@ -19,7 +19,7 @@ import { ICheckIn, ISummit } from "../../../services";
 import StaticMapBackground from "../StaticMapBackground";
 import { CheckInCardContent, FeatureCardContent } from "./components";
 import { defaultDimensions } from "./constants";
-import { IHorizontalDetailsCard } from "./interfaces";
+import { IHorizontalDetailsCard } from "./types";
 
 const HorizontalDetailsCard = ({
   dimensions = defaultDimensions,

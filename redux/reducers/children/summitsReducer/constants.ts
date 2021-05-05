@@ -1,4 +1,4 @@
-import { ISummitsState } from "./interfaces";
+import { ISummitsState } from "./types";
 
 export const initState: ISummitsState = {
   featuredSummits: undefined,

@@ -11,7 +11,7 @@ import {
 } from "../../../common/styles";
 import { Background } from "./components";
 import { defaultDimensions } from "./constants";
-import { IBasicDetailsCard } from "./interfaces";
+import { IBasicDetailsCard } from "./types";
 
 const BasicDetailsCard = ({
   dimensions = defaultDimensions,

@@ -18,7 +18,7 @@ import { getFeaturePhoto } from "../../../common/helpers";
 import StaticMapBackground from "../StaticMapBackground";
 import { FeatureCardContent } from "./components";
 import { defaultDimensions } from "./constants";
-import { IVerticalDetailsCard } from "./interfaces";
+import { IVerticalDetailsCard } from "./types";
 
 const VerticalDetailsCard = ({
   dimensions = defaultDimensions,

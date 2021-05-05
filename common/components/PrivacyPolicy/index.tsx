@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Overlay, Text } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../../styles";
-import { IPrivacyPolicy } from "./interfaces";
+import { IPrivacyPolicy } from "./types";
 
 const PrivacyPolicy = ({ visible, setVisible }: IPrivacyPolicy) => {
   return (

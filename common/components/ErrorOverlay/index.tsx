@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";
 import { borderRadius4, colors, paddingReset } from "../../styles";
-import { IErrorOverlay } from "./interfaces";
+import { IErrorOverlay } from "./types";
 
 type Props = PropsFromRedux & IErrorOverlay;
 

@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import {
-  BasicDetailsCard,
   DismissKeyboard,
   ErrorOverlay,
   FullDetailsCard,
@@ -95,7 +94,7 @@ const HomeScreen = ({
     width: 320,
   };
   const fullDetailsCardDimensions = {
-    height: 208,
+    height: 256,
     width: 288,
   };
   const verticalDetailsCardDimensions = {
@@ -133,7 +132,9 @@ const HomeScreen = ({
             )}
             showsHorizontalScrollIndicator={false}
             snapToAlignment={"start"}
-            snapToInterval={verticalDetailsCardDimensions.width + separator.width}
+            snapToInterval={
+              verticalDetailsCardDimensions.width + separator.width
+            }
           />
         </View>
         <View style={styles.section}>
@@ -216,7 +217,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section: {
-    marginBottom: 16,
     padding: 8,
   },
 });

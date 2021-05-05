@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { Card } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {
@@ -17,13 +17,9 @@ import {
 } from "../../../common/styles";
 import { getFeaturePhoto } from "../../../common/helpers";
 import StaticMapBackground from "../StaticMapBackground";
-import { defaultDimensions } from "./constants";
 import { IFullDetailsCard } from "./types";
 
-const FullDetailsCard = ({
-  dimensions = defaultDimensions,
-  item,
-}: IFullDetailsCard) => {
+const FullDetailsCard = ({ dimensions, item }: IFullDetailsCard) => {
   // destructure item
   const { checkInsLastWeek, feature } = item;
 
@@ -46,27 +42,13 @@ const FullDetailsCard = ({
     >
       {featurePhoto ? (
         // render feature photo if available
-        <Card.Image
-          containerStyle={[
-            styles.cardImageContainer,
-            {
-              borderTopLeftRadius: 4,
-              borderTopRightRadius: 4,
-              height: "50%",
-            },
-          ]}
-          source={featurePhoto}
-          style={styles.cardImage}
-        />
+        <View style={styles.imageContainer}>
+          <Image source={featurePhoto} style={styles.featurePhoto} />
+        </View>
       ) : (
         // render static map by default
         <StaticMapBackground
-          containerStyles={{
-            borderTopLeftRadius: 4,
-            borderTopRightRadius: 4,
-            height: "50%",
-            width: "100%",
-          }}
+          containerStyles={styles.imageContainer}
           feature={feature}
         />
       )}
@@ -123,17 +105,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
     justifyContent: "space-between",
-    height: "50%",
+    flex: 1,
     padding: 8,
-  },
-  cardImage: {
-    height: "100%",
-    width: "100%",
-  },
-  cardImageContainer: {
-    height: "100%",
-    overflow: "hidden",
-    width: "100%",
   },
   cardWrapper: {
     ...borderRadius4,
@@ -141,6 +114,17 @@ const styles = StyleSheet.create({
     ...paddingReset,
     ...shadow,
     flex: 1,
+  },
+  featurePhoto: {
+    height: "100%",
+    width: "100%",
+  },
+  imageContainer: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    height: 144,
+    overflow: "hidden",
+    width: "100%",
   },
   leftColumn: {
     alignItems: "flex-start",

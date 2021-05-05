@@ -446,7 +446,8 @@ const styles = StyleSheet.create({
   divider: {
     backgroundColor: colors.black05,
     height: 1,
-    marginVertical: 20,
+    marginBottom: 12,
+    marginTop: 24,
   },
   featureName: {
     ...featureName,

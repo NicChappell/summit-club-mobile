@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Divider } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import {
   DismissKeyboard,
@@ -109,85 +110,89 @@ const HomeScreen = ({
         style={styles.scrollView}
       >
         <ErrorOverlay error={error} />
-        <View style={styles.section}>
-          <Text style={sectionTitle}>Featured summits</Text>
-          <FlatList
-            ItemSeparatorComponent={() => (
-              <View style={{ width: separator.width }} />
-            )}
-            data={featuredSummits}
-            decelerationRate={0}
-            horizontal
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleSummitPress(item)}>
-                <VerticalDetailsCard
+        <View style={styles.container}>
+          <View style={styles.section}>
+            <Text style={sectionTitle}>Featured summits</Text>
+            <FlatList
+              ItemSeparatorComponent={() => (
+                <View style={{ width: separator.width }} />
+              )}
+              data={featuredSummits}
+              decelerationRate={0}
+              horizontal
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleSummitPress(item)}>
+                  <VerticalDetailsCard
+                    dimensions={{
+                      height: verticalDetailsCardDimensions.height,
+                      width: verticalDetailsCardDimensions.width,
+                    }}
+                    item={item}
+                  />
+                </TouchableOpacity>
+              )}
+              showsHorizontalScrollIndicator={false}
+              snapToAlignment={"start"}
+              snapToInterval={
+                verticalDetailsCardDimensions.width + separator.width
+              }
+            />
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={sectionTitle}>Recent check-ins</Text>
+            <FlatList
+              ItemSeparatorComponent={() => (
+                <View style={{ width: separator.width }} />
+              )}
+              data={checkIns}
+              decelerationRate={0}
+              horizontal
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <HorizontalDetailsCard
                   dimensions={{
-                    height: verticalDetailsCardDimensions.height,
-                    width: verticalDetailsCardDimensions.width,
+                    height: horizontalDetailsCardDimensions.height,
+                    width: horizontalDetailsCardDimensions.width,
                   }}
                   item={item}
                 />
-              </TouchableOpacity>
-            )}
-            showsHorizontalScrollIndicator={false}
-            snapToAlignment={"start"}
-            snapToInterval={
-              verticalDetailsCardDimensions.width + separator.width
-            }
-          />
-        </View>
-        <View style={styles.section}>
-          <Text style={sectionTitle}>Recent check-ins</Text>
-          <FlatList
-            ItemSeparatorComponent={() => (
-              <View style={{ width: separator.width }} />
-            )}
-            data={checkIns}
-            decelerationRate={0}
-            horizontal
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <HorizontalDetailsCard
-                dimensions={{
-                  height: horizontalDetailsCardDimensions.height,
-                  width: horizontalDetailsCardDimensions.width,
-                }}
-                item={item}
-              />
-            )}
-            showsHorizontalScrollIndicator={false}
-            snapToAlignment={"start"}
-            snapToInterval={
-              horizontalDetailsCardDimensions.width + separator.width
-            }
-          />
-        </View>
-        <View style={styles.section}>
-          <Text style={sectionTitle}>Popular summits</Text>
-          <FlatList
-            ItemSeparatorComponent={() => (
-              <View style={{ width: separator.width }} />
-            )}
-            data={popularSummits}
-            decelerationRate={0}
-            horizontal
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleSummitPress(item)}>
-                <FullDetailsCard
-                  dimensions={{
-                    height: fullDetailsCardDimensions.height,
-                    width: fullDetailsCardDimensions.width,
-                  }}
-                  item={item}
-                />
-              </TouchableOpacity>
-            )}
-            showsHorizontalScrollIndicator={false}
-            snapToAlignment={"start"}
-            snapToInterval={fullDetailsCardDimensions.width + separator.width}
-          />
+              )}
+              showsHorizontalScrollIndicator={false}
+              snapToAlignment={"start"}
+              snapToInterval={
+                horizontalDetailsCardDimensions.width + separator.width
+              }
+            />
+          </View>
+          <Divider style={styles.divider} />
+          <View style={styles.section}>
+            <Text style={sectionTitle}>Popular summits</Text>
+            <FlatList
+              ItemSeparatorComponent={() => (
+                <View style={{ width: separator.width }} />
+              )}
+              data={popularSummits}
+              decelerationRate={0}
+              horizontal
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleSummitPress(item)}>
+                  <FullDetailsCard
+                    dimensions={{
+                      height: fullDetailsCardDimensions.height,
+                      width: fullDetailsCardDimensions.width,
+                    }}
+                    item={item}
+                  />
+                </TouchableOpacity>
+              )}
+              showsHorizontalScrollIndicator={false}
+              snapToAlignment={"start"}
+              snapToInterval={fullDetailsCardDimensions.width + separator.width}
+            />
+          </View>
         </View>
       </ScrollView>
     </DismissKeyboard>
@@ -212,11 +217,23 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(HomeScreen);
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "stretch",
+    flex: 1,
+    justifyContent: "flex-start",
+    padding: 8,
+  },
+  divider: {
+    backgroundColor: colors.black05,
+    height: 1,
+    marginBottom: 12,
+    marginTop: 24,
+  },
   scrollView: {
     backgroundColor: colors.black01,
-    flex: 1,
   },
   section: {
-    padding: 8,
+    alignItems: "flex-start",
+    justifyContent: "space-between",
   },
 });

@@ -25,8 +25,7 @@ import {
   Summit,
   defaultBounds,
 } from "../../services";
-import { IExploreScreen } from "./interfaces";
-import { SortMethod, SortMethodIcon } from "./types";
+import { IExploreScreen, SortMethod, SortMethodIcon } from "./types";
 
 type Props = PropsFromRedux & IExploreScreen;
 
@@ -130,6 +129,10 @@ const ExploreScreen = ({
   };
 
   const basicDetailsCardDimensions = { height: 48, width: 128 };
+  const horizontalDetailsCardDimensions = {
+    height: 96,
+    width: "100%",
+  };
 
   return (
     <View style={styles.container}>
@@ -185,7 +188,13 @@ const ExploreScreen = ({
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity onPress={() => handleSummitPress(item)}>
-                  <HorizontalDetailsCard item={item} />
+                  <HorizontalDetailsCard
+                    dimensions={{
+                      height: horizontalDetailsCardDimensions.height,
+                      width: horizontalDetailsCardDimensions.width,
+                    }}
+                    item={item}
+                  />
                 </TouchableOpacity>
               );
             }}

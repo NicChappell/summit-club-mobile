@@ -7,10 +7,14 @@ export type ExploreScreenNavigationProp = StackNavigationProp<
   "Explore"
 >;
 
-export type ExploreScreenRouteProp = RouteProp<
-  ExploreTabsParamList,
-  "Explore"
->;
+export type ExploreScreenRouteProp = RouteProp<ExploreTabsParamList, "Explore">;
+
+export interface IExploreScreen {
+  /** Contains various convenience functions that dispatch navigation actions */
+  navigation: ExploreScreenNavigationProp;
+  /** Contains various information regarding current route */
+  route: ExploreScreenRouteProp;
+}
 
 export type SortMethod = "ascending" | "descending";
 

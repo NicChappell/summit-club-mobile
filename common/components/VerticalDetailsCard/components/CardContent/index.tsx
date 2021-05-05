@@ -6,13 +6,12 @@ import {
   featureDistance,
   featureLocation,
   featureName,
-} from "../../../../../common/styles";
-import { IFeatureCardContent } from "./types";
+} from "../../../../styles";
+import { ICardContent } from "./types";
 
-const FeatureCardContent = ({ item }: IFeatureCardContent) => {
+const CardContent = ({ item }: ICardContent) => {
   // destructure item
   const { feature, type } = item;
-  console.log("type: ", type);
 
   switch (type) {
     case "featuredSummit":
@@ -43,7 +42,7 @@ const FeatureCardContent = ({ item }: IFeatureCardContent) => {
   }
 };
 
-export default FeatureCardContent;
+export default CardContent;
 
 const styles = StyleSheet.create({
   container: {

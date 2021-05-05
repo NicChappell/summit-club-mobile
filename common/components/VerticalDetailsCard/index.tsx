@@ -16,14 +16,10 @@ import {
 } from "../../../common/styles";
 import { getFeaturePhoto } from "../../../common/helpers";
 import StaticMapBackground from "../StaticMapBackground";
-import { FeatureCardContent } from "./components";
-import { defaultDimensions } from "./constants";
+import { CardContent } from "./components";
 import { IVerticalDetailsCard } from "./types";
 
-const VerticalDetailsCard = ({
-  dimensions = defaultDimensions,
-  item,
-}: IVerticalDetailsCard) => {
+const VerticalDetailsCard = ({ dimensions, item }: IVerticalDetailsCard) => {
   // destructure item
   const { feature } = item;
 
@@ -46,17 +42,17 @@ const VerticalDetailsCard = ({
     >
       {featurePhoto ? (
         // render feature photo if available
-        <View style={styles.featurePhotoContainer}>
+        <View style={styles.imageContainer}>
           <Image source={featurePhoto} style={styles.featurePhoto} />
         </View>
       ) : (
         // render static map by default
         <StaticMapBackground
-          containerStyles={styles.staticMapBackgroundContainer}
+          containerStyles={styles.imageContainer}
           feature={feature}
         />
       )}
-      <FeatureCardContent item={item} />
+      <CardContent item={item} />
     </Card>
   );
 };
@@ -87,14 +83,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
-  featurePhotoContainer: {
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-    height: 176,
-    overflow: "hidden",
-    width: 174,
-  },
-  staticMapBackgroundContainer: {
+  imageContainer: {
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     height: 176,

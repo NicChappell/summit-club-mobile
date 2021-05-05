@@ -6,7 +6,7 @@ import {
   featureLocation,
   featureName,
 } from "../../../../../common/styles";
-import { ICheckInCardContent } from "./interfaces";
+import { ICheckInCardContent } from "./types";
 
 const CheckInCardContent = ({ item }: ICheckInCardContent) => {
   // destructure item

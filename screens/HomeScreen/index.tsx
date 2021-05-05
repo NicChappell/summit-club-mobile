@@ -27,7 +27,7 @@ import {
   IPopularSummit,
   Summit,
 } from "../../services";
-import { IHomeScreen } from "./interfaces";
+import { IHomeScreen } from "./types";
 
 type Props = PropsFromRedux & IHomeScreen;
 

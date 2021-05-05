@@ -1,1 +1,1 @@
-export { default as FeatureCardContent } from "./FeatureCardContent";
+export { default as CardContent } from "./CardContent";

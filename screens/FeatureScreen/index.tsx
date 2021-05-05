@@ -208,7 +208,7 @@ const FeatureScreen = ({
         ) : (
           // render static map by default
           <StaticMapBackground
-            containerStyles={{ height: 256 }}
+            containerStyles={{ height: 256, width: "100%" }}
             feature={feature}
           />
         )}

@@ -8,7 +8,7 @@ import {
   featureLocation,
   featureName,
 } from "../../../../../common/styles";
-import { IFeatureCardContent } from "./interfaces";
+import { IFeatureCardContent } from "./types";
 
 const FeatureCardContent = ({ item }: IFeatureCardContent) => {
   // destructure item

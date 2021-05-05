@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { Card } from "react-native-elements";
 import {
   borderRadius4,
@@ -18,11 +18,10 @@ import { getFeaturePhoto } from "../../../common/helpers";
 import { ICheckIn, ISummit } from "../../../services";
 import StaticMapBackground from "../StaticMapBackground";
 import { CheckInCardContent, FeatureCardContent } from "./components";
-import { defaultDimensions } from "./constants";
 import { IHorizontalDetailsCard } from "./types";
 
 const HorizontalDetailsCard = ({
-  dimensions = defaultDimensions,
+  dimensions,
   item,
 }: IHorizontalDetailsCard) => {
   // destructure item
@@ -51,6 +50,29 @@ const HorizontalDetailsCard = ({
     }
   };
 
+  let imageDimensions:
+    | {
+        height: number;
+        width: number;
+      }
+    | undefined;
+  switch (item.type) {
+    case "filteredSummit":
+      imageDimensions = {
+        height: 96,
+        width: 94,
+      };
+      break;
+    case "recentCheckIn":
+      imageDimensions = {
+        height: 128,
+        width: 126,
+      };
+      break;
+    default:
+      imageDimensions = undefined;
+  }
+
   return (
     <Card
       containerStyle={[styles.cardContainer, { ...dimensions }]}
@@ -58,26 +80,13 @@ const HorizontalDetailsCard = ({
     >
       {featurePhoto ? (
         // render feature photo if available
-        <Card.Image
-          containerStyle={[
-            styles.cardImageContainer,
-            {
-              borderBottomLeftRadius: 4,
-              borderTopLeftRadius: 4,
-              width: 96,
-            },
-          ]}
-          source={featurePhoto}
-          style={styles.cardImage}
-        />
+        <View style={[styles.imageContainer, imageDimensions]}>
+          <Image source={featurePhoto} style={styles.featurePhoto} />
+        </View>
       ) : (
         // render static map by default
         <StaticMapBackground
-          containerStyles={{
-            borderBottomLeftRadius: 4,
-            borderTopLeftRadius: 4,
-            width: 128,
-          }}
+          containerStyles={[styles.imageContainer, imageDimensions]}
           feature={feature}
         />
       )}
@@ -98,15 +107,6 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     paddingLeft: 2,
   },
-  cardImage: {
-    height: "100%",
-    width: "100%",
-  },
-  cardImageContainer: {
-    height: "100%",
-    overflow: "hidden",
-    width: "100%",
-  },
   cardWrapper: {
     ...borderRadius4,
     ...marginReset,
@@ -117,5 +117,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     justifyContent: "flex-start",
+  },
+  featurePhoto: {
+    height: "100%",
+    width: "100%",
+  },
+  imageContainer: {
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
+    overflow: "hidden",
   },
 });

@@ -65,6 +65,7 @@ const FullDetailsCard = ({
             borderTopLeftRadius: 4,
             borderTopRightRadius: 4,
             height: "50%",
+            width: "100%",
           }}
           feature={feature}
         />

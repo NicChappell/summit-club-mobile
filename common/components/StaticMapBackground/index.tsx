@@ -43,10 +43,7 @@ const StaticMapBackground = ({
   }, []);
 
   return (
-    <View
-      pointerEvents={"none"}
-      style={[styles.mapContainer, { ...containerStyles }]}
-    >
+    <View pointerEvents={"none"} style={containerStyles}>
       <MapView
         customMapStyle={customMapStyle}
         provider={"google"}
@@ -71,11 +68,6 @@ const StaticMapBackground = ({
 export default StaticMapBackground;
 
 const styles = StyleSheet.create({
-  mapContainer: {
-    height: "100%",
-    overflow: "hidden",
-    width: "100%",
-  },
   map: {
     flex: 1,
   },

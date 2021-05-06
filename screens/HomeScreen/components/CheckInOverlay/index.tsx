@@ -2,10 +2,13 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
+import { StaticMapBackground } from "../../../../common/components";
 import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
 import { ICheckInOverlay } from "./types";
+
+import { MOCK_FEATURE } from "../../../../data/mocks";
 
 type Props = PropsFromRedux & ICheckInOverlay;
 
@@ -23,7 +26,10 @@ const CheckInOverlay = ({ visible, setVisible }: Props) => {
           <Text style={styles.header}>First Last</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>static map goes here</Text>
+          <StaticMapBackground
+            containerStyles={styles.imageContainer}
+            feature={MOCK_FEATURE}
+          />
         </View>
         <View style={styles.overlayFooter}>
           <Button
@@ -85,6 +91,13 @@ const styles = StyleSheet.create({
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 24,
   },
+  imageContainer: {
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    height: 144,
+    overflow: "hidden",
+    width: "100%",
+  },
   overlay: {
     ...borderRadius4,
     ...paddingReset,
@@ -93,8 +106,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   overlayBody: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    padding: 16,
   },
   overlayFooter: {
     alignItems: "center",

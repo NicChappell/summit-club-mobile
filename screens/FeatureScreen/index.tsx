@@ -231,14 +231,12 @@ const FeatureScreen = ({
                 </Text>
               </View>
               <View style={styles.rightColumn}>
-                <View style={styles.rightColumn}>
-                  <Ionicons
-                    name={"ios-shield-checkmark-outline"}
-                    size={24}
-                    color={colors.queenBlue}
-                  />
-                  <Text style={styles.verified}>Verified{"\n"}check-in</Text>
-                </View>
+                <Ionicons
+                  name={"ios-shield-checkmark-outline"}
+                  size={24}
+                  color={colors.queenBlue}
+                />
+                <Text style={styles.verified}>Verified{"\n"}check-in</Text>
               </View>
             </View>
           </View>
@@ -452,6 +450,7 @@ const styles = StyleSheet.create({
   featureName: {
     ...featureName,
     fontSize: 24,
+    marginBottom: 4,
   },
   featurePhoto: {
     height: "100%",

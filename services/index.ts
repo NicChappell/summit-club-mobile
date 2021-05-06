@@ -13,6 +13,7 @@ export {
   IApparel,
   IApparelVersion,
 } from "./Merchandise";
+export { Trie } from "./Search";
 export {
   default as Summit,
   FeatureClassification,

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
-import { StaticMapBackground } from "../../../../common/components";
+import { CalloutMapBackground } from "../../../../common/components";
 import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
@@ -26,7 +26,7 @@ const CheckInOverlay = ({ visible, setVisible }: Props) => {
           <Text style={styles.header}>First Last</Text>
         </View>
         <View style={styles.overlayBody}>
-          <StaticMapBackground
+          <CalloutMapBackground
             containerStyles={styles.imageContainer}
             feature={MOCK_FEATURE}
           />

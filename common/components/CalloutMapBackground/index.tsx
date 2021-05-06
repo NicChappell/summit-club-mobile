@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import MapView, { Circle, LatLng, Region } from "react-native-maps";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import MapView, { Callout, LatLng, Marker, Region } from "react-native-maps";
 import { Point } from "geojson";
 import { customMapStyle } from "../../../common/constants";
 import { colors } from "../../../common/styles";
-import { IStaticMapBackground } from "./types";
+import { ICalloutMapBackground } from "./types";
 
-const StaticMapBackground = ({
+const CONTENT_HEIGHT = 112.5;
+const CONTENT_WIDTH = 150;
+
+const CalloutMapBackground = ({
   containerStyles,
   feature,
-}: IStaticMapBackground) => {
+}: ICalloutMapBackground) => {
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng>();
   const [region, setRegion] = useState<Region>();
+
+  // ref hooks
+  const markerRef = useRef<Marker>(null);
 
   // effect hooks
   useEffect(() => {
@@ -41,6 +47,14 @@ const StaticMapBackground = ({
     setRegion(region);
   }, []);
 
+  useEffect(() => {
+    // return early if markerRef is null
+    if (!markerRef) return;
+
+    console.log("mrah?");
+    markerRef.current?.showCallout();
+  }, [markerRef]);
+
   return (
     <View pointerEvents={"none"} style={containerStyles}>
       <MapView
@@ -50,22 +64,37 @@ const StaticMapBackground = ({
         style={styles.map}
       >
         {coordinate && (
-          <Circle
-            center={coordinate}
-            fillColor={colors.queenBlue50}
-            radius={500}
-            strokeColor={colors.queenBlue}
-            strokeWidth={2.5}
-          />
+          <Marker
+            coordinate={coordinate}
+            ref={markerRef}
+            tracksViewChanges={false}
+          >
+            <Callout onPress={() => console.log("TODO")}>
+              <View style={styles.container}>
+                <Text style={styles.text}>TODO</Text>
+              </View>
+            </Callout>
+          </Marker>
         )}
       </MapView>
     </View>
   );
 };
 
-export default StaticMapBackground;
+export default CalloutMapBackground;
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    flex: 1,
+    height: CONTENT_HEIGHT,
+    justifyContent: "center",
+    padding: 8,
+    width: CONTENT_WIDTH,
+  },
+  text: {
+    color: colors.black,
+  },
   map: {
     flex: 1,
   },

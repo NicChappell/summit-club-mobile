@@ -27,7 +27,6 @@ import {
   IPopularSummit,
   Summit,
 } from "../../services";
-import { CheckInOverlay } from "./components";
 import { IHomeScreen } from "./types";
 
 type Props = PropsFromRedux & IHomeScreen;
@@ -42,7 +41,6 @@ const HomeScreen = ({
   // state hooks
   const [checkIns, setCheckIns] = useState<ICheckIn[]>([]);
   const [featuredSummits, setFeaturedSummits] = useState<ISummit[]>([]);
-  const [isCheckInVisible, setIsCheckInVisible] = useState<boolean>(false);
   const [popularSummits, setPopularSummits] = useState<IPopularSummit[]>([]);
 
   // effect hooks
@@ -111,10 +109,6 @@ const HomeScreen = ({
         showsVerticalScrollIndicator={false}
         style={styles.scrollView}
       >
-        <CheckInOverlay
-          visible={isCheckInVisible}
-          setVisible={setIsCheckInVisible}
-        />
         <ErrorOverlay error={error} />
         <View style={styles.container}>
           <View style={styles.section}>
@@ -157,17 +151,13 @@ const HomeScreen = ({
               horizontal
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => setIsCheckInVisible(!isCheckInVisible)}
-                >
-                  <HorizontalDetailsCard
-                    dimensions={{
-                      height: horizontalDetailsCardDimensions.height,
-                      width: horizontalDetailsCardDimensions.width,
-                    }}
-                    item={item}
-                  />
-                </TouchableOpacity>
+                <HorizontalDetailsCard
+                  dimensions={{
+                    height: horizontalDetailsCardDimensions.height,
+                    width: horizontalDetailsCardDimensions.width,
+                  }}
+                  item={item}
+                />
               )}
               showsHorizontalScrollIndicator={false}
               snapToAlignment={"start"}

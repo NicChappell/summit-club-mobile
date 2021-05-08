@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Divider } from "react-native-elements";
+import { Avatar, Button, Divider, ListItem } from "react-native-elements";
 import MapView, { LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -27,7 +27,7 @@ import {
   initialRegion,
 } from "../../common/constants";
 import { IError } from "../../common/types";
-import { getFeaturePhoto } from "../../common/helpers";
+import { getFeaturePhoto, randomInt } from "../../common/helpers";
 import {
   borderRadius4,
   colors,
@@ -35,6 +35,8 @@ import {
   featureElevation,
   featureLocation,
   featureName,
+  listItemTitle,
+  listItemSubtitle,
   paddingReset,
   sectionTitle,
   separator,
@@ -181,6 +183,24 @@ const FeatureScreen = ({
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   };
 
+  const randomColor = () => {
+    const colorArray = [
+      colors.redSalsa,
+      colors.orangeRed,
+      colors.yellowOrange,
+      colors.maizeCrayola,
+      colors.pistachio,
+      colors.zomp,
+      colors.queenBlue,
+    ];
+
+    const index = randomInt(0, colorArray.length);
+
+    return colorArray[index];
+  };
+
+  const timestamp = new Date();
+
   const horizontalDetailsCardDimensions = {
     height: 128,
     width: 320,
@@ -321,29 +341,42 @@ const FeatureScreen = ({
               <Divider style={styles.divider} />
               <View style={styles.section}>
                 <Text style={sectionTitle}>Recent check-ins</Text>
-                <FlatList
-                  ItemSeparatorComponent={() => (
-                    <View style={{ width: separator.width }} />
-                  )}
-                  data={recentCheckIns}
-                  decelerationRate={0}
-                  horizontal
-                  keyExtractor={(item) => item.id.toString()}
-                  renderItem={({ item }) => (
-                    <HorizontalDetailsCard
-                      dimensions={{
-                        height: horizontalDetailsCardDimensions.height,
-                        width: horizontalDetailsCardDimensions.width,
-                      }}
-                      item={item}
-                    />
-                  )}
-                  showsHorizontalScrollIndicator={false}
-                  snapToAlignment={"start"}
-                  snapToInterval={
-                    horizontalDetailsCardDimensions.width + separator.width
-                  }
-                />
+                <View style={styles.listItemContainer}>
+                  {recentCheckIns.map((recentCheckIn, index) => (
+                    <ListItem
+                      containerStyle={styles.listItem}
+                      key={index}
+                      topDivider={index !== 0}
+                    >
+                      <Avatar
+                        rounded
+                        size="small"
+                        title="NC"
+                        overlayContainerStyle={{
+                          backgroundColor: randomColor(),
+                        }}
+                      />
+                      <View style={styles.listItemContent}>
+                        <View>
+                          <Text style={listItemTitle}>Nic Chappell</Text>
+                          <Text style={listItemSubtitle}>
+                            {timestamp.toLocaleDateString("en-US", {
+                              weekday: "long",
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            })}
+                          </Text>
+                        </View>
+                        <View>
+                          <Text style={styles.counter}>
+                            {(index + randomInt(0, 10000)).toLocaleString()}
+                          </Text>
+                        </View>
+                      </View>
+                    </ListItem>
+                  ))}
+                </View>
               </View>
             </>
           )}
@@ -405,6 +438,9 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 export default connector(FeatureScreen);
 
 const styles = StyleSheet.create({
+  avatarContainer: {
+    backgroundColor: colors.zomp,
+  },
   body: {
     alignItems: "flex-start",
     alignSelf: "stretch",
@@ -441,6 +477,11 @@ const styles = StyleSheet.create({
   content: {
     padding: 8,
   },
+  counter: {
+    color: colors.black,
+    fontFamily: "NotoSansJP_700Bold",
+    fontSize: 20,
+  },
   divider: {
     backgroundColor: colors.black05,
     height: 1,
@@ -466,6 +507,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
+  },
+  listItem: {
+    backgroundColor: "transparent",
+  },
+  listItemContainer: {
+    alignSelf: "stretch",
+  },
+  listItemContent: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   mapContainer: {
     backgroundColor: colors.black01,

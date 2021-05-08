@@ -53,3 +53,6 @@ export const usdCurrencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
+
+export const randomInt = (min: number, max: number) =>
+  Math.floor(Math.random() * (max - min)) + min;

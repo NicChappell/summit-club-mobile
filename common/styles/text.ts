@@ -31,8 +31,20 @@ export const featureName = {
   fontSize: 18,
 } as TextStyle;
 
+export const listItemTitle = {
+  color: colors.black,
+  fontFamily: "NotoSansJP_500Medium",
+  fontSize: 18,
+} as TextStyle;
+
+export const listItemSubtitle = {
+  color: colors.black,
+  fontFamily: "NotoSansJP_500Medium",
+  fontSize: 12,
+} as TextStyle;
+
 export const sectionTitle = {
-  color: colors.queenBlue,
+  color: colors.black,
   fontFamily: "NotoSansJP_700Bold",
   fontSize: 20,
   marginBottom: 8,

@@ -342,7 +342,7 @@ const FeatureScreen = ({
               <View style={styles.section}>
                 <Text style={sectionTitle}>Recent check-ins</Text>
                 <View style={styles.listItemContainer}>
-                  {recentCheckIns.map((recentCheckIn, index) => (
+                  {recentCheckIns.slice(0, 5).map((recentCheckIn, index) => (
                     <ListItem
                       containerStyle={styles.listItem}
                       key={index}

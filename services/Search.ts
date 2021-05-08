@@ -8,15 +8,25 @@ export class Trie {
   trie: any;
 
   add(word: string) {
+    // create root node if trie is null
     if (!this.trie) this.trie = this.newNode();
 
+    // set root node
     let root = this.trie;
+
+    // iterate over each letter of word
     for (const letter of word) {
+      // check root node's children for current letter
       if (!(letter in root.children)) {
+        // create new child node if first encounter of current letter
         root.children[letter] = this.newNode();
       }
+
+      // reset root node to current letter
       root = root.children[letter];
     }
+
+    // terminate current branch
     root.isLeaf = true;
   }
 
@@ -24,39 +34,52 @@ export class Trie {
     this.suggestions = [];
   }
 
-  complete(word: string, CHILDREN: any = null) {
+  complete(word: string, limit: number = 0) {
+    // set root node
     const root = this.find(word);
 
     if (!root) return this.suggestions; // cannot suggest anything
 
-    const children = root.children;
+    // destructure root node
+    const { children } = root;
 
-    let spread = 0;
+    // create counter
+    let count = 0;
 
+    // iterate over each child node
     for (const letter in children) {
+      // traverse children nodes to find suggestions
       this.traverse(children[letter], word + letter);
-      spread++;
 
-      if (CHILDREN && spread === CHILDREN) break;
+      // increment counter
+      count++;
+
+      // break out of loop at limit
+      if (Boolean(limit) && count === limit) break;
     }
 
     return this.suggestions;
   }
 
-  find(word: string) {
+  find(word: string): TrieNode | null {
+    // set root node
     let root = this.trie;
+
+    // iterate over each letter of word
     for (const letter of word) {
+      // check root node's children for current letter
       if (letter in root.children) {
+        // reset root node to current letter
         root = root.children[letter];
       } else {
-        return null;
+        return null; // no matching nodes
       }
     }
 
-    return root;
+    return root; // matched node
   }
 
-  newNode() {
+  newNode(): TrieNode {
     return {
       isLeaf: false,
       children: {},
@@ -67,20 +90,24 @@ export class Trie {
     console.log(this.trie);
   }
 
-  traverse(
-    root: {
-      isLeaf: boolean;
-      children: any;
-    },
-    word: string
-  ) {
+  traverse(root: TrieNode, word: string) {
+    // check for additional children to traverse
     if (root.isLeaf) {
+      // add word to suggestions
       this.suggestions.push(word);
-      return;
+
+      return; // no additional children to traverse
     }
 
+    // iterate over each child node
     for (const letter in root.children) {
+      // traverse children nodes until branches are terminated
       this.traverse(root.children[letter], word + letter);
     }
   }
 }
+
+type TrieNode = {
+  isLeaf: boolean;
+  children: any;
+};

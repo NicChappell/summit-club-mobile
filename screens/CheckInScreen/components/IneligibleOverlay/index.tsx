@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
-import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
+import { borderRadius4, colors, paddingReset, paragraph } from "../../../../common/styles";
 import { IIneligibleOverlay } from "./types";
 
 const IneligibleOverlay = ({
@@ -57,7 +57,7 @@ const IneligibleOverlay = ({
           <Text style={styles.header}>{content.title}</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>{content.message}</Text>
+          <Text style={paragraph}>{content.message}</Text>
         </View>
         <View style={styles.overlayFooter}>
           <Button
@@ -130,10 +130,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     padding: 16,
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
   },
 });

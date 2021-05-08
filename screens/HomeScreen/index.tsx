@@ -17,7 +17,7 @@ import {
   VerticalDetailsCard,
 } from "../../common/components";
 import { IError } from "../../common/types";
-import { colors, sectionTitle, separator } from "../../common/styles";
+import { colors, divider, sectionTitle, separator } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import {
@@ -139,7 +139,7 @@ const HomeScreen = ({
               }
             />
           </View>
-          <Divider style={styles.divider} />
+          <Divider style={divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Recent check-ins</Text>
             <FlatList
@@ -166,7 +166,7 @@ const HomeScreen = ({
               }
             />
           </View>
-          <Divider style={styles.divider} />
+          <Divider style={divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Popular summits</Text>
             <FlatList
@@ -222,12 +222,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     padding: 8,
-  },
-  divider: {
-    backgroundColor: colors.black05,
-    height: 1,
-    marginBottom: 12,
-    marginTop: 24,
   },
   scrollView: {
     backgroundColor: colors.black01,

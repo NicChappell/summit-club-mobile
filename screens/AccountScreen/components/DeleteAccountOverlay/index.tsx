@@ -15,6 +15,7 @@ import {
   inputContainer,
   inputStyle,
   paddingReset,
+  paragraph,
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
@@ -55,11 +56,11 @@ const DeleteAccountOverlay = ({ username, visible, setVisible }: Props) => {
           <Text style={styles.header}>Are you sure?</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>
+          <Text style={paragraph}>
             This action cannot be undone. This will permenently delete your
             account and all associated data.
           </Text>
-          <Text style={styles.paragraph}>
+          <Text style={paragraph}>
             Confirm your username to continue:
           </Text>
           <Input
@@ -191,11 +192,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     padding: 16,
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
-    marginBottom: 8,
   },
 });

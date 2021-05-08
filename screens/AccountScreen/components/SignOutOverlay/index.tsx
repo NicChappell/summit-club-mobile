@@ -9,6 +9,7 @@ import {
   inputContainer,
   inputStyle,
   paddingReset,
+  paragraph,
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
@@ -30,7 +31,7 @@ const SignOutOverlay = ({ setVisible, signOut, visible }: Props) => {
           <Text style={styles.header}>Sign out</Text>
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>
+          <Text style={paragraph}>
             Are you sure you want to sign out?
           </Text>
         </View>
@@ -137,11 +138,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     padding: 16,
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
   },
   signOutButton: {
     ...borderRadius4,

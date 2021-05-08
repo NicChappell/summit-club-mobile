@@ -11,6 +11,7 @@ import {
   inputContainer,
   inputStyle,
   paddingReset,
+  paragraph,
 } from "../../../../common/styles";
 import * as actions from "../../../../redux/actions";
 import { RootState } from "../../../../redux/reducers";
@@ -68,7 +69,7 @@ const ForgotPasswordOverlay = ({ error, visible, setVisible }: Props) => {
               <Text style={styles.header}>Forgot password</Text>
             </View>
             <View style={styles.overlayBody}>
-              <Text style={styles.paragraph}>
+              <Text style={paragraph}>
                 Enter the email address associated with your account and we will
                 send you a link to reset your password.
               </Text>
@@ -187,6 +188,7 @@ const styles = StyleSheet.create({
     fontFamily: "NunitoSans_600SemiBold",
     fontSize: 16,
     lineHeight: 20,
+    marginTop: 16,
   },
   inputStyle: {
     ...inputStyle,

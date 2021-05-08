@@ -21,8 +21,9 @@ import {
   inputBorder,
   inputContainer,
   inputStyle,
-  paddingReset,
   marginReset,
+  paddingReset,
+  paragraph,
   shadow,
   shadowReset,
 } from "../../common/styles";
@@ -156,7 +157,7 @@ const SignInScreen = ({ error, navigation, route, signIn }: Props) => {
           </View>
         </View>
         <View style={styles.bottom}>
-          <Text style={styles.paragraph}>I'm a new user, </Text>
+          <Text style={paragraph}>I'm a new user, </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
             <Text style={styles.signUp}>Sign Up</Text>
           </TouchableOpacity>
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: "baseline",
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 8,
+    marginBottom: 16,
   },
   buttonGroup: {
     alignItems: "center",

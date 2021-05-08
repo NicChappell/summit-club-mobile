@@ -31,13 +31,19 @@ import { getFeaturePhoto, randomInt } from "../../common/helpers";
 import {
   borderRadius4,
   colors,
+  divider,
   featureCoordinate,
   featureElevation,
   featureLocation,
   featureName,
+  listItem,
+  listItemBorderTop,
+  listItemContainer,
+  listItemContent,
   listItemTitle,
   listItemSubtitle,
   paddingReset,
+  paragraph,
   sectionTitle,
   separator,
   shadow,
@@ -260,10 +266,10 @@ const FeatureScreen = ({
               </View>
             </View>
           </View>
-          <Divider style={styles.divider} />
+          <Divider style={divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Description</Text>
-            <Text style={styles.paragraph}>
+            <Text style={paragraph}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
               semper semper diam, porttitor mollis ipsum pharetra vel. Nulla
               blandit eros a diam rhoncus rhoncus vitae ut neque. Sed sagittis,
@@ -271,7 +277,7 @@ const FeatureScreen = ({
               feugiat metus ipsum id ligula.
             </Text>
           </View>
-          <Divider style={styles.divider} />
+          <Divider style={divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Location</Text>
             {coordinate && region && (
@@ -298,9 +304,9 @@ const FeatureScreen = ({
             />
             <View style={styles.checkOff}>
               {checkOff ? (
-                <Text style={styles.paragraph}>Mark incomplete:</Text>
+                <Text style={paragraph}>Mark incomplete:</Text>
               ) : (
-                <Text style={styles.paragraph}>Mark complete:</Text>
+                <Text style={paragraph}>Mark complete:</Text>
               )}
               <Switch
                 trackColor={{
@@ -317,7 +323,7 @@ const FeatureScreen = ({
           </View>
           {apparel && (
             <>
-              <Divider style={styles.divider} />
+              <Divider style={divider} />
               <View style={styles.section}>
                 <Text style={sectionTitle}>Apparel</Text>
                 <FlatList
@@ -338,15 +344,16 @@ const FeatureScreen = ({
           )}
           {recentCheckIns && (
             <>
-              <Divider style={styles.divider} />
+              <Divider style={divider} />
               <View style={styles.section}>
                 <Text style={sectionTitle}>Recent check-ins</Text>
-                <View style={styles.listItemContainer}>
+                <View style={listItemContainer}>
                   {recentCheckIns.slice(0, 5).map((recentCheckIn, index) => (
                     <ListItem
-                      containerStyle={styles.listItem}
+                      containerStyle={
+                        index !== 0 ? [listItem, listItemBorderTop] : listItem
+                      }
                       key={index}
-                      topDivider={index !== 0}
                     >
                       <Avatar
                         rounded
@@ -356,7 +363,7 @@ const FeatureScreen = ({
                           backgroundColor: randomColor(),
                         }}
                       />
-                      <View style={styles.listItemContent}>
+                      <View style={listItemContent}>
                         <View>
                           <Text style={listItemTitle}>Nic Chappell</Text>
                           <Text style={listItemSubtitle}>
@@ -382,7 +389,7 @@ const FeatureScreen = ({
           )}
           {nearbySummits && (
             <>
-              <Divider style={styles.divider} />
+              <Divider style={divider} />
               <View style={styles.section}>
                 <Text style={sectionTitle}>Nearby summits</Text>
                 <FlatList
@@ -479,14 +486,8 @@ const styles = StyleSheet.create({
   },
   counter: {
     color: colors.black,
-    fontFamily: "NotoSansJP_700Bold",
+    fontFamily: "NunitoSans_600SemiBold",
     fontSize: 20,
-  },
-  divider: {
-    backgroundColor: colors.black05,
-    height: 1,
-    marginBottom: 12,
-    marginTop: 24,
   },
   featureName: {
     ...featureName,
@@ -508,18 +509,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
   },
-  listItem: {
-    backgroundColor: "transparent",
-  },
-  listItemContainer: {
-    alignSelf: "stretch",
-  },
-  listItemContent: {
-    alignItems: "center",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
   mapContainer: {
     backgroundColor: colors.black01,
     height: 256,
@@ -530,11 +519,6 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     width: "100%",
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
   },
   rightColumn: {
     alignItems: "center",

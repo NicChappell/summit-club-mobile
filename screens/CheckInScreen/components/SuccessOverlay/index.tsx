@@ -2,7 +2,12 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
+import {
+  borderRadius4,
+  colors,
+  paddingReset,
+  paragraph,
+} from "../../../../common/styles";
 import { ISuccessOverlay } from "./types";
 
 const SuccessOverlay = ({ visible, setVisible }: ISuccessOverlay) => {
@@ -25,7 +30,7 @@ const SuccessOverlay = ({ visible, setVisible }: ISuccessOverlay) => {
             color={colors.queenBlue}
             style={{ alignSelf: "center" }}
           />
-          <Text style={styles.paragraph}>
+          <Text style={paragraph}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget
             ante cursus, dictum ligula ac, euismod nibh.
           </Text>
@@ -101,10 +106,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     padding: 16,
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
   },
 });

@@ -21,8 +21,9 @@ import {
   inputBorder,
   inputContainer,
   inputStyle,
-  paddingReset,
   marginReset,
+  paddingReset,
+  paragraph,
   shadow,
   shadowReset,
 } from "../../common/styles";
@@ -142,7 +143,7 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
           </View>
         </View>
         <View style={styles.bottom}>
-          <Text style={styles.paragraph}>I'm already a member, </Text>
+          <Text style={paragraph}>I'm already a member, </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
             <Text style={styles.signIn}>Sign In</Text>
           </TouchableOpacity>
@@ -171,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: "baseline",
     flexDirection: "row",
     justifyContent: "center",
-    marginBottom: 8,
+    marginBottom: 16,
   },
   buttonContainer: {
     alignSelf: "flex-start",
@@ -228,12 +229,6 @@ const styles = StyleSheet.create({
     color: colors.queenBlue,
     fontFamily: "NotoSansJP_700Bold",
     fontSize: 32,
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
-    marginBottom: 8,
   },
   section: {
     marginTop: 48,

@@ -5,7 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";
-import { borderRadius4, colors, paddingReset } from "../../styles";
+import { borderRadius4, colors, paddingReset, paragraph } from "../../styles";
 import { IErrorOverlay } from "./types";
 
 type Props = PropsFromRedux & IErrorOverlay;
@@ -43,9 +43,9 @@ const ErrorOverlay = ({ error, clearError }: Props) => {
         </View>
         <View style={styles.overlayBody}>
           {message ? (
-            <Text style={styles.paragraph}>{message}</Text>
+            <Text style={paragraph}>{message}</Text>
           ) : (
-            <Text style={styles.paragraph}>
+            <Text style={paragraph}>
               An error occurred, please try again later.
             </Text>
           )}
@@ -135,10 +135,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     padding: 16,
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
   },
 });

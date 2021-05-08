@@ -31,16 +31,10 @@ export const featureName = {
   fontSize: 18,
 } as TextStyle;
 
-export const listItemTitle = {
+export const paragraph = {
   color: colors.black,
-  fontFamily: "NotoSansJP_500Medium",
-  fontSize: 18,
-} as TextStyle;
-
-export const listItemSubtitle = {
-  color: colors.black,
-  fontFamily: "NotoSansJP_500Medium",
-  fontSize: 12,
+  fontFamily: "NunitoSans_400Regular",
+  fontSize: 16,
 } as TextStyle;
 
 export const sectionTitle = {

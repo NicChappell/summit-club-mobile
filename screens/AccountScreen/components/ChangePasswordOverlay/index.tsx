@@ -237,10 +237,4 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     padding: 16,
   },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
-    marginBottom: 8,
-  },
 });

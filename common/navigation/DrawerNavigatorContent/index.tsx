@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Switch, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Slider, Text } from "react-native-elements";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { DrawerContentComponentProps } from "@react-navigation/drawer";
-import { IFeatureFilters } from "../../../common/types";
+import { CustomSwitch } from "../../../common/components";
 import { colors } from "../../../common/styles";
-import { ElevationTier } from "../../../common/types";
+import { ElevationTier, IFeatureFilters } from "../../../common/types";
 import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";
 
@@ -195,13 +195,9 @@ const DrawerNavigatorContent = ({
         </TouchableOpacity>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Counties Overlay</Text>
-          <Switch
-            trackColor={{ false: colors.black05, true: colors.pistachio75 }}
-            thumbColor={colors.white}
-            ios_backgroundColor={colors.black05}
-            onValueChange={handleSwitchChange}
-            style={styles.switch}
-            value={countiesOverlay}
+          <CustomSwitch
+            handleSwitchChange={handleSwitchChange}
+            value={Boolean(countiesOverlay)}
           />
         </View>
       </View>
@@ -287,12 +283,6 @@ const styles = StyleSheet.create({
   slider: {
     alignSelf: "stretch",
     marginHorizontal: 16,
-  },
-  switch: {
-    borderColor: colors.queenBlue,
-    borderWidth: 2,
-    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
-    marginRight: -4,
   },
   title: {
     color: colors.queenBlue,

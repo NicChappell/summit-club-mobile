@@ -2,7 +2,12 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { borderRadius4, colors, paddingReset } from "../../../../common/styles";
+import {
+  borderRadius4,
+  colors,
+  paddingReset,
+  paragraph,
+} from "../../../../common/styles";
 import { ICheckOffOverlay } from "./types";
 
 const CheckOffOverlay = ({
@@ -36,7 +41,7 @@ const CheckOffOverlay = ({
           />
         </View>
         <View style={styles.overlayBody}>
-          <Text style={styles.paragraph}>
+          <Text style={paragraph}>
             {name} has been {checkOff ? "added to" : "removed from"} your
             Summits
           </Text>
@@ -107,10 +112,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     padding: 16,
-  },
-  paragraph: {
-    color: colors.black,
-    fontFamily: "NunitoSans_400Regular",
-    fontSize: 16,
   },
 });

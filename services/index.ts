@@ -19,12 +19,11 @@ export {
   FeatureClassification,
   SummitType,
   IBounds,
-  ISummit,
+  IPopularSummit,
   IQueryParams,
   IQueryResult,
-  IPopularSummit,
+  ISummit,
   defaultBounds,
-  processResultSet,
 } from "./Summit";
 export {
   default as User,

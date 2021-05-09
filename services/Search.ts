@@ -34,7 +34,7 @@ export class Trie {
     this.suggestions = [];
   }
 
-  complete(word: string, limit: number = 0) {
+  complete(word: string, CHILDREN: number = 0) {
     // set root node
     const root = this.find(word);
 
@@ -55,7 +55,7 @@ export class Trie {
       count++;
 
       // break out of loop at limit
-      if (Boolean(limit) && count === limit) break;
+      if (Boolean(CHILDREN) && count === CHILDREN) break;
     }
 
     return this.suggestions;

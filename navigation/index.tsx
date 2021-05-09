@@ -8,7 +8,7 @@ import { IError } from "../common/types";
 import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
 import { IAuthState } from "../redux/reducers/children/authReducer/types";
-import { User } from "../services";
+import { IQueryResult, Summit, Trie, User } from "../services";
 import { AuthStack, MainTabs } from "./navigators";
 
 const Navigation = ({
@@ -31,9 +31,35 @@ const Navigation = ({
     const featuresCollectionRef = firebase.firestore().collection("features");
     setFeaturesCollectionRef(featuresCollectionRef);
 
-    // set features database
-    const featuresDatabase = SQLite.openDatabase("features");
-    setFeaturesDatabase(featuresDatabase);
+    // set database ref
+    const databaseRef = SQLite.openDatabase("summit_club");
+    setFeaturesDatabase(databaseRef);
+
+    Summit.getSummitNames()
+      .then((resultSet) => {
+        // destructure ResultSet
+        const { _array }: any = resultSet.rows;
+
+        const summitNames = _array.map(
+          (result: Partial<IQueryResult>) => result.name
+        );
+
+        const trie = new Trie();
+
+        summitNames.forEach((summitName: string) =>
+          trie.add(summitName.toLowerCase())
+        );
+        console.log(trie);
+
+        const suggestions = trie.complete("gr", 6);
+        console.log(suggestions);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
   }, []);
 
   let navigator;

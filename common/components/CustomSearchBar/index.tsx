@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Button, SearchBar } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
@@ -19,66 +19,58 @@ import {
 } from "../../styles";
 import { ICustomSearchBar } from "./types";
 
-const CustomSearchBar = ({ navigation }: ICustomSearchBar) => {
+type Props = PropsFromRedux & ICustomSearchBar;
+
+const CustomSearchBar = ({ navigation, search }: Props) => {
+  // destructure search
+  const { trie } = search;
+
   // state hooks
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isSearchButtonVisible, setIsSearchButtonVisible] = useState<boolean>(
+    false
+  );
   const [searchInput, setSearchInput] = useState<string>("");
-  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   // boolean conditions
-  const renderSuggestions = searchResults.length > 0;
+  const renderSuggestions = suggestions.length > 0;
 
-  const trieText = (text: string) => {
-    if (text) {
-      return [
-        "Blanca Peak",
-        "Capitol Peak",
-        "Castle Peak",
-        "Challenger Point",
-        "Conundrum Peak",
-        "Crestone Needle",
-        "Crestone Peak",
-        "Culebra Peak",
-        "El Diente Peak",
-        "Ellingwood Point",
-        "Grays Peak",
-      ];
-    }
-    return [];
-  };
-
-  // ref hooks
-  const searchBarRef = useRef<SearchBar>(null);
+  // effect hooks
+  useEffect(() => {}, []);
 
   const handleBlur = () => {
-    setIsVisible(false);
-    setSearchResults([]);
+    setIsSearchButtonVisible(false);
+    setSuggestions([]);
   };
 
   const handleChangeText = (text: string) => {
-    // retrieve matching keys from search Trie
-    const searchResults = trieText(text);
-    console.log(searchResults);
-    console.log(searchResults.slice(0, text.length));
+    let suggestions: string[] = [];
+    if (text.length > 1) {
+      // retrieve suggestions from search Trie
+      suggestions = trie.complete(text.toLowerCase(), 6); // A,E,I,O,U & Y
+    }
 
+    // clear search Trie suggestions
+    trie.clear();
+
+    // update state
     setSearchInput(text);
-    setSearchResults(searchResults.slice(0, text.length));
+    setSuggestions(suggestions.slice(0, 10));
   };
 
   const handleClearIconPress = () => {
-    // return early if searchBarRef is null
-    if (!searchBarRef) return;
-
-    // clear search bar input
-    searchBarRef.current!.clear();
+    setSearchInput("");
+    setSuggestions([]);
   };
 
-  const handleFocus = () => {
-    // retrieve matching keys from search Trie
-    const searchResults = trieText(searchInput);
+  const handleFocus = () => setIsSearchButtonVisible(true);
 
-    setIsVisible(true);
-    setSearchResults(searchResults.slice(0, searchInput.length));
+  const handlePress = (searchResult: string) => {
+    // update state
+    setSearchInput(searchResult);
+
+    // navigate to Search Results screen
+    navigation.navigate("SearchResults");
   };
 
   const handleSearch = () => {
@@ -89,6 +81,8 @@ const CustomSearchBar = ({ navigation }: ICustomSearchBar) => {
   return (
     <View style={searchBarWrapper}>
       <SearchBar
+        autoCapitalize="none"
+        autoCompleteType="off"
         clearIcon={
           <Ionicons
             name={"ios-close"}
@@ -106,7 +100,6 @@ const CustomSearchBar = ({ navigation }: ICustomSearchBar) => {
         onFocus={handleFocus}
         onSubmitEditing={handleSearch}
         placeholder="Find your next adventure"
-        ref={searchBarRef}
         returnKeyType={"search"}
         rightIconContainerStyle={searchBarIconContainer}
         searchIcon={
@@ -114,7 +107,7 @@ const CustomSearchBar = ({ navigation }: ICustomSearchBar) => {
         }
         value={searchInput}
       />
-      {isVisible && (
+      {isSearchButtonVisible && (
         <Button
           buttonStyle={searchButton}
           onPress={handleSearch}
@@ -125,9 +118,14 @@ const CustomSearchBar = ({ navigation }: ICustomSearchBar) => {
       {renderSuggestions && (
         <View style={searchSuggestionsContainer}>
           <View style={searchSuggestions}>
-            {searchResults.map((searchResult, index) => (
-              <TouchableOpacity key={index} onPress={handleSearch}>
-                <Text style={searchSuggestion}>{searchResult}</Text>
+            {suggestions.map((searchResult, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handlePress(searchResult)}
+              >
+                <Text numberOfLines={1} style={searchSuggestion}>
+                  {searchResult}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -138,8 +136,9 @@ const CustomSearchBar = ({ navigation }: ICustomSearchBar) => {
 };
 
 const mapStateToProps = (state: RootState) => {
-  console.log("state: ", state);
-  return {};
+  return {
+    search: state.search,
+  };
 };
 
 const mapDispatchToProps = {};

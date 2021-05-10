@@ -17,6 +17,7 @@ const Navigation = ({
   setError,
   setFeaturesCollectionRef,
   setFeaturesDatabase,
+  setTrie,
   setUser,
 }: PropsFromRedux) => {
   // destructure auth
@@ -40,19 +41,21 @@ const Navigation = ({
         // destructure ResultSet
         const { _array }: any = resultSet.rows;
 
+        // create list of summit names
         const summitNames = _array.map(
           (result: Partial<IQueryResult>) => result.name
         );
 
+        // instantiate new search Trie
         const trie = new Trie();
 
+        // create new node for each summit name
         summitNames.forEach((summitName: string) =>
           trie.add(summitName.toLowerCase())
         );
-        console.log(trie);
 
-        const suggestions = trie.complete("gr", 6); // A,E,I,O,U & Y
-        console.log(suggestions);
+        // update global state
+        setTrie(trie);
       })
       .catch((error: IError) => {
         setError({
@@ -96,6 +99,7 @@ const mapDispatchToProps = {
   setError: actions.setError,
   setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
   setFeaturesDatabase: actions.setFeaturesDatabase,
+  setTrie: actions.setTrie,
   setUser: actions.setUser,
 };
 

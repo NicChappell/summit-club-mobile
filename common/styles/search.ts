@@ -89,6 +89,7 @@ export const searchSuggestions = {
   borderRightWidth: 1,
   borderRightColor: colors.black25,
   justifyContent: "flex-start",
+  paddingBottom: 4,
   paddingHorizontal: 56,
 } as ViewStyle;
 

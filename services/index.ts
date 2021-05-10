@@ -13,7 +13,7 @@ export {
   IApparel,
   IApparelVersion,
 } from "./Merchandise";
-export { Trie } from "./Search";
+export { default as Trie, ISummitName, TrieNode } from "./Search";
 export {
   default as Summit,
   FeatureClassification,

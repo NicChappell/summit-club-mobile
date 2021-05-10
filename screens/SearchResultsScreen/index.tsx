@@ -11,7 +11,17 @@ import { ISearchResultsScreen } from "./types";
 
 type Props = PropsFromRedux & ISearchResultsScreen;
 
-const SearchResultsScreen = ({ error, navigation, route, setError }: Props) => {
+const SearchResultsScreen = ({
+  error,
+  navigation,
+  route,
+  search,
+  setError,
+}: Props) => {
+  // destructure search
+  const { fuse } = search;
+  console.log("fuse: ", fuse);
+
   // state hooks
   const [filteredSummits, setFilteredSummits] = useState<ISummit[]>([]);
 
@@ -51,6 +61,7 @@ const SearchResultsScreen = ({ error, navigation, route, setError }: Props) => {
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
+    search: state.search,
   };
 };
 

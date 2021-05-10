@@ -3,12 +3,13 @@ import { connect, ConnectedProps } from "react-redux";
 import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import Fuse from "fuse.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { IError } from "../common/types";
 import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
 import { IAuthState } from "../redux/reducers/children/authReducer/types";
-import { IQueryResult, Summit, Trie, User } from "../services";
+import { IQueryResult, ISummitName, Summit, Trie, User } from "../services";
 import { AuthStack, MainTabs } from "./navigators";
 
 const Navigation = ({
@@ -17,6 +18,7 @@ const Navigation = ({
   setError,
   setFeaturesCollectionRef,
   setFeaturesDatabase,
+  setFuse,
   setTrie,
   setUser,
 }: PropsFromRedux) => {
@@ -41,20 +43,42 @@ const Navigation = ({
         // destructure ResultSet
         const { _array }: any = resultSet.rows;
 
-        // create list of summit names
-        const summitNames = _array.map(
-          (result: Partial<IQueryResult>) => result.name
+        // process summit names into search objects
+        const summitNames: ISummitName[] = _array.map(
+          (result: Partial<IQueryResult>) => ({
+            lowercase: result.name?.toLowerCase(),
+            original: result.name,
+          })
         );
+
+        // configure Fuse options
+        const fuseOptions = {
+          // isCaseSensitive: false,
+          includeScore: false,
+          shouldSort: true,
+          // includeMatches: false,
+          // findAllMatches: false,
+          // minMatchCharLength: 1,
+          // location: 0,
+          // threshold: 0.6,
+          // distance: 100,
+          // useExtendedSearch: false,
+          // ignoreLocation: false,
+          // ignoreFieldNorm: false,
+          keys: ["lowercase"],
+        };
+
+        // instantiate new Fuse
+        const fuse = new Fuse(summitNames, fuseOptions);
 
         // instantiate new search Trie
         const trie = new Trie();
 
         // create new node for each summit name
-        summitNames.forEach((summitName: string) =>
-          trie.add(summitName.toLowerCase())
-        );
+        summitNames.forEach((summitName) => trie.add(summitName.lowercase));
 
         // update global state
+        setFuse(fuse);
         setTrie(trie);
       })
       .catch((error: IError) => {
@@ -99,6 +123,7 @@ const mapDispatchToProps = {
   setError: actions.setError,
   setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
   setFeaturesDatabase: actions.setFeaturesDatabase,
+  setFuse: actions.setFuse,
   setTrie: actions.setTrie,
   setUser: actions.setUser,
 };

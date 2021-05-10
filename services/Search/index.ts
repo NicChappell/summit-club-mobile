@@ -1,4 +1,6 @@
-export class Trie {
+import { ISummitName, TrieNode } from "./types";
+
+class Trie {
   constructor() {
     this.suggestions = [];
     this.trie = null;
@@ -107,7 +109,6 @@ export class Trie {
   }
 }
 
-type TrieNode = {
-  isLeaf: boolean;
-  children: any;
-};
+export default Trie;
+
+export { ISummitName, TrieNode };

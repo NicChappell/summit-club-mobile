@@ -51,7 +51,7 @@ const Navigation = ({
         );
         console.log(trie);
 
-        const suggestions = trie.complete("gr", 6);
+        const suggestions = trie.complete("gr", 6); // A,E,I,O,U & Y
         console.log(suggestions);
       })
       .catch((error: IError) => {

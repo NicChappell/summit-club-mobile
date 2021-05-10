@@ -1,5 +1,6 @@
 export { default as ApparelDetailsCard } from "./ApparelDetailsCard";
 export { default as BasicDetailsCard } from "./BasicDetailsCard";
+export { default as CustomSearchBar } from "./CustomSearchBar";
 export { default as CustomSwitch } from "./CustomSwitch";
 export { default as DismissKeyboard } from "./DismissKeyboard";
 export { default as ErrorOverlay } from "./ErrorOverlay";

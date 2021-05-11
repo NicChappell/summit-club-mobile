@@ -18,10 +18,6 @@ const SearchResultsScreen = ({
   search,
   setError,
 }: Props) => {
-  // destructure search
-  const { fuse } = search;
-  console.log("fuse: ", fuse);
-
   // state hooks
   const [filteredSummits, setFilteredSummits] = useState<ISummit[]>([]);
 
@@ -45,13 +41,27 @@ const SearchResultsScreen = ({
       });
   }, []);
 
+  useEffect(() => {
+    // destructure search
+    const { fuse, searchTerm } = search;
+    console.log("fuse: ", fuse);
+    console.log("searchTerm: ", searchTerm);
+
+    const result = fuse.search(searchTerm, { limit: 25 });
+    console.log("result: ", result);
+  }, [search]);
+
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
       <FlatList
         data={filteredSummits}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <SummitDetailsListItem item={item} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => console.log("TODO")}>
+            <SummitDetailsListItem item={item} />
+          </TouchableOpacity>
+        )}
         showsVerticalScrollIndicator={false}
       />
     </View>

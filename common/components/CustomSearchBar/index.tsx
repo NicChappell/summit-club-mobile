@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { Button, SearchBar } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";
 import {
   colors,
@@ -21,7 +22,7 @@ import { ICustomSearchBar } from "./types";
 
 type Props = PropsFromRedux & ICustomSearchBar;
 
-const CustomSearchBar = ({ navigation, search }: Props) => {
+const CustomSearchBar = ({ navigation, search, setSearchTerm }: Props) => {
   // destructure search
   const { trie } = search;
 
@@ -66,7 +67,7 @@ const CustomSearchBar = ({ navigation, search }: Props) => {
   const handleFocus = () => setIsSearchButtonVisible(true);
 
   const handlePress = (searchResult: string) => {
-    // update state
+    // update local state
     setSearchInput(searchResult);
 
     // navigate to Search Results screen
@@ -74,6 +75,9 @@ const CustomSearchBar = ({ navigation, search }: Props) => {
   };
 
   const handleSearch = () => {
+    // update global state
+    setSearchTerm(searchInput);
+
     // navigate to Search Results screen
     navigation.navigate("SearchResults");
   };
@@ -141,7 +145,9 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  setSearchTerm: actions.setSearchTerm,
+};
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

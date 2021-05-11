@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
+import {
+  ErrorOverlay,
+  SearchResultsListItem,
+  SummitDetailsListItem,
+} from "../../common/components";
 import { IError } from "../../common/types";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
@@ -10,6 +14,14 @@ import { ISummit, IPopularSummit, Summit, defaultBounds } from "../../services";
 import { ISearchResultsScreen } from "./types";
 
 type Props = PropsFromRedux & ISearchResultsScreen;
+
+interface ISearchResult {
+  item: {
+    lowercase: string;
+    original: string;
+  };
+  refIndex: number;
+}
 
 const SearchResultsScreen = ({
   error,
@@ -20,6 +32,7 @@ const SearchResultsScreen = ({
 }: Props) => {
   // state hooks
   const [filteredSummits, setFilteredSummits] = useState<ISummit[]>([]);
+  const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
 
   // effect hooks
   useEffect(() => {
@@ -44,22 +57,29 @@ const SearchResultsScreen = ({
   useEffect(() => {
     // destructure search
     const { fuse, searchTerm } = search;
-    console.log("fuse: ", fuse);
-    console.log("searchTerm: ", searchTerm);
 
-    const result = fuse.search(searchTerm, { limit: 25 });
-    console.log("result: ", result);
+    // get search results
+    const searchResults = fuse.search(searchTerm, { limit: 25 });
+    console.log(searchResults);
+
+    // update state
+    setSearchResults(searchResults);
   }, [search]);
 
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
       <FlatList
-        data={filteredSummits}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
+        data={searchResults}
+        keyExtractor={(item) => item.refIndex.toString()}
+        renderItem={({
+          item: {
+            item: { original: name },
+          },
+        }) => (
           <TouchableOpacity onPress={() => console.log("TODO")}>
-            <SummitDetailsListItem item={item} />
+            <SearchResultsListItem name={name} />
+            {/* <SummitDetailsListItem item={item} /> */}
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={false}

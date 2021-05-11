@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
+import { Summit } from "../../../services";
 import { getFeaturePhoto } from "../../helpers";
 import {
   colors,
@@ -12,22 +14,35 @@ import {
 import StaticMapBackground from "../StaticMapBackground";
 import { ISearchResultsListItem } from "./types";
 
-const SearchResultsListItem = ({ id }: ISearchResultsListItem) => {
+const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
   // state hooks
+  const [feature, setFeature] = useState<
+    Feature<Geometry, GeoJsonProperties>
+  >();
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
 
   // effect hooks
   useEffect(() => {
+    Summit.findByName(name)
+      .then((resultSet) => {
+        console.log("resultSet: ", resultSet);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+  }, []);
+
+  useEffect(() => {
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto(feature.properties?.name);
+    const featurePhoto = getFeaturePhoto(feature?.properties?.name);
 
     // update state
     setFeaturePhoto(featurePhoto);
   }, [feature]);
 
   return (
-    <ListItem bottomDivider key={id}>
-      {featurePhoto ? (
+    <ListItem bottomDivider>
+      {/* {feature && featurePhoto ? (
         // render feature photo if available
         <View
           style={[
@@ -49,25 +64,25 @@ const SearchResultsListItem = ({ id }: ISearchResultsListItem) => {
             height: 80,
             width: 80,
           }}
-          feature={feature}
+          feature={feature!}
         />
-      )}
+      )} */}
       <ListItem.Content>
         <View style={styles.row}>
           <View style={styles.leftColumn}>
-            <Text style={featureName}>{feature.properties?.name}</Text>
+            <Text style={featureName}>{feature?.properties?.name}</Text>
             <Text style={featureLocation}>
-              {feature.properties?.feet.toLocaleString()} ft ·{" "}
-              {feature.properties?.county} County
+              {feature?.properties?.feet.toLocaleString()} ft ·{" "}
+              {feature?.properties?.county} County
             </Text>
             <Text style={featureCoordinate}>
-              {feature.properties?.latitude.toFixed(3)}°{" "}
-              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-              {feature.properties?.longitude.toFixed(3)}°{" "}
-              {feature.properties?.longitude > 0 ? "E" : "W"}
+              {feature?.properties?.latitude.toFixed(3)}°{" "}
+              {feature?.properties?.latitude > 0 ? "N" : "S"},{" "}
+              {feature?.properties?.longitude.toFixed(3)}°{" "}
+              {feature?.properties?.longitude > 0 ? "E" : "W"}
             </Text>
           </View>
-          {checkIns?.length ? (
+          {/* {checkIns?.length ? (
             <View style={styles.rightColumn}>
               <Ionicons
                 name={"ios-shield-checkmark-outline"}
@@ -76,7 +91,7 @@ const SearchResultsListItem = ({ id }: ISearchResultsListItem) => {
               />
               <Text style={styles.verified}>Verified{"\n"}check-in</Text>
             </View>
-          ) : null}
+          ) : null} */}
         </View>
       </ListItem.Content>
     </ListItem>

@@ -30,7 +30,7 @@ export const countFeatureRows = async (
     // construct sql statement
     const sqlStatement = `
       SELECT COUNT(*)
-      FROM features
+      FROM feature
       WHERE (
         feet <= ${featureFilters.maxElevation}
       ) AND (
@@ -391,7 +391,7 @@ export const queryFeaturesTable = async (
     // construct sql statement
     const sqlStatement = `
       SELECT *
-      FROM features
+      FROM feature
       WHERE (
         latitude < ${neLat}
         AND longitude < ${neLng}

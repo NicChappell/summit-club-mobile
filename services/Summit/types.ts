@@ -159,15 +159,15 @@ export interface ISummit {
 
 export interface IQueryParams {
   /** Map boundary coordinates */
-  bounds: IBounds;
+  bounds?: IBounds;
   /** Filter expression */
-  filters: string;
+  filters?: string;
   /** Order of the results */
-  orderBy: "ASC" | "DESC";
+  orderBy?: "ASC" | "DESC";
   /** Number of rows to return */
-  limit: number;
+  limit?: number;
   /** Number of rows to ignore */
-  offset: number;
+  offset?: number;
 }
 
 export interface IQueryResult {

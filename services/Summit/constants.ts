@@ -1,4 +1,4 @@
-import { IBounds } from "./types";
+import { IBounds, IQueryParams } from "./types";
 
 export const defaultBounds: IBounds = {
   northEast: {
@@ -9,4 +9,12 @@ export const defaultBounds: IBounds = {
     latitude: 36.994786, // southwest latitude coordinate
     longitude: -109.058934, // southwest longitude coordinate
   },
+};
+
+export const defaultQueryParams: IQueryParams = {
+  bounds: defaultBounds,
+  filters: "",
+  orderBy: "DESC",
+  limit: 64,
+  offset: 0,
 };

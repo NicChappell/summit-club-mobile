@@ -1,7 +1,7 @@
 import * as SQLite from "expo-sqlite";
 import { executeSql } from "../database";
 import { MOCK_FEATURE } from "../../data/mocks";
-import { defaultBounds } from "./constants";
+import { defaultBounds, defaultQueryParams } from "./constants";
 import { processFeatureCollection } from "./helpers";
 import {
   FeatureClassification,
@@ -14,6 +14,16 @@ import {
 } from "./types";
 
 class Summit {
+  /** Find summit by name */
+  static findByName(name: string): Promise<SQLite.SQLResultSet> {
+    // TODO: FIREBASE QUERY
+
+    // database query
+    const sqlStatement = `SELECT * FROM feature WHERE name="${name}"`;
+
+    return executeSql(sqlStatement);
+  }
+
   /** Fetch array of featured summits */
   static getFeaturedSummits(): Promise<ISummit[]> {
     // TODO: FIREBASE QUERY
@@ -364,22 +374,19 @@ class Summit {
   }
 
   /** Fetch array of filtered summits */
-  // TODO: SOME WAY OF MAKING THESE THINGS OPTIONAL / USE DEFAULTS IF VALUES NOT PROVIDED
-  static async query(
-    params: IQueryParams = {
-      bounds: defaultBounds,
-      filters: "",
-      orderBy: "DESC",
-      limit: 64,
-      offset: 0,
-    }
-  ): Promise<ISummit[]> {
+  static async query(params: IQueryParams): Promise<ISummit[]> {
+    // merge default query params
+    const queryParams = {
+      ...defaultQueryParams,
+      params,
+    };
+
     // destructure params
-    const { bounds, filters, orderBy, limit, offset } = params;
+    const { bounds, filters, orderBy, limit, offset } = queryParams;
 
     // destructure boundaries
-    const northEast = bounds.northEast;
-    const southWest = bounds.southWest;
+    const northEast = bounds?.northEast;
+    const southWest = bounds?.southWest;
 
     // destructure northeast coordinates
     const neLat = northEast?.latitude;

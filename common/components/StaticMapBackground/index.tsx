@@ -10,6 +10,9 @@ const StaticMapBackground = ({
   containerStyles,
   feature,
 }: IStaticMapBackground) => {
+  // return early if feature is undefined
+  if (!feature) return null;
+
   // state hooks
   const [coordinate, setCoordinate] = useState<LatLng>();
   const [region, setRegion] = useState<Region>();

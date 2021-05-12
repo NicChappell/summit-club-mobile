@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { Summit } from "../../../services";
+import { processFeature, Summit } from "../../../services";
 import { getFeaturePhoto } from "../../helpers";
 import {
   colors,
@@ -19,13 +18,17 @@ const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
   const [feature, setFeature] = useState<
     Feature<Geometry, GeoJsonProperties>
   >();
-  const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
+  const [featurePhoto, setFeaturePhoto] = useState<any>();
 
   // effect hooks
   useEffect(() => {
     Summit.findByName(name)
       .then((resultSet) => {
-        console.log("resultSet: ", resultSet);
+        // format result
+        const feature = processFeature(resultSet);
+
+        // update state
+        setFeature(feature);
       })
       .catch((error) => {
         console.log("error: ", error);
@@ -42,7 +45,7 @@ const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
 
   return (
     <ListItem bottomDivider>
-      {/* {feature && featurePhoto ? (
+      {feature && featurePhoto ? (
         // render feature photo if available
         <View
           style={[
@@ -64,9 +67,9 @@ const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
             height: 80,
             width: 80,
           }}
-          feature={feature!}
+          feature={feature}
         />
-      )} */}
+      )}
       <ListItem.Content>
         <View style={styles.row}>
           <View style={styles.leftColumn}>
@@ -82,16 +85,6 @@ const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
               {feature?.properties?.longitude > 0 ? "E" : "W"}
             </Text>
           </View>
-          {/* {checkIns?.length ? (
-            <View style={styles.rightColumn}>
-              <Ionicons
-                name={"ios-shield-checkmark-outline"}
-                size={24}
-                color={colors.queenBlue}
-              />
-              <Text style={styles.verified}>Verified{"\n"}check-in</Text>
-            </View>
-          ) : null} */}
         </View>
       </ListItem.Content>
     </ListItem>

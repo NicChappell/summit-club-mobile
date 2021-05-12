@@ -24,6 +24,8 @@ export {
   IQueryResult,
   ISummit,
   defaultBounds,
+  processFeature,
+  processFeatureCollection,
 } from "./Summit";
 export {
   default as User,

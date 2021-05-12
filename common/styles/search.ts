@@ -79,7 +79,7 @@ export const searchSuggestion = {
   fontSize: 18,
 } as TextStyle;
 
-export const searchSuggestions = {
+export const searchSuggestionsContainer = {
   alignItems: "stretch",
   backgroundColor: colors.white,
   borderBottomWidth: 1,
@@ -93,7 +93,7 @@ export const searchSuggestions = {
   paddingHorizontal: 56,
 } as ViewStyle;
 
-export const searchSuggestionsContainer = {
+export const searchSuggestionsWrapper = {
   width: "100%",
   position: "absolute",
   top: 52,

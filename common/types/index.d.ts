@@ -158,6 +158,7 @@ export interface IAuthCredentials {
   password: string;
 }
 
+// TODO: THIS CAN PROBABLY DE DELETED IN FAVOR OF DUPLICATE INTERFACE IN ERROR SERVICE
 export interface IError {
   /** Error code */
   code?: number | string;

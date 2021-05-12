@@ -1,6 +1,6 @@
-import { IError } from "../../../../common/types";
+import { IErrorState } from "./types";
 
-export const initState: IError = {
+export const initState: IErrorState = {
   code: undefined,
   message: undefined,
 };

@@ -1,6 +1,7 @@
 import {
   SET_FUSE,
   SET_SEARCH_TERM,
+  SET_SUMMIT_NAMES,
   SET_TRIE,
 } from "../../../actions/search/types";
 import { IAction } from "../../../../common/types";
@@ -20,6 +21,11 @@ const summitsReducer = (state = initState, action: IAction) => {
       return {
         ...state,
         searchTerm: payload.searchTerm,
+      };
+    case SET_SUMMIT_NAMES:
+      return {
+        ...state,
+        summitNames: payload.summitNames,
       };
     case SET_TRIE:
       return {

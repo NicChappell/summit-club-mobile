@@ -19,6 +19,7 @@ const Navigation = ({
   setFeaturesCollectionRef,
   setFeaturesDatabase,
   setFuse,
+  setSummitNames,
   setTrie,
   setUser,
 }: PropsFromRedux) => {
@@ -65,6 +66,7 @@ const Navigation = ({
 
         // update global state
         setFuse(fuse);
+        setSummitNames(summitNames);
         setTrie(trie);
       })
       .catch((error: IError) => {
@@ -110,6 +112,7 @@ const mapDispatchToProps = {
   setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
   setFeaturesDatabase: actions.setFeaturesDatabase,
   setFuse: actions.setFuse,
+  setSummitNames: actions.setSummitNames,
   setTrie: actions.setTrie,
   setUser: actions.setUser,
 };

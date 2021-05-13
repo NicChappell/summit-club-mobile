@@ -4,8 +4,8 @@ import { Button, SearchBar } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as actions from "../../../redux/actions";
-import { ISearchState, RootState } from "../../../redux/reducers";
-import { ISummitName } from "../../../services";
+import { IErrorState, ISearchState, RootState } from "../../../redux/reducers";
+import { ISummitName, processFeature, Summit } from "../../../services";
 import {
   colors,
   searchBarContainer,
@@ -23,7 +23,14 @@ import { ICustomSearchBar } from "./types";
 
 type Props = PropsFromRedux & ICustomSearchBar;
 
-const CustomSearchBar = ({ navigation, search, setSearchTerm }: Props) => {
+const CustomSearchBar = ({
+  error,
+  navigation,
+  search,
+  setError,
+  setFeature,
+  setSearchTerm,
+}: Props) => {
   // destructure search
   const { summitNames, trie } = search;
 
@@ -35,46 +42,41 @@ const CustomSearchBar = ({ navigation, search, setSearchTerm }: Props) => {
   const [searchSuggestions, setSearchSuggestions] = useState<ISummitName[]>();
 
   // boolean conditions
-  const renderSearchSuggestions =
-    searchSuggestions && searchSuggestions.length > 0;
+  const renderSearchSuggestions = Boolean(searchSuggestions?.length);
 
   // effect hooks
-  useEffect(() => {}, []);
-
-  const handleBlur = () => {
-    setIsSearchButtonVisible(false);
-    setSearchSuggestions([]);
-  };
-
-  const handleChangeText = (text: string) => {
-    // get search Trie suggestions
+  useEffect(() => {
+    let searchSuggestions: ISummitName[] | undefined;
     let suggestions: string[] | undefined;
-    if (text.length > 1) {
-      // retrieve suggestions from search Trie
-      // 6 --> "a", "e", "i", "o", "u" & "y"
-      suggestions = trie?.complete(text.toLowerCase(), 6);
-    }
 
-    console.log("suggestions: ", suggestions);
+    // retrieve suggestions from search Trie
+    if (searchInput.length > 1) {
+      // 6 --> "a", "e", "i", "o", "u" & "y"
+      suggestions = trie?.complete(searchInput.toLowerCase(), 6);
+    }
 
     // clear search Trie suggestions
     trie?.clear();
 
     // format search suggestions
-    let searchSuggestions: ISummitName[] | undefined;
-    if (Boolean(suggestions?.length) && Boolean(summitNames)) {
+    if (Boolean(suggestions?.length)) {
       searchSuggestions = summitNames
         ?.filter((summitName) => {
           return suggestions!.indexOf(summitName.lowercase) > -1;
         })
         .slice(0, 10);
     }
-    console.log("searchSuggestions: ", searchSuggestions);
 
-    // update state
-    setSearchInput(text);
+    // update local state
     setSearchSuggestions(searchSuggestions);
+  }, [searchInput]);
+
+  const handleBlur = () => {
+    setIsSearchButtonVisible(false);
+    setSearchSuggestions([]);
   };
+
+  const handleChangeText = (text: string) => setSearchInput(text);
 
   const handleClearIconPress = () => {
     setSearchInput("");
@@ -83,12 +85,28 @@ const CustomSearchBar = ({ navigation, search, setSearchTerm }: Props) => {
 
   const handleFocus = () => setIsSearchButtonVisible(true);
 
-  const handlePress = (searchResult: ISummitName) => {
+  const handlePress = async ({ original: name }: ISummitName) => {
     // update local state
-    setSearchInput(searchResult.original);
+    setSearchInput(name);
 
-    // navigate to Search Results screen
-    navigation.navigate("SearchResults");
+    try {
+      // retrieve feature from database
+      const resultSet = await Summit.findByName(name);
+
+      // format result
+      const feature = processFeature(resultSet);
+
+      // update global state
+      setFeature(feature);
+
+      // navigate to Feature screen
+      navigation.navigate("Feature", { screen: "Feature" });
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
   };
 
   const handleSearch = () => {
@@ -158,11 +176,14 @@ const CustomSearchBar = ({ navigation, search, setSearchTerm }: Props) => {
 
 const mapStateToProps = (state: RootState) => {
   return {
+    error: state.error as IErrorState,
     search: state.search as ISearchState,
   };
 };
 
 const mapDispatchToProps = {
+  setError: actions.setError,
+  setFeature: actions.setFeature,
   setSearchTerm: actions.setSearchTerm,
 };
 

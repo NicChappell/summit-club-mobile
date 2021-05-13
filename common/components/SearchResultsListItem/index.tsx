@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { connect, ConnectedProps } from "react-redux";
 import { ListItem } from "react-native-elements";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
+import * as actions from "../../../redux/actions";
+import { RootState } from "../../../redux/reducers";
 import { processFeature, Summit } from "../../../services";
 import { getFeaturePhoto } from "../../helpers";
 import {
@@ -13,9 +16,11 @@ import {
 import StaticMapBackground from "../StaticMapBackground";
 import { ISearchResultsListItem } from "./types";
 
-const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
+type Props = PropsFromRedux & ISearchResultsListItem;
+
+const SearchResultsListItem = ({ navigation, name, setFeature }: Props) => {
   // state hooks
-  const [feature, setFeature] = useState<
+  const [localFeature, setLocalFeature] = useState<
     Feature<Geometry, GeoJsonProperties>
   >();
   const [featurePhoto, setFeaturePhoto] = useState<any>();
@@ -27,8 +32,8 @@ const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
         // format result
         const feature = processFeature(resultSet);
 
-        // update state
-        setFeature(feature);
+        // update local state
+        setLocalFeature(feature);
       })
       .catch((error) => {
         console.log("error: ", error);
@@ -37,61 +42,87 @@ const SearchResultsListItem = ({ name }: ISearchResultsListItem) => {
 
   useEffect(() => {
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto(feature?.properties?.name);
+    const featurePhoto = getFeaturePhoto(localFeature?.properties?.name);
 
     // update state
     setFeaturePhoto(featurePhoto);
-  }, [feature]);
+  }, [localFeature]);
 
-  return (
-    <ListItem bottomDivider>
-      {feature && featurePhoto ? (
-        // render feature photo if available
-        <View
-          style={[
-            styles.listItemImageContainer,
-            {
-              borderRadius: 4,
-              height: 80,
-              width: 80,
-            },
-          ]}
-        >
-          <Image source={featurePhoto} style={styles.listItemImage} />
-        </View>
-      ) : (
-        // render static map by default
-        <StaticMapBackground
-          containerStyles={{
-            borderRadius: 4,
-            height: 80,
-            width: 80,
-          }}
-          feature={feature}
-        />
-      )}
-      <ListItem.Content>
-        <View style={styles.row}>
-          <View style={styles.leftColumn}>
-            <Text style={featureName}>{feature?.properties?.name}</Text>
-            <Text style={featureLocation}>
-              {feature?.properties?.feet.toLocaleString()} ft ·{" "}
-              {feature?.properties?.county} County
-            </Text>
-            <Text style={featureCoordinate}>
-              {feature?.properties?.latitude.toFixed(3)}°{" "}
-              {feature?.properties?.latitude > 0 ? "N" : "S"},{" "}
-              {feature?.properties?.longitude.toFixed(3)}°{" "}
-              {feature?.properties?.longitude > 0 ? "E" : "W"}
-            </Text>
-          </View>
-        </View>
-      </ListItem.Content>
-    </ListItem>
-  );
+  const handlePress = () => {
+    // update global state
+    setFeature(localFeature);
+
+    // navigate to Feature screen
+    navigation.navigate("Feature", { screen: "Feature" });
+  };
+
+  if (localFeature) {
+    return (
+      <TouchableOpacity onPress={handlePress}>
+        <ListItem bottomDivider>
+          {featurePhoto ? (
+            // render feature photo if available
+            <View
+              style={[
+                styles.listItemImageContainer,
+                {
+                  borderRadius: 4,
+                  height: 80,
+                  width: 80,
+                },
+              ]}
+            >
+              <Image source={featurePhoto} style={styles.listItemImage} />
+            </View>
+          ) : (
+            // render static map by default
+            <StaticMapBackground
+              containerStyles={{
+                borderRadius: 4,
+                height: 80,
+                width: 80,
+              }}
+              feature={localFeature}
+            />
+          )}
+          <ListItem.Content>
+            <View style={styles.row}>
+              <View style={styles.leftColumn}>
+                <Text style={featureName}>
+                  {localFeature?.properties?.name}
+                </Text>
+                <Text style={featureLocation}>
+                  {localFeature?.properties?.feet.toLocaleString()} ft ·{" "}
+                  {localFeature?.properties?.county} County
+                </Text>
+                <Text style={featureCoordinate}>
+                  {localFeature?.properties?.latitude.toFixed(3)}°{" "}
+                  {localFeature?.properties?.latitude > 0 ? "N" : "S"},{" "}
+                  {localFeature?.properties?.longitude.toFixed(3)}°{" "}
+                  {localFeature?.properties?.longitude > 0 ? "E" : "W"}
+                </Text>
+              </View>
+            </View>
+          </ListItem.Content>
+        </ListItem>
+      </TouchableOpacity>
+    );
+  }
+
+  return null;
 };
 
-export default SearchResultsListItem;
+const mapStateToProps = (state: RootState) => ({});
+
+const mapDispatchToProps = {
+  setFeature: actions.setFeature,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(SearchResultsListItem);
 
 const styles = StyleSheet.create({
   listItemImage: {

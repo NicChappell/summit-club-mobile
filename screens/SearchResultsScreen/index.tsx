@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import {
-  ErrorOverlay,
-  SearchResultsListItem,
-  SummitDetailsListItem,
-} from "../../common/components";
+import { ErrorOverlay, SearchResultsListItem } from "../../common/components";
 import { IError } from "../../common/types";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { ISummit, IPopularSummit, Summit, defaultBounds } from "../../services";
+import { ISummit, Summit, defaultBounds } from "../../services";
 import { ISearchResultsScreen } from "./types";
 
 type Props = PropsFromRedux & ISearchResultsScreen;
@@ -76,12 +72,7 @@ const SearchResultsScreen = ({
           item: {
             item: { original: name },
           },
-        }) => (
-          <TouchableOpacity onPress={() => console.log("TODO")}>
-            <SearchResultsListItem name={name} />
-            {/* <SummitDetailsListItem item={item} /> */}
-          </TouchableOpacity>
-        )}
+        }) => <SearchResultsListItem navigation={navigation} name={name} />}
         showsVerticalScrollIndicator={false}
       />
     </View>

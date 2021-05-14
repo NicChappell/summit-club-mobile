@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
+import Fuse from "fuse.js";
 import { ErrorOverlay, SearchResultsListItem } from "../../common/components";
 import { IError } from "../../common/types";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
-import { RootState } from "../../redux/reducers";
-import { ISummit, Summit, defaultBounds } from "../../services";
+import { IErrorState, ISearchState, RootState } from "../../redux/reducers";
+import { ISummit, ISummitName, Summit, defaultBounds } from "../../services";
 import { ISearchResultsScreen } from "./types";
 
 type Props = PropsFromRedux & ISearchResultsScreen;
-
-interface ISearchResult {
-  item: {
-    lowercase: string;
-    original: string;
-  };
-  refIndex: number;
-}
 
 const SearchResultsScreen = ({
   error,
@@ -28,7 +21,9 @@ const SearchResultsScreen = ({
 }: Props) => {
   // state hooks
   const [filteredSummits, setFilteredSummits] = useState<ISummit[]>([]);
-  const [searchResults, setSearchResults] = useState<ISearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<
+    Fuse.FuseResult<ISummitName>[]
+  >([]);
 
   // effect hooks
   useEffect(() => {
@@ -54,12 +49,30 @@ const SearchResultsScreen = ({
     // destructure search
     const { fuse, searchTerm } = search;
 
+    // return early if fuse is undefined
+    if (!fuse) return;
+
     // get search results
-    const searchResults = fuse.search(searchTerm, { limit: 25 });
-    console.log(searchResults);
+    const searchResults = fuse.search(searchTerm, {
+      limit: 25,
+    });
 
     // update state
     setSearchResults(searchResults);
+
+    // format values for database query
+    const values = searchResults.map(({ item: { original } }) => original);
+
+    Summit.findWhereIn("name", values)
+      .then((summits) => {
+        console.log("summits: ", summits);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
   }, [search]);
 
   return (
@@ -81,8 +94,8 @@ const SearchResultsScreen = ({
 
 const mapStateToProps = (state: RootState) => {
   return {
-    error: state.error,
-    search: state.search,
+    error: state.error as IErrorState,
+    search: state.search as ISearchState,
   };
 };
 

@@ -14,12 +14,28 @@ import {
 } from "./types";
 
 class Summit {
-  /** Find summit by name */
-  static findByName(name: string): Promise<SQLite.SQLResultSet> {
+  /** Find matching summit by key value pair */
+  static findWhere(key: string, value: string): Promise<SQLite.SQLResultSet> {
     // TODO: FIREBASE QUERY
 
     // database query
-    const sqlStatement = `SELECT * FROM feature WHERE name="${name}"`;
+    const sqlStatement = `SELECT * FROM feature WHERE ${key}="${value}"`;
+
+    return executeSql(sqlStatement);
+  }
+
+  /** Find matching summits by key in array of values */
+  static findWhereIn(
+    key: string,
+    values: string[]
+  ): Promise<SQLite.SQLResultSet> {
+    // TODO: FIREBASE QUERY
+
+    // format values for query
+    const condition = values.map((value) => `'${value}'`).join(",");
+
+    // database query
+    const sqlStatement = `SELECT * FROM feature WHERE ${key} IN (${condition})`;
 
     return executeSql(sqlStatement);
   }

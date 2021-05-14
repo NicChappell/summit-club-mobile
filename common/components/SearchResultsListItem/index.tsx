@@ -27,7 +27,7 @@ const SearchResultsListItem = ({ navigation, name, setFeature }: Props) => {
 
   // effect hooks
   useEffect(() => {
-    Summit.findByName(name)
+    Summit.findWhere("name", name)
       .then((resultSet) => {
         // format result
         const feature = processFeature(resultSet);

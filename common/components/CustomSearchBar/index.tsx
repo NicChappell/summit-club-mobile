@@ -91,7 +91,7 @@ const CustomSearchBar = ({
 
     try {
       // retrieve feature from database
-      const resultSet = await Summit.findByName(name);
+      const resultSet = await Summit.findWhere("name", name);
 
       // format result
       const feature = processFeature(resultSet);

@@ -3,7 +3,7 @@ import { ISummitName, Trie } from "../../../../services";
 
 export interface ISearchState {
   /** Instance of Fuse class */
-  fuse?: Fuse<any>;
+  fuse?: Fuse<ISummitName>;
   /** User provided search input */
   searchTerm: string;
   /** Summit names formatted for search */

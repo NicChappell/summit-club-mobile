@@ -1,8 +1,6 @@
-import { SearchResultsScreenNavigationProp } from "../../../screens/SearchResultsScreen/types";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 
 export interface ISearchResultsListItem {
-  /** The Summit name */
-  name: string;
-  /** Contains various convenience functions that dispatch navigation actions */
-  navigation: SearchResultsScreenNavigationProp;
+  /** Summit record data */
+  item: Feature<Geometry, GeoJsonProperties>;
 }

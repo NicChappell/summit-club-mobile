@@ -5,17 +5,22 @@ import { defaultBounds, defaultQueryParams } from "./constants";
 import { processFeature, processFeatureCollection } from "./helpers";
 import {
   FeatureClassification,
+  FeatureProperty,
+  SummitName,
   SummitType,
   IBounds,
+  IPopularSummit,
   IQueryParams,
   IQueryResult,
-  IPopularSummit,
   ISummit,
 } from "./types";
 
 class Summit {
   /** Find matching summit by key value pair */
-  static findWhere(key: string, value: string): Promise<SQLite.SQLResultSet> {
+  static findWhere(
+    key: FeatureProperty,
+    value: SummitName
+  ): Promise<SQLite.SQLResultSet> {
     // TODO: FIREBASE QUERY
 
     // database query
@@ -26,8 +31,8 @@ class Summit {
 
   /** Find matching summits by key in array of values */
   static findWhereIn(
-    key: string,
-    values: string[]
+    key: FeatureProperty,
+    values: SummitName[]
   ): Promise<SQLite.SQLResultSet> {
     // TODO: FIREBASE QUERY
 
@@ -447,14 +452,16 @@ class Summit {
 export default Summit;
 
 export {
+  defaultBounds,
   FeatureClassification,
+  FeatureProperty,
+  SummitName,
   SummitType,
   IBounds,
   IPopularSummit,
   IQueryParams,
   IQueryResult,
   ISummit,
-  defaultBounds,
   processFeature,
   processFeatureCollection,
 };

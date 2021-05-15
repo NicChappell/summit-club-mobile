@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
-import Fuse from "fuse.js";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { ErrorOverlay, SearchResultsListItem } from "../../common/components";
 import { IError } from "../../common/types";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { IErrorState, ISearchState, RootState } from "../../redux/reducers";
-import { ISummit, ISummitName, Summit, defaultBounds } from "../../services";
+import { Summit, processFeatureCollection } from "../../services";
 import { ISearchResultsScreen } from "./types";
 
 type Props = PropsFromRedux & ISearchResultsScreen;
@@ -18,33 +18,14 @@ const SearchResultsScreen = ({
   route,
   search,
   setError,
+  setFeature,
 }: Props) => {
   // state hooks
-  const [filteredSummits, setFilteredSummits] = useState<ISummit[]>([]);
-  const [searchResults, setSearchResults] = useState<
-    Fuse.FuseResult<ISummitName>[]
+  const [features, setFeatures] = useState<
+    Feature<Geometry, GeoJsonProperties>[]
   >([]);
 
   // effect hooks
-  useEffect(() => {
-    Summit.query({
-      bounds: defaultBounds,
-      filters: "",
-      orderBy: "DESC",
-      limit: 64,
-      offset: 0,
-    })
-      .then((filteredSummits) => {
-        setFilteredSummits(filteredSummits);
-      })
-      .catch((error: IError) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
-      });
-  }, []);
-
   useEffect(() => {
     // destructure search
     const { fuse, searchTerm } = search;
@@ -57,15 +38,16 @@ const SearchResultsScreen = ({
       limit: 25,
     });
 
-    // update state
-    setSearchResults(searchResults);
-
     // format values for database query
     const values = searchResults.map(({ item: { original } }) => original);
 
     Summit.findWhereIn("name", values)
-      .then((summits) => {
-        console.log("summits: ", summits);
+      .then((resultSet) => {
+        // convert resultSet into FeatureCollection
+        const { features } = processFeatureCollection(resultSet);
+
+        // update local state
+        setFeatures(features);
       })
       .catch((error: IError) => {
         setError({
@@ -75,17 +57,31 @@ const SearchResultsScreen = ({
       });
   }, [search]);
 
+  // event handlers
+  const handlePress = (feature: Feature<Geometry, GeoJsonProperties>) => {
+    // update global state
+    setFeature(feature);
+
+    // navigate to Feature screen
+    navigation.navigate("Feature", { screen: "Feature" });
+  };
+
   return (
     <View style={styles.container}>
       <ErrorOverlay error={error} />
       <FlatList
-        data={searchResults}
-        keyExtractor={(item) => item.refIndex.toString()}
-        renderItem={({
-          item: {
-            item: { original: name },
-          },
-        }) => <SearchResultsListItem navigation={navigation} name={name} />}
+        data={features}
+        keyExtractor={(feature) => feature?.properties?.id.toString()}
+        // renderItem={({
+        //   item: {
+        //     item: { original: name },
+        //   },
+        // }) => <SearchResultsListItem navigation={navigation} name={name} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handlePress(item)}>
+            <SearchResultsListItem item={item} />
+          </TouchableOpacity>
+        )}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -101,6 +97,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
   setError: actions.setError,
+  setFeature: actions.setFeature,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

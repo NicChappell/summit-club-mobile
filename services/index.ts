@@ -16,14 +16,16 @@ export {
 export { default as Trie, ISummitName, TrieNode } from "./Search";
 export {
   default as Summit,
+  defaultBounds,
   FeatureClassification,
+  FeatureProperty,
+  SummitName,
   SummitType,
   IBounds,
   IPopularSummit,
   IQueryParams,
   IQueryResult,
   ISummit,
-  defaultBounds,
   processFeature,
   processFeatureCollection,
 } from "./Summit";

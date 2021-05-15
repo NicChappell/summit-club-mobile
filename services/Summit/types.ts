@@ -135,6 +135,21 @@ export type FeatureClassification =
   | "Well"
   | "Woods";
 
+export type FeatureProperty =
+  | "class"
+  | "continent"
+  | "country"
+  | "county"
+  | "feet"
+  | "id"
+  | "latitude"
+  | "longitude"
+  | "meters"
+  | "name"
+  | "state";
+
+export type SummitName = string;
+
 export type SummitType =
   | "featuredSummit"
   | "filteredSummit"

@@ -1,7 +1,8 @@
 import * as SQLite from "expo-sqlite";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { executeSql, IUser } from "../../services";
 import { MOCK_USER } from "../../data/mocks";
+import { executeSql } from "../database";
+import { IUser } from "../User";
 
 export type CheckInType = "recentCheckIn" | "userCheckIn";
 

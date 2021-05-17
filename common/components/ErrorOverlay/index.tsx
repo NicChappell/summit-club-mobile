@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Overlay } from "react-native-elements";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import * as actions from "../../../redux/actions";
 import { RootState } from "../../../redux/reducers";

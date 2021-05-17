@@ -66,15 +66,12 @@ type Props = PropsFromRedux & IFeatureScreen;
 
 const FeatureScreen = ({
   error,
-  features,
+  feature,
   navigation,
   route,
   setError,
   setFeature,
 }: Props) => {
-  // destructure features
-  const { feature } = features;
-
   // state hooks
   const [apparel, setApparel] = useState<IApparel[]>([]);
   const [checkOff, setCheckOff] = useState<boolean>(false);
@@ -429,7 +426,7 @@ const FeatureScreen = ({
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
-    features: state.features,
+    feature: state.features.feature,
   };
 };
 

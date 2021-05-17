@@ -7,7 +7,6 @@ import {
   borderWidthReset,
   colors,
   featureCoordinate,
-  featureElevation,
   featureLocation,
   featureName,
   marginReset,

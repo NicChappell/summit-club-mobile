@@ -21,7 +21,6 @@ import {
   colors,
   paddingReset,
   shadow,
-  shadowReset,
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -37,14 +36,11 @@ type Props = PropsFromRedux & ICheckInScreen;
 
 const CheckInScreen = ({
   error,
-  features,
+  feature,
   navigation,
   route,
   setError,
 }: Props) => {
-  // destructure features
-  const { feature } = features;
-
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
   const [distance, setDistance] = useState<number>(Infinity);
@@ -297,7 +293,7 @@ const CheckInScreen = ({
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
-    features: state.features,
+    feature: state.features.feature,
   };
 };
 

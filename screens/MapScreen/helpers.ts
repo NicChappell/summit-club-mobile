@@ -20,57 +20,6 @@ import {
   ISQLResult,
 } from "../../common/types";
 
-export const countFeatureRows = async (
-  database: SQLite.WebSQLDatabase,
-  featureFilters: IFeatureFilters,
-  setError: (error: IError) => void
-) => {
-  try {
-    // construct sql statement
-    const sqlStatement = `
-      SELECT COUNT(*)
-      FROM feature
-      WHERE (
-        feet <= ${featureFilters.maxElevation}
-      ) AND (
-        ${featureFilters.above14 ? "(feet >= 14000)" : "(feet <= 14000)"}
-        ) OR (
-        ${
-          featureFilters.between13and14
-            ? "(feet BETWEEN 13000 AND 14000)"
-            : "(feet NOT BETWEEN 13000 AND 14000)"
-        }
-        ) OR (
-        ${
-          featureFilters.between12and13
-            ? "(feet BETWEEN 12000 AND 13000)"
-            : "(feet NOT BETWEEN 12000 AND 13000)"
-        }
-        ) OR (
-        ${
-          featureFilters.between11and12
-            ? "(feet BETWEEN 11000 AND 12000)"
-            : "(feet NOT BETWEEN 11000 AND 12000)"
-        }
-        ) OR (
-        ${
-          featureFilters.between10and11
-            ? "(feet BETWEEN 10000 AND 11000)"
-            : "(feet NOT BETWEEN 10000 AND 11000)"
-        }
-        ) OR (
-        ${featureFilters.below10 ? "(feet <= 10000)" : "(feet >= 10000)"}
-      );
-    `;
-    const resultSet = await executeSql!(sqlStatement, []);
-  } catch (error) {
-    setError({
-      code: error.code,
-      message: error.message,
-    });
-  }
-};
-
 export const createFeaturesTable = async (
   database: SQLite.WebSQLDatabase,
   featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>,
@@ -112,7 +61,7 @@ export const dropFeaturesTable = async (
   setError: (error: IError) => void
 ) => {
   try {
-    await executeSql!(database, `DROP TABLE IF EXISTS features;`, []);
+    await executeSql!(`DROP TABLE IF EXISTS features;`, []);
   } catch (error) {
     setError({
       code: error.code,

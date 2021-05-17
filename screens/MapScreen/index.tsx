@@ -23,9 +23,9 @@ import { TabNavigationHeader } from "../../common/navigation";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
+import { database } from "../../services";
 import { CalloutView, MarkerView } from "./components";
 import {
-  countFeatureRows,
   filterFeaturesWithinBounds,
   getCurrentCounty,
   getPolygonCoordinates,
@@ -44,8 +44,6 @@ const MapScreen = ({
   feature,
   featureFilters,
   features,
-  database,
-  featuresCollectionRef,
   navigation,
   route,
   setError,
@@ -74,12 +72,6 @@ const MapScreen = ({
   const mapRef = useRef<MapView>(null);
 
   // effect hooks
-  // useEffect(() => {
-  //   // return early if cameraConfig is undefined
-  //   if (!cameraConfig) return;
-  // }, [cameraConfig]);
-
-  // effect hooks
   useEffect(() => {
     currentCounty
       ? navigation.setOptions({ title: `${currentCounty} County` })
@@ -92,7 +84,7 @@ const MapScreen = ({
 
     // sort features in descending order
     const sortedFeatures = features?.sort(
-      (featureA, featureB) =>
+      (featureA: any, featureB: any) =>
         featureB.properties?.feet - featureA.properties?.feet
     );
 
@@ -122,13 +114,10 @@ const MapScreen = ({
         // set current camera config
         setCameraConfig(cameraConfig);
 
-        // TEST COUNT
-        countFeatureRows(database!, featureFilters, setError);
-
         // initial database query
         return queryFeaturesTable(
           features,
-          database!,
+          database,
           featureFilters,
           mapBoundaries,
           setError
@@ -378,8 +367,6 @@ const mapStateToProps = (state: RootState) => {
     feature: state.features.feature,
     featureFilters: state.features.featureFilters,
     features: state.features.features,
-    database: state.database.database,
-    featuresCollectionRef: state.features.featuresCollectionRef,
   };
 };
 

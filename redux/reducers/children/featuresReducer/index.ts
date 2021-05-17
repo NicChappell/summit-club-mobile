@@ -3,7 +3,6 @@ import {
   SET_FEATURE,
   SET_FEATURE_FILTERS,
   SET_FEATURES,
-  SET_FEATURES_COLLECTION_REF,
 } from "../../../actions/features/types";
 import { IAction } from "../../../../common/types";
 import { initState } from "./constants";
@@ -29,11 +28,6 @@ const featuresReducer = (state = initState, action: IAction) => {
       return {
         ...state,
         features: payload.features,
-      };
-    case SET_FEATURES_COLLECTION_REF:
-      return {
-        ...state,
-        featuresCollectionRef: payload.featuresCollectionRef,
       };
     default:
       return state;

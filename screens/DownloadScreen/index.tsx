@@ -8,7 +8,7 @@ import { ErrorOverlay } from "../../common/components";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { executeSql, FeaturesRef, Summit, defaultBounds } from "../../services";
+import { executeSql, featuresCollectionRef, Summit, defaultBounds } from "../../services";
 import { IDownloadScreen } from "./types";
 
 import * as Location from "expo-location";
@@ -18,7 +18,7 @@ type Props = PropsFromRedux & IDownloadScreen;
 const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
   const countFeatureRows = async () => {
     try {
-      const resultSet = await executeSql(`SELECT COUNT(*) FROM feature;`);
+      const resultSet = await executeSql(`SELECT COUNT(*) FROM feature;`, []);
 
       // destructure ResultSet
       const { _array }: any = resultSet.rows;
@@ -101,7 +101,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
       }
 
       // retrieve data from firestore
-      const snapshot = await FeaturesRef.where(
+      const snapshot = await featuresCollectionRef.where(
         "properties.class",
         "==",
         "Summit"

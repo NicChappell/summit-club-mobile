@@ -1,5 +1,3 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { IFeatureFilters } from "../../../common/types";
 import { AppThunk } from "../../reducers";
@@ -8,7 +6,6 @@ import {
   SET_FEATURE,
   SET_FEATURE_FILTERS,
   SET_FEATURES,
-  SET_FEATURES_COLLECTION_REF,
 } from "./types";
 
 export const resetFeatures = (): AppThunk => async (dispatch) => {
@@ -39,14 +36,5 @@ export const setFeatures = (
   dispatch({
     type: SET_FEATURES,
     payload: { features },
-  });
-};
-
-export const setFeaturesCollectionRef = (
-  featuresCollectionRef?: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
-): AppThunk => async (dispatch) => {
-  dispatch({
-    type: SET_FEATURES_COLLECTION_REF,
-    payload: { featuresCollectionRef },
   });
 };

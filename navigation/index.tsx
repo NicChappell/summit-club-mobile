@@ -1,8 +1,5 @@
 import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
-import * as SQLite from "expo-sqlite";
-import firebase from "firebase/app";
-import "firebase/firestore";
 import Fuse from "fuse.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { IError } from "../common/types";
@@ -15,9 +12,7 @@ import { AuthStack, MainTabs } from "./navigators";
 const Navigation = ({
   auth,
   checkAuthentication,
-  setDatabase,
   setError,
-  setFeaturesCollectionRef,
   setFuse,
   setSummitNames,
   setTrie,
@@ -30,14 +25,6 @@ const Navigation = ({
   useEffect(() => {
     // check if user is already authenticated
     checkAuthentication();
-
-    // set features collection ref
-    const featuresCollectionRef = firebase.firestore().collection("features");
-    setFeaturesCollectionRef(featuresCollectionRef);
-
-    // set database
-    const database = SQLite.openDatabase("summit_club");
-    setDatabase(database);
 
     Summit.getSummitNames()
       .then((resultSet) => {
@@ -108,9 +95,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
   checkAuthentication: actions.checkAuthentication,
-  setDatabase: actions.setDatabase,
   setError: actions.setError,
-  setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
   setFuse: actions.setFuse,
   setSummitNames: actions.setSummitNames,
   setTrie: actions.setTrie,

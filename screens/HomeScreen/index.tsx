@@ -202,7 +202,6 @@ const HomeScreen = ({
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
-    features: state.features,
   };
 };
 

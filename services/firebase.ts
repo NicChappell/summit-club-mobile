@@ -18,8 +18,8 @@ if (!firebase.apps.length) {
 }
 
 // set firestore collection refs
-const ClassificationRef = "";
-const CollectionsRef = "";
-const MerchandiseRef = "";
-export const FeaturesRef = firebase.firestore().collection("features");
-const UsersRef = "";
+const classificationCollectionRef = "";
+const collectionsCollectionRef = "";
+const merchandiseCollectionRef = "";
+export const featuresCollectionRef = firebase.firestore().collection("features");
+const usersCollectionRef = "";

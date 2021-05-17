@@ -6,5 +6,4 @@ export const initState: IFeaturesState = {
   feature: undefined,
   featureFilters: defaultFeatureFilters,
   features: undefined,
-  featuresCollectionRef: undefined,
 };

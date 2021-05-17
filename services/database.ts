@@ -1,18 +1,16 @@
 import * as SQLite from "expo-sqlite";
 
 // open or create the database
-const Database = SQLite.openDatabase("summit_club");
+export const database = SQLite.openDatabase("summit_club");
 
 // asynchronous sqlite transaction wrapper
-// TODO: DELETE EXISTING FUNCTION DEFINITION
-// TOTO: REPLACE EXISTING INVOCATIONS WITH THIS UPDATED FUNCTION
 export const executeSql = (
   sqlStatement: string,
   args: string[] = []
 ): Promise<SQLite.SQLResultSet> => {
   return new Promise((resolve, reject) => {
     // new database transaction
-    Database.transaction((tx) => {
+    database.transaction((tx) => {
       // execute sql statement
       tx.executeSql(
         // sql statement
@@ -34,5 +32,3 @@ export const executeSql = (
     });
   });
 };
-
-export default Database;

@@ -11,13 +11,8 @@ import { Button, ButtonGroup, Card } from "react-native-elements";
 import * as WebBrowser from "expo-web-browser";
 import {
   borderRadius4,
-  borderRadiusReset,
   borderWidthReset,
   colors,
-  featureCoordinate,
-  featureElevation,
-  featureLocation,
-  featureName,
   marginReset,
   paddingReset,
   sectionTitle,

@@ -1,5 +1,30 @@
 import React, { useEffect } from "react";
 import { connect, ConnectedProps } from "react-redux";
+import {
+  useFonts,
+  NotoSansJP_100Thin,
+  NotoSansJP_300Light,
+  NotoSansJP_400Regular,
+  NotoSansJP_500Medium,
+  NotoSansJP_700Bold,
+  NotoSansJP_900Black,
+} from "@expo-google-fonts/noto-sans-jp";
+import {
+  NunitoSans_200ExtraLight,
+  NunitoSans_200ExtraLight_Italic,
+  NunitoSans_300Light,
+  NunitoSans_300Light_Italic,
+  NunitoSans_400Regular,
+  NunitoSans_400Regular_Italic,
+  NunitoSans_600SemiBold,
+  NunitoSans_600SemiBold_Italic,
+  NunitoSans_700Bold,
+  NunitoSans_700Bold_Italic,
+  NunitoSans_800ExtraBold,
+  NunitoSans_800ExtraBold_Italic,
+  NunitoSans_900Black,
+  NunitoSans_900Black_Italic,
+} from "@expo-google-fonts/nunito-sans";
 import Fuse from "fuse.js";
 import { NavigationContainer } from "@react-navigation/native";
 import { IError } from "../common/types";
@@ -7,9 +32,10 @@ import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
 import { IAuthState } from "../redux/reducers/children/authReducer/types";
 import { IQueryResult, ISummitName, Summit, Trie, User } from "../services";
+import { AppLoading } from "./components";
 import { AuthStack, MainTabs } from "./navigators";
 
-const Navigation = ({
+const Navigator = ({
   auth,
   checkAuthentication,
   setError,
@@ -20,6 +46,30 @@ const Navigation = ({
 }: PropsFromRedux) => {
   // destructure auth
   const { uid } = auth;
+
+  // font hooks
+  const [didFontsLoad, fontsLoadingError] = useFonts({
+    NotoSansJP_100Thin,
+    NotoSansJP_300Light,
+    NotoSansJP_400Regular,
+    NotoSansJP_500Medium,
+    NotoSansJP_700Bold,
+    NotoSansJP_900Black,
+    NunitoSans_200ExtraLight,
+    NunitoSans_200ExtraLight_Italic,
+    NunitoSans_300Light,
+    NunitoSans_300Light_Italic,
+    NunitoSans_400Regular,
+    NunitoSans_400Regular_Italic,
+    NunitoSans_600SemiBold,
+    NunitoSans_600SemiBold_Italic,
+    NunitoSans_700Bold,
+    NunitoSans_700Bold_Italic,
+    NunitoSans_800ExtraBold,
+    NunitoSans_800ExtraBold_Italic,
+    NunitoSans_900Black,
+    NunitoSans_900Black_Italic,
+  });
 
   // effect hooks
   useEffect(() => {
@@ -84,7 +134,13 @@ const Navigation = ({
     navigator = <AuthStack />;
   }
 
-  return <NavigationContainer>{navigator}</NavigationContainer>;
+  if (didFontsLoad) {
+    return <NavigationContainer>{navigator}</NavigationContainer>;
+  } else {
+    setError({ message: fontsLoadingError?.message });
+
+    return <AppLoading />;
+  }
 };
 
 const mapStateToProps = (state: RootState) => {
@@ -106,4 +162,4 @@ const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
-export default connector(Navigation);
+export default connector(Navigator);

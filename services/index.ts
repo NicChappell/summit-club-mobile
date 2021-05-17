@@ -5,6 +5,14 @@ export { default as CheckIn, ICheckIn } from "./CheckIn";
 export { default as Classification, IClassification } from "./Classification";
 export { default as Collection, ICollection } from "./Collection";
 export {
+  default as Feature,
+  FeatureClassification,
+  FeatureDocument,
+  FeatureProperty,
+  FeatureResultSet,
+  IFeatureRecord,
+} from "./Feature";
+export {
   default as Merchandise,
   ApparelType,
   ApparelColor,
@@ -17,8 +25,6 @@ export { default as Trie, ISummitName, TrieNode } from "./Search";
 export {
   default as Summit,
   defaultBounds,
-  FeatureClassification,
-  FeatureProperty,
   SummitName,
   SummitType,
   IBounds,

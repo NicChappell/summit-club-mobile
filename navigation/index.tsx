@@ -33,6 +33,7 @@ import { RootState } from "../redux/reducers";
 import { IAuthState } from "../redux/reducers/children/authReducer/types";
 import {
   CheckIn,
+  Feature,
   IQueryResult,
   ISummitName,
   Summit,
@@ -86,6 +87,47 @@ const Navigator = ({
     CheckIn.createCheckInTable()
       .then((resultSet) => {
         console.log("createCheckInTable(): ", resultSet);
+      })
+      .catch((error: Error) => {
+        setError({ message: error.message });
+      });
+
+    Feature.dropFeatureTable()
+      .then((resultSet) => {
+        console.log("dropFeatureTable(): ", resultSet);
+
+        return Feature.createFeatureTable();
+      })
+      .then((resultSet) => {
+        console.log("createFeatureTable(): ", resultSet);
+
+        return Feature.countFeatureRows();
+      })
+      .then((count) => {
+        console.log("countFeatureRows(): ", count);
+
+        if (Boolean(count)) {
+          // return early if table already populated
+          return;
+        }
+
+        return Feature.retreiveFeatureDocuments();
+      })
+      .then((documents) => {
+        console.log("retreiveFeatureDocuments(): ", documents?.length);
+
+        return Feature.populatetFeatureTable(documents!);
+      })
+      .then((message) => {
+        console.log("populatetFeatureTable(): ", message);
+      })
+      .catch((error: Error) => {
+        setError({ message: error.message });
+      });
+
+    Feature.countFeatureRows()
+      .then((count) => {
+        console.log("countFeatureRows(): ", count);
       })
       .catch((error: Error) => {
         setError({ message: error.message });

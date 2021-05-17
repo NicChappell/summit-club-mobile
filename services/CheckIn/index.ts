@@ -196,9 +196,25 @@ class CheckIn {
                 id TEXT,
                 userId TEXT,
                 featureId TEXT,
-                timestamp TEXT
+                createdAt INTEGER,
+                updatedAt INTEGER
             );
           `;
+
+      executeSql(sqlStatement)
+        .then((resultSet) => {
+          resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
+  /** Drop table */
+  static dropCheckInTable = (): Promise<SQLite.SQLResultSet> => {
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `DROP TABLE IF EXISTS check_in;`;
 
       executeSql(sqlStatement)
         .then((resultSet) => {

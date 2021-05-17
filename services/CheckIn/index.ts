@@ -188,6 +188,7 @@ class CheckIn {
     }
   }
 
+  /** Create table */
   static createCheckInTable = (): Promise<SQLite.SQLResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `

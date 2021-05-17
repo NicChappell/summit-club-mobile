@@ -9,7 +9,6 @@ import MapView, {
   Polygon,
   Region,
 } from "react-native-maps";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Feature, Geometry, GeoJsonProperties, Point } from "geojson";
@@ -27,16 +26,10 @@ import { RootState } from "../../redux/reducers";
 import { CalloutView, MarkerView } from "./components";
 import {
   countFeatureRows,
-  createFeaturesTable,
-  dropFeaturesTable,
   filterFeaturesWithinBounds,
   getCurrentCounty,
   getPolygonCoordinates,
-  mergeResultSet,
-  populateFeaturesTable,
-  processResultSet,
   queryFeaturesTable,
-  resetResultSet,
 } from "./helpers";
 import { IMapScreen } from "./types";
 
@@ -44,27 +37,20 @@ import { COLORADO_COUNTIES } from "./STUB";
 
 type Props = PropsFromRedux & IMapScreen;
 
-const MAP_HEIGHT =
-  Dimensions.get("window").height -
-  64 -
-  64 -
-  16;
+const MAP_HEIGHT = Dimensions.get("window").height - 64 - 64 - 16;
 
 const MapScreen = ({
   error,
   feature,
   featureFilters,
   features,
-  featuresDatabase,
+  database,
   featuresCollectionRef,
   navigation,
   route,
   setError,
   setFeature,
-  setFeatureFilters,
   setFeatures,
-  setFeaturesCollectionRef,
-  setFeaturesDatabase,
 }: Props) => {
   // state hooks
   const [cameraConfig, setCameraConfig] = useState<Camera | undefined>(
@@ -137,12 +123,12 @@ const MapScreen = ({
         setCameraConfig(cameraConfig);
 
         // TEST COUNT
-        countFeatureRows(featuresDatabase!, featureFilters, setError);
+        countFeatureRows(database!, featureFilters, setError);
 
         // initial database query
         return queryFeaturesTable(
           features,
-          featuresDatabase!,
+          database!,
           featureFilters,
           mapBoundaries,
           setError
@@ -181,7 +167,7 @@ const MapScreen = ({
   useEffect(() => {
     queryFeaturesTable(
       features,
-      featuresDatabase!,
+      database!,
       featureFilters,
       mapBoundaries,
       setError
@@ -225,10 +211,10 @@ const MapScreen = ({
   };
 
   // useEffect(() => {
-  //   if (featuresDatabase && featuresCollectionRef) {
-  //     dropFeaturesTable(featuresDatabase, setError);
+  //   if (database && featuresCollectionRef) {
+  //     dropFeaturesTable(database, setError);
   //     createFeaturesTable(
-  //       featuresDatabase,
+  //       database,
   //       featuresCollectionRef,
   //       populateFeaturesTable,
   //       setError
@@ -300,7 +286,7 @@ const MapScreen = ({
     // if (prevCameraConfig?.zoom !== currentCameraConfig?.zoom) {
     //   // query database
     //   const newFeatures = await queryFeaturesTable(
-    //     featuresDatabase!,
+    //     database!,
     //     currentMapBoundaries
     //   );
 
@@ -392,7 +378,7 @@ const mapStateToProps = (state: RootState) => {
     feature: state.features.feature,
     featureFilters: state.features.featureFilters,
     features: state.features.features,
-    featuresDatabase: state.features.featuresDatabase,
+    database: state.database.database,
     featuresCollectionRef: state.features.featuresCollectionRef,
   };
 };
@@ -400,10 +386,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = {
   setError: actions.setError,
   setFeature: actions.setFeature,
-  setFeatureFilters: actions.setFeatureFilters,
   setFeatures: actions.setFeatures,
-  setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
-  setFeaturesDatabase: actions.setFeaturesDatabase,
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

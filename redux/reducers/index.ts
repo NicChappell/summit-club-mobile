@@ -3,6 +3,7 @@ import { ThunkAction } from "redux-thunk";
 import {
   accountReducer,
   authReducer,
+  databaseReducer,
   errorReducer,
   featuresReducer,
   searchReducer,
@@ -12,6 +13,7 @@ import {
 export const rootReducer = combineReducers({
   account: accountReducer,
   auth: authReducer,
+  database: databaseReducer,
   error: errorReducer,
   features: featuresReducer,
   search: searchReducer,

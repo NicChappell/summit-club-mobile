@@ -8,12 +8,11 @@ import {
   GeoJsonProperties,
   MultiPolygon,
   Point,
-  Position,
 } from "geojson";
 import { LatLng } from "react-native-maps";
 import * as turf from "@turf/turf";
 import { initialMapBoundaries } from "../../common/constants";
-import { executeSql } from "../../common/helpers";
+import { executeSql } from "../../services";
 import {
   IError,
   IMapBoundaries,
@@ -22,7 +21,7 @@ import {
 } from "../../common/types";
 
 export const countFeatureRows = async (
-  featuresDatabase: SQLite.WebSQLDatabase,
+  database: SQLite.WebSQLDatabase,
   featureFilters: IFeatureFilters,
   setError: (error: IError) => void
 ) => {
@@ -63,8 +62,7 @@ export const countFeatureRows = async (
         ${featureFilters.below10 ? "(feet <= 10000)" : "(feet >= 10000)"}
       );
     `;
-    const resultSet = await executeSql!(featuresDatabase, sqlStatement, []);
-    console.log("resultSet.rows._array: ", resultSet.rows._array);
+    const resultSet = await executeSql!(sqlStatement, []);
   } catch (error) {
     setError({
       code: error.code,
@@ -74,10 +72,10 @@ export const countFeatureRows = async (
 };
 
 export const createFeaturesTable = async (
-  featuresDatabase: SQLite.WebSQLDatabase,
+  database: SQLite.WebSQLDatabase,
   featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>,
   populateFeaturesTable: (
-    featuresDatabase: SQLite.WebSQLDatabase,
+    database: SQLite.WebSQLDatabase,
     featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
   ) => Promise<void>,
   setError: (error: IError) => void
@@ -98,9 +96,9 @@ export const createFeaturesTable = async (
         state TEXT
       );
     `;
-    await executeSql!(featuresDatabase, sqlStatement, []);
+    await executeSql!(sqlStatement, []);
 
-    populateFeaturesTable(featuresDatabase, featuresCollectionRef);
+    populateFeaturesTable(database, featuresCollectionRef);
   } catch (error) {
     setError({
       code: error.code,
@@ -110,11 +108,11 @@ export const createFeaturesTable = async (
 };
 
 export const dropFeaturesTable = async (
-  featuresDatabase: SQLite.WebSQLDatabase,
+  database: SQLite.WebSQLDatabase,
   setError: (error: IError) => void
 ) => {
   try {
-    await executeSql!(featuresDatabase, `DROP TABLE IF EXISTS features;`, []);
+    await executeSql!(database, `DROP TABLE IF EXISTS features;`, []);
   } catch (error) {
     setError({
       code: error.code,
@@ -236,7 +234,7 @@ export const mergeResultSet = (
 export const populateFeaturesTable = async (
   features: Feature<Geometry, GeoJsonProperties>[] | undefined,
   featuresCollectionRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>,
-  featuresDatabase: SQLite.WebSQLDatabase,
+  database: SQLite.WebSQLDatabase,
   featureFilters: IFeatureFilters,
   mapBoundaries: IMapBoundaries,
   setError: (error: IError) => void
@@ -298,13 +296,13 @@ export const populateFeaturesTable = async (
         properties.state,
       ];
 
-      await executeSql!(featuresDatabase, sqlStatement, args);
+      await executeSql!(sqlStatement, args);
     }
 
     // query features table
     queryFeaturesTable(
       features,
-      featuresDatabase,
+      database,
       featureFilters,
       mapBoundaries,
       setError
@@ -370,7 +368,7 @@ export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
 
 export const queryFeaturesTable = async (
   features: Feature<Geometry, GeoJsonProperties>[] | undefined,
-  featuresDatabase: SQLite.WebSQLDatabase,
+  database: SQLite.WebSQLDatabase,
   featureFilters: IFeatureFilters,
   mapBoundaries: IMapBoundaries = initialMapBoundaries,
   setError: (error: IError) => void
@@ -432,8 +430,7 @@ export const queryFeaturesTable = async (
       LIMIT 100;
       -- OFFSET 0
     `;
-    const resultSet = await executeSql!(featuresDatabase, sqlStatement, []);
-    console.log("resultSet.rows._array.length: ", resultSet.rows._array.length);
+    const resultSet = await executeSql!(sqlStatement, []);
 
     // convert resultSet into FeatureCollection
     const featureCollection = processResultSet(resultSet);

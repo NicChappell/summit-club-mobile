@@ -1,6 +1,7 @@
+import * as SQLite from "expo-sqlite";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import { IUser } from "../services/User";
-import { MOCK_USER } from "../data/mocks";
+import { executeSql, IUser } from "../../services";
+import { MOCK_USER } from "../../data/mocks";
 
 export type CheckInType = "recentCheckIn" | "userCheckIn";
 
@@ -185,6 +186,30 @@ class CheckIn {
       return Promise.reject(new Error("unable to process request"));
     }
   }
+
+  static createCheckInTable = (): Promise<SQLite.SQLResultSet> => {
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `
+            CREATE TABLE IF NOT EXISTS check_in (
+                id TEXT,
+                userId TEXT,
+                featureId TEXT,
+                timestamp TEXT,
+            );
+          `;
+
+      executeSql(sqlStatement)
+        .then((resultSet) => {
+          resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+
+    // stop loading animation
+    // TODO: STOP LOADING ANIMATION
+  };
 }
 
 export default CheckIn;

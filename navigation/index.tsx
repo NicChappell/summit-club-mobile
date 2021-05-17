@@ -15,9 +15,9 @@ import { AuthStack, MainTabs } from "./navigators";
 const Navigation = ({
   auth,
   checkAuthentication,
+  setDatabase,
   setError,
   setFeaturesCollectionRef,
-  setFeaturesDatabase,
   setFuse,
   setSummitNames,
   setTrie,
@@ -35,9 +35,9 @@ const Navigation = ({
     const featuresCollectionRef = firebase.firestore().collection("features");
     setFeaturesCollectionRef(featuresCollectionRef);
 
-    // set database ref
-    const databaseRef = SQLite.openDatabase("summit_club");
-    setFeaturesDatabase(databaseRef);
+    // set database
+    const database = SQLite.openDatabase("summit_club");
+    setDatabase(database);
 
     Summit.getSummitNames()
       .then((resultSet) => {
@@ -108,9 +108,9 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = {
   checkAuthentication: actions.checkAuthentication,
+  setDatabase: actions.setDatabase,
   setError: actions.setError,
   setFeaturesCollectionRef: actions.setFeaturesCollectionRef,
-  setFeaturesDatabase: actions.setFeaturesDatabase,
   setFuse: actions.setFuse,
   setSummitNames: actions.setSummitNames,
   setTrie: actions.setTrie,

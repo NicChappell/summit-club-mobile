@@ -4,7 +4,6 @@ import {
   SET_FEATURE_FILTERS,
   SET_FEATURES,
   SET_FEATURES_COLLECTION_REF,
-  SET_FEATURES_DATABASE,
 } from "../../../actions/features/types";
 import { IAction } from "../../../../common/types";
 import { initState } from "./constants";
@@ -35,11 +34,6 @@ const featuresReducer = (state = initState, action: IAction) => {
       return {
         ...state,
         featuresCollectionRef: payload.featuresCollectionRef,
-      };
-    case SET_FEATURES_DATABASE:
-      return {
-        ...state,
-        featuresDatabase: payload.featuresDatabase,
       };
     default:
       return state;

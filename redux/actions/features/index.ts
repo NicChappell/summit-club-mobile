@@ -1,4 +1,3 @@
-import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import { Feature, Geometry, GeoJsonProperties } from "geojson";
@@ -10,7 +9,6 @@ import {
   SET_FEATURE_FILTERS,
   SET_FEATURES,
   SET_FEATURES_COLLECTION_REF,
-  SET_FEATURES_DATABASE,
 } from "./types";
 
 export const resetFeatures = (): AppThunk => async (dispatch) => {
@@ -50,14 +48,5 @@ export const setFeaturesCollectionRef = (
   dispatch({
     type: SET_FEATURES_COLLECTION_REF,
     payload: { featuresCollectionRef },
-  });
-};
-
-export const setFeaturesDatabase = (
-  featuresDatabase?: SQLite.WebSQLDatabase
-): AppThunk => async (dispatch) => {
-  dispatch({
-    type: SET_FEATURES_DATABASE,
-    payload: { featuresDatabase },
   });
 };

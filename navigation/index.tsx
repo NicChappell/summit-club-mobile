@@ -31,7 +31,14 @@ import { IError } from "../common/types";
 import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
 import { IAuthState } from "../redux/reducers/children/authReducer/types";
-import { IQueryResult, ISummitName, Summit, Trie, User } from "../services";
+import {
+  CheckIn,
+  IQueryResult,
+  ISummitName,
+  Summit,
+  Trie,
+  User,
+} from "../services";
 import { AppLoading } from "./components";
 import { AuthStack, MainTabs } from "./navigators";
 
@@ -76,6 +83,14 @@ const Navigator = ({
     // check if user is already authenticated
     checkAuthentication();
 
+    CheckIn.createCheckInTable()
+      .then((resultSet) => {
+        console.log("createCheckInTable(): ", resultSet);
+      })
+      .catch((error: Error) => {
+        setError({ message: error.message });
+      });
+
     Summit.getSummitNames()
       .then((resultSet) => {
         // destructure ResultSet
@@ -106,11 +121,8 @@ const Navigator = ({
         setSummitNames(summitNames);
         setTrie(trie);
       })
-      .catch((error: IError) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
+      .catch((error: Error) => {
+        setError({ message: error.message });
       });
   }, []);
 

@@ -195,7 +195,7 @@ class CheckIn {
                 id TEXT,
                 userId TEXT,
                 featureId TEXT,
-                timestamp TEXT,
+                timestamp TEXT
             );
           `;
 
@@ -207,9 +207,6 @@ class CheckIn {
           reject(error);
         });
     });
-
-    // stop loading animation
-    // TODO: STOP LOADING ANIMATION
   };
 }
 

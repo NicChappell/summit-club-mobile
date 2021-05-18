@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../common/styles";
 import { IAppLoading } from "./types";
 
-const AppLoading = ({}: IAppLoading) => {
+const AppLoading = ({ statusMessage }: IAppLoading) => {
   return (
     <View style={styles.container}>
-      <Text>AppLoading</Text>
+      <Text>{statusMessage}</Text>
     </View>
   );
 };

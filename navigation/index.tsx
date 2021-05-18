@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect, ConnectedProps } from "react-redux";
 import {
   useFonts,
@@ -55,8 +55,14 @@ const Navigator = ({
   // destructure auth
   const { uid } = auth;
 
+  // state hooks
+  const [featuresLoaded, setFeaturesLoaded] = useState<boolean>(false);
+  const [fetchFeatures, setFetchFeatures] = useState<boolean>(false);
+  console.log("fetchFeatures: ", fetchFeatures);
+  const [statusMessage, setStatusMessage] = useState<string>("");
+
   // font hooks
-  const [didFontsLoad, fontsLoadingError] = useFonts({
+  const [fontsLoaded, fontsLoadingError] = useFonts({
     NotoSansJP_100Thin,
     NotoSansJP_300Light,
     NotoSansJP_400Regular,
@@ -92,42 +98,35 @@ const Navigator = ({
         setError({ message: error.message });
       });
 
-    Feature.dropFeatureTable()
-      .then((resultSet) => {
-        console.log("dropFeatureTable(): ", resultSet);
+    // // STEP 0:
+    // // drop feature table to reset
+    // Feature.dropFeatureTable().then((resultSet) => {
+    //   console.log("dropFeatureTable(): ", resultSet);
+    // });
 
-        return Feature.createFeatureTable();
-      })
+    setStatusMessage("Checking offline data");
+
+    // STEP 1:
+    // create feature table if it does not exist
+    Feature.createFeatureTable()
       .then((resultSet) => {
         console.log("createFeatureTable(): ", resultSet);
 
+        // get feature table row count
         return Feature.countFeatureRows();
       })
       .then((count) => {
         console.log("countFeatureRows(): ", count);
 
-        if (Boolean(count)) {
-          // return early if table already populated
-          return;
+        // fetch features if feature table empty
+        //   Boolean(!0) === true
+        //   Boolean(!1) === false
+        if (Boolean(!count)) {
+          setFetchFeatures(true);
+        } else {
+          setFeaturesLoaded(true);
+          setStatusMessage(`${count.toLocaleString()} summits found`);
         }
-
-        return Feature.retreiveFeatureDocuments();
-      })
-      .then((documents) => {
-        console.log("retreiveFeatureDocuments(): ", documents?.length);
-
-        return Feature.populatetFeatureTable(documents!);
-      })
-      .then((message) => {
-        console.log("populatetFeatureTable(): ", message);
-      })
-      .catch((error: Error) => {
-        setError({ message: error.message });
-      });
-
-    Feature.countFeatureRows()
-      .then((count) => {
-        console.log("countFeatureRows(): ", count);
       })
       .catch((error: Error) => {
         setError({ message: error.message });
@@ -147,7 +146,7 @@ const Navigator = ({
         );
 
         // configure Fuse options
-        const fuseOptions = { keys: ["lowercase"] };
+        const fuseOptions = { includeMatches: true, keys: ["lowercase"], threshold: 0.2 };
 
         // instantiate new Fuse
         const fuse = new Fuse(summitNames, fuseOptions);
@@ -167,6 +166,32 @@ const Navigator = ({
         setError({ message: error.message });
       });
   }, []);
+
+  useEffect(() => {
+    if (fetchFeatures) {
+      setStatusMessage("Retreiving data");
+
+      // fetch features from firestore
+      Feature.retreiveFeatureDocuments()
+        .then((documents) => {
+          console.log("retreiveFeatureDocuments(): ", documents?.length);
+
+          setStatusMessage("Building offline data");
+
+          return Feature.populateFeatureTable(documents!);
+        })
+        .then((count) => {
+          console.log("populateFeatureTable(): ", count);
+
+          setFeaturesLoaded(true);
+          setStatusMessage(`${count.toLocaleString()} summits found`);
+        })
+        .catch((error: Error) => {
+          setError({ message: error.message });
+        });
+    } else {
+    }
+  }, [fetchFeatures]);
 
   let navigator;
   if (uid) {
@@ -188,12 +213,10 @@ const Navigator = ({
     navigator = <AuthStack />;
   }
 
-  if (didFontsLoad) {
+  if (featuresLoaded && fontsLoaded) {
     return <NavigationContainer>{navigator}</NavigationContainer>;
   } else {
-    setError({ message: fontsLoadingError?.message });
-
-    return <AppLoading />;
+    return <AppLoading statusMessage={statusMessage} />;
   }
 };
 

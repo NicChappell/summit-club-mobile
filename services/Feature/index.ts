@@ -77,9 +77,9 @@ class Feature {
   };
 
   /** Populate feature table */
-  static populatetFeatureTable = (
+  static populateFeatureTable = (
     documents: FeatureDocument[]
-  ): Promise<string> => {
+  ): Promise<number> => {
     return new Promise(async (resolve, reject) => {
       try {
         const sqlStatement = `
@@ -129,7 +129,7 @@ class Feature {
           count += 1;
         }
 
-        resolve(`${count} successful database transactions`);
+        resolve(count);
       } catch (error) {
         reject(error);
       }

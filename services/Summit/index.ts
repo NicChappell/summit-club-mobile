@@ -15,20 +15,19 @@ import {
 } from "./types";
 
 class Summit {
-  /** Find matching summit by key value pair */
+  /** Find matching record by key value pair */
   static findWhere(
     key: FeatureProperty,
     value: SummitName
   ): Promise<SQLite.SQLResultSet> {
     // TODO: FIREBASE QUERY
 
-    // database query
     const sqlStatement = `SELECT * FROM feature WHERE ${key}="${value}"`;
 
     return executeSql(sqlStatement);
   }
 
-  /** Find matching summits by key in array of values */
+  /** Find matching records by key in array of values */
   static findWhereIn(
     key: FeatureProperty,
     values: SummitName[]
@@ -38,7 +37,6 @@ class Summit {
     // format values for query
     const condition = values.map((value) => `'${value}'`).join(",");
 
-    // database query
     const sqlStatement = `SELECT * FROM feature WHERE ${key} IN (${condition})`;
 
     return executeSql(sqlStatement);

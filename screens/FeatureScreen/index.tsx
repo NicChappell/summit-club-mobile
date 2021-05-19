@@ -53,6 +53,7 @@ import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import {
   CheckIn,
+  CheckOff,
   IApparel,
   ICheckIn,
   ISummit,
@@ -154,6 +155,18 @@ const FeatureScreen = ({
         latitudeDelta: 0.075,
         longitudeDelta: 0.075,
       };
+
+      // fetch check-off
+      CheckOff.findWhere("userId", "12345")
+        .then((resultSet) => {
+          console.log("resultSet: ", resultSet);
+        })
+        .catch((error: IError) => {
+          setError({
+            code: error.code,
+            message: error.message,
+          });
+        });
 
       // update state
       setCoordinate(coordinate);

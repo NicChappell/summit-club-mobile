@@ -6,7 +6,7 @@ export const database = SQLite.openDatabase("summit_club");
 // asynchronous sqlite transaction wrapper
 export const executeSql = (
   sqlStatement: string,
-  args: string[] = []
+  args: (string | number)[] = []
 ): Promise<SQLite.SQLResultSet> => {
   return new Promise((resolve, reject) => {
     // new database transaction

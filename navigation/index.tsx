@@ -33,6 +33,7 @@ import { RootState } from "../redux/reducers";
 import { IAuthState } from "../redux/reducers/children/authReducer/types";
 import {
   CheckIn,
+  CheckOff,
   Feature,
   IQueryResult,
   ISummitName,
@@ -58,7 +59,6 @@ const Navigator = ({
   // state hooks
   const [featuresLoaded, setFeaturesLoaded] = useState<boolean>(false);
   const [fetchFeatures, setFetchFeatures] = useState<boolean>(false);
-  console.log("fetchFeatures: ", fetchFeatures);
   const [statusMessage, setStatusMessage] = useState<string>("");
 
   // font hooks
@@ -90,9 +90,21 @@ const Navigator = ({
     // check if user is already authenticated
     checkAuthentication();
 
+    // STEP 1:
+    // create check_in table if it does not exist
     CheckIn.createCheckInTable()
       .then((resultSet) => {
         console.log("createCheckInTable(): ", resultSet);
+      })
+      .catch((error: Error) => {
+        setError({ message: error.message });
+      });
+
+    // STEP 1:
+    // create check_off table if it does not exist
+    CheckOff.createCheckOffTable()
+      .then((resultSet) => {
+        console.log("createCheckOffTable(): ", resultSet);
       })
       .catch((error: Error) => {
         setError({ message: error.message });

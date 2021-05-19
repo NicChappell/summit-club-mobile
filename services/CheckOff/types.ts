@@ -1,12 +1,12 @@
-export type CheckInProperty =
+export type CheckOffProperty =
   | "id"
   | "userId"
   | "featureId"
   | "createdAt"
   | "updatedAt";
 
-export interface ICheckInRecord {
-  /** Uniquely identifies the Check In record */
+export interface ICheckOffRecord {
+  /** Uniquely identifies the Check Off record */
   id: string;
   /** Uniquely identifies a User record */
   userId: string;

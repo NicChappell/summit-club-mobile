@@ -112,6 +112,7 @@ const Navigator = ({
       .then((resultSet) => {
         console.log("createFeatureTable(): ", resultSet);
 
+        // STEP 2:
         // get feature table row count
         return Feature.countFeatureRows();
       })
@@ -146,7 +147,11 @@ const Navigator = ({
         );
 
         // configure Fuse options
-        const fuseOptions = { includeMatches: true, keys: ["lowercase"], threshold: 0.2 };
+        const fuseOptions = {
+          includeMatches: true,
+          keys: ["lowercase"],
+          threshold: 0.2,
+        };
 
         // instantiate new Fuse
         const fuse = new Fuse(summitNames, fuseOptions);
@@ -171,6 +176,7 @@ const Navigator = ({
     if (fetchFeatures) {
       setStatusMessage("Retreiving data");
 
+      // STEP 3:
       // fetch features from firestore
       Feature.retreiveFeatureDocuments()
         .then((documents) => {
@@ -178,6 +184,8 @@ const Navigator = ({
 
           setStatusMessage("Building offline data");
 
+          // STEP 4:
+          // save features to feature table
           return Feature.populateFeatureTable(documents!);
         })
         .then((count) => {

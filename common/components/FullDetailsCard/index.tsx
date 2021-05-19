@@ -52,35 +52,33 @@ const FullDetailsCard = ({ dimensions, item }: IFullDetailsCard) => {
         />
       )}
       <View style={styles.cardContent}>
-        <View style={styles.row}>
-          <Text style={featureName}>{feature.properties?.name}</Text>
+        <View style={styles.leftColumn}>
+          <Text style={[featureName, { marginBottom: 8 }]}>
+            {feature.properties?.name}
+          </Text>
+          <Text style={featureLocation}>
+            {feature.properties?.feet.toLocaleString()} ft ·{" "}
+            {feature.properties?.county} County
+          </Text>
+          <Text style={featureCoordinate}>
+            {feature.properties?.latitude.toFixed(3)}°{" "}
+            {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+            {feature.properties?.longitude.toFixed(3)}°{" "}
+            {feature.properties?.longitude > 0 ? "E" : "W"}
+          </Text>
         </View>
-        <View style={styles.row}>
-          <View style={styles.leftColumn}>
-            <Text style={featureLocation}>
-              {feature.properties?.feet.toLocaleString()} ft ·{" "}
-              {feature.properties?.county} County
-            </Text>
-            <Text style={featureCoordinate}>
-              {feature.properties?.latitude.toFixed(3)}°{" "}
-              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-              {feature.properties?.longitude.toFixed(3)}°{" "}
-              {feature.properties?.longitude > 0 ? "E" : "W"}
+        {checkInsLastWeek && (
+          <View style={styles.rightColumn}>
+            <Ionicons
+              name={"ios-shield-checkmark-outline"}
+              size={24}
+              color={colors.queenBlue}
+            />
+            <Text style={styles.verified}>
+              {checkInsLastWeek} verified{"\n"}check-ins
             </Text>
           </View>
-          {checkInsLastWeek && (
-            <View style={styles.rightColumn}>
-              <Ionicons
-                name={"ios-shield-checkmark-outline"}
-                size={24}
-                color={colors.queenBlue}
-              />
-              <Text style={styles.verified}>
-                {checkInsLastWeek} verified{"\n"}check-ins
-              </Text>
-            </View>
-          )}
-        </View>
+        )}
       </View>
     </Card>
   );
@@ -99,12 +97,13 @@ const styles = StyleSheet.create({
     paddingLeft: 2,
   },
   cardContent: {
-    alignItems: "flex-start",
+    alignItems: "stretch",
     backgroundColor: colors.white,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    justifyContent: "space-between",
+    flexDirection: "row",
     flex: 1,
+    justifyContent: "space-between",
     padding: 8,
   },
   cardWrapper: {
@@ -140,11 +139,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontFamily: "NunitoSans_400Regular",
     fontSize: 14,
-  },
-  row: {
-    alignSelf: "stretch",
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
   verified: {
     color: colors.black,

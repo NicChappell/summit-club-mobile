@@ -1,3 +1,4 @@
+/** List of CheckOff record property names */
 export type CheckOffProperty =
   | "id"
   | "userId"
@@ -6,7 +7,7 @@ export type CheckOffProperty =
   | "updatedAt";
 
 export interface ICheckOffRecord {
-  /** Uniquely identifies the Check Off record */
+  /** Uniquely identifies the CheckOff record */
   id: string;
   /** Uniquely identifies a User record */
   userId: string;

@@ -17,7 +17,6 @@ import { Point } from "geojson";
 import {
   ApparelDetailsCard,
   ErrorOverlay,
-  HorizontalDetailsCard,
   StaticMapBackground,
   VerticalDetailsCard,
 } from "../../common/components";
@@ -33,7 +32,6 @@ import {
   colors,
   divider,
   featureCoordinate,
-  featureElevation,
   featureLocation,
   featureName,
   listItem,
@@ -46,8 +44,6 @@ import {
   paragraph,
   sectionTitle,
   separator,
-  shadow,
-  shadowReset,
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
@@ -156,10 +152,13 @@ const FeatureScreen = ({
         longitudeDelta: 0.075,
       };
 
-      // fetch check-off
-      CheckOff.findWhere("userId", "12345")
+      // fetch user check-off
+      CheckOff.findWhere({ userId: "12345", featureId: "54321" })
         .then((resultSet) => {
-          console.log("resultSet: ", resultSet);
+          console.log(
+            "CheckOff.findWhere({ userId: '12345', featureId: '54321' }): ",
+            resultSet
+          );
         })
         .catch((error: IError) => {
           setError({
@@ -175,17 +174,32 @@ const FeatureScreen = ({
     }
   }, [feature]);
 
-  const handleCheckInPress = () => {
-    // navigate to Check In screen
-    navigation.navigate("CheckIn");
-  };
+  const handleCheckInPress = () => navigation.navigate("CheckIn");
 
-  const handleCheckOffPress = () => {
-    // update check-off status
-    setCheckOff(!checkOff);
+  const handleCheckOffPress = async () => {
+    try {
+      const payload = {
+        id: "1",
+        userId: "12345",
+        featureId: "54321",
+        createdAt: 11111111,
+        updatedAt: 11111111,
+      };
 
-    // render modal
-    setIsCheckOffVisible(true);
+      const resultSet = await CheckOff.insert(payload);
+      console.log("CheckOff.insert(payload): ", resultSet);
+
+      // update check-off status
+      setCheckOff(!checkOff);
+
+      // render check-off modal
+      setIsCheckOffVisible(true);
+    } catch (error) {
+      setError({
+        code: error.code,
+        message: error.message,
+      });
+    }
   };
 
   const handleSummitPress = (item: ISummit) => {
@@ -217,10 +231,6 @@ const FeatureScreen = ({
 
   const timestamp = new Date();
 
-  const horizontalDetailsCardDimensions = {
-    height: 128,
-    width: 320,
-  };
   const verticalDetailsCardDimensions = {
     height: "auto",
     width: 176,

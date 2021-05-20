@@ -3,51 +3,18 @@ import { executeSql } from "../database";
 import { CheckOffProperty, ICheckOffRecord } from "./types";
 
 class CheckOff {
-  /** Create table */
-  static createCheckOffTable = (): Promise<SQLite.SQLResultSet> => {
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `
-            CREATE TABLE IF NOT EXISTS check_off (
-                id TEXT,
-                userId TEXT,
-                featureId TEXT,
-                createdAt INTEGER,
-                updatedAt INTEGER
-            );
-          `;
-
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  };
-
-  /** Drop table */
-  static dropCheckOffTable = (): Promise<SQLite.SQLResultSet> => {
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `DROP TABLE IF EXISTS check_off;`;
-
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  };
-
-  /** Find matching record by key value pair */
-  static findWhere = (
-    key: CheckOffProperty,
-    value: string
+  /** Delete existing record from check_off table by collection of key value pairs */
+  static delete = (
+    queryParams: Partial<ICheckOffRecord>
   ): Promise<SQLite.SQLResultSet> => {
+    const condition = Object.entries(queryParams)
+      .map((queryParam) => {
+        return `${queryParam[0]} = '${queryParam[1]}'`;
+      })
+      .join(" AND ");
+
     return new Promise((resolve, reject) => {
-      const sqlStatement = `SELECT * FROM check_off WHERE ${key}="${value}"`;
+      const sqlStatement = `DELETE FROM check_off WHERE ${condition};`;
 
       executeSql(sqlStatement)
         .then((resultSet) => {
@@ -59,8 +26,8 @@ class CheckOff {
     });
   };
 
-  /** Create new record */
-  static create = (payload: ICheckOffRecord): Promise<SQLite.SQLResultSet> => {
+  /** Insert new record into check_off table */
+  static insert = (payload: ICheckOffRecord): Promise<SQLite.SQLResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
         INSERT INTO check_off (
@@ -83,6 +50,67 @@ class CheckOff {
       ];
 
       executeSql(sqlStatement, args)
+        .then((resultSet) => {
+          resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
+  /** Create check_off table */
+  static createCheckOffTable = (): Promise<SQLite.SQLResultSet> => {
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `
+            CREATE TABLE IF NOT EXISTS check_off (
+                id TEXT NOT NULL PRIMARY KEY,
+                userId TEXT,
+                featureId TEXT,
+                createdAt INTEGER,
+                updatedAt INTEGER
+            );
+          `;
+
+      executeSql(sqlStatement)
+        .then((resultSet) => {
+          resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
+  /** Drop check_off table */
+  static dropCheckOffTable = (): Promise<SQLite.SQLResultSet> => {
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `DROP TABLE IF EXISTS check_off;`;
+
+      executeSql(sqlStatement)
+        .then((resultSet) => {
+          resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
+  /** Find matching record in check_off table by collection of key value pairs */
+  static findWhere = (
+    queryParams: Partial<ICheckOffRecord>
+  ): Promise<SQLite.SQLResultSet> => {
+    const condition = Object.entries(queryParams)
+      .map((queryParam) => {
+        return `${queryParam[0]} = '${queryParam[1]}'`;
+      })
+      .join(" AND ");
+
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `SELECT * FROM check_off WHERE ${condition}`;
+
+      executeSql(sqlStatement)
         .then((resultSet) => {
           resolve(resultSet);
         })

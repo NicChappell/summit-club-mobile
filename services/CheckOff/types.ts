@@ -13,6 +13,8 @@ export type CheckOffProperty =
   | "updated_at";
 
 export interface ICheckOffDocument {
+  /** Uniquely identifies the CheckOff record */
+  id: string;
   /** Uniquely identifies a User record */
   userId: string;
   /** Uniquely identifies a Feature record */

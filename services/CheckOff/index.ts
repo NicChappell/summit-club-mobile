@@ -10,7 +10,7 @@ import {
 
 class CheckOff {
   /** Add new document to checkOffs collection */
-  static add = (payload: ICheckOffDocument): Promise<string> => {
+  static add = (payload: Partial<ICheckOffDocument>): Promise<string> => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await checkOffsCollectionRef.add(payload);
@@ -44,6 +44,34 @@ class CheckOff {
         .catch((error) => {
           reject(error);
         });
+    });
+  };
+
+  /** Retrieve a document from checkOffs collection */
+  static get = (queryParams: Partial<ICheckOffRecord>): Promise<string> => {
+    // create Firestore query
+    const query = checkOffsCollectionRef;
+
+    Object.entries(queryParams).forEach((queryParam) => {
+      query.where(queryParam[0], "==", queryParam[1]);
+    });
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        const snapshot = await query.get();
+        if (snapshot.empty) {
+          console.log("No matching documents.");
+          return;
+        }
+
+        snapshot.forEach((doc: any) => {
+          console.log(doc.id, "=>", doc.data());
+        });
+
+        resolve("TODO");
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 

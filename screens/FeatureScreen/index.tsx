@@ -153,6 +153,18 @@ const FeatureScreen = ({
       };
 
       // fetch user check-off
+      CheckOff.get({ user_id: "12345", feature_id: "54321" })
+        .then((doc) => {
+          console.log(doc);
+        })
+        .catch((error: IError) => {
+          setError({
+            code: error.code,
+            message: error.message,
+          });
+        });
+
+      // fetch user check-off
       CheckOff.findWhere({ user_id: "12345", feature_id: "54321" })
         .then((resultSet) => {
           console.log(

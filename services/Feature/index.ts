@@ -33,7 +33,7 @@ class Feature {
   };
 
   /** Create feature table */
-  static createFeatureTable = (): Promise<FeatureResultSet> => {
+  static createTable = (): Promise<FeatureResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
         CREATE TABLE IF NOT EXISTS feature (
@@ -62,7 +62,7 @@ class Feature {
   };
 
   /** Drop feature table */
-  static dropFeatureTable = (): Promise<FeatureResultSet> => {
+  static dropTable = (): Promise<FeatureResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `DROP TABLE IF EXISTS feature;`;
 

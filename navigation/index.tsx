@@ -100,29 +100,34 @@ const Navigator = ({
         setError({ message: error.message });
       });
 
-    // STEP 1:
-    // create check_off table if it does not exist
-    CheckOff.createCheckOffTable()
-      .then((resultSet) => {
-        console.log("createCheckOffTable(): ", resultSet);
-      })
-      .catch((error: Error) => {
-        setError({ message: error.message });
-      });
+    // STEP 0:
+    // drop check_off table to reset
+    CheckOff.dropTable().then((resultSet) => {
+      console.log("dropTable(): ", resultSet);
+    });
 
-    // // STEP 0:
     // // drop feature table to reset
-    // Feature.dropFeatureTable().then((resultSet) => {
-    //   console.log("dropFeatureTable(): ", resultSet);
+    // Feature.dropTable().then((resultSet) => {
+    //   console.log("dropTable(): ", resultSet);
     // });
 
     setStatusMessage("Checking offline data");
 
     // STEP 1:
-    // create feature table if it does not exist
-    Feature.createFeatureTable()
+    // create check_off table if it does not exist
+    CheckOff.createTable()
       .then((resultSet) => {
-        console.log("createFeatureTable(): ", resultSet);
+        console.log("createTable(): ", resultSet);
+      })
+      .catch((error: Error) => {
+        setError({ message: error.message });
+      });
+
+    // STEP 1:
+    // create feature table if it does not exist
+    Feature.createTable()
+      .then((resultSet) => {
+        console.log("createTable(): ", resultSet);
 
         // STEP 2:
         // get feature table row count

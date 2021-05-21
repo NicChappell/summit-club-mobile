@@ -35,7 +35,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     }
   };
 
-  const createFeatureTable = async () => {
+  const createTable = async () => {
     // start loading animation
     // TODO: START LOADING ANIMATION
 
@@ -69,7 +69,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     // TODO: STOP LOADING ANIMATION
   };
 
-  const dropFeatureTable = async () => {
+  const dropTable = async () => {
     // start loading animation
     // TODO: START LOADING ANIMATION
 
@@ -227,8 +227,8 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
           This is where I will have options to download content for offline
           experience
         </Text>
-        <Button onPress={createFeatureTable} title="Create feature table" />
-        <Button onPress={dropFeatureTable} title="Drop feature table" />
+        <Button onPress={createTable} title="Create feature table" />
+        <Button onPress={dropTable} title="Drop feature table" />
         <Button onPress={populateFeatureTable} title="Populate feature table" />
         <Button onPress={countFeatureRows} title="Count feature rows" />
         <Button onPress={testQueryHandler} title="Test query" />

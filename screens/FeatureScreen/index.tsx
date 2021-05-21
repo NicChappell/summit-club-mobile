@@ -153,7 +153,7 @@ const FeatureScreen = ({
       };
 
       // fetch user check-off
-      CheckOff.findWhere({ userId: "12345", featureId: "54321" })
+      CheckOff.findWhere({ user_id: "12345", feature_id: "54321" })
         .then((resultSet) => {
           console.log(
             "CheckOff.findWhere({ userId: '12345', featureId: '54321' }): ",
@@ -178,20 +178,25 @@ const FeatureScreen = ({
 
   const handleCheckOffPress = async () => {
     try {
-      const payload = {
+      const addPayload = {
         userId: "12345",
         featureId: "54321",
         createdAt: 11111111,
         updatedAt: 11111111,
       };
 
-      const documentId = await CheckOff.add(payload);
+      const documentId = await CheckOff.add(addPayload);
       console.log("documentId: ", documentId);
 
-      const resultSet = await CheckOff.insert({
-        ...payload,
+      const insertPayload = {
         id: documentId,
-      });
+        user_id: "12345",
+        feature_id: "54321",
+        created_at: 11111111,
+        updated_at: 11111111,
+      };
+
+      const resultSet = await CheckOff.insert(insertPayload);
       console.log("CheckOff.insert(payload): ", resultSet);
 
       // update check-off status

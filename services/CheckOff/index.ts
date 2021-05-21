@@ -1,11 +1,16 @@
 import * as SQLite from "expo-sqlite";
 import { executeSql } from "../database";
 import { checkOffsCollectionRef } from "../firebase";
-import { CheckOffDocument, CheckOffProperty, ICheckOffRecord } from "./types";
+import {
+  CheckOffDocument,
+  CheckOffProperty,
+  ICheckOffDocument,
+  ICheckOffRecord,
+} from "./types";
 
 class CheckOff {
   /** Add new document to checkOffs collection */
-  static add = (payload: Partial<ICheckOffRecord>): Promise<string> => {
+  static add = (payload: ICheckOffDocument): Promise<string> => {
     return new Promise(async (resolve, reject) => {
       try {
         const res = await checkOffsCollectionRef.add(payload);
@@ -59,10 +64,10 @@ class CheckOff {
 
       const args = [
         payload.id,
-        payload.userId,
-        payload.featureId,
-        payload.createdAt,
-        payload.updatedAt,
+        payload.user_id,
+        payload.feature_id,
+        payload.created_at,
+        payload.updated_at,
       ];
 
       executeSql(sqlStatement, args)
@@ -76,7 +81,7 @@ class CheckOff {
   };
 
   /** Create check_off table */
-  static createCheckOffTable = (): Promise<SQLite.SQLResultSet> => {
+  static createTable = (): Promise<SQLite.SQLResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
             CREATE TABLE IF NOT EXISTS check_off (
@@ -99,7 +104,7 @@ class CheckOff {
   };
 
   /** Drop check_off table */
-  static dropCheckOffTable = (): Promise<SQLite.SQLResultSet> => {
+  static dropTable = (): Promise<SQLite.SQLResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `DROP TABLE IF EXISTS check_off;`;
 

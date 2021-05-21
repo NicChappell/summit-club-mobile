@@ -90,21 +90,11 @@ const Navigator = ({
     // check if user is already authenticated
     checkAuthentication();
 
-    // STEP 1:
-    // create check_in table if it does not exist
-    CheckIn.createCheckInTable()
-      .then((resultSet) => {
-        console.log("createCheckInTable(): ", resultSet);
-      })
-      .catch((error: Error) => {
-        setError({ message: error.message });
-      });
-
     // STEP 0:
-    // drop check_off table to reset
-    CheckOff.dropTable().then((resultSet) => {
-      console.log("dropTable(): ", resultSet);
-    });
+    // // drop check_off table to reset
+    // CheckOff.dropTable().then((resultSet) => {
+    //   console.log("dropTable(): ", resultSet);
+    // });
 
     // // drop feature table to reset
     // Feature.dropTable().then((resultSet) => {
@@ -114,10 +104,20 @@ const Navigator = ({
     setStatusMessage("Checking offline data");
 
     // STEP 1:
+    // create check_in table if it does not exist
+    CheckIn.createTable()
+      .then((resultSet) => {
+        // console.log("createTable(): ", resultSet);
+      })
+      .catch((error: Error) => {
+        setError({ message: error.message });
+      });
+
+    // STEP 1:
     // create check_off table if it does not exist
     CheckOff.createTable()
       .then((resultSet) => {
-        console.log("createTable(): ", resultSet);
+        // console.log("createTable(): ", resultSet);
       })
       .catch((error: Error) => {
         setError({ message: error.message });
@@ -127,18 +127,14 @@ const Navigator = ({
     // create feature table if it does not exist
     Feature.createTable()
       .then((resultSet) => {
-        console.log("createTable(): ", resultSet);
-
         // STEP 2:
         // get feature table row count
-        return Feature.countFeatureRows();
+        return Feature.countRows();
       })
       .then((count) => {
-        console.log("countFeatureRows(): ", count);
-
         // fetch features if feature table empty
         //   Boolean(!0) === true
-        //   Boolean(!1) === false
+        //   Boolean(!1+) === false
         if (Boolean(!count)) {
           setFetchFeatures(true);
         } else {

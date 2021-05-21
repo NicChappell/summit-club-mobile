@@ -3,6 +3,7 @@ import { executeSql } from "../database";
 import { checkOffsCollectionRef } from "../firebase";
 import {
   CheckOffDocument,
+  CheckOffQuery,
   CheckOffProperty,
   ICheckOffDocument,
   ICheckOffRecord,
@@ -48,27 +49,38 @@ class CheckOff {
   };
 
   /** Retrieve a document from checkOffs collection */
-  static get = (queryParams: Partial<ICheckOffRecord>): Promise<string> => {
-    // create Firestore query
-    const query = checkOffsCollectionRef;
-
-    Object.entries(queryParams).forEach((queryParam) => {
-      query.where(queryParam[0], "==", queryParam[1]);
-    });
-
+  static get = (
+    queryParams: Partial<ICheckOffDocument>
+  ): Promise<ICheckOffDocument | null> => {
     return new Promise(async (resolve, reject) => {
       try {
-        const snapshot = await query.get();
-        if (snapshot.empty) {
-          console.log("No matching documents.");
-          return;
-        }
+        // construct Firestore query
+        let query: CheckOffQuery = checkOffsCollectionRef;
 
-        snapshot.forEach((doc: any) => {
-          console.log(doc.id, "=>", doc.data());
+        // convert params object into array of [key, value] pairs
+        // add condition to query for each [key, value] pair
+        Object.entries(queryParams).forEach((queryParam) => {
+          query = query.where(queryParam[0], "==", queryParam[1]);
         });
 
-        resolve("TODO");
+        // execute query and wait for snapshot
+        const snapshot = await query.get();
+
+        // const snapshot = await checkOffsCollectionRef
+        //   .where("userId", "==", "12345")
+        //   .where("featureId", "==", "54321")
+        //   .get();
+
+        if (snapshot.empty) {
+          resolve(null);
+        } else {
+          // format snapshot as
+          const document = {
+            ...snapshot.docs[0].data(),
+            id: snapshot.docs[0].id,
+          };
+          resolve(document as ICheckOffDocument);
+        }
       } catch (error) {
         reject(error);
       }
@@ -150,6 +162,8 @@ class CheckOff {
   static findWhere = (
     queryParams: Partial<ICheckOffRecord>
   ): Promise<SQLite.SQLResultSet> => {
+    // convert params object into array of [key, value] pairs
+    // construct query condition using each [key, value] pair
     const condition = Object.entries(queryParams)
       .map((queryParam) => {
         return `${queryParam[0]} = '${queryParam[1]}'`;

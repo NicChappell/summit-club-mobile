@@ -152,10 +152,10 @@ const FeatureScreen = ({
         longitudeDelta: 0.075,
       };
 
-      // fetch user check-off
-      CheckOff.get({ user_id: "12345", feature_id: "54321" })
+      // fetch user's check-off document from Firestore
+      CheckOff.get({ userId: "12345", featureId: "54321" })
         .then((doc) => {
-          console.log(doc);
+          console.log("doc: ", doc);
         })
         .catch((error: IError) => {
           setError({
@@ -164,13 +164,13 @@ const FeatureScreen = ({
           });
         });
 
-      // fetch user check-off
+      // fetch user's check-off document from the database
       CheckOff.findWhere({ user_id: "12345", feature_id: "54321" })
         .then((resultSet) => {
-          console.log(
-            "CheckOff.findWhere({ userId: '12345', featureId: '54321' }): ",
-            resultSet
-          );
+          // console.log(
+          //   "CheckOff.findWhere({ userId: '12345', featureId: '54321' }): ",
+          //   resultSet
+          // );
         })
         .catch((error: IError) => {
           setError({

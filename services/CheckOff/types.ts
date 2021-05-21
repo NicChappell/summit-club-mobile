@@ -4,6 +4,10 @@ import firebase from "firebase/app";
 export type CheckOffDocument =
   firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 
+/** A Firestore query */
+export type CheckOffQuery =
+  firebase.firestore.Query<firebase.firestore.DocumentData>;
+
 /** List of CheckOff record property names */
 export type CheckOffProperty =
   | "id"

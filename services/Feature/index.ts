@@ -10,7 +10,7 @@ import {
 
 class Feature {
   /** Count feature table rows */
-  static countFeatureRows = (): Promise<number> => {
+  static countRows = (): Promise<number> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `SELECT COUNT(*) FROM feature;`;
 

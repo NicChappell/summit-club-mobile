@@ -16,7 +16,7 @@ import * as Location from "expo-location";
 type Props = PropsFromRedux & IDownloadScreen;
 
 const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
-  const countFeatureRows = async () => {
+  const countRows = async () => {
     try {
       const resultSet = await executeSql(`SELECT COUNT(*) FROM feature;`, []);
 
@@ -94,7 +94,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     try {
       // TODO: FIRST NEED TO QUERY TABLE TO MAKE SURE I DON'T WRITE DUPLICATE DATA
       // return early if table data already exists
-      const count = await countFeatureRows();
+      const count = await countRows();
       if (count) {
         console.log(count);
         return;
@@ -230,7 +230,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
         <Button onPress={createTable} title="Create feature table" />
         <Button onPress={dropTable} title="Drop feature table" />
         <Button onPress={populateFeatureTable} title="Populate feature table" />
-        <Button onPress={countFeatureRows} title="Count feature rows" />
+        <Button onPress={countRows} title="Count feature rows" />
         <Button onPress={testQueryHandler} title="Test query" />
         <Button onPress={getLocation} title="Get location" />
         <Text>

@@ -1,8 +1,24 @@
 import * as SQLite from "expo-sqlite";
 import { executeSql } from "../database";
-import { CheckOffProperty, ICheckOffRecord } from "./types";
+import { checkOffsCollectionRef } from "../firebase";
+import { CheckOffDocument, CheckOffProperty, ICheckOffRecord } from "./types";
 
 class CheckOff {
+  /** Add new document to checkOffs collection */
+  static add = (payload: Partial<ICheckOffRecord>): Promise<string> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await checkOffsCollectionRef.add(payload);
+
+        console.log("Added document with ID: ", res.id);
+
+        resolve(res.id);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
   /** Delete existing record from check_off table by collection of key value pairs */
   static delete = (
     queryParams: Partial<ICheckOffRecord>
@@ -26,16 +42,16 @@ class CheckOff {
     });
   };
 
-  /** Insert new record into check_off table */
+  /** Insert new record to check_off table */
   static insert = (payload: ICheckOffRecord): Promise<SQLite.SQLResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
         INSERT INTO check_off (
           id,
-          userId,
-          featureId,
-          createdAt,
-          updatedAt
+          user_id,
+          feature_id,
+          created_at,
+          updated_at
         ) VALUES (
           ?,?,?,?,?
         );
@@ -65,10 +81,10 @@ class CheckOff {
       const sqlStatement = `
             CREATE TABLE IF NOT EXISTS check_off (
                 id TEXT NOT NULL PRIMARY KEY,
-                userId TEXT,
-                featureId TEXT,
-                createdAt INTEGER,
-                updatedAt INTEGER
+                user_id TEXT,
+                feature_id TEXT,
+                created_at INTEGER,
+                updated_at INTEGER
             );
           `;
 

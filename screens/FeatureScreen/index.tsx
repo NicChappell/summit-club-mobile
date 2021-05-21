@@ -179,14 +179,19 @@ const FeatureScreen = ({
   const handleCheckOffPress = async () => {
     try {
       const payload = {
-        id: "1",
         userId: "12345",
         featureId: "54321",
         createdAt: 11111111,
         updatedAt: 11111111,
       };
 
-      const resultSet = await CheckOff.insert(payload);
+      const documentId = await CheckOff.add(payload);
+      console.log("documentId: ", documentId);
+
+      const resultSet = await CheckOff.insert({
+        ...payload,
+        id: documentId,
+      });
       console.log("CheckOff.insert(payload): ", resultSet);
 
       // update check-off status

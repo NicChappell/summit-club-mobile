@@ -18,6 +18,7 @@ if (!firebase.apps.length) {
 }
 
 // set firestore collection refs
+export const checkOffsCollectionRef = firebase.firestore().collection("checkOffs");
 const classificationCollectionRef = "";
 const collectionsCollectionRef = "";
 const merchandiseCollectionRef = "";

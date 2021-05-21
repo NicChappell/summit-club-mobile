@@ -1,10 +1,15 @@
+import firebase from "firebase/app";
+
+/** A Firestore document */
+export type CheckOffDocument = firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
+
 /** List of CheckOff record property names */
 export type CheckOffProperty =
   | "id"
-  | "userId"
-  | "featureId"
-  | "createdAt"
-  | "updatedAt";
+  | "user_id"
+  | "feature_id"
+  | "created_at"
+  | "updated_at";
 
 export interface ICheckOffRecord {
   /** Uniquely identifies the CheckOff record */

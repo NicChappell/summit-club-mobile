@@ -6,6 +6,7 @@ export {
   default as CheckOff,
   CheckOffDocument,
   CheckOffQuery,
+  CheckOffQuerySnapshot,
   CheckOffProperty,
   ICheckOffDocument,
   ICheckOffRecord,

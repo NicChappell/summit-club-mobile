@@ -4,6 +4,7 @@ import { checkOffsCollectionRef } from "../firebase";
 import {
   CheckOffDocument,
   CheckOffQuery,
+  CheckOffQuerySnapshot,
   CheckOffProperty,
   ICheckOffDocument,
   ICheckOffRecord,
@@ -11,14 +12,25 @@ import {
 
 class CheckOff {
   /** Add new document to checkOffs collection */
-  static add = (payload: Partial<ICheckOffDocument>): Promise<string> => {
+  static add = (
+    payload: Partial<ICheckOffDocument>
+  ): Promise<ICheckOffDocument> => {
     return new Promise(async (resolve, reject) => {
       try {
-        const res = await checkOffsCollectionRef.add(payload);
+        // execute query and wait for document reference
+        const documentRef = await checkOffsCollectionRef.add(payload);
 
-        console.log("Added document with ID: ", res.id);
+        // execute query and wait for snapshot
+        const snapshot = await documentRef.get();
 
-        resolve(res.id);
+        // format check-off document
+        const checkOffDocument = {
+          ...snapshot.data(),
+          id: documentRef.id,
+        };
+
+        // resolve check-off document
+        resolve(checkOffDocument as ICheckOffDocument);
       } catch (error) {
         reject(error);
       }
@@ -51,7 +63,7 @@ class CheckOff {
   /** Retrieve a document from checkOffs collection */
   static get = (
     queryParams: Partial<ICheckOffDocument>
-  ): Promise<ICheckOffDocument | null> => {
+  ): Promise<CheckOffQuerySnapshot> => {
     return new Promise(async (resolve, reject) => {
       try {
         // construct Firestore query
@@ -66,16 +78,8 @@ class CheckOff {
         // execute query and wait for snapshot
         const snapshot = await query.get();
 
-        if (snapshot.empty) {
-          resolve(null);
-        } else {
-          // format snapshot
-          const document = {
-            ...snapshot.docs[0].data(),
-            id: snapshot.docs[0].id,
-          };
-          resolve(document as ICheckOffDocument);
-        }
+        // resolve snapshot
+        resolve(snapshot);
       } catch (error) {
         reject(error);
       }
@@ -90,10 +94,9 @@ class CheckOff {
           id,
           user_id,
           feature_id,
-          created_at,
-          updated_at
+          created_at
         ) VALUES (
-          ?,?,?,?,?
+          ?,?,?,?
         );
       `;
 
@@ -102,7 +105,6 @@ class CheckOff {
         payload.user_id,
         payload.feature_id,
         payload.created_at,
-        payload.updated_at,
       ];
 
       executeSql(sqlStatement, args)
@@ -146,8 +148,7 @@ class CheckOff {
                 id TEXT NOT NULL PRIMARY KEY,
                 user_id TEXT,
                 feature_id TEXT,
-                created_at INTEGER,
-                updated_at INTEGER
+                created_at INTEGER
             );
           `;
 
@@ -222,6 +223,7 @@ export default CheckOff;
 export {
   CheckOffDocument,
   CheckOffQuery,
+  CheckOffQuerySnapshot,
   CheckOffProperty,
   ICheckOffDocument,
   ICheckOffRecord,

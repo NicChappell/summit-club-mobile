@@ -194,10 +194,9 @@ class CheckIn {
       const sqlStatement = `
             CREATE TABLE IF NOT EXISTS check_in (
                 id TEXT,
-                userId TEXT,
-                featureId TEXT,
-                createdAt INTEGER,
-                updatedAt INTEGER
+                user_id TEXT,
+                feature_id TEXT,
+                created_at INTEGER
             );
           `;
 

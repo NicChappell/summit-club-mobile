@@ -8,13 +8,12 @@ export type CheckOffDocument =
 export type CheckOffQuery =
   firebase.firestore.Query<firebase.firestore.DocumentData>;
 
+/** A Firestore query snapshot */
+export type CheckOffQuerySnapshot =
+  firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>;
+
 /** List of CheckOff record property names */
-export type CheckOffProperty =
-  | "id"
-  | "user_id"
-  | "feature_id"
-  | "created_at"
-  | "updated_at";
+export type CheckOffProperty = "id" | "user_id" | "feature_id" | "created_at";
 
 export interface ICheckOffDocument {
   /** Uniquely identifies the CheckOff record */
@@ -24,9 +23,7 @@ export interface ICheckOffDocument {
   /** Uniquely identifies a Feature record */
   featureId: string;
   /** Timestamp when the record was created measured in milliseconds */
-  createdAt: number;
-  /** Timestamp when the record was last updated measured in milliseconds */
-  updatedAt: number;
+  createdAt: firebase.firestore.Timestamp;
 }
 
 export interface ICheckOffRecord {
@@ -38,6 +35,4 @@ export interface ICheckOffRecord {
   feature_id: string;
   /** Timestamp when the record was created measured in milliseconds */
   created_at: number;
-  /** Timestamp when the record was last updated measured in milliseconds */
-  updated_at: number;
 }

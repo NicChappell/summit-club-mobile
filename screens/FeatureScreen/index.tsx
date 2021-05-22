@@ -14,6 +14,7 @@ import MapView, { LatLng, Region } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Point } from "geojson";
+import firebase from "firebase/app";
 import {
   ApparelDetailsCard,
   ErrorOverlay,
@@ -130,13 +131,16 @@ const FeatureScreen = ({
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
 
       // destructure feature
-      const { geometry, properties } = feature;
+      const {
+        geometry,
+        properties: { id: featureId, name: featureName },
+      } = feature;
 
       // update navigation options
-      navigation.setOptions({ title: properties.name });
+      navigation.setOptions({ title: featureName });
 
       // retreive feature photo if available
-      const featurePhoto = getFeaturePhoto(properties.name);
+      const featurePhoto = getFeaturePhoto(featureName);
 
       // destructure geometry
       const coordinates = (geometry as Point).coordinates;
@@ -156,9 +160,20 @@ const FeatureScreen = ({
       };
 
       // fetch user's check-off document from Firestore
-      CheckOff.get({ userId: "12345", featureId: "54321" })
-        .then((checkOffDocument) => {
-          setCheckOffDocument(checkOffDocument);
+      CheckOff.get({ userId: "12345", featureId })
+        .then((snapshot) => {
+          if (snapshot.empty) {
+            setCheckOffDocument(null);
+          } else {
+            // format check-off document
+            const checkOffDocument = {
+              ...snapshot.docs[0].data(),
+              id: snapshot.docs[0].id,
+            };
+
+            // update state
+            setCheckOffDocument(checkOffDocument as ICheckOffDocument);
+          }
         })
         .catch((error: IError) => {
           setError({
@@ -176,16 +191,13 @@ const FeatureScreen = ({
 
   useEffect(() => {
     if (checkOffDocument) {
-      // format record
+      // format record payload
       const record = {
         id: checkOffDocument.id,
         user_id: checkOffDocument.userId,
         feature_id: checkOffDocument.featureId,
-        created_at: checkOffDocument.createdAt,
-        updated_at: checkOffDocument.updatedAt,
+        created_at: checkOffDocument.createdAt.toMillis(),
       };
-
-      console.log("record: ", record);
 
       // insert check-off record into check_off table
       CheckOff.insert(record)
@@ -208,6 +220,9 @@ const FeatureScreen = ({
             message: error.message,
           });
         });
+
+      // update state
+      setCheckOff(true);
     }
   }, [checkOffDocument]);
 
@@ -215,25 +230,31 @@ const FeatureScreen = ({
 
   const handleCheckOffPress = async () => {
     try {
+      // destructure feature
+      const {
+        properties: { id: featureId },
+      } = feature;
+
+      // format document payload
       const addPayload = {
         userId: "12345",
-        featureId: "54321",
-        createdAt: 11111111,
-        updatedAt: 11111111,
+        featureId,
+        createdAt: firebase.firestore.Timestamp.now(),
       };
 
-      const documentId = await CheckOff.add(addPayload);
-      console.log("documentId: ", documentId);
+      // add check-off document to checkOffs Firestore collection
+      const checkOffDocument = await CheckOff.add(addPayload);
 
-      const insertPayload = {
-        id: documentId,
-        user_id: "12345",
-        feature_id: "54321",
-        created_at: 11111111,
-        updated_at: 11111111,
+      // format record payload
+      const record = {
+        id: checkOffDocument.id,
+        user_id: checkOffDocument.userId,
+        feature_id: checkOffDocument.featureId,
+        created_at: checkOffDocument.createdAt.toMillis(),
       };
 
-      const resultSet = await CheckOff.insert(insertPayload);
+      // insert check-off record into check_off database table
+      const resultSet = await CheckOff.insert(record);
       console.log("CheckOff.insert(payload): ", resultSet);
 
       // update check-off status

@@ -82,7 +82,7 @@ class CheckOff {
     });
   };
 
-  /** Insert new record to check_off table */
+  /** Insert new record into check_off table */
   static insert = (payload: ICheckOffRecord): Promise<SQLite.SQLResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
@@ -108,6 +108,29 @@ class CheckOff {
       executeSql(sqlStatement, args)
         .then((resultSet) => {
           resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
+  /** Count check_off table rows */
+  static countRows = (): Promise<number> => {
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `SELECT COUNT(*) FROM check_off;`;
+
+      executeSql(sqlStatement)
+        .then((resultSet) => {
+          // destructure ResultSet
+          const {
+            rows: { _array },
+          }: any = resultSet;
+
+          // get count from ResultSet array
+          const count = _array[0]["COUNT(*)"];
+
+          resolve(count);
         })
         .catch((error) => {
           reject(error);
@@ -153,8 +176,23 @@ class CheckOff {
     });
   };
 
+  /** Find all records in check_off table */
+  static selectAll = (): Promise<SQLite.SQLResultSet> => {
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `SELECT * FROM check_off`;
+
+      executeSql(sqlStatement)
+        .then((resultSet) => {
+          resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
   /** Find matching record in check_off table by collection of key value pairs */
-  static findWhere = (
+  static selectWhere = (
     queryParams: Partial<ICheckOffRecord>
   ): Promise<SQLite.SQLResultSet> => {
     // convert params object into array of [key, value] pairs

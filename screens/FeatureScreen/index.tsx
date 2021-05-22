@@ -167,21 +167,6 @@ const FeatureScreen = ({
           });
         });
 
-      // fetch user's check-off document from the database
-      CheckOff.findWhere({ user_id: "12345", feature_id: "54321" })
-        .then((resultSet) => {
-          // console.log(
-          //   "CheckOff.findWhere({ userId: '12345', featureId: '54321' }): ",
-          //   resultSet
-          // );
-        })
-        .catch((error: IError) => {
-          setError({
-            code: error.code,
-            message: error.message,
-          });
-        });
-
       // update state
       setCoordinate(coordinate);
       setFeaturePhoto(featurePhoto);
@@ -201,6 +186,28 @@ const FeatureScreen = ({
       };
 
       console.log("record: ", record);
+
+      // insert check-off record into check_off table
+      CheckOff.insert(record)
+        .then((resultSet) => {
+          console.log("CheckOff.insert(record): ", resultSet);
+
+          return CheckOff.countRows();
+        })
+        .then((count) => {
+          console.log("CheckOff.countRows(): ", count);
+
+          return CheckOff.selectAll();
+        })
+        .then((resultSet) => {
+          console.log("CheckOff.selectAll(): ", resultSet);
+        })
+        .catch((error: IError) => {
+          setError({
+            code: error.code,
+            message: error.message,
+          });
+        });
     }
   }, [checkOffDocument]);
 

@@ -1,29 +1,32 @@
 import { Feature } from "geojson";
 import { MOCK_USER } from "../data/mocks";
 
+/** The User's ID */
+export type UserId = string;
+
 export interface IUserAccount {
-  /** The user's username */
+  /** The User's username */
   username: string;
-  /** The user's password */
+  /** The User's password */
   password: string;
 }
 
 export interface IUserContact {
-  /** The user's first name */
+  /** The User's first name */
   firstName?: string;
-  /** The user's last name */
+  /** The User's last name */
   lastName?: string;
-  /** The user's email address */
+  /** The User's email address */
   email?: string;
-  /** The user's phone's country code */
+  /** The User's phone's country code */
   countryCode?: string;
-  /** The user's phone number */
+  /** The User's phone number */
   phone?: string;
-  /** The user's street address */
+  /** The User's street address */
   streetAddress1?: string;
-  /** The user's street address */
+  /** The User's street address */
   streetAddress2?: string;
-  /** The user's city */
+  /** The User's city */
   city?: string;
   /** User state/province */
   province?: string;
@@ -32,22 +35,24 @@ export interface IUserContact {
 }
 
 export interface IUserSummit {
-  /** Uniquely identifies the user's Summit record */
+  /** Uniquely identifies the User's Summit record */
   id: number;
   /** Summit profile */
   feature: Feature;
   /** Array of Check-in timestamps */
   checkIns?: Date[] | null;
-  /** Timestamp of check-off */
+  /** Timestamp of Check-off */
   checkOff?: Date | null;
 }
 
 export interface IUser {
-  /** The user's Account information */
+  /** The User's ID */
+  id: UserId;
+  /** The User's Account information */
   account: IUserAccount;
-  /** The user's Contact information */
+  /** The User's Contact information */
   contact: IUserContact;
-  /** The user's Summits */
+  /** The User's Summits */
   summits: IUserSummit[];
 }
 

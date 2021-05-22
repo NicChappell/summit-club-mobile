@@ -50,4 +50,5 @@ export {
   IUserContact,
   IUserSummit,
   IUser,
+  UserId,
 } from "./User";

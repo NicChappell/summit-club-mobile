@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Card, Input } from "react-native-elements";
+import { Button, Input } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";

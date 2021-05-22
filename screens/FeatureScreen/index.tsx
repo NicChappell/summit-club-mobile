@@ -47,7 +47,12 @@ import {
   separator,
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
-import { RootState } from "../../redux/reducers";
+import {
+  IErrorState,
+  IFeaturesState,
+  IUserState,
+  RootState,
+} from "../../redux/reducers";
 import {
   CheckIn,
   CheckOff,
@@ -65,12 +70,24 @@ type Props = PropsFromRedux & IFeatureScreen;
 
 const FeatureScreen = ({
   error,
-  feature,
+  features,
   navigation,
   route,
   setError,
   setFeature,
+  user,
 }: Props) => {
+  // destructure feature
+  const feature = features.feature;
+  const featureId = feature?.properties?.id;
+  console.log("features: ", features);
+  console.log("featureId: ", featureId);
+
+  // destructure user
+  const userId = user.user.id;
+  console.log("user: ", user);
+  console.log("userId: ", userId);
+
   // state hooks
   const [apparel, setApparel] = useState<IApparel[]>([]);
   const [checkOff, setCheckOff] = useState<boolean>(false);
@@ -230,38 +247,41 @@ const FeatureScreen = ({
 
   const handleCheckOffPress = async () => {
     try {
-      // destructure feature
-      const {
-        properties: { id: featureId },
-      } = feature;
+      if (Boolean(checkOffDocument)) {
+        // delete from database
 
-      // format document payload
-      const addPayload = {
-        userId: "12345",
-        featureId,
-        createdAt: firebase.firestore.Timestamp.now(),
-      };
+        // delete from firestore
 
-      // add check-off document to checkOffs Firestore collection
-      const checkOffDocument = await CheckOff.add(addPayload);
+        // update state
+      } else {
+        // format document payload
+        const addPayload = {
+          userId,
+          featureId,
+          createdAt: firebase.firestore.Timestamp.now(),
+        };
 
-      // format record payload
-      const record = {
-        id: checkOffDocument.id,
-        user_id: checkOffDocument.userId,
-        feature_id: checkOffDocument.featureId,
-        created_at: checkOffDocument.createdAt.toMillis(),
-      };
+        // add check-off document to checkOffs Firestore collection
+        const checkOffDocument = await CheckOff.add(addPayload);
 
-      // insert check-off record into check_off database table
-      const resultSet = await CheckOff.insert(record);
-      console.log("CheckOff.insert(payload): ", resultSet);
+        // format record payload
+        const record = {
+          id: checkOffDocument.id,
+          user_id: checkOffDocument.userId,
+          feature_id: checkOffDocument.featureId,
+          created_at: checkOffDocument.createdAt.toMillis(),
+        };
 
-      // update check-off status
-      setCheckOff(!checkOff);
+        // insert check-off record into check_off database table
+        const resultSet = await CheckOff.insert(record);
+        console.log("CheckOff.insert(payload): ", resultSet);
 
-      // render check-off modal
-      setIsCheckOffVisible(true);
+        // update check-off status
+        setCheckOff(!checkOff);
+
+        // render check-off modal
+        setIsCheckOffVisible(true);
+      }
     } catch (error) {
       setError({
         code: error.code,
@@ -515,9 +535,13 @@ const FeatureScreen = ({
 };
 
 const mapStateToProps = (state: RootState) => {
+  // destructure state
+  const { error, features, user } = state;
+
   return {
-    error: state.error,
-    feature: state.features.feature,
+    error,
+    features,
+    user,
   };
 };
 

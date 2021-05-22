@@ -52,6 +52,7 @@ import {
   CheckOff,
   IApparel,
   ICheckIn,
+  ICheckOffDocument,
   ISummit,
   Merchandise,
   Summit,
@@ -72,6 +73,8 @@ const FeatureScreen = ({
   // state hooks
   const [apparel, setApparel] = useState<IApparel[]>([]);
   const [checkOff, setCheckOff] = useState<boolean>(false);
+  const [checkOffDocument, setCheckOffDocument] =
+    useState<ICheckOffDocument | null>(null);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
@@ -154,8 +157,8 @@ const FeatureScreen = ({
 
       // fetch user's check-off document from Firestore
       CheckOff.get({ userId: "12345", featureId: "54321" })
-        .then((doc) => {
-          console.log("doc: ", doc);
+        .then((checkOffDocument) => {
+          setCheckOffDocument(checkOffDocument);
         })
         .catch((error: IError) => {
           setError({
@@ -185,6 +188,21 @@ const FeatureScreen = ({
       setRegion(region);
     }
   }, [feature]);
+
+  useEffect(() => {
+    if (checkOffDocument) {
+      // format record
+      const record = {
+        id: checkOffDocument.id,
+        user_id: checkOffDocument.userId,
+        feature_id: checkOffDocument.featureId,
+        created_at: checkOffDocument.createdAt,
+        updated_at: checkOffDocument.updatedAt,
+      };
+
+      console.log("record: ", record);
+    }
+  }, [checkOffDocument]);
 
   const handleCheckInPress = () => navigation.navigate("CheckIn");
 

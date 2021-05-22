@@ -4,7 +4,10 @@ export { featuresCollectionRef, firebaseConfig } from "./firebase";
 export { default as CheckIn, ICheckIn } from "./CheckIn";
 export {
   default as CheckOff,
+  CheckOffDocument,
+  CheckOffQuery,
   CheckOffProperty,
+  ICheckOffDocument,
   ICheckOffRecord,
 } from "./CheckOff";
 export { default as Classification, IClassification } from "./Classification";

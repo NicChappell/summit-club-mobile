@@ -66,15 +66,10 @@ class CheckOff {
         // execute query and wait for snapshot
         const snapshot = await query.get();
 
-        // const snapshot = await checkOffsCollectionRef
-        //   .where("userId", "==", "12345")
-        //   .where("featureId", "==", "54321")
-        //   .get();
-
         if (snapshot.empty) {
           resolve(null);
         } else {
-          // format snapshot as
+          // format snapshot
           const document = {
             ...snapshot.docs[0].data(),
             id: snapshot.docs[0].id,
@@ -91,7 +86,7 @@ class CheckOff {
   static insert = (payload: ICheckOffRecord): Promise<SQLite.SQLResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
-        INSERT INTO check_off (
+        INSERT OR REPLACE INTO check_off (
           id,
           user_id,
           feature_id,
@@ -186,4 +181,10 @@ class CheckOff {
 
 export default CheckOff;
 
-export { CheckOffProperty, ICheckOffRecord };
+export {
+  CheckOffDocument,
+  CheckOffQuery,
+  CheckOffProperty,
+  ICheckOffDocument,
+  ICheckOffRecord,
+};

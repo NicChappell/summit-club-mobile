@@ -144,11 +144,11 @@ export type ElevationTier =
   | "between10and11"
   | "below10";
 
-export interface IAction {
+export interface IAction<P = { [name: string]: any }> {
   /** Action type */
   type: string;
   /** Action payload */
-  payload: any;
+  payload: P;
 }
 
 export interface IAuthCredentials {

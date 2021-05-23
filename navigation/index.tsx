@@ -218,6 +218,7 @@ const Navigator = ({
   if (uid) {
     User.get(uid)
       .then((user) => {
+        console.log("User.get: ", user);
         setUser(user);
       })
       .catch((error: IError) => {

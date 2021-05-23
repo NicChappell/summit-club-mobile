@@ -80,12 +80,9 @@ const FeatureScreen = ({
   // destructure feature
   const feature = features.feature;
   const featureId = feature?.properties?.id;
-  console.log("features: ", features);
-  console.log("featureId: ", featureId);
 
   // destructure user
-  const userId = user.user.id;
-  console.log("user: ", user);
+  const userId = user.id;
   console.log("userId: ", userId);
 
   // state hooks
@@ -248,7 +245,9 @@ const FeatureScreen = ({
   const handleCheckOffPress = async () => {
     try {
       if (Boolean(checkOffDocument)) {
-        // delete from database
+        // delete check-off record from check_off database table
+        const resultSet = await CheckOff.delete({ id: checkOffDocument?.id });
+        console.log("fuck: ", resultSet);
 
         // delete from firestore
 
@@ -536,7 +535,15 @@ const FeatureScreen = ({
 
 const mapStateToProps = (state: RootState) => {
   // destructure state
-  const { error, features, user } = state;
+  const {
+    error,
+    features,
+    user,
+  }: {
+    error: IErrorState;
+    features: IFeaturesState;
+    user: IUserState;
+  } = state;
 
   return {
     error,

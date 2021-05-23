@@ -41,22 +41,22 @@ class CheckOff {
   static delete = (
     queryParams: Partial<ICheckOffRecord>
   ): Promise<SQLite.SQLResultSet> => {
-    const condition = Object.entries(queryParams)
-      .map((queryParam) => {
-        return `${queryParam[0]} = '${queryParam[1]}'`;
-      })
-      .join(" AND ");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const condition = Object.entries(queryParams)
+          .map((queryParam) => {
+            return `${queryParam[0]} = '${queryParam[1]}'`;
+          })
+          .join(" AND ");
 
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `DELETE FROM check_off WHERE ${condition};`;
+        const sqlStatement = `DELETE FROM check_off WHERE ${condition};`;
 
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        const resultSet = executeSql(sqlStatement);
+
+        resolve(resultSet);
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 

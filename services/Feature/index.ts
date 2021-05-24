@@ -1,5 +1,5 @@
 import { executeSql } from "../database";
-import { featuresCollectionRef } from "../firebase";
+import { featuresCollectionRef } from "../Firebase";
 import {
   FeatureClassification,
   FeatureDocument,

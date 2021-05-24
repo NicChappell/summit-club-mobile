@@ -1,11 +1,13 @@
 import * as SQLite from "expo-sqlite";
 import { executeSql } from "../database";
-import { checkOffsCollectionRef } from "../firebase";
 import {
-  CheckOffDocument,
-  CheckOffQuery,
-  CheckOffQuerySnapshot,
-  CheckOffProperty,
+  checkOffsCollectionRef,
+  FirebaseQuery,
+  FirebaseQuerySnapshot,
+} from "../Firebase";
+import {
+  CheckOffDocumentProperty,
+  CheckOffRecordProperty,
   ICheckOffDocument,
   ICheckOffRecord,
 } from "./types";
@@ -63,11 +65,11 @@ class CheckOff {
   /** Retrieve a document from checkOffs collection */
   static get = (
     queryParams: Partial<ICheckOffDocument>
-  ): Promise<CheckOffQuerySnapshot> => {
+  ): Promise<FirebaseQuerySnapshot> => {
     return new Promise(async (resolve, reject) => {
       try {
         // construct Firestore query
-        let query: CheckOffQuery = checkOffsCollectionRef;
+        let query: FirebaseQuery = checkOffsCollectionRef;
 
         // convert params object into array of [key, value] pairs
         // add condition to query for each [key, value] pair
@@ -221,10 +223,8 @@ class CheckOff {
 export default CheckOff;
 
 export {
-  CheckOffDocument,
-  CheckOffQuery,
-  CheckOffQuerySnapshot,
-  CheckOffProperty,
+  CheckOffDocumentProperty,
+  CheckOffRecordProperty,
   ICheckOffDocument,
   ICheckOffRecord,
 };

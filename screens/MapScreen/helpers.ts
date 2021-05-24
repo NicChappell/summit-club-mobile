@@ -12,12 +12,11 @@ import {
 import { LatLng } from "react-native-maps";
 import * as turf from "@turf/turf";
 import { initialMapBoundaries } from "../../common/constants";
-import { executeSql } from "../../services";
+import { executeSql, FeatureDocument } from "../../services";
 import {
   IError,
   IMapBoundaries,
   IFeatureFilters,
-  ISQLResult,
 } from "../../common/types";
 
 export const createFeaturesTable = async (
@@ -291,7 +290,7 @@ export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
   const { _array }: any = resultSet.rows;
 
   // convert ResultSet array into GeoJSON Features
-  const features = _array.map((result: ISQLResult) => {
+  const features = _array.map((result: FeatureDocument) => {
     // create a GeoJSON Geometry from result coordinates
     const geometry: Geometry = {
       type: "Point",
@@ -308,9 +307,8 @@ export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
   });
 
   // create GeoJSON FeatureCollection from GeoJSON Features
-  const featureCollection: FeatureCollection<Point> = turf.featureCollection(
-    features
-  );
+  const featureCollection: FeatureCollection<Point> =
+    turf.featureCollection(features);
 
   return featureCollection;
 };

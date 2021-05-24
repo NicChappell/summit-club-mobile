@@ -1,5 +1,10 @@
 import firebase from "firebase/app";
 import "firebase/firestore";
+import {
+  FirebaseDocumentReference,
+  FirebaseQuery,
+  FirebaseQuerySnapshot,
+} from "./types";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBfH1uBfoEZYkcVBCogobRYFFf_Azr6a2s",
@@ -18,9 +23,15 @@ if (!firebase.apps.length) {
 }
 
 // set firestore collection refs
-export const checkOffsCollectionRef = firebase.firestore().collection("checkOffs");
+export const checkOffsCollectionRef = firebase
+  .firestore()
+  .collection("checkOffs");
 const classificationCollectionRef = "";
 const collectionsCollectionRef = "";
 const merchandiseCollectionRef = "";
-export const featuresCollectionRef = firebase.firestore().collection("features");
+export const featuresCollectionRef = firebase
+  .firestore()
+  .collection("features");
 const usersCollectionRef = "";
+
+export { FirebaseDocumentReference, FirebaseQuery, FirebaseQuerySnapshot };

@@ -1,13 +1,18 @@
 export { database, executeSql } from "./database";
-export { featuresCollectionRef, firebaseConfig } from "./firebase";
+export {
+  checkOffsCollectionRef,
+  featuresCollectionRef,
+  firebaseConfig,
+  FirebaseDocumentReference,
+  FirebaseQuery,
+  FirebaseQuerySnapshot,
+} from "./Firebase";
 
 export { default as CheckIn, ICheckIn } from "./CheckIn";
 export {
   default as CheckOff,
-  CheckOffDocument,
-  CheckOffQuery,
-  CheckOffQuerySnapshot,
-  CheckOffProperty,
+  CheckOffDocumentProperty,
+  CheckOffRecordProperty,
   ICheckOffDocument,
   ICheckOffRecord,
 } from "./CheckOff";

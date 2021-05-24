@@ -9,12 +9,7 @@ const userReducer = (state = initState, action: IAction<IUserState>) => {
 
   switch (type) {
     case SET_USER:
-      return {
-        account: payload.account,
-        contact: payload.contact,
-        id: payload.id,
-        summits: payload.summits,
-      };
+      return { ...payload };
     default:
       return state;
   }

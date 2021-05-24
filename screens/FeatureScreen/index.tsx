@@ -59,6 +59,7 @@ import {
   IApparel,
   ICheckIn,
   ICheckOffDocument,
+  IFeatureRecord,
   ISummit,
   Merchandise,
   Summit,
@@ -77,9 +78,21 @@ const FeatureScreen = ({
   setFeature,
   user,
 }: Props) => {
-  // destructure feature
+  // destructure features
   const feature = features.feature;
-  const featureId = feature?.properties?.id;
+
+  // destructure feature
+  const geometry = feature?.geometry;
+  const properties = feature?.properties;
+
+  // destructure geometry
+  const coordinates = (geometry as Point)?.coordinates;
+
+  // destructure properties
+  const featureId = properties?.id;
+  const featureName = properties?.name;
+  console.log("featureId: ", featureId);
+  console.log("featureName: ", featureName);
 
   // destructure user
   const userId = user.id;
@@ -144,20 +157,11 @@ const FeatureScreen = ({
       // scroll to the top
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
 
-      // destructure feature
-      const {
-        geometry,
-        properties: { id: featureId, name: featureName },
-      } = feature;
-
       // update navigation options
       navigation.setOptions({ title: featureName });
 
       // retreive feature photo if available
       const featurePhoto = getFeaturePhoto(featureName);
-
-      // destructure geometry
-      const coordinates = (geometry as Point).coordinates;
 
       // format marker coordinate
       const coordinate: LatLng = {
@@ -174,7 +178,7 @@ const FeatureScreen = ({
       };
 
       // fetch user's check-off document from Firestore
-      CheckOff.get({ userId: "12345", featureId })
+      CheckOff.get({ userId, featureId })
         .then((snapshot) => {
           if (snapshot.empty) {
             setCheckOffDocument(null);
@@ -210,6 +214,7 @@ const FeatureScreen = ({
         id: checkOffDocument.id,
         user_id: checkOffDocument.userId,
         feature_id: checkOffDocument.featureId,
+        shareable: checkOffDocument.shareable,
         created_at: checkOffDocument.createdAt.toMillis(),
       };
 
@@ -247,7 +252,6 @@ const FeatureScreen = ({
       if (Boolean(checkOffDocument)) {
         // delete check-off record from check_off database table
         const resultSet = await CheckOff.delete({ id: checkOffDocument?.id });
-        console.log("fuck: ", resultSet);
 
         // delete from firestore
 
@@ -257,6 +261,7 @@ const FeatureScreen = ({
         const addPayload = {
           userId,
           featureId,
+          shareable: true,
           createdAt: firebase.firestore.Timestamp.now(),
         };
 
@@ -268,6 +273,7 @@ const FeatureScreen = ({
           id: checkOffDocument.id,
           user_id: checkOffDocument.userId,
           feature_id: checkOffDocument.featureId,
+          shareable: checkOffDocument.shareable,
           created_at: checkOffDocument.createdAt.toMillis(),
         };
 

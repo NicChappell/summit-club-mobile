@@ -1,28 +1,31 @@
 import firebase from "firebase/app";
 
-/** A Firestore document */
-export type CheckOffDocument =
-  firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
+/** CheckOff document properties */
+export type CheckOffDocumentProperty =
+  | "id"
+  | "userId"
+  | "featureId"
+  | "shareable"
+  | "createdAt";
 
-/** A Firestore query */
-export type CheckOffQuery =
-  firebase.firestore.Query<firebase.firestore.DocumentData>;
-
-/** A Firestore query snapshot */
-export type CheckOffQuerySnapshot =
-  firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>;
-
-/** List of CheckOff record property names */
-export type CheckOffProperty = "id" | "user_id" | "feature_id" | "created_at";
+/** CheckOff record properties */
+export type CheckOffRecordProperty =
+  | "id"
+  | "user_id"
+  | "feature_id"
+  | "shareable"
+  | "created_at";
 
 export interface ICheckOffDocument {
-  /** Uniquely identifies the CheckOff record */
+  /** Uniquely identifies the CheckOff document */
   id: string;
-  /** Uniquely identifies a User record */
+  /** Uniquely identifies a User document */
   userId: string;
-  /** Uniquely identifies a Feature record */
+  /** Uniquely identifies a Feature document */
   featureId: string;
-  /** Timestamp when the record was created measured in milliseconds */
+  /** Indicates if the document can be shared */
+  shareable: boolean;
+  /** Timestamp when the document was created measured in milliseconds */
   createdAt: firebase.firestore.Timestamp;
 }
 
@@ -33,6 +36,8 @@ export interface ICheckOffRecord {
   user_id: string;
   /** Uniquely identifies a Feature record */
   feature_id: string;
+  /** Indicates if the record can be shared */
+  shareable: boolean;
   /** Timestamp when the record was created measured in milliseconds */
   created_at: number;
 }

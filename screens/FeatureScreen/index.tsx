@@ -27,7 +27,7 @@ import {
   initialRegion,
 } from "../../common/constants";
 import { IError } from "../../common/types";
-import { getFeaturePhoto, randomInt } from "../../common/helpers";
+import { getFeaturePhoto, randomColor, randomInt } from "../../common/helpers";
 import {
   borderRadius4,
   colors,
@@ -59,7 +59,7 @@ import {
   IApparel,
   ICheckIn,
   ICheckOffDocument,
-  IFeatureRecord,
+  ICheckOffRecord,
   ISummit,
   Merchandise,
   Summit,
@@ -91,18 +91,18 @@ const FeatureScreen = ({
   // destructure properties
   const featureId = properties?.id;
   const featureName = properties?.name;
-  console.log("featureId: ", featureId);
-  console.log("featureName: ", featureName);
 
   // destructure user
   const userId = user.id;
-  console.log("userId: ", userId);
 
   // state hooks
   const [apparel, setApparel] = useState<IApparel[]>([]);
-  const [checkOff, setCheckOff] = useState<boolean>(false);
   const [checkOffDocument, setCheckOffDocument] =
     useState<ICheckOffDocument | null>(null);
+  const [checkOffRecord, setCheckOffRecord] =
+    useState<ICheckOffRecord | null>(null);
+  console.log("checkOffRecord: ", checkOffRecord);
+  const [checkedOff, setCheckedOff] = useState<boolean>(false);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
@@ -177,7 +177,29 @@ const FeatureScreen = ({
         longitudeDelta: 0.075,
       };
 
-      // fetch user's check-off document from Firestore
+      // fetch check-off record from database
+      CheckOff.selectWhere({
+        user_id: userId,
+        feature_id: featureId,
+      })
+        .then((resultSet) => {
+          const { _array }: any = resultSet.rows;
+
+          if (Boolean(_array.length)) {
+            setCheckOffRecord(_array[0]);
+            setCheckedOff(true);
+          } else {
+            setCheckOffRecord(null);
+          }
+        })
+        .catch((error: IError) => {
+          setError({
+            code: error.code,
+            message: error.message,
+          });
+        });
+
+      // fetch check-off document from Firestore
       CheckOff.get({ userId, featureId })
         .then((snapshot) => {
           if (snapshot.empty) {
@@ -221,17 +243,17 @@ const FeatureScreen = ({
       // insert check-off record into check_off table
       CheckOff.insert(record)
         .then((resultSet) => {
-          console.log("CheckOff.insert(record): ", resultSet);
+          // console.log("CheckOff.insert(record): ", resultSet);
 
           return CheckOff.countRows();
         })
         .then((count) => {
-          console.log("CheckOff.countRows(): ", count);
+          // console.log("CheckOff.countRows(): ", count);
 
           return CheckOff.selectAll();
         })
         .then((resultSet) => {
-          console.log("CheckOff.selectAll(): ", resultSet);
+          // console.log("CheckOff.selectAll(): ", resultSet);
         })
         .catch((error: IError) => {
           setError({
@@ -241,7 +263,7 @@ const FeatureScreen = ({
         });
 
       // update state
-      setCheckOff(true);
+      setCheckedOff(true);
     }
   }, [checkOffDocument]);
 
@@ -249,7 +271,7 @@ const FeatureScreen = ({
 
   const handleCheckOffPress = async () => {
     try {
-      if (Boolean(checkOffDocument)) {
+      if (checkedOff) {
         // delete check-off record from check_off database table
         const resultSet = await CheckOff.delete({ id: checkOffDocument?.id });
 
@@ -279,10 +301,9 @@ const FeatureScreen = ({
 
         // insert check-off record into check_off database table
         const resultSet = await CheckOff.insert(record);
-        console.log("CheckOff.insert(payload): ", resultSet);
 
         // update check-off status
-        setCheckOff(!checkOff);
+        setCheckedOff(true);
 
         // render check-off modal
         setIsCheckOffVisible(true);
@@ -306,22 +327,6 @@ const FeatureScreen = ({
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
   };
 
-  const randomColor = () => {
-    const colorArray = [
-      colors.redSalsa,
-      colors.orangeRed,
-      colors.yellowOrange,
-      colors.maizeCrayola,
-      colors.pistachio,
-      colors.zomp,
-      colors.queenBlue,
-    ];
-
-    const index = randomInt(0, colorArray.length);
-
-    return colorArray[index];
-  };
-
   const timestamp = new Date();
 
   const verticalDetailsCardDimensions = {
@@ -333,7 +338,7 @@ const FeatureScreen = ({
     <ScrollView ref={scrollViewRef} style={styles.scrollView}>
       <ErrorOverlay error={error} />
       <CheckOffOverlay
-        checkOff={checkOff}
+        checkedOff={checkedOff}
         feature={feature}
         visible={isCheckOffVisible}
         setVisible={setIsCheckOffVisible}
@@ -356,17 +361,17 @@ const FeatureScreen = ({
             <View style={styles.row}>
               <View style={styles.leftColumn}>
                 <Text style={styles.featureName}>
-                  {feature.properties?.name}
+                  {feature?.properties?.name}
                 </Text>
                 <Text style={featureLocation}>
-                  {feature.properties?.feet.toLocaleString()} ft ·{" "}
-                  {feature.properties?.county} County
+                  {feature?.properties?.feet.toLocaleString()} ft ·{" "}
+                  {feature?.properties?.county} County
                 </Text>
                 <Text style={featureCoordinate}>
-                  {feature.properties?.latitude.toFixed(3)}°{" "}
-                  {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-                  {feature.properties?.longitude.toFixed(3)}°{" "}
-                  {feature.properties?.longitude > 0 ? "E" : "W"}
+                  {feature?.properties?.latitude.toFixed(3)}°{" "}
+                  {feature?.properties?.latitude > 0 ? "N" : "S"},{" "}
+                  {feature?.properties?.longitude.toFixed(3)}°{" "}
+                  {feature?.properties?.longitude > 0 ? "E" : "W"}
                 </Text>
               </View>
               <View style={styles.rightColumn}>
@@ -416,7 +421,7 @@ const FeatureScreen = ({
               type="outline"
             />
             <View style={styles.checkOff}>
-              {checkOff ? (
+              {checkedOff ? (
                 <Text style={paragraph}>Mark incomplete:</Text>
               ) : (
                 <Text style={paragraph}>Mark complete:</Text>
@@ -430,7 +435,7 @@ const FeatureScreen = ({
                 ios_backgroundColor={colors.black05}
                 onValueChange={handleCheckOffPress}
                 style={styles.switch}
-                value={checkOff}
+                value={checkedOff}
               />
             </View>
           </View>

@@ -150,6 +150,7 @@ class CheckOff {
                 id TEXT NOT NULL PRIMARY KEY,
                 user_id TEXT,
                 feature_id TEXT,
+                shareable INTEGER,
                 created_at INTEGER
             );
           `;

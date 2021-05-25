@@ -1,6 +1,6 @@
 export interface ICheckOffOverlay {
   /** Check off status */
-  checkOff: boolean;
+  checkedOff: boolean;
   /** Feature profile */
   feature: Feature<Geometry, GeoJsonProperties>;
   /** Controls component visibility */

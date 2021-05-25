@@ -11,7 +11,7 @@ import {
 import { ICheckOffOverlay } from "./types";
 
 const CheckOffOverlay = ({
-  checkOff,
+  checkedOff,
   feature,
   visible,
   setVisible,
@@ -42,7 +42,7 @@ const CheckOffOverlay = ({
         </View>
         <View style={styles.overlayBody}>
           <Text style={paragraph}>
-            {name} has been {checkOff ? "added to" : "removed from"} your
+            {name} has been {checkedOff ? "added to" : "removed from"} your
             Summits
           </Text>
         </View>

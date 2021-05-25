@@ -1,3 +1,4 @@
+import { colors } from "../../common/styles";
 import { featurePhotos } from "../images/features";
 
 export const getFeaturePhoto = (name: string) => {
@@ -20,6 +21,22 @@ export const usdCurrencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
 });
+
+export const randomColor = () => {
+  const colorArray = [
+    colors.redSalsa,
+    colors.orangeRed,
+    colors.yellowOrange,
+    colors.maizeCrayola,
+    colors.pistachio,
+    colors.zomp,
+    colors.queenBlue,
+  ];
+
+  const index = randomInt(0, colorArray.length);
+
+  return colorArray[index];
+};
 
 export const randomInt = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min)) + min;

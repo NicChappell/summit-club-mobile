@@ -42,7 +42,7 @@ class Feature {
           country TEXT,
           county TEXT,
           feet INTEGER,
-          id INTEGER,
+          id TEXT,
           latitude REAL,
           longitude REAL,
           meters INTEGER,

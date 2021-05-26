@@ -89,7 +89,7 @@ const FeatureScreen = ({
   const coordinates = (geometry as Point)?.coordinates;
 
   // destructure properties
-  const featureId = properties?.id;
+  const featureId = String(properties?.id);
   const featureName = properties?.name;
 
   // destructure user
@@ -99,6 +99,7 @@ const FeatureScreen = ({
   const [apparel, setApparel] = useState<IApparel[]>([]);
   const [checkOffDocument, setCheckOffDocument] =
     useState<ICheckOffDocument | null>(null);
+  console.log("checkOffDocument: ", checkOffDocument);
   const [checkOffRecord, setCheckOffRecord] =
     useState<ICheckOffRecord | null>(null);
   console.log("checkOffRecord: ", checkOffRecord);
@@ -177,7 +178,7 @@ const FeatureScreen = ({
         longitudeDelta: 0.075,
       };
 
-      // fetch check-off record from database
+      // fetch check-off record from database table
       CheckOff.selectWhere({
         user_id: userId,
         feature_id: featureId,
@@ -185,6 +186,9 @@ const FeatureScreen = ({
         .then((resultSet) => {
           const { _array }: any = resultSet.rows;
 
+          // checked-off if result set has length
+          //   Boolean(0) === false
+          //   Boolean(1+) === true
           if (Boolean(_array.length)) {
             setCheckOffRecord(_array[0]);
             setCheckedOff(true);
@@ -199,28 +203,28 @@ const FeatureScreen = ({
           });
         });
 
-      // fetch check-off document from Firestore
-      CheckOff.get({ userId, featureId })
-        .then((snapshot) => {
-          if (snapshot.empty) {
-            setCheckOffDocument(null);
-          } else {
-            // format check-off document
-            const checkOffDocument = {
-              ...snapshot.docs[0].data(),
-              id: snapshot.docs[0].id,
-            };
+      // // fetch check-off document from Firestore collection
+      // CheckOff.get({ userId, featureId })
+      //   .then((snapshot) => {
+      //     if (snapshot.empty) {
+      //       setCheckOffDocument(null);
+      //     } else {
+      //       // format check-off document
+      //       const checkOffDocument = {
+      //         ...snapshot.docs[0].data(),
+      //         id: snapshot.docs[0].id,
+      //       };
 
-            // update state
-            setCheckOffDocument(checkOffDocument as ICheckOffDocument);
-          }
-        })
-        .catch((error: IError) => {
-          setError({
-            code: error.code,
-            message: error.message,
-          });
-        });
+      //       // update state
+      //       setCheckOffDocument(checkOffDocument as ICheckOffDocument);
+      //     }
+      //   })
+      //   .catch((error: IError) => {
+      //     setError({
+      //       code: error.code,
+      //       message: error.message,
+      //     });
+      //   });
 
       // update state
       setCoordinate(coordinate);
@@ -229,43 +233,42 @@ const FeatureScreen = ({
     }
   }, [feature]);
 
-  useEffect(() => {
-    if (checkOffDocument) {
-      // format record payload
-      const record = {
-        id: checkOffDocument.id,
-        user_id: checkOffDocument.userId,
-        feature_id: checkOffDocument.featureId,
-        shareable: checkOffDocument.shareable,
-        created_at: checkOffDocument.createdAt.toMillis(),
-      };
+  // useEffect(() => {
+  //   if (checkOffDocument) {
+  //     // format record payload
+  //     const record = {
+  //       id: checkOffDocument.id,
+  //       user_id: checkOffDocument.userId,
+  //       feature_id: checkOffDocument.featureId,
+  //       created_at: checkOffDocument.createdAt.toMillis(),
+  //     };
 
-      // insert check-off record into check_off table
-      CheckOff.insert(record)
-        .then((resultSet) => {
-          // console.log("CheckOff.insert(record): ", resultSet);
+  //     // insert check-off record into check_off table
+  //     CheckOff.insert(record)
+  //       .then((resultSet) => {
+  //         // console.log("CheckOff.insert(record): ", resultSet);
 
-          return CheckOff.countRows();
-        })
-        .then((count) => {
-          // console.log("CheckOff.countRows(): ", count);
+  //         return CheckOff.countRows();
+  //       })
+  //       .then((count) => {
+  //         // console.log("CheckOff.countRows(): ", count);
 
-          return CheckOff.selectAll();
-        })
-        .then((resultSet) => {
-          // console.log("CheckOff.selectAll(): ", resultSet);
-        })
-        .catch((error: IError) => {
-          setError({
-            code: error.code,
-            message: error.message,
-          });
-        });
+  //         return CheckOff.selectAll();
+  //       })
+  //       .then((resultSet) => {
+  //         // console.log("CheckOff.selectAll(): ", resultSet);
+  //       })
+  //       .catch((error: IError) => {
+  //         setError({
+  //           code: error.code,
+  //           message: error.message,
+  //         });
+  //       });
 
-      // update state
-      setCheckedOff(true);
-    }
-  }, [checkOffDocument]);
+  //     // update state
+  //     setCheckedOff(true);
+  //   }
+  // }, [checkOffDocument]);
 
   const handleCheckInPress = () => navigation.navigate("CheckIn");
 
@@ -279,33 +282,41 @@ const FeatureScreen = ({
 
         // update state
       } else {
-        // format document payload
+        // format check-off document payload
         const addPayload = {
           userId,
           featureId,
-          shareable: true,
           createdAt: firebase.firestore.Timestamp.now(),
         };
 
-        // add check-off document to checkOffs Firestore collection
+        // add check-off document to Firestore collection
         const checkOffDocument = await CheckOff.add(addPayload);
 
-        // format record payload
+        // format check-off record payload
         const record = {
           id: checkOffDocument.id,
           user_id: checkOffDocument.userId,
           feature_id: checkOffDocument.featureId,
-          shareable: checkOffDocument.shareable,
           created_at: checkOffDocument.createdAt.toMillis(),
         };
 
-        // insert check-off record into check_off database table
-        const resultSet = await CheckOff.insert(record);
+        // insert check-off record into database table
+        await CheckOff.insert(record);
 
-        // update check-off status
+        // fetch check-off record from database table
+        const resultSet = await CheckOff.selectWhere({
+          user_id: userId,
+          feature_id: featureId,
+        });
+
+        // destructure result set
+        const { _array }: any = resultSet.rows;
+        const checkOffRecord = _array[0];
+
+        // update state
         setCheckedOff(true);
-
-        // render check-off modal
+        setCheckOffDocument(checkOffDocument);
+        setCheckOffRecord(checkOffRecord);
         setIsCheckOffVisible(true);
       }
     } catch (error) {

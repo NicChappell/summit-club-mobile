@@ -91,12 +91,12 @@ const Navigator = ({
     checkAuthentication();
 
     // STEP 0:
-    // // drop check_off table to reset
+    // // drop database table to reset
     // CheckOff.dropTable().then((resultSet) => {
     //   console.log("dropTable(): ", resultSet);
     // });
 
-    // // drop feature table to reset
+    // // drop database table to reset
     // Feature.dropTable().then((resultSet) => {
     //   console.log("dropTable(): ", resultSet);
     // });
@@ -104,7 +104,7 @@ const Navigator = ({
     setStatusMessage("Checking offline data");
 
     // STEP 1:
-    // create check_in table if it does not exist
+    // create database table if it does not exist
     CheckIn.createTable()
       .then((resultSet) => {
         // console.log("createTable(): ", resultSet);
@@ -114,7 +114,7 @@ const Navigator = ({
       });
 
     // STEP 1:
-    // create check_off table if it does not exist
+    // create database table if it does not exist
     CheckOff.createTable()
       .then((resultSet) => {
         // console.log("createTable(): ", resultSet);
@@ -124,7 +124,7 @@ const Navigator = ({
       });
 
     // STEP 1:
-    // create feature table if it does not exist
+    // create database table if it does not exist
     Feature.createTable()
       .then((resultSet) => {
         // STEP 2:
@@ -132,14 +132,14 @@ const Navigator = ({
         return Feature.countRows();
       })
       .then((count) => {
-        // fetch features if feature table empty
-        //   Boolean(!0) === true
-        //   Boolean(!1+) === false
-        if (Boolean(!count)) {
-          setFetchFeatures(true);
-        } else {
+        // fetch features if feature table is empty
+        //   Boolean(0) === false
+        //   Boolean(1+) === true
+        if (Boolean(count)) {
           setFeaturesLoaded(true);
           setStatusMessage(`${count.toLocaleString()} summits found`);
+        } else {
+          setFetchFeatures(true);
         }
       })
       .catch((error: Error) => {
@@ -190,7 +190,7 @@ const Navigator = ({
       setStatusMessage("Retreiving data");
 
       // STEP 3:
-      // fetch features from firestore
+      // fetch feature documents from Firestore
       Feature.retreiveFeatureDocuments()
         .then((documents) => {
           console.log("retreiveFeatureDocuments(): ", documents?.length);
@@ -205,12 +205,12 @@ const Navigator = ({
           console.log("populateFeatureTable(): ", count);
 
           setFeaturesLoaded(true);
+          setFetchFeatures(false);
           setStatusMessage(`${count.toLocaleString()} summits found`);
         })
         .catch((error: Error) => {
           setError({ message: error.message });
         });
-    } else {
     }
   }, [fetchFeatures]);
 

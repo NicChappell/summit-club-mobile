@@ -5,7 +5,6 @@ export type CheckOffDocumentProperty =
   | "id"
   | "userId"
   | "featureId"
-  | "shareable"
   | "createdAt";
 
 /** CheckOff record properties */
@@ -13,7 +12,6 @@ export type CheckOffRecordProperty =
   | "id"
   | "user_id"
   | "feature_id"
-  | "shareable"
   | "created_at";
 
 export interface ICheckOffDocument {
@@ -23,8 +21,6 @@ export interface ICheckOffDocument {
   userId: string;
   /** Uniquely identifies a Feature document */
   featureId: string;
-  /** Indicates if the document can be shared */
-  shareable: boolean;
   /** Timestamp when the document was created measured in milliseconds */
   createdAt: firebase.firestore.Timestamp;
 }
@@ -36,8 +32,6 @@ export interface ICheckOffRecord {
   user_id: string;
   /** Uniquely identifies a Feature record */
   feature_id: string;
-  /** Indicates if the record can be shared */
-  shareable: boolean;
   /** Timestamp when the record was created measured in milliseconds */
   created_at: number;
 }

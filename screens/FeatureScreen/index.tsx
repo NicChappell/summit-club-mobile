@@ -275,12 +275,17 @@ const FeatureScreen = ({
   const handleCheckOffPress = async () => {
     try {
       if (checkedOff) {
-        // delete check-off record from check_off database table
-        const resultSet = await CheckOff.delete({ id: checkOffDocument?.id });
+        // delete check-off record from database table
+        await CheckOff.deleteRecord(String(checkOffDocument?.id));
 
-        // delete from firestore
+        // delete check-off document from Firestore collection
+        await CheckOff.deleteDocument(String(checkOffDocument?.id));
 
         // update state
+        setCheckedOff(false);
+        setCheckOffDocument(null);
+        setCheckOffRecord(null);
+        setIsCheckOffVisible(true);
       } else {
         // format check-off document payload
         const addPayload = {

@@ -2,6 +2,7 @@ import * as SQLite from "expo-sqlite";
 import { executeSql } from "../database";
 import {
   checkOffsCollectionRef,
+  FirebaseDocumentReference,
   FirebaseQuery,
   FirebaseQuerySnapshot,
 } from "../Firebase";
@@ -39,23 +40,36 @@ class CheckOff {
     });
   };
 
-  /** Delete existing record from check_off table by collection of key value pairs */
-  static delete = (
-    queryParams: Partial<ICheckOffRecord>
-  ): Promise<SQLite.SQLResultSet> => {
+  /** Delete existing record from check_off table */
+  static deleteRecord = (id: string): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
-        const condition = Object.entries(queryParams)
-          .map((queryParam) => {
-            return `${queryParam[0]} = '${queryParam[1]}'`;
-          })
-          .join(" AND ");
+        // construct query
+        const sqlStatement = `DELETE FROM check_off WHERE id = "${id}";`;
 
-        const sqlStatement = `DELETE FROM check_off WHERE ${condition};`;
+        // execute query and wait for result
+        await executeSql(sqlStatement);
 
-        const resultSet = executeSql(sqlStatement);
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
-        resolve(resultSet);
+  /** Delete existing record from checkOffs collection */
+  static deleteDocument = (id: string): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // get document reference
+        const docRef: FirebaseDocumentReference =
+          checkOffsCollectionRef.doc(id);
+
+        // delete the document
+        await docRef.delete();
+
+        // resolve snapshot
+        resolve();
       } catch (error) {
         reject(error);
       }
@@ -68,7 +82,7 @@ class CheckOff {
   ): Promise<FirebaseQuerySnapshot> => {
     return new Promise(async (resolve, reject) => {
       try {
-        // construct Firestore query
+        // construct query
         let query: FirebaseQuery = checkOffsCollectionRef;
 
         // convert params object into array of [key, value] pairs
@@ -194,7 +208,7 @@ class CheckOff {
     });
   };
 
-  /** Find matching record in check_off table by collection of key value pairs */
+  /** Find matching record in check_off table */
   static selectWhere = (
     queryParams: Partial<ICheckOffRecord>
   ): Promise<SQLite.SQLResultSet> => {

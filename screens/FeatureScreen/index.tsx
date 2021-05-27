@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   ScrollView,
@@ -99,14 +100,13 @@ const FeatureScreen = ({
   const [apparel, setApparel] = useState<IApparel[]>([]);
   const [checkOffDocument, setCheckOffDocument] =
     useState<ICheckOffDocument | null>(null);
-  console.log("checkOffDocument: ", checkOffDocument);
   const [checkOffRecord, setCheckOffRecord] =
     useState<ICheckOffRecord | null>(null);
-  console.log("checkOffRecord: ", checkOffRecord);
   const [checkedOff, setCheckedOff] = useState<boolean>(false);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
+  const [isCheckOffLoading, setIsCheckOffLoading] = useState<boolean>(false);
   const [isCheckOffVisible, setIsCheckOffVisible] = useState<boolean>(false);
   const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[]>([]);
   const [region, setRegion] = useState<Region>(initialRegion);
@@ -274,7 +274,13 @@ const FeatureScreen = ({
 
   const handleCheckOffPress = async () => {
     try {
+      // start loading animation
+      setIsCheckOffLoading(true);
+
       if (checkedOff) {
+        // update state
+        setCheckedOff(false);
+
         // delete check-off record from database table
         await CheckOff.deleteRecord(String(checkOffDocument?.id));
 
@@ -282,11 +288,13 @@ const FeatureScreen = ({
         await CheckOff.deleteDocument(String(checkOffDocument?.id));
 
         // update state
-        setCheckedOff(false);
         setCheckOffDocument(null);
         setCheckOffRecord(null);
         setIsCheckOffVisible(true);
       } else {
+        // update state
+        setCheckedOff(true);
+
         // format check-off document payload
         const addPayload = {
           userId,
@@ -319,12 +327,18 @@ const FeatureScreen = ({
         const checkOffRecord = _array[0];
 
         // update state
-        setCheckedOff(true);
         setCheckOffDocument(checkOffDocument);
         setCheckOffRecord(checkOffRecord);
         setIsCheckOffVisible(true);
       }
+
+      // stop loading animation
+      setIsCheckOffLoading(false);
     } catch (error) {
+      // update local state
+      checkedOff ? setCheckedOff(true) : setCheckedOff(false);
+
+      // update global state
       setError({
         code: error.code,
         message: error.message,
@@ -437,7 +451,13 @@ const FeatureScreen = ({
               type="outline"
             />
             <View style={styles.checkOff}>
-              {checkedOff ? (
+              {isCheckOffLoading ? (
+                <ActivityIndicator
+                  color={colors.queenBlue}
+                  size="small"
+                  style={{ marginRight: 4 }}
+                />
+              ) : checkedOff ? (
                 <Text style={paragraph}>Mark incomplete:</Text>
               ) : (
                 <Text style={paragraph}>Mark complete:</Text>

@@ -158,6 +158,16 @@ const FeatureScreen = ({
       // scroll to the top
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
 
+      // reset state
+      setCheckOffDocument(null);
+      setCheckOffRecord(null);
+      setCheckedOff(false);
+      setCoordinate(initialCoordinate);
+      setFeaturePhoto(null);
+      setIsCheckOffLoading(false);
+      setIsCheckOffVisible(false);
+      setRegion(initialRegion);
+
       // update navigation options
       navigation.setOptions({ title: featureName });
 

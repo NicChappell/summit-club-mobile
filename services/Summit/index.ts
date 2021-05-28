@@ -48,16 +48,16 @@ class Summit {
 
     // construct sql statement
     const sqlStatement = `
-    SELECT *
-    FROM feature
-    ORDER BY meters DESC
-    LIMIT 50;
-  `;
+      SELECT *
+      FROM feature
+      ORDER BY meters DESC
+      LIMIT 50;
+    `;
 
     // execute sql statement
     const resultSet = await executeSql!(sqlStatement);
 
-    // convert resultSet into FeatureCollection
+    // convert result set into feature collection
     const featureCollection = processFeatureCollection(resultSet);
 
     // create collection of Summits from FeatureCollection
@@ -361,7 +361,7 @@ class Summit {
     // execute sql statement
     const resultSet = await executeSql!(sqlStatement);
 
-    // convert resultSet into FeatureCollection
+    // convert result set into feature collection
     const featureCollection = processFeatureCollection(resultSet);
 
     // create collection of Summits from FeatureCollection

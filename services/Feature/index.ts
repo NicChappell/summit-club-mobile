@@ -3,7 +3,6 @@ import { featuresCollectionRef } from "../Firebase";
 import {
   FeatureClassification,
   FeatureDocument,
-  FeatureId,
   FeatureProperty,
   IFeatureRecord,
 } from "./types";
@@ -169,18 +168,19 @@ class Feature {
 
   /** Find matching records in feature table */
   static selectWhereIn = (
-    queryParams: Partial<IFeatureRecord>
+    column: FeatureProperty,
+    values: any[]
   ): Promise<ResultSet> => {
-    // convert params object into array of [key, value] pairs
-    // construct query condition using each [key, value] pair
-    const condition = Object.entries(queryParams)
-      .map((queryParam) => {
-        return `${queryParam[0]} = '${queryParam[1]}'`;
-      })
-      .join(" AND ");
-
     return new Promise((resolve, reject) => {
-      const sqlStatement = `SELECT * FROM check_off WHERE ${condition}`;
+      // format query condition
+      const condition = values.map((value) => `'${value}'`).join(",");
+
+      const sqlStatement = `
+        SELECT *
+        FROM feature
+        WHERE ${column}
+        IN (${condition})
+      `;
 
       executeSql(sqlStatement)
         .then((resultSet) => {
@@ -198,7 +198,6 @@ export default Feature;
 export {
   FeatureClassification,
   FeatureDocument,
-  FeatureId,
   FeatureProperty,
   IFeatureRecord,
 };

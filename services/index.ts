@@ -22,7 +22,6 @@ export {
   default as Feature,
   FeatureClassification,
   FeatureDocument,
-  FeatureId,
   FeatureProperty,
   IFeatureRecord,
 } from "./Feature";

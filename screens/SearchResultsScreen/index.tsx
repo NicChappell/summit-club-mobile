@@ -43,7 +43,7 @@ const SearchResultsScreen = ({
 
     Summit.findWhereIn("name", values)
       .then((resultSet) => {
-        // convert resultSet into FeatureCollection
+        // convert result set into feature collection
         const { features } = processFeatureCollection(resultSet);
 
         // update local state

@@ -194,6 +194,7 @@ const FeatureScreen = ({
         feature_id: featureId,
       })
         .then((resultSet) => {
+          // destructure result set
           const { _array }: any = resultSet.rows;
 
           // checked-off if result set has length

@@ -137,9 +137,6 @@ export type FeatureClassification =
 /** Firestore document data */
 export type FeatureDocument = firebase.firestore.DocumentData;
 
-/** A Feature ID */
-export type FeatureId = string;
-
 /** Feature record properties */
 export type FeatureProperty =
   | "class"
@@ -166,7 +163,7 @@ export interface IFeatureRecord {
   /** Elevation in feet above (-below) sea level of the feature at the primary coordinates */
   feet: number;
   /** Uniquely identifies the feature */
-  id: number;
+  id: string;
   /** The official latitude coordinate of the feature location */
   latitude: number;
   /** The official longitude coordinate of the feature location */

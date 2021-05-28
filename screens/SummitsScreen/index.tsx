@@ -1,12 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
+import {
+  Feature as GeoJsonFeature,
+  Geometry,
+  GeoJsonProperties,
+} from "geojson";
 import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
 import { colors } from "../../common/styles";
 import { IError } from "../../common/types";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { CheckOff, IUserSummit } from "../../services";
+import {
+  CheckOff,
+  Feature,
+  ICheckOffRecord,
+  IUserSummit,
+  processFeatureCollection,
+} from "../../services";
 import { ISummitsScreen } from "./types";
 
 type Props = PropsFromRedux & ISummitsScreen;
@@ -21,11 +32,32 @@ const SummitsScreen = ({
   // destructure route params
   const { summits } = route.params;
 
+  // state hooks
+  const [checkedOffFeatures, setCheckedOffFeatures] = useState<
+    GeoJsonFeature<Geometry, GeoJsonProperties>[]
+  >([]);
+  console.log("checkedOffFeatures: ", checkedOffFeatures);
+
   // effect hooks
   useEffect(() => {
     CheckOff.selectWhere({ user_id: "12345" })
       .then((resultSet) => {
-        console.log(resultSet);
+        // destructure result set
+        const { _array }: any = resultSet.rows;
+
+        // get feature id from each check-off record
+        const featureIds: string[] = _array.map(
+          (checkOffRecord: ICheckOffRecord) => checkOffRecord.feature_id
+        );
+
+        return Feature.selectWhereIn("id", featureIds);
+      })
+      .then((resultSet) => {
+        // convert result set into feature collection
+        const { features } = processFeatureCollection(resultSet);
+
+        // update local state
+        setCheckedOffFeatures(features);
       })
       .catch((error: IError) => {
         setError({

@@ -379,7 +379,7 @@ export const queryFeaturesTable = async (
     `;
     const resultSet = await executeSql!(sqlStatement, []);
 
-    // convert resultSet into FeatureCollection
+    // convert result set into feature collection
     const featureCollection = processResultSet(resultSet);
 
     // return Features from FeatureCollection

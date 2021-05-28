@@ -1,18 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
 import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
 import { colors } from "../../common/styles";
+import { IError } from "../../common/types";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { IUserSummit } from "../../services";
+import { CheckOff, IUserSummit } from "../../services";
 import { ISummitsScreen } from "./types";
 
 type Props = PropsFromRedux & ISummitsScreen;
 
-const SummitsScreen = ({ error, navigation, route, setFeature }: Props) => {
+const SummitsScreen = ({
+  error,
+  navigation,
+  route,
+  setError,
+  setFeature,
+}: Props) => {
   // destructure route params
   const { summits } = route.params;
+
+  // effect hooks
+  useEffect(() => {
+    CheckOff.selectWhere({ user_id: "12345" })
+      .then((resultSet) => {
+        console.log(resultSet);
+      })
+      .catch((error: IError) => {
+        setError({
+          code: error.code,
+          message: error.message,
+        });
+      });
+  }, []);
 
   const handleSummitPress = (item: IUserSummit) => {
     // destructure item
@@ -51,6 +72,7 @@ const mapStateToProps = (state: RootState) => {
 };
 
 const mapDispatchToProps = {
+  setError: actions.setError,
   setFeature: actions.setFeature,
 };
 

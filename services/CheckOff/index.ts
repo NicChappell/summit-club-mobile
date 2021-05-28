@@ -1,5 +1,4 @@
-import * as SQLite from "expo-sqlite";
-import { executeSql } from "../database";
+import { executeSql, ResultSet } from "../database";
 import {
   checkOffsCollectionRef,
   FirebaseDocumentReference,
@@ -103,7 +102,7 @@ class CheckOff {
   };
 
   /** Insert new record into check_off table */
-  static insert = (payload: ICheckOffRecord): Promise<SQLite.SQLResultSet> => {
+  static insert = (payload: ICheckOffRecord): Promise<ResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
         INSERT OR REPLACE INTO check_off (
@@ -157,7 +156,7 @@ class CheckOff {
   };
 
   /** Create check_off table */
-  static createTable = (): Promise<SQLite.SQLResultSet> => {
+  static createTable = (): Promise<ResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
             CREATE TABLE IF NOT EXISTS check_off (
@@ -179,7 +178,7 @@ class CheckOff {
   };
 
   /** Drop check_off table */
-  static dropTable = (): Promise<SQLite.SQLResultSet> => {
+  static dropTable = (): Promise<ResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `DROP TABLE IF EXISTS check_off;`;
 
@@ -194,7 +193,7 @@ class CheckOff {
   };
 
   /** Find all records in check_off table */
-  static selectAll = (): Promise<SQLite.SQLResultSet> => {
+  static selectAll = (): Promise<ResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `SELECT * FROM check_off`;
 
@@ -211,7 +210,7 @@ class CheckOff {
   /** Find matching record in check_off table */
   static selectWhere = (
     queryParams: Partial<ICheckOffRecord>
-  ): Promise<SQLite.SQLResultSet> => {
+  ): Promise<ResultSet> => {
     // convert params object into array of [key, value] pairs
     // construct query condition using each [key, value] pair
     const condition = Object.entries(queryParams)

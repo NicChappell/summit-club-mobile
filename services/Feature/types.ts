@@ -1,4 +1,3 @@
-import * as SQLite from "expo-sqlite";
 import firebase from "firebase/app";
 
 /**
@@ -138,6 +137,9 @@ export type FeatureClassification =
 /** Firestore document data */
 export type FeatureDocument = firebase.firestore.DocumentData;
 
+/** A Feature ID */
+export type FeatureId = string;
+
 /** Feature record properties */
 export type FeatureProperty =
   | "class"
@@ -151,9 +153,6 @@ export type FeatureProperty =
   | "meters"
   | "name"
   | "state";
-
-/** SQLite result set */
-export type FeatureResultSet = SQLite.SQLResultSet;
 
 export interface IFeatureRecord {
   /** Feature class definition */

@@ -32,3 +32,6 @@ export const executeSql = (
     });
   });
 };
+
+/** A SQLite result set */
+export type ResultSet = SQLite.SQLResultSet;

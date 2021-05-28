@@ -1,10 +1,10 @@
-import { executeSql } from "../database";
+import { executeSql, ResultSet } from "../database";
 import { featuresCollectionRef } from "../Firebase";
 import {
   FeatureClassification,
   FeatureDocument,
+  FeatureId,
   FeatureProperty,
-  FeatureResultSet,
   IFeatureRecord,
 } from "./types";
 
@@ -33,7 +33,7 @@ class Feature {
   };
 
   /** Create feature table */
-  static createTable = (): Promise<FeatureResultSet> => {
+  static createTable = (): Promise<ResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `
         CREATE TABLE IF NOT EXISTS feature (
@@ -62,7 +62,7 @@ class Feature {
   };
 
   /** Drop feature table */
-  static dropTable = (): Promise<FeatureResultSet> => {
+  static dropTable = (): Promise<ResultSet> => {
     return new Promise((resolve, reject) => {
       const sqlStatement = `DROP TABLE IF EXISTS feature;`;
 
@@ -166,6 +166,31 @@ class Feature {
         });
     });
   };
+
+  /** Find matching records in feature table */
+  static selectWhereIn = (
+    queryParams: Partial<IFeatureRecord>
+  ): Promise<ResultSet> => {
+    // convert params object into array of [key, value] pairs
+    // construct query condition using each [key, value] pair
+    const condition = Object.entries(queryParams)
+      .map((queryParam) => {
+        return `${queryParam[0]} = '${queryParam[1]}'`;
+      })
+      .join(" AND ");
+
+    return new Promise((resolve, reject) => {
+      const sqlStatement = `SELECT * FROM check_off WHERE ${condition}`;
+
+      executeSql(sqlStatement)
+        .then((resultSet) => {
+          resolve(resultSet);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
 }
 
 export default Feature;
@@ -173,7 +198,7 @@ export default Feature;
 export {
   FeatureClassification,
   FeatureDocument,
+  FeatureId,
   FeatureProperty,
-  FeatureResultSet,
   IFeatureRecord,
 };

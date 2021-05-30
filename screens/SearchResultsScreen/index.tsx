@@ -72,11 +72,6 @@ const SearchResultsScreen = ({
       <FlatList
         data={features}
         keyExtractor={(feature) => feature?.properties?.id.toString()}
-        // renderItem={({
-        //   item: {
-        //     item: { original: name },
-        //   },
-        // }) => <SearchResultsListItem navigation={navigation} name={name} />}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handlePress(item)}>
             <SearchResultsListItem item={item} />

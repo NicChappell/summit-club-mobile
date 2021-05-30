@@ -98,10 +98,8 @@ const FeatureScreen = ({
 
   // state hooks
   const [apparel, setApparel] = useState<IApparel[]>([]);
-  const [checkOffDocument, setCheckOffDocument] =
-    useState<ICheckOffDocument | null>(null);
-  const [checkOffRecord, setCheckOffRecord] =
-    useState<ICheckOffRecord | null>(null);
+  const [checkOffDocument, setCheckOffDocument] = useState<ICheckOffDocument>();
+  const [checkOffRecord, setCheckOffRecord] = useState<ICheckOffRecord>();
   const [checkedOff, setCheckedOff] = useState<boolean>(false);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
@@ -159,8 +157,8 @@ const FeatureScreen = ({
       scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: true });
 
       // reset state
-      setCheckOffDocument(null);
-      setCheckOffRecord(null);
+      setCheckOffDocument(undefined);
+      setCheckOffRecord(undefined);
       setCheckedOff(false);
       setCoordinate(initialCoordinate);
       setFeaturePhoto(null);
@@ -204,7 +202,7 @@ const FeatureScreen = ({
             setCheckOffRecord(_array[0]);
             setCheckedOff(true);
           } else {
-            setCheckOffRecord(null);
+            setCheckOffRecord(undefined);
           }
         })
         .catch((error: IError) => {
@@ -299,8 +297,8 @@ const FeatureScreen = ({
         await CheckOff.deleteDocument(String(checkOffDocument?.id));
 
         // update state
-        setCheckOffDocument(null);
-        setCheckOffRecord(null);
+        setCheckOffDocument(undefined);
+        setCheckOffRecord(undefined);
         setIsCheckOffVisible(true);
       } else {
         // update state

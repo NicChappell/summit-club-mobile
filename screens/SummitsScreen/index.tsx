@@ -36,35 +36,10 @@ const SummitsScreen = ({
   const [checkedOffFeatures, setCheckedOffFeatures] = useState<
     GeoJsonFeature<Geometry, GeoJsonProperties>[]
   >([]);
-  console.log("checkedOffFeatures: ", checkedOffFeatures);
 
   // effect hooks
   useEffect(() => {
-    CheckOff.selectWhere({ user_id: "12345" })
-      .then((resultSet) => {
-        // destructure result set
-        const { _array }: any = resultSet.rows;
-
-        // get feature id from each check-off record
-        const featureIds: string[] = _array.map(
-          (checkOffRecord: ICheckOffRecord) => checkOffRecord.feature_id
-        );
-
-        return Feature.selectWhereIn("id", featureIds);
-      })
-      .then((resultSet) => {
-        // convert result set into feature collection
-        const { features } = processFeatureCollection(resultSet);
-
-        // update local state
-        setCheckedOffFeatures(features);
-      })
-      .catch((error: IError) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
-      });
+    fetchCheckOffs();
   }, []);
 
   const handleSummitPress = (item: IUserSummit) => {
@@ -76,6 +51,28 @@ const SummitsScreen = ({
 
     // navigate to Feature screen
     navigation.navigate("Feature", { screen: "Feature" });
+  };
+
+  const fetchCheckOffs = async () => {
+    // fetch check-off records from database
+    const checkOffResultSet = await CheckOff.selectWhere({ user_id: "12345" });
+
+    // destructure result set
+    const { _array: checkOffRecords }: any = checkOffResultSet.rows;
+
+    // get feature id from each check-off record
+    const featureIds: string[] = checkOffRecords.map(
+      (checkOffRecord: ICheckOffRecord) => checkOffRecord.feature_id
+    );
+
+    // fetch feature records from database
+    const featureResultSet = await Feature.selectWhereIn("id", featureIds);
+
+    // convert result set into feature collection
+    const { features } = processFeatureCollection(featureResultSet);
+
+    // update local state
+    setCheckedOffFeatures(features);
   };
 
   return (

@@ -264,7 +264,7 @@ export const populateFeaturesTable = async (
 };
 
 export const processResult = (resultSet: SQLite.SQLResultSet) => {
-  // destructure ResultSet
+  // destructure result set
   const { _array }: any = resultSet.rows;
 
   // get first result of ResultSet _array
@@ -286,7 +286,7 @@ export const processResult = (resultSet: SQLite.SQLResultSet) => {
 };
 
 export const processResultSet = (resultSet: SQLite.SQLResultSet) => {
-  // destructure ResultSet
+  // destructure result set
   const { _array }: any = resultSet.rows;
 
   // convert ResultSet array into GeoJSON Features

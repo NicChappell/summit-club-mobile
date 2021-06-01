@@ -1,9 +1,8 @@
 import * as SQLite from "expo-sqlite";
 import { executeSql } from "../database";
 import { MOCK_FEATURE } from "../../data/mocks";
-import { FeatureProperty } from "../Feature";
+import { FeatureProperty, processFeatureCollection } from "../Feature";
 import { defaultBounds, defaultQueryParams } from "./constants";
-import { processFeature, processFeatureCollection } from "./helpers";
 import {
   SummitName,
   SummitType,
@@ -386,6 +385,4 @@ export {
   IQueryParams,
   IQueryResult,
   ISummit,
-  processFeature,
-  processFeatureCollection,
 };

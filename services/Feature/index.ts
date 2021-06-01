@@ -1,5 +1,6 @@
 import { executeSql, ResultSet } from "../database";
 import { featuresCollectionRef } from "../Firebase";
+import { processFeature, processFeatureCollection } from "./helpers";
 import {
   FeatureClassification,
   FeatureDocument,
@@ -15,7 +16,7 @@ class Feature {
 
       executeSql(sqlStatement)
         .then((resultSet) => {
-          // destructure ResultSet
+          // destructure result set
           const {
             rows: { _array },
           }: any = resultSet;
@@ -200,4 +201,6 @@ export {
   FeatureDocument,
   FeatureProperty,
   IFeatureRecord,
+  processFeature,
+  processFeatureCollection,
 };

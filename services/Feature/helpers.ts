@@ -1,4 +1,4 @@
-import * as SQLite from "expo-sqlite";
+import * as turf from "@turf/turf";
 import {
   Feature,
   FeatureCollection,
@@ -6,12 +6,12 @@ import {
   GeoJsonProperties,
   Point,
 } from "geojson";
-import * as turf from "@turf/turf";
-import { IQueryResult } from "./types";
+import { ResultSet } from "../database";
+import { IFeatureRecord } from "./types";
 
 /** Convert query result into individual GeoJSON Feature */
-export const processFeature = (resultSet: SQLite.SQLResultSet) => {
-  // destructure ResultSet
+export const processFeature = (resultSet: ResultSet) => {
+  // destructure result set
   const { _array }: any = resultSet.rows;
 
   // convert result into GeoJSON Feature
@@ -33,12 +33,12 @@ export const processFeature = (resultSet: SQLite.SQLResultSet) => {
 };
 
 /** Convert query result into GeoJSON FeatureCollection */
-export const processFeatureCollection = (resultSet: SQLite.SQLResultSet) => {
-  // destructure ResultSet
+export const processFeatureCollection = (resultSet: ResultSet) => {
+  // destructure result set
   const { _array }: any = resultSet.rows;
 
   // convert ResultSet array into GeoJSON Features
-  const features = _array.map((result: IQueryResult) => {
+  const features = _array.map((result: IFeatureRecord) => {
     // create a GeoJSON Geometry from result coordinates
     const geometry: Geometry = {
       type: "Point",
@@ -55,9 +55,8 @@ export const processFeatureCollection = (resultSet: SQLite.SQLResultSet) => {
   });
 
   // create a GeoJSON FeatureCollection from GeoJSON Features
-  const featureCollection: FeatureCollection<Point> = turf.featureCollection(
-    features
-  );
+  const featureCollection: FeatureCollection<Point> =
+    turf.featureCollection(features);
 
   return featureCollection;
 };

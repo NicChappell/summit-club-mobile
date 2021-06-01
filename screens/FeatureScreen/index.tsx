@@ -305,14 +305,14 @@ const FeatureScreen = ({
         setCheckedOff(true);
 
         // format check-off document payload
-        const addPayload = {
+        const document = {
           userId,
           featureId,
           createdAt: firebase.firestore.Timestamp.now(),
         };
 
         // add check-off document to Firestore collection
-        const checkOffDocument = await CheckOff.add(addPayload);
+        const checkOffDocument = await CheckOff.add(document);
 
         // format check-off record payload
         const record = {

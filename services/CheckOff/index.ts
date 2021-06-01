@@ -10,6 +10,7 @@ import {
   CheckOffRecordProperty,
   ICheckOffDocument,
   ICheckOffRecord,
+  ICheckOffResult,
 } from "./types";
 
 class CheckOff {
@@ -139,7 +140,7 @@ class CheckOff {
 
       executeSql(sqlStatement)
         .then((resultSet) => {
-          // destructure ResultSet
+          // destructure result set
           const {
             rows: { _array },
           }: any = resultSet;
@@ -220,7 +221,26 @@ class CheckOff {
       .join(" AND ");
 
     return new Promise((resolve, reject) => {
-      const sqlStatement = `SELECT * FROM check_off WHERE ${condition}`;
+      const sqlStatement = `
+        SELECT
+          feature.class,
+          feature.continent,
+          feature.country,
+          feature.county,
+          check_off.created_at,
+          feature.id AS feature_id,
+          feature.feet,
+          check_off.id,
+          feature.latitude,
+          feature.longitude,
+          feature.meters,
+          feature.name,
+          feature.state,
+          check_off.user_id
+        FROM check_off
+        INNER JOIN feature ON feature.id = check_off.feature_id
+        WHERE ${condition};
+      `;
 
       executeSql(sqlStatement)
         .then((resultSet) => {
@@ -240,4 +260,5 @@ export {
   CheckOffRecordProperty,
   ICheckOffDocument,
   ICheckOffRecord,
+  ICheckOffResult,
 };

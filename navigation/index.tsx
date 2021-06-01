@@ -148,7 +148,7 @@ const Navigator = ({
 
     Summit.getSummitNames()
       .then((resultSet) => {
-        // destructure ResultSet
+        // destructure result set
         const { _array }: any = resultSet.rows;
 
         // process summit names into search objects

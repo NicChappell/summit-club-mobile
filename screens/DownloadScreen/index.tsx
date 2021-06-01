@@ -20,7 +20,7 @@ const DownloadScreen = ({ error, navigation, route, setError }: Props) => {
     try {
       const resultSet = await executeSql(`SELECT COUNT(*) FROM feature;`, []);
 
-      // destructure ResultSet
+      // destructure result set
       const { _array }: any = resultSet.rows;
 
       // get count from ResultSet array

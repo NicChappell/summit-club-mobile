@@ -1,4 +1,4 @@
-export { database, executeSql } from "./database";
+export { database, executeSql, ResultSet } from "./database";
 export {
   checkOffsCollectionRef,
   featuresCollectionRef,
@@ -15,6 +15,7 @@ export {
   CheckOffRecordProperty,
   ICheckOffDocument,
   ICheckOffRecord,
+  ICheckOffResult,
 } from "./CheckOff";
 export { default as Classification, IClassification } from "./Classification";
 export { default as Collection, ICollection } from "./Collection";
@@ -24,6 +25,8 @@ export {
   FeatureDocument,
   FeatureProperty,
   IFeatureRecord,
+  processFeature,
+  processFeatureCollection,
 } from "./Feature";
 export {
   default as Merchandise,
@@ -45,8 +48,6 @@ export {
   IQueryParams,
   IQueryResult,
   ISummit,
-  processFeature,
-  processFeatureCollection,
 } from "./Summit";
 export {
   default as User,

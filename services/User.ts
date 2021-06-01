@@ -1,4 +1,4 @@
-import { Feature } from "geojson";
+import { IFeatureRecord } from "./Feature";
 import { MOCK_USER } from "../data/mocks";
 
 /** The User's ID */
@@ -34,15 +34,11 @@ export interface IUserContact {
   postalCode?: string;
 }
 
-export interface IUserSummit {
-  /** Uniquely identifies the User's Summit record */
-  id: number;
-  /** Summit profile */
-  feature: Feature;
-  /** Array of Check-in timestamps */
-  checkIns?: Date[] | null;
-  /** Timestamp of Check-off */
-  checkOff?: Date | null;
+export interface IUserSummit extends IFeatureRecord {
+  /** Indicates the existence of a check-in record */
+  checkedIn: boolean;
+  /** Indicates the existence of a check-off record */
+  checkedOff: boolean;
 }
 
 export interface IUser {

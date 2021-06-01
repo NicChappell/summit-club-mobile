@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { connect, ConnectedProps } from "react-redux";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
+import * as turf from "@turf/turf";
 import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
@@ -46,9 +48,14 @@ const SummitsScreen = ({
   useEffect(() => {
     // process summit records
     const userSummits: IUserSummit[] = checkOffRecords.map((checkOffRecord) => {
-      return {
-        checkedIn: false,
-        checkedOff: true,
+      // create a GeoJSON Geometry
+      const geometry: Geometry = {
+        type: "Point",
+        coordinates: [checkOffRecord.longitude, checkOffRecord.latitude],
+      };
+
+      // create a GeoJSON properties object
+      const properties: GeoJsonProperties = {
         class: checkOffRecord.class,
         continent: checkOffRecord.continent,
         country: checkOffRecord.country,
@@ -60,6 +67,15 @@ const SummitsScreen = ({
         meters: checkOffRecord.meters,
         name: checkOffRecord.name,
         state: checkOffRecord.state,
+      };
+
+      // create a GeoJSON Feature
+      const feature: Feature = turf.feature(geometry, properties);
+
+      return {
+        checkedIn: false,
+        checkedOff: true,
+        feature,
       };
     });
 
@@ -83,7 +99,7 @@ const SummitsScreen = ({
       <ErrorOverlay error={error} />
       <FlatList
         data={userSummits}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.feature.properties?.id.toString()}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity onPress={() => handleSummitPress(item)}>

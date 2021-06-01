@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Feature, Geometry, GeoJsonProperties } from "geojson";
-import * as turf from "@turf/turf";
 import { getFeaturePhoto } from "../../helpers";
 import {
   colors,
@@ -16,53 +14,23 @@ import { ISummitDetailsListItem } from "./types";
 
 const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
   // destructure item
-  const {
-    checkedIn,
-    checkedOff,
-    class: classification,
-    continent,
-    country,
-    county,
-    feet,
-    id,
-    latitude,
-    longitude,
-    meters,
-    name,
-    state,
-  } = item;
+  const { checkedIn, checkedOff, feature } = item;
   console.log("item: ", item);
 
   // state hooks
-  const [feature, setFeature] = useState<any>();
   const [featurePhoto, setFeaturePhoto] = useState<any>(null);
 
   // effect hooks
   useEffect(() => {
-    // create a GeoJSON Geometry
-    const geometry: Geometry = {
-      type: "Point",
-      coordinates: [longitude, latitude],
-    };
-
-    // create a GeoJSON properties object
-    const properties: GeoJsonProperties = { ...item };
-
-    // create a GeoJSON Feature
-    const feature: Feature = turf.feature(geometry, properties);
-
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto(name);
+    const featurePhoto = getFeaturePhoto(feature.properties?.name);
 
     // update local state
-    setFeature(feature);
     setFeaturePhoto(featurePhoto);
   }, []);
 
-  return null;
-
   return (
-    <ListItem bottomDivider key={id}>
+    <ListItem bottomDivider key={feature.properties?.id}>
       {featurePhoto ? (
         // render feature photo if available
         <View
@@ -91,13 +59,16 @@ const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
       <ListItem.Content>
         <View style={styles.row}>
           <View style={styles.leftColumn}>
-            <Text style={featureName}>{name}</Text>
+            <Text style={featureName}>{feature.properties?.name}</Text>
             <Text style={featureLocation}>
-              {feet.toLocaleString()} ft · {county} County
+              {feature.properties?.feet.toLocaleString()} ft ·{" "}
+              {feature.properties?.county} County
             </Text>
             <Text style={featureCoordinate}>
-              {latitude.toFixed(3)}° {latitude > 0 ? "N" : "S"},{" "}
-              {longitude.toFixed(3)}° {longitude > 0 ? "E" : "W"}
+              {feature.properties?.latitude.toFixed(3)}°{" "}
+              {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
+              {feature.properties?.longitude.toFixed(3)}°{" "}
+              {feature.properties?.longitude > 0 ? "E" : "W"}
             </Text>
           </View>
           {checkedIn && (

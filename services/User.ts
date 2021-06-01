@@ -1,4 +1,4 @@
-import { IFeatureRecord } from "./Feature";
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { MOCK_USER } from "../data/mocks";
 
 /** The User's ID */
@@ -34,11 +34,13 @@ export interface IUserContact {
   postalCode?: string;
 }
 
-export interface IUserSummit extends IFeatureRecord {
-  /** Indicates the existence of a check-in record */
+export interface IUserSummit {
+  /** Indicates a check-in record */
   checkedIn: boolean;
-  /** Indicates the existence of a check-off record */
+  /** Indicates a check-off record */
   checkedOff: boolean;
+  /** A Feature profile */
+  feature: Feature<Geometry, GeoJsonProperties>;
 }
 
 export interface IUser {

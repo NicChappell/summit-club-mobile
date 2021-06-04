@@ -30,7 +30,7 @@ type Props = PropsFromRedux & IProfileScreen;
 
 const ProfileScreen = ({ error, navigation, route, user }: Props) => {
   // destructure user
-  const { account, contact, summits } = user;
+  const { account, contact, settings } = user;
 
   return (
     <View style={styles.container}>
@@ -54,7 +54,7 @@ const ProfileScreen = ({ error, navigation, route, user }: Props) => {
             styles.listItemBorderTop,
             styles.listItemContainer,
           ]}
-          onPress={() => navigation.navigate("Summits", { summits })}
+          onPress={() => navigation.navigate("Summits")}
           underlayColor={colors.black25}
         >
           <ListItem.Content>
@@ -114,7 +114,7 @@ const ProfileScreen = ({ error, navigation, route, user }: Props) => {
             styles.listItemBorderBottom,
             styles.listItemContainer,
           ]}
-          onPress={() => navigation.navigate("Settings")}
+          onPress={() => navigation.navigate("Settings", { settings })}
           underlayColor={colors.black25}
         >
           <ListItem.Content>

@@ -11,6 +11,7 @@ import {
   IQueryParams,
   IQueryResult,
   ISummit,
+  IUserSummit,
 } from "./types";
 
 class Summit {
@@ -385,4 +386,5 @@ export {
   IQueryParams,
   IQueryResult,
   ISummit,
+  IUserSummit,
 };

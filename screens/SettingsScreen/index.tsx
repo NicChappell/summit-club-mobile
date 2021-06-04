@@ -25,9 +25,27 @@ import { ISettingsScreen } from "./types";
 type Props = PropsFromRedux & ISettingsScreen;
 
 const SettingsScreen = ({ error, navigation, resetTour, route }: Props) => {
+  // destructure route params
+  const { settings } = route.params;
+  console.log("settings: ", settings);
+
+  // destructure settings
+  const { permissions, preferences } = settings;
+  console.log("permissions: ", permissions);
+  console.log("preferences: ", preferences);
+
+  // destructure permissions
+  const { location } = permissions;
+  console.log("location: ", location);
+
+  // destructure preferences
+  const { shareCheckIns } = preferences;
+  console.log("shareCheckIns: ", shareCheckIns);
+
   // state hooks
-  const [checkInPreference, setCheckInPreference] = useState<boolean>(true);
-  const [locationPermission, setLocationPermission] = useState<boolean>(true);
+  const [checkInPreference, setCheckInPreference] =
+    useState<boolean>(shareCheckIns);
+  const [locationPermission, setLocationPermission] = useState<boolean>();
 
   return (
     <DismissKeyboard>
@@ -50,7 +68,7 @@ const SettingsScreen = ({ error, navigation, resetTour, route }: Props) => {
                   handleSwitchChange={() =>
                     setLocationPermission(!locationPermission)
                   }
-                  value={locationPermission}
+                  value={Boolean(locationPermission)}
                 />
               </View>
             </ListItem>

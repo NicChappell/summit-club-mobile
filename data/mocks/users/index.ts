@@ -1,5 +1,4 @@
 import { IUser } from "../../../services/User";
-import { MOCK_SUMMIT } from "../summits";
 
 export const MOCK_USER: IUser = {
   account: {
@@ -19,13 +18,12 @@ export const MOCK_USER: IUser = {
     postalCode: "80026",
   },
   id: "12345",
-  summits: [
-    MOCK_SUMMIT,
-    {
-      ...MOCK_SUMMIT,
-      id: 2,
-      checkIns: undefined,
-      checkOff: new Date(),
+  settings: {
+    permissions: {
+      location: undefined
     },
-  ],
+    preferences: {
+      shareCheckIns: true
+    }
+  }
 };

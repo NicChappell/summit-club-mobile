@@ -1,9 +1,9 @@
-import { IUserAccount, IUserContact, IUserSummit } from "../../../services";
+import { IUserAccount, IUserContact, IUserSettings } from "../../../services";
 
 export type ProfileStackParamList = {
   Profile: undefined;
-  Summits: { summits: IUserSummit[] };
+  Summits: undefined;
   Contact: { contact: IUserContact };
   Account: { account: IUserAccount };
-  Settings: undefined;
+  Settings: { settings: IUserSettings };
 };

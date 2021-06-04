@@ -1,17 +1,17 @@
 import {
+  UserId,
   IUserAccount,
   IUserContact,
-  IUserSummit,
-  UserId,
+  IUserSettings,
 } from "../../../../services";
 
 export interface IUserState {
-  /** The user's Account information */
+  /** The User's account information */
   account?: IUserAccount;
-  /** The user's Contact information */
+  /** The User's contact information */
   contact?: IUserContact;
-  /** The user's ID */
+  /** The User's ID */
   id?: UserId;
-  /** The user's Summits */
-  summits?: IUserSummit[];
+  /** The User's settings */
+  settings?: IUserSettings;
 }

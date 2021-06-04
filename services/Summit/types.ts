@@ -163,13 +163,15 @@ export interface IBounds {
   southWest: LatLng;
 }
 
-export interface ISummit {
-  /** The Feature profile */
-  feature: Feature<Geometry, GeoJsonProperties>;
-  /** Uniquely identifies the Summit record */
-  id: number;
-  /** Type of Summit */
-  type: SummitType;
+export interface IPopularSummit extends ISummit {
+  /** Number of check-ins previous 7 days */
+  checkInsLastWeek: number;
+  /** Number of check-ins previous 30 days */
+  checkInsLastMonth: number;
+  /** Number of check-ins previous year */
+  checkInsLastYear: number;
+  /** Number of check-ins all time*/
+  checkInsAllTime: number;
 }
 
 export interface IQueryParams {
@@ -210,13 +212,20 @@ export interface IQueryResult {
   state: string;
 }
 
-export interface IPopularSummit extends ISummit {
-  /** Number of check-ins previous 7 days */
-  checkInsLastWeek: number;
-  /** Number of check-ins previous 30 days */
-  checkInsLastMonth: number;
-  /** Number of check-ins previous year */
-  checkInsLastYear: number;
-  /** Number of check-ins all time*/
-  checkInsAllTime: number;
+export interface ISummit {
+  /** The Feature profile */
+  feature: Feature<Geometry, GeoJsonProperties>;
+  /** Uniquely identifies the Summit record */
+  id: number;
+  /** Type of Summit */
+  type: SummitType;
+}
+
+export interface IUserSummit {
+  /** Indicates a check-in record */
+  checkedIn: boolean;
+  /** Indicates a check-off record */
+  checkedOff: boolean;
+  /** A Feature profile */
+  feature: Feature<Geometry, GeoJsonProperties>;
 }

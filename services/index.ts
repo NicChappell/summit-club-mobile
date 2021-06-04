@@ -48,12 +48,13 @@ export {
   IQueryParams,
   IQueryResult,
   ISummit,
+  IUserSummit,
 } from "./Summit";
 export {
   default as User,
+  UserId,
+  IUser,
   IUserAccount,
   IUserContact,
-  IUserSummit,
-  IUser,
-  UserId,
+  IUserSettings,
 } from "./User";

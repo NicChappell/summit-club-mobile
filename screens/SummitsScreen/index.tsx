@@ -19,9 +19,6 @@ const SummitsScreen = ({
   setError,
   setFeature,
 }: Props) => {
-  // destructure route params
-  const { summits } = route.params;
-
   // state hooks
   const [checkOffRecords, setCheckOffRecords] = useState<ICheckOffResult[]>([]);
   const [userSummits, setUserSummits] = useState<IUserSummit[]>([]);

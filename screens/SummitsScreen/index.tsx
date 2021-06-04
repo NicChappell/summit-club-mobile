@@ -18,7 +18,12 @@ const SummitsScreen = ({
   route,
   setError,
   setFeature,
+  summits,
 }: Props) => {
+  // destructure summits
+  const { userSummits: TODOuserSummits } = summits;
+  console.log("TODOuserSummits: ", TODOuserSummits);
+
   // state hooks
   const [checkOffRecords, setCheckOffRecords] = useState<ICheckOffResult[]>([]);
   const [userSummits, setUserSummits] = useState<IUserSummit[]>([]);
@@ -113,6 +118,7 @@ const SummitsScreen = ({
 const mapStateToProps = (state: RootState) => {
   return {
     error: state.error,
+    summits: state.summits,
   };
 };
 

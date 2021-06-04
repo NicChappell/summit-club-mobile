@@ -1,7 +1,7 @@
 import {
-  RESET_SUMMITS,
   SET_FEATURED_SUMMITS,
   SET_POPULAR_SUMMITS,
+  SET_USER_SUMMITS,
 } from "../../../actions/summits/types";
 import { IAction } from "../../../../common/types";
 import { initState } from "./constants";
@@ -11,17 +11,20 @@ const summitsReducer = (state = initState, action: IAction) => {
   const { type, payload } = action;
 
   switch (type) {
-    case RESET_SUMMITS:
-      return { ...initState };
     case SET_FEATURED_SUMMITS:
       return {
         ...state,
-        feature: payload.featuredSummits,
+        featuredSummits: payload.featuredSummits,
       };
     case SET_POPULAR_SUMMITS:
       return {
         ...state,
-        features: payload.popularSummits,
+        popularSummits: payload.popularSummits,
+      };
+    case SET_USER_SUMMITS:
+      return {
+        ...state,
+        userSummits: payload.userSummits,
       };
     default:
       return state;

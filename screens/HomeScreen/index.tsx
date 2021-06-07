@@ -39,15 +39,19 @@ const HomeScreen = ({
   setFeature,
 }: Props) => {
   // state hooks
-  const [checkIns, setCheckIns] = useState<ICheckIn[]>([]);
+  const [checkInRecords, setCheckInRecords] = useState<ICheckIn[]>([]);
   const [featuredSummits, setFeaturedSummits] = useState<ISummit[]>([]);
   const [popularSummits, setPopularSummits] = useState<IPopularSummit[]>([]);
 
   // effect hooks
   useEffect(() => {
-    CheckIn.getRecentCheckIns()
-      .then((checkIns) => {
-        setCheckIns(checkIns);
+    CheckIn.selectAll()
+      .then((resultSet) => {
+        // destructure result set
+        const { _array: checkInRecords }: any = resultSet.rows;
+
+        // update local state
+        setCheckInRecords(checkInRecords);
       })
       .catch((error: IError) => {
         setError({
@@ -146,7 +150,7 @@ const HomeScreen = ({
               ItemSeparatorComponent={() => (
                 <View style={{ width: separator.width }} />
               )}
-              data={checkIns}
+              data={checkInRecords}
               decelerationRate={0}
               horizontal
               keyExtractor={(item) => item.id.toString()}

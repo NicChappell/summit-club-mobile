@@ -23,6 +23,9 @@ if (!firebase.apps.length) {
 }
 
 // set firestore collection refs
+export const checkInsCollectionRef = firebase
+.firestore()
+.collection("checkins");
 export const checkOffsCollectionRef = firebase
   .firestore()
   .collection("checkOffs");

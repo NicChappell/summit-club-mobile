@@ -104,107 +104,127 @@ class CheckOff {
 
   /** Insert new record into check_off table */
   static insert = (payload: ICheckOffRecord): Promise<ResultSet> => {
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `
-        INSERT OR REPLACE INTO check_off (
-          id,
-          user_id,
-          feature_id,
-          created_at
-        ) VALUES (
-          ?,?,?,?
-        );
-      `;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const sqlStatement = `
+          INSERT OR REPLACE INTO check_off (
+            id,
+            user_id,
+            feature_id,
+            created_at
+          ) VALUES (
+            ?,?,?,?
+          );
+        `;
 
-      const args = [
-        payload.id,
-        payload.user_id,
-        payload.feature_id,
-        payload.created_at,
-      ];
+        const args = [
+          payload.id,
+          payload.user_id,
+          payload.feature_id,
+          payload.created_at,
+        ];
 
-      executeSql(sqlStatement, args)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        const resultSet = await executeSql(sqlStatement, args);
+
+        resolve(resultSet);
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
   /** Count check_off table rows */
   static countRows = (): Promise<number> => {
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `SELECT COUNT(*) FROM check_off;`;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const sqlStatement = `SELECT COUNT(*) FROM check_off;`;
 
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          // destructure result set
-          const {
-            rows: { _array },
-          }: any = resultSet;
+        const resultSet = await executeSql(sqlStatement);
 
-          // get count from ResultSet array
-          const count = _array[0]["COUNT(*)"];
+        // destructure result set
+        const {
+          rows: { _array },
+        }: any = resultSet;
 
-          resolve(count);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        // get count from ResultSet array
+        const count = _array[0]["COUNT(*)"];
+
+        resolve(count);
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
   /** Create check_off table */
-  static createTable = (): Promise<ResultSet> => {
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `
-            CREATE TABLE IF NOT EXISTS check_off (
-                id TEXT NOT NULL PRIMARY KEY,
-                user_id TEXT,
-                feature_id TEXT,
-                created_at INTEGER
-            );
-          `;
+  static createTable = (): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const sqlStatement = `
+          CREATE TABLE IF NOT EXISTS check_off (
+              id TEXT NOT NULL PRIMARY KEY,
+              user_id TEXT,
+              feature_id TEXT,
+              created_at INTEGER
+          );
+        `;
 
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        await executeSql(sqlStatement);
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
   /** Drop check_off table */
-  static dropTable = (): Promise<ResultSet> => {
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `DROP TABLE IF EXISTS check_off;`;
+  static dropTable = (): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const sqlStatement = `DROP TABLE IF EXISTS check_off;`;
 
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        await executeSql(sqlStatement);
+
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
   /** Find all records in check_off table */
   static selectAll = (): Promise<ResultSet> => {
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `SELECT * FROM check_off`;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const sqlStatement = `
+          SELECT
+            feature.class,
+            feature.continent,
+            feature.country,
+            feature.county,
+            check_off.created_at,
+            feature.id AS feature_id,
+            feature.feet,
+            check_off.id,
+            feature.latitude,
+            feature.longitude,
+            feature.meters,
+            feature.name,
+            feature.state,
+            check_off.user_id
+          FROM check_off
+          INNER JOIN feature ON feature.id = check_off.feature_id
+          ORDER BY check_off.created_at DESC
+          LIMIT 50;
+        `;
 
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        const resultSet = await executeSql(sqlStatement);
+
+        resolve(resultSet);
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 
@@ -212,43 +232,45 @@ class CheckOff {
   static selectWhere = (
     queryParams: Partial<ICheckOffRecord>
   ): Promise<ResultSet> => {
-    // convert params object into array of [key, value] pairs
-    // construct query condition using each [key, value] pair
-    const condition = Object.entries(queryParams)
-      .map((queryParam) => {
-        return `${queryParam[0]} = '${queryParam[1]}'`;
-      })
-      .join(" AND ");
+    return new Promise(async (resolve, reject) => {
+      try {
+        // convert params object into array of [key, value] pairs
+        // construct query condition using each [key, value] pair
+        const condition = Object.entries(queryParams)
+          .map((queryParam) => {
+            return `${queryParam[0]} = '${queryParam[1]}'`;
+          })
+          .join(" AND ");
 
-    return new Promise((resolve, reject) => {
-      const sqlStatement = `
-        SELECT
-          feature.class,
-          feature.continent,
-          feature.country,
-          feature.county,
-          check_off.created_at,
-          feature.id AS feature_id,
-          feature.feet,
-          check_off.id,
-          feature.latitude,
-          feature.longitude,
-          feature.meters,
-          feature.name,
-          feature.state,
-          check_off.user_id
-        FROM check_off
-        INNER JOIN feature ON feature.id = check_off.feature_id
-        WHERE ${condition};
-      `;
+        const sqlStatement = `
+          SELECT
+            feature.class,
+            feature.continent,
+            feature.country,
+            feature.county,
+            check_off.created_at,
+            feature.id AS feature_id,
+            feature.feet,
+            check_off.id,
+            feature.latitude,
+            feature.longitude,
+            feature.meters,
+            feature.name,
+            feature.state,
+            check_off.user_id
+          FROM check_off
+          INNER JOIN feature ON feature.id = check_off.feature_id
+          WHERE ${condition}
+          ORDER BY check_off.created_at DESC
+          LIMIT 50;
+        `;
 
-      executeSql(sqlStatement)
-        .then((resultSet) => {
-          resolve(resultSet);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+        const resultSet = await executeSql(sqlStatement);
+
+        resolve(resultSet);
+      } catch (error) {
+        reject(error);
+      }
     });
   };
 }

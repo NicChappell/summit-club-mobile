@@ -90,26 +90,45 @@ const Navigator = ({
     // check if user is already authenticated
     checkAuthentication();
 
-    // STEP 0:
+    // // STEP 0:
     // // drop database table to reset
-    // CheckOff.dropTable().then((resultSet) => {
-    //   console.log("dropTable(): ", resultSet);
-    // });
+    // CheckIn.dropTable()
+    //   .then(() => {
+    //     console.log("check_in table dropped");
+    //   })
+    //   .catch((error) => {
+    //     setError({ message: error.message });
+    //   });
 
+    // // STEP 0:
     // // drop database table to reset
-    // Feature.dropTable().then((resultSet) => {
-    //   console.log("dropTable(): ", resultSet);
-    // });
+    // CheckOff.dropTable()
+    //   .then(() => {
+    //     console.log("check_off table dropped");
+    //   })
+    //   .catch(() => {
+    //     setError({ message: error.message });
+    //   });
+
+    // // STEP 0:
+    // // drop database table to reset
+    // Feature.dropTable()
+    //   .then((resultSet) => {
+    //     console.log("dropTable(): ", resultSet);
+    //   })
+    //   .catch(() => {
+    //     setError({ message: error.message });
+    //   });
 
     setStatusMessage("Checking offline data");
 
     // STEP 1:
     // create database table if it does not exist
     CheckIn.createTable()
-      .then((resultSet) => {
-        // console.log("createTable(): ", resultSet);
+      .then(() => {
+        console.log("check_in table created");
       })
-      .catch((error: Error) => {
+      .catch((error) => {
         setError({ message: error.message });
       });
 
@@ -119,7 +138,7 @@ const Navigator = ({
       .then((resultSet) => {
         // console.log("createTable(): ", resultSet);
       })
-      .catch((error: Error) => {
+      .catch((error) => {
         setError({ message: error.message });
       });
 
@@ -142,7 +161,7 @@ const Navigator = ({
           setFetchFeatures(true);
         }
       })
-      .catch((error: Error) => {
+      .catch((error) => {
         setError({ message: error.message });
       });
 
@@ -180,7 +199,7 @@ const Navigator = ({
         setSummitNames(summitNames);
         setTrie(trie);
       })
-      .catch((error: Error) => {
+      .catch((error) => {
         setError({ message: error.message });
       });
   }, []);
@@ -208,7 +227,7 @@ const Navigator = ({
           setFetchFeatures(false);
           setStatusMessage(`${count.toLocaleString()} summits found`);
         })
-        .catch((error: Error) => {
+        .catch((error) => {
           setError({ message: error.message });
         });
     }

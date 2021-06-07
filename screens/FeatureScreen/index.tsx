@@ -106,7 +106,7 @@ const FeatureScreen = ({
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
   const [isCheckOffLoading, setIsCheckOffLoading] = useState<boolean>(false);
   const [isCheckOffVisible, setIsCheckOffVisible] = useState<boolean>(false);
-  const [recentCheckIns, setRecentCheckIns] = useState<ICheckIn[]>([]);
+  const [checkInRecords, setCheckInRecords] = useState<ICheckIn[]>([]);
   const [region, setRegion] = useState<Region>(initialRegion);
 
   // ref hooks
@@ -115,9 +115,13 @@ const FeatureScreen = ({
   // effect hooks
   useEffect(() => {
     // fetch recent check-ins
-    CheckIn.getRecentCheckIns()
-      .then((recentCheckIns) => {
-        setRecentCheckIns(recentCheckIns);
+    CheckIn.selectAll()
+      .then((resultSet) => {
+        // destructure result set
+        const { _array: checkInRecords }: any = resultSet.rows;
+
+        // update local state
+        setCheckInRecords(checkInRecords);
       })
       .catch((error: IError) => {
         setError({
@@ -212,72 +216,12 @@ const FeatureScreen = ({
           });
         });
 
-      // // fetch check-off document from Firestore collection
-      // CheckOff.get({ userId, featureId })
-      //   .then((snapshot) => {
-      //     if (snapshot.empty) {
-      //       setCheckOffDocument(null);
-      //     } else {
-      //       // format check-off document
-      //       const checkOffDocument = {
-      //         ...snapshot.docs[0].data(),
-      //         id: snapshot.docs[0].id,
-      //       };
-
-      //       // update state
-      //       setCheckOffDocument(checkOffDocument as ICheckOffDocument);
-      //     }
-      //   })
-      //   .catch((error: IError) => {
-      //     setError({
-      //       code: error.code,
-      //       message: error.message,
-      //     });
-      //   });
-
       // update state
       setCoordinate(coordinate);
       setFeaturePhoto(featurePhoto);
       setRegion(region);
     }
   }, [feature]);
-
-  // useEffect(() => {
-  //   if (checkOffDocument) {
-  //     // format record payload
-  //     const record = {
-  //       id: checkOffDocument.id,
-  //       user_id: checkOffDocument.userId,
-  //       feature_id: checkOffDocument.featureId,
-  //       created_at: checkOffDocument.createdAt.toMillis(),
-  //     };
-
-  //     // insert check-off record into check_off table
-  //     CheckOff.insert(record)
-  //       .then((resultSet) => {
-  //         // console.log("CheckOff.insert(record): ", resultSet);
-
-  //         return CheckOff.countRows();
-  //       })
-  //       .then((count) => {
-  //         // console.log("CheckOff.countRows(): ", count);
-
-  //         return CheckOff.selectAll();
-  //       })
-  //       .then((resultSet) => {
-  //         // console.log("CheckOff.selectAll(): ", resultSet);
-  //       })
-  //       .catch((error: IError) => {
-  //         setError({
-  //           code: error.code,
-  //           message: error.message,
-  //         });
-  //       });
-
-  //     // update state
-  //     setCheckedOff(true);
-  //   }
-  // }, [checkOffDocument]);
 
   const handleCheckInPress = () => navigation.navigate("CheckIn");
 
@@ -505,13 +449,13 @@ const FeatureScreen = ({
               </View>
             </>
           )}
-          {recentCheckIns && (
+          {checkInRecords && (
             <>
               <Divider style={divider} />
               <View style={styles.section}>
                 <Text style={sectionTitle}>Recent check-ins</Text>
                 <View style={listItemContainer}>
-                  {recentCheckIns.slice(0, 5).map((recentCheckIn, index) => (
+                  {checkInRecords.slice(0, 5).map((recentCheckIn, index) => (
                     <ListItem
                       containerStyle={
                         index !== 0 ? [listItem, listItemBorderTop] : listItem

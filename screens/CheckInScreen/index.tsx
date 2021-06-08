@@ -46,9 +46,8 @@ const CheckInScreen = ({
   const [distance, setDistance] = useState<number>(Infinity);
   const [featureCoordinate, setFeatureCoordinate] = useState<LatLng>();
   const [isEligible, setIsEligible] = useState<boolean>(true);
-  const [isIneligibleVisible, setIsIneligibleVisible] = useState<boolean>(
-    false
-  );
+  const [isIneligibleVisible, setIsIneligibleVisible] =
+    useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccessVisible, setIsSuccessVisible] = useState<boolean>(false);
   const [initialRegion, setInitialRegion] = useState<Region>();
@@ -198,20 +197,36 @@ const CheckInScreen = ({
       setDistance(distanceKm);
 
       // evaluate check-in eligibility
-      const isEligible = distanceKm < 0.1 + uncertaintyRadius;
+      const isEligible = distanceKm < 0.1 + uncertaintyRadius + 10000;
       setIsEligible(isEligible);
     }
   }, [featureCoordinate, userCoordinate]);
 
   const handleCheckInPress = async () => {
+    // start loading animation
+    setIsLoading(true);
+
     try {
+      // format check-in document payload
+      const document = {
+        userId,
+        featureId,
+        createdAt: firebase.firestore.Timestamp.now(),
+      };
+
       // TODO: CHECK IN REQUEST
       const response = await Promise.resolve({ code: 201, message: "created" });
 
       if (response.code === 201) {
         setIsSuccessVisible(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      // update global state
+      setError({ message: error.message });
+    }
+
+    // stop loading animation
+    setIsLoading(false);
   };
 
   const handleRegionChange = (region: Region) => {};

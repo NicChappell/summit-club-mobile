@@ -226,10 +226,10 @@ const FeatureScreen = ({
   const handleCheckInPress = () => navigation.navigate("CheckIn");
 
   const handleCheckOffPress = async () => {
-    try {
-      // start loading animation
-      setIsCheckOffLoading(true);
+    // start loading animation
+    setIsCheckOffLoading(true);
 
+    try {
       if (checkedOff) {
         // update state
         setCheckedOff(false);
@@ -284,19 +284,13 @@ const FeatureScreen = ({
         setCheckOffRecord(checkOffRecord);
         setIsCheckOffVisible(true);
       }
-
-      // stop loading animation
-      setIsCheckOffLoading(false);
     } catch (error) {
-      // update local state
-      checkedOff ? setCheckedOff(true) : setCheckedOff(false);
-
       // update global state
-      setError({
-        code: error.code,
-        message: error.message,
-      });
+      setError({ message: error.message });
     }
+
+    // stop loading animation
+    setIsCheckOffLoading(false);
   };
 
   const handleSummitPress = (item: ISummit) => {

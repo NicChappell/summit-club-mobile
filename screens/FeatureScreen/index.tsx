@@ -58,7 +58,7 @@ import {
   CheckIn,
   CheckOff,
   IApparel,
-  ICheckIn,
+  ICheckInRecord,
   ICheckOffDocument,
   ICheckOffRecord,
   ISummit,
@@ -89,6 +89,12 @@ const FeatureScreen = ({
   // destructure geometry
   const coordinates = (geometry as Point)?.coordinates;
 
+  // format feature coordinates
+  const featureCoordinates: LatLng = {
+    latitude: coordinates[1],
+    longitude: coordinates[0],
+  };
+
   // destructure properties
   const featureId = String(properties?.id);
   const featureName = properties?.name;
@@ -106,7 +112,7 @@ const FeatureScreen = ({
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
   const [isCheckOffLoading, setIsCheckOffLoading] = useState<boolean>(false);
   const [isCheckOffVisible, setIsCheckOffVisible] = useState<boolean>(false);
-  const [checkInRecords, setCheckInRecords] = useState<ICheckIn[]>([]);
+  const [checkInRecords, setCheckInRecords] = useState<ICheckInRecord[]>([]);
   const [region, setRegion] = useState<Region>(initialRegion);
 
   // ref hooks
@@ -178,14 +184,14 @@ const FeatureScreen = ({
 
       // format marker coordinate
       const coordinate: LatLng = {
-        latitude: coordinates[1],
-        longitude: coordinates[0],
+        latitude: featureCoordinates.latitude,
+        longitude: featureCoordinates.longitude,
       };
 
       // format map region
       const region: Region = {
-        latitude: coordinates[1],
-        longitude: coordinates[0],
+        latitude: featureCoordinates.latitude,
+        longitude: featureCoordinates.longitude,
         latitudeDelta: 0.075,
         longitudeDelta: 0.075,
       };
@@ -259,7 +265,7 @@ const FeatureScreen = ({
         const checkOffDocument = await CheckOff.add(document);
 
         // format check-off record payload
-        const record = {
+        const checkOffRecord: ICheckOffRecord = {
           id: checkOffDocument.id,
           user_id: checkOffDocument.userId,
           feature_id: checkOffDocument.featureId,
@@ -267,19 +273,9 @@ const FeatureScreen = ({
         };
 
         // insert check-off record into database table
-        await CheckOff.insert(record);
+        await CheckOff.insert(checkOffRecord);
 
-        // fetch check-off record from database table
-        const resultSet = await CheckOff.selectWhere({
-          user_id: userId,
-          feature_id: featureId,
-        });
-
-        // destructure result set
-        const { _array }: any = resultSet.rows;
-        const checkOffRecord = _array[0];
-
-        // update state
+        // update local state
         setCheckOffDocument(checkOffDocument);
         setCheckOffRecord(checkOffRecord);
         setIsCheckOffVisible(true);

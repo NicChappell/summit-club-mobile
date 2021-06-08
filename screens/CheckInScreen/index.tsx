@@ -14,6 +14,7 @@ import MapView, {
 } from "react-native-maps";
 import { connect, ConnectedProps } from "react-redux";
 import { Point } from "geojson";
+import firebase from "firebase/app";
 import { ErrorOverlay } from "../../common/components";
 import { customMapStyle } from "../../common/constants";
 import {
@@ -23,7 +24,13 @@ import {
   shadow,
 } from "../../common/styles";
 import * as actions from "../../redux/actions";
-import { RootState } from "../../redux/reducers";
+import {
+  IErrorState,
+  IFeaturesState,
+  IUserState,
+  RootState,
+} from "../../redux/reducers";
+import { CheckIn, ICheckInDocument, ICheckInRecord } from "../../services";
 import { ICheckInScreen } from "./types";
 
 import * as Location from "expo-location";
@@ -36,15 +43,22 @@ type Props = PropsFromRedux & ICheckInScreen;
 
 const CheckInScreen = ({
   error,
-  feature,
+  features,
   navigation,
   route,
   setError,
+  user,
 }: Props) => {
+  // destructure features
+  const feature = features.feature;
+
   // state hooks
+  const [checkInDocument, setCheckInDocument] = useState<ICheckInDocument>();
+  const [checkInRecord, setCheckInRecord] = useState<ICheckInRecord>();
   const [disabled, setDisabled] = useState<boolean>(true);
   const [distance, setDistance] = useState<number>(Infinity);
-  const [featureCoordinate, setFeatureCoordinate] = useState<LatLng>();
+  const [featureCoordinates, setFeatureCoordinates] = useState<LatLng>();
+  const [featureId, setFeatureId] = useState<string>("");
   const [isEligible, setIsEligible] = useState<boolean>(true);
   const [isIneligibleVisible, setIsIneligibleVisible] =
     useState<boolean>(false);
@@ -53,7 +67,8 @@ const CheckInScreen = ({
   const [initialRegion, setInitialRegion] = useState<Region>();
   const [status, setStatus] = useState<string>("");
   const [uncertaintyRadius, setUncertaintyRadius] = useState<number>(0);
-  const [userCoordinate, setUserCoordinate] = useState<LatLng>();
+  const [userCoordinates, setUserCoordinates] = useState<LatLng>();
+  const [userId, setUserId] = useState<string>("");
 
   // ref hooks
   const mapRef = useRef<MapView>(null);
@@ -107,13 +122,13 @@ const CheckInScreen = ({
         setStatus("Setting current location");
 
         // format user coordinate
-        const coordinate: LatLng = {
+        const userCoordinates: LatLng = {
           latitude: coords.latitude,
           longitude: coords.longitude,
         };
 
         // update state
-        setUserCoordinate(coordinate);
+        setUserCoordinates(userCoordinates);
       })
       .catch((error) => {
         console.log(error);
@@ -127,40 +142,55 @@ const CheckInScreen = ({
 
       // destructure geometry
       const coordinates = (geometry as Point).coordinates;
+      const properties = feature?.properties;
 
-      // format marker coordinate
-      const coordinate: LatLng = {
+      // format feature coordinates
+      const featureCoordinates: LatLng = {
         latitude: coordinates[1],
         longitude: coordinates[0],
       };
 
-      // update state
-      setFeatureCoordinate(coordinate);
+      // destructure properties
+      const featureId = String(properties?.id);
+
+      // update local state
+      setFeatureCoordinates(featureCoordinates);
+      setFeatureId(featureId);
     }
   }, [feature]);
 
   useEffect(() => {
-    if (featureCoordinate && userCoordinate && mapRef) {
+    if (user) {
+      // destructure user
+      const userId = String(user.id);
+
+      // update local state
+      setUserId(userId);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (featureCoordinates && userCoordinates && mapRef) {
       // update status
       setStatus("Calculating distance");
 
       // find center point
       const features = turf.points([
-        [featureCoordinate.longitude, featureCoordinate.latitude],
-        [userCoordinate.longitude, userCoordinate.latitude],
+        [featureCoordinates.longitude, featureCoordinates.latitude],
+        [userCoordinates.longitude, userCoordinates.latitude],
       ]);
       const centerPoint = turf.center(features);
 
       // from point
       const from = turf.point([
-        featureCoordinate.longitude,
-        featureCoordinate.latitude,
+        featureCoordinates.longitude,
+        featureCoordinates.latitude,
       ]);
 
       // to point
       const to = turf.point([
-        userCoordinate.longitude,
-        userCoordinate.latitude,
+        userCoordinates.longitude,
+        userCoordinates.latitude,
       ]);
 
       // calculate distance between points in degrees
@@ -200,7 +230,7 @@ const CheckInScreen = ({
       const isEligible = distanceKm < 0.1 + uncertaintyRadius + 10000;
       setIsEligible(isEligible);
     }
-  }, [featureCoordinate, userCoordinate]);
+  }, [featureCoordinates, userCoordinates]);
 
   const handleCheckInPress = async () => {
     // start loading animation
@@ -214,12 +244,24 @@ const CheckInScreen = ({
         createdAt: firebase.firestore.Timestamp.now(),
       };
 
-      // TODO: CHECK IN REQUEST
-      const response = await Promise.resolve({ code: 201, message: "created" });
+      // add check-in document to Firestore collection
+      const checkInDocument = await CheckIn.add(document);
 
-      if (response.code === 201) {
-        setIsSuccessVisible(true);
-      }
+      // format check-in record payload
+      const checkInRecord: ICheckInRecord = {
+        id: checkInDocument.id,
+        user_id: checkInDocument.userId,
+        feature_id: checkInDocument.featureId,
+        created_at: checkInDocument.createdAt.toMillis(),
+      };
+
+      // insert check-in record into database table
+      await CheckIn.insert(checkInRecord);
+
+      // update local state
+      setCheckInDocument(checkInDocument);
+      setCheckInRecord(checkInRecord);
+      setIsSuccessVisible(true);
     } catch (error) {
       // update global state
       setError({ message: error.message });
@@ -258,13 +300,13 @@ const CheckInScreen = ({
             ref={mapRef}
             style={styles.map}
           >
-            {featureCoordinate && (
-              <Marker coordinate={featureCoordinate} tracksViewChanges={false}>
+            {featureCoordinates && (
+              <Marker coordinate={featureCoordinates} tracksViewChanges={false}>
                 <MountainIcon fill={colors.queenBlue} height={32} width={32} />
               </Marker>
             )}
-            {userCoordinate && (
-              <Marker coordinate={userCoordinate} tracksViewChanges={false}>
+            {userCoordinates && (
+              <Marker coordinate={userCoordinates} tracksViewChanges={false}>
                 <MarkerIcon fill={colors.queenBlue} height={32} width={32} />
               </Marker>
             )}
@@ -306,9 +348,21 @@ const CheckInScreen = ({
 };
 
 const mapStateToProps = (state: RootState) => {
+  // destructure state
+  const {
+    error,
+    features,
+    user,
+  }: {
+    error: IErrorState;
+    features: IFeaturesState;
+    user: IUserState;
+  } = state;
+
   return {
-    error: state.error,
-    feature: state.features.feature,
+    error,
+    features,
+    user,
   };
 };
 

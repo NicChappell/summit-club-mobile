@@ -8,7 +8,14 @@ export {
   FirebaseQuerySnapshot,
 } from "./Firebase";
 
-export { default as CheckIn, ICheckIn } from "./CheckIn";
+export {
+  default as CheckIn,
+  CheckInDocumentProperty,
+  CheckInRecordProperty,
+  ICheckInDocument,
+  ICheckInRecord,
+  ICheckInResult,
+} from "./CheckIn";
 export {
   default as CheckOff,
   CheckOffDocumentProperty,

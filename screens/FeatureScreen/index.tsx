@@ -230,6 +230,18 @@ const FeatureScreen = ({
     }
   }, [feature]);
 
+  useEffect(() => {
+    // add event listener
+    const didFocus = navigation.addListener("focus", (payload) => {
+      // do something
+      console.log("focus", payload);
+      console.log("fetch latest check-ins?");
+    });
+
+    // cleanup
+    return didFocus;
+  }, [navigation]);
+
   const handleCheckInPress = () => navigation.navigate("CheckIn");
 
   const handleCheckOffPress = async () => {

@@ -104,6 +104,7 @@ const FeatureScreen = ({
 
   // state hooks
   const [apparel, setApparel] = useState<IApparel[]>([]);
+  const [checkInRecords, setCheckInRecords] = useState<ICheckInRecord[]>([]);
   const [checkOffDocument, setCheckOffDocument] = useState<ICheckOffDocument>();
   const [checkOffRecord, setCheckOffRecord] = useState<ICheckOffRecord>();
   const [checkedOff, setCheckedOff] = useState<boolean>(false);
@@ -112,7 +113,7 @@ const FeatureScreen = ({
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
   const [isCheckOffLoading, setIsCheckOffLoading] = useState<boolean>(false);
   const [isCheckOffVisible, setIsCheckOffVisible] = useState<boolean>(false);
-  const [checkInRecords, setCheckInRecords] = useState<ICheckInRecord[]>([]);
+  const [recentCheckIns, setRecentCheckIns] = useState<ICheckInRecord[]>([]);
   const [region, setRegion] = useState<Region>(initialRegion);
 
   // ref hooks
@@ -120,22 +121,6 @@ const FeatureScreen = ({
 
   // effect hooks
   useEffect(() => {
-    // fetch recent check-ins
-    CheckIn.selectAll()
-      .then((resultSet) => {
-        // destructure result set
-        const { _array: checkInRecords }: any = resultSet.rows;
-
-        // update local state
-        setCheckInRecords(checkInRecords);
-      })
-      .catch((error: IError) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
-      });
-
     // fetch apparel
     Merchandise.getApparel()
       .then((apparel) => {
@@ -195,6 +180,22 @@ const FeatureScreen = ({
         latitudeDelta: 0.075,
         longitudeDelta: 0.075,
       };
+
+      // fetch recent check-ins
+      CheckIn.selectWhere({ feature_id: featureId })
+        .then((resultSet) => {
+          // destructure result set
+          const { _array: recentCheckIns }: any = resultSet.rows;
+
+          // update local state
+          setRecentCheckIns(recentCheckIns);
+        })
+        .catch((error: IError) => {
+          setError({
+            code: error.code,
+            message: error.message,
+          });
+        });
 
       // fetch check-off record from database table
       CheckOff.selectWhere({
@@ -445,7 +446,7 @@ const FeatureScreen = ({
               <View style={styles.section}>
                 <Text style={sectionTitle}>Recent check-ins</Text>
                 <View style={listItemContainer}>
-                  {checkInRecords.slice(0, 5).map((recentCheckIn, index) => (
+                  {recentCheckIns.slice(0, 5).map((recentCheckIn, index) => (
                     <ListItem
                       containerStyle={
                         index !== 0 ? [listItem, listItemBorderTop] : listItem

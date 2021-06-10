@@ -10,7 +10,19 @@ import {
 } from "../../../../common/styles";
 import { ISuccessOverlay } from "./types";
 
-const SuccessOverlay = ({ visible, setVisible }: ISuccessOverlay) => {
+const SuccessOverlay = ({
+  navigation,
+  visible,
+  setVisible,
+}: ISuccessOverlay) => {
+  const handlePress = () => {
+    // lift state
+    setVisible(!visible);
+
+    // navigate to Feature screen
+    navigation.goBack();
+  };
+
   return (
     <Overlay
       animationType="fade"
@@ -38,7 +50,7 @@ const SuccessOverlay = ({ visible, setVisible }: ISuccessOverlay) => {
         <View style={styles.overlayFooter}>
           <Button
             buttonStyle={styles.closeButton}
-            onPress={() => setVisible(!visible)}
+            onPress={handlePress}
             title="Close"
             titleStyle={styles.buttonTitle}
           />

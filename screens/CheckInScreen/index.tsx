@@ -284,6 +284,7 @@ const CheckInScreen = ({
         setVisible={setIsIneligibleVisible}
       />
       <SuccessOverlay
+        navigation={navigation}
         visible={isSuccessVisible}
         setVisible={setIsSuccessVisible}
       />

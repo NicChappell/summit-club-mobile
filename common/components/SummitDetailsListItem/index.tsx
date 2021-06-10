@@ -15,7 +15,6 @@ import { ISummitDetailsListItem } from "./types";
 const SummitDetailsListItem = ({ item }: ISummitDetailsListItem) => {
   // destructure item
   const { checkedIn, checkedOff, feature } = item;
-  console.log("item: ", item);
 
   // state hooks
   const [featurePhoto, setFeaturePhoto] = useState<any>(null);

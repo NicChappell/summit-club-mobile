@@ -22,7 +22,7 @@ import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import {
   CheckIn,
-  ICheckIn,
+  ICheckInRecord,
   ISummit,
   IPopularSummit,
   Summit,
@@ -39,7 +39,7 @@ const HomeScreen = ({
   setFeature,
 }: Props) => {
   // state hooks
-  const [checkInRecords, setCheckInRecords] = useState<ICheckIn[]>([]);
+  const [checkInRecords, setCheckInRecords] = useState<ICheckInRecord[]>([]);
   const [featuredSummits, setFeaturedSummits] = useState<ISummit[]>([]);
   const [popularSummits, setPopularSummits] = useState<IPopularSummit[]>([]);
 
@@ -146,7 +146,7 @@ const HomeScreen = ({
           <Divider style={divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Recent check-ins</Text>
-            <FlatList
+            {/* <FlatList
               ItemSeparatorComponent={() => (
                 <View style={{ width: separator.width }} />
               )}
@@ -168,7 +168,7 @@ const HomeScreen = ({
               snapToInterval={
                 horizontalDetailsCardDimensions.width + separator.width
               }
-            />
+            /> */}
           </View>
           <Divider style={divider} />
           <View style={styles.section}>

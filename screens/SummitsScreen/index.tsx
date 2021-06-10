@@ -7,7 +7,13 @@ import { ErrorOverlay, SummitDetailsListItem } from "../../common/components";
 import { colors } from "../../common/styles";
 import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
-import { CheckOff, ICheckOffResult, IUserSummit } from "../../services";
+import {
+  CheckIn,
+  CheckOff,
+  ICheckInResult,
+  ICheckOffResult,
+  IUserSummit,
+} from "../../services";
 import { ISummitsScreen } from "./types";
 
 type Props = PropsFromRedux & ISummitsScreen;
@@ -25,11 +31,27 @@ const SummitsScreen = ({
   console.log("TODOuserSummits: ", TODOuserSummits);
 
   // state hooks
+  const [checkInRecords, setCheckInRecords] = useState<ICheckInResult[]>([]);
+  console.log("checkInRecords: ", checkInRecords[0]);
   const [checkOffRecords, setCheckOffRecords] = useState<ICheckOffResult[]>([]);
   const [userSummits, setUserSummits] = useState<IUserSummit[]>([]);
 
   // effect hooks
   useEffect(() => {
+    // fetch check-in records from database
+    CheckIn.selectWhere({ user_id: "12345" })
+      .then((resultSet) => {
+        // destructure result set
+        const { _array: checkInRecords }: any = resultSet.rows;
+
+        // update local state
+        setCheckInRecords(checkInRecords);
+      })
+      .catch((error) => {
+        // dispatch error
+        setError({ message: error.message });
+      });
+
     // fetch check-off records from database
     CheckOff.selectWhere({ user_id: "12345" })
       .then((resultSet) => {
@@ -41,9 +63,7 @@ const SummitsScreen = ({
       })
       .catch((error) => {
         // dispatch error
-        setError({
-          message: error.message,
-        });
+        setError({ message: error.message });
       });
   }, []);
 

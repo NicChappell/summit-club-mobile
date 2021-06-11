@@ -83,6 +83,35 @@ const HomeScreen = ({
       });
   }, []);
 
+  useEffect(() => {
+    // add event listener
+    const didFocus = navigation.addListener("focus", (payload) => {
+      // do something
+      console.log("focus", payload);
+      console.log("fetch latest check-ins?");
+
+      // fetch recent check-ins
+      CheckIn.selectAll()
+        .then((resultSet) => {
+          // destructure result set
+          const { _array: recentCheckIns }: any = resultSet.rows;
+
+          // update local state
+          // setRecentCheckIns(recentCheckIns);
+          console.log(recentCheckIns.length);
+        })
+        .catch((error: IError) => {
+          setError({
+            code: error.code,
+            message: error.message,
+          });
+        });
+    });
+
+    // cleanup
+    return didFocus;
+  }, [navigation]);
+
   const handleSummitPress = (item: ISummit) => {
     // destructure item
     const { feature } = item;

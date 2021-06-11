@@ -181,22 +181,6 @@ const FeatureScreen = ({
         longitudeDelta: 0.075,
       };
 
-      // fetch recent check-ins
-      CheckIn.selectWhere({ feature_id: featureId })
-        .then((resultSet) => {
-          // destructure result set
-          const { _array: recentCheckIns }: any = resultSet.rows;
-
-          // update local state
-          setRecentCheckIns(recentCheckIns);
-        })
-        .catch((error: IError) => {
-          setError({
-            code: error.code,
-            message: error.message,
-          });
-        });
-
       // fetch check-off record from database table
       CheckOff.selectWhere({
         user_id: userId,
@@ -236,6 +220,24 @@ const FeatureScreen = ({
       // do something
       console.log("focus", payload);
       console.log("fetch latest check-ins?");
+
+      if (featureId) {
+        // fetch recent check-ins
+        CheckIn.selectWhere({ feature_id: featureId })
+          .then((resultSet) => {
+            // destructure result set
+            const { _array: recentCheckIns }: any = resultSet.rows;
+
+            // update local state
+            setRecentCheckIns(recentCheckIns);
+          })
+          .catch((error: IError) => {
+            setError({
+              code: error.code,
+              message: error.message,
+            });
+          });
+      }
     });
 
     // cleanup

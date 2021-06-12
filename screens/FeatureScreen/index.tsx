@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -16,6 +16,7 @@ import { connect, ConnectedProps } from "react-redux";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Point } from "geojson";
 import firebase from "firebase/app";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   ApparelDetailsCard,
   ErrorOverlay,
@@ -27,7 +28,7 @@ import {
   initialCoordinate,
   initialRegion,
 } from "../../common/constants";
-import { IError } from "../../common/types";
+import { Feature, IError } from "../../common/types";
 import { getFeaturePhoto, randomColor, randomInt } from "../../common/helpers";
 import {
   borderRadius4,
@@ -110,6 +111,7 @@ const FeatureScreen = ({
   const [checkedOff, setCheckedOff] = useState<boolean>(false);
   const [coordinate, setCoordinate] = useState<LatLng>(initialCoordinate);
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
+  const [lastFeature, setLastFeature] = useState<Feature>();
   const [nearbySummits, setNearbySummits] = useState<ISummit[]>([]);
   const [isCheckOffLoading, setIsCheckOffLoading] = useState<boolean>(false);
   const [isCheckOffVisible, setIsCheckOffVisible] = useState<boolean>(false);
@@ -214,35 +216,50 @@ const FeatureScreen = ({
     }
   }, [feature]);
 
-  useEffect(() => {
-    // add event listener
-    const didFocus = navigation.addListener("focus", (payload) => {
-      // do something
-      console.log("focus", payload);
-      console.log("fetch latest check-ins?");
+  // const state = useSelector((state: RootState) => state.features.feature);
+  // useEffect(() => {
+  //   // add event listener
+  //   const didFocus = navigation.addListener("focus", (payload) => {
+  //     console.log("state: ", state);
 
-      if (featureId) {
-        // fetch recent check-ins
-        CheckIn.selectWhere({ feature_id: featureId })
-          .then((resultSet) => {
-            // destructure result set
-            const { _array: recentCheckIns }: any = resultSet.rows;
+  //     // fetch recent check-ins
+  //     CheckIn.selectWhere({ feature_id: featureId })
+  //       .then((resultSet) => {
+  //         // destructure result set
+  //         const { _array: recentCheckIns }: any = resultSet.rows;
 
-            // update local state
-            setRecentCheckIns(recentCheckIns);
-          })
-          .catch((error: IError) => {
-            setError({
-              code: error.code,
-              message: error.message,
-            });
+  //         // update local state
+  //         setRecentCheckIns(recentCheckIns);
+  //       })
+  //       .catch((error) => {
+  //         setError({
+  //           message: error.message,
+  //         });
+  //       });
+  //   });
+
+  //   // cleanup
+  //   return didFocus;
+  // }, [navigation]);
+
+  useFocusEffect(
+    useCallback(() => {
+      // fetch recent check-ins
+      CheckIn.selectWhere({ feature_id: featureId })
+        .then((resultSet) => {
+          // destructure result set
+          const { _array: recentCheckIns }: any = resultSet.rows;
+
+          // update local state
+          setRecentCheckIns(recentCheckIns);
+        })
+        .catch((error) => {
+          setError({
+            message: error.message,
           });
-      }
-    });
-
-    // cleanup
-    return didFocus;
-  }, [navigation]);
+        });
+    }, [featureId])
+  );
 
   const handleCheckInPress = () => navigation.navigate("CheckIn");
 

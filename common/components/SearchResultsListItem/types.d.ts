@@ -1,6 +1,6 @@
-import { Feature, Geometry, GeoJsonProperties } from "geojson";
+import { Feature } from "../../../common/types";
 
 export interface ISearchResultsListItem {
   /** Summit record data */
-  item: Feature<Geometry, GeoJsonProperties>;
+  item: Feature;
 }

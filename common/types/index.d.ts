@@ -1,3 +1,4 @@
+import { Feature, Geometry, GeoJsonProperties } from "geojson";
 import { LatLng } from "react-native-maps";
 
 export type ElevationTier =
@@ -7,6 +8,8 @@ export type ElevationTier =
   | "between11and12"
   | "between10and11"
   | "below10";
+
+export type Feature = Feature<Geometry, GeoJsonProperties>;
 
 export interface IAction<P = { [name: string]: any }> {
   /** Action type */

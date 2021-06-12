@@ -1,3 +1,12 @@
+import firebase from "firebase/app";
+
+/** User document properties */
+export type UserDocumentProperty =
+  | "id"
+  | "userId"
+  | "featureId"
+  | "createdAt";
+
 export type UserId = string;
 
 export interface IUser {
@@ -14,8 +23,6 @@ export interface IUser {
 export interface IUserAccount {
   /** The User's username */
   username: string;
-  /** The User's password */
-  password: string;
 }
 
 export interface IUserContact {
@@ -50,6 +57,6 @@ export interface IUserSettings {
   /** The User's preferences */
   preferences: {
     /** Indicates check-in sharing preference */
-    shareCheckIns: boolean;
+    shareUsers: boolean;
   };
 }

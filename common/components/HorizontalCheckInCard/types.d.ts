@@ -1,8 +1,8 @@
-import { ISummit } from "../../../services";
+import { ICheckInResult } from "../../../services";
 
-export interface IHorizontalDetailsCard {
+export interface IHorizontalCheckInCard {
   /** Custom card dimensions */
   dimensions?: { height: number | string; width: number | string };
   /** Card data */
-  item: ISummit;
+  item: ICheckInResult;
 }

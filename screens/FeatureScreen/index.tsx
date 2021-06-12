@@ -216,32 +216,7 @@ const FeatureScreen = ({
     }
   }, [feature]);
 
-  // const state = useSelector((state: RootState) => state.features.feature);
-  // useEffect(() => {
-  //   // add event listener
-  //   const didFocus = navigation.addListener("focus", (payload) => {
-  //     console.log("state: ", state);
-
-  //     // fetch recent check-ins
-  //     CheckIn.selectWhere({ feature_id: featureId })
-  //       .then((resultSet) => {
-  //         // destructure result set
-  //         const { _array: recentCheckIns }: any = resultSet.rows;
-
-  //         // update local state
-  //         setRecentCheckIns(recentCheckIns);
-  //       })
-  //       .catch((error) => {
-  //         setError({
-  //           message: error.message,
-  //         });
-  //       });
-  //   });
-
-  //   // cleanup
-  //   return didFocus;
-  // }, [navigation]);
-
+  // focus effect hooks
   useFocusEffect(
     useCallback(() => {
       // fetch recent check-ins

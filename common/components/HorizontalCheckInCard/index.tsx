@@ -9,18 +9,18 @@ import {
   paddingReset,
   shadow,
   shadowReset,
-} from "../../../common/styles";
-import { getFeaturePhoto } from "../../../common/helpers";
+} from "../../styles";
+import { getFeaturePhoto } from "../../helpers";
 import StaticMapBackground from "../StaticMapBackground";
-import { FeatureCardContent } from "./components";
-import { IHorizontalDetailsCard } from "./types";
+import { CheckInCardContent } from "./components";
+import { IHorizontalCheckInCard } from "./types";
 
-const HorizontalDetailsCard = ({
+const HorizontalCheckInCard = ({
   dimensions,
   item,
-}: IHorizontalDetailsCard) => {
+}: IHorizontalCheckInCard) => {
   // destructure item
-  const { feature } = item;
+  const { name } = item;
 
   // state hooks
   const [featurePhoto, setFeaturePhoto] = useState<any | null>(null);
@@ -28,15 +28,15 @@ const HorizontalDetailsCard = ({
   // effect hooks
   useEffect(() => {
     // retreive feature photo if available
-    const featurePhoto = getFeaturePhoto(feature.properties?.name);
+    const featurePhoto = getFeaturePhoto(name);
 
     // update state
     setFeaturePhoto(featurePhoto);
   }, []);
 
   const imageDimensions = {
-    height: 94,
-    width: 96,
+    height: 126,
+    width: 128,
   };
 
   return (
@@ -51,17 +51,18 @@ const HorizontalDetailsCard = ({
         </View>
       ) : (
         // render static map by default
-        <StaticMapBackground
-          containerStyles={[styles.imageContainer, imageDimensions]}
-          feature={feature}
-        />
+        // <StaticMapBackground
+        //   containerStyles={[styles.imageContainer, imageDimensions]}
+        //   feature={feature}
+        // />
+        <View></View>
       )}
-      <FeatureCardContent item={item} />
+      <CheckInCardContent item={item} />
     </Card>
   );
 };
 
-export default HorizontalDetailsCard;
+export default HorizontalCheckInCard;
 
 const styles = StyleSheet.create({
   cardContainer: {

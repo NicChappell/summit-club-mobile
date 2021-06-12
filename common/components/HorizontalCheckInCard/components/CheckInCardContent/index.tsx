@@ -5,26 +5,40 @@ import {
   featureCoordinate,
   featureLocation,
   featureName,
-} from "../../../../../common/styles";
+} from "../../../../styles";
 import { ICheckInCardContent } from "./types";
 
 const CheckInCardContent = ({ item }: ICheckInCardContent) => {
   // destructure item
-  const { feature, timestamp, user } = item;
-
-  // destructure user
   const {
-    contact: { firstName, lastName },
-  } = user;
+    continent,
+    country,
+    county,
+    created_at,
+    feature_id,
+    feet,
+    id,
+    latitude,
+    longitude,
+    meters,
+    name,
+    state,
+    user_id,
+  } = item;
+
+  // // destructure user
+  // const {
+  //   contact: { firstName, lastName },
+  // } = user;
 
   return (
     <View style={styles.container}>
       <View style={styles.row}>
         <Text style={styles.userName}>
-          {firstName} {lastName}
+          {"firstName"} {"lastName"}
         </Text>
         <Text style={styles.date}>
-          {timestamp.toLocaleDateString("en-US", {
+          {new Date(created_at).toLocaleDateString("en-US", {
             weekday: "long",
             year: "numeric",
             month: "long",
@@ -33,15 +47,11 @@ const CheckInCardContent = ({ item }: ICheckInCardContent) => {
         </Text>
       </View>
       <View style={styles.row}>
-        <Text style={styles.featureName}>{feature.properties?.name}</Text>
-        <Text style={featureLocation}>
-          {feature.properties?.county} County
-        </Text>
+        <Text style={styles.featureName}>{name}</Text>
+        <Text style={featureLocation}>{county} County</Text>
         <Text style={featureCoordinate}>
-          {feature.properties?.latitude.toFixed(3)}°{" "}
-          {feature.properties?.latitude > 0 ? "N" : "S"},{" "}
-          {feature.properties?.longitude.toFixed(3)}°{" "}
-          {feature.properties?.longitude > 0 ? "E" : "W"}
+          {latitude.toFixed(3)}° {latitude > 0 ? "N" : "S"},{" "}
+          {longitude.toFixed(3)}° {longitude > 0 ? "E" : "W"}
         </Text>
       </View>
     </View>

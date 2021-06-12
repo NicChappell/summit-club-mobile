@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   ScrollView,
@@ -9,11 +9,12 @@ import {
 } from "react-native";
 import { Divider } from "react-native-elements";
 import { connect, ConnectedProps } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   DismissKeyboard,
   ErrorOverlay,
   FullDetailsCard,
-  HorizontalDetailsCard,
+  HorizontalCheckInCard,
   VerticalDetailsCard,
 } from "../../common/components";
 import { IError } from "../../common/types";
@@ -22,7 +23,7 @@ import * as actions from "../../redux/actions";
 import { RootState } from "../../redux/reducers";
 import {
   CheckIn,
-  ICheckInRecord,
+  ICheckInResult,
   ISummit,
   IPopularSummit,
   Summit,
@@ -39,26 +40,26 @@ const HomeScreen = ({
   setFeature,
 }: Props) => {
   // state hooks
-  const [checkInRecords, setCheckInRecords] = useState<ICheckInRecord[]>([]);
+  const [recentCheckIns, setRecentCheckIns] = useState<ICheckInResult[]>([]);
   const [featuredSummits, setFeaturedSummits] = useState<ISummit[]>([]);
   const [popularSummits, setPopularSummits] = useState<IPopularSummit[]>([]);
 
   // effect hooks
   useEffect(() => {
-    CheckIn.selectAll()
-      .then((resultSet) => {
-        // destructure result set
-        const { _array: checkInRecords }: any = resultSet.rows;
+    // CheckIn.selectAll()
+    //   .then((resultSet) => {
+    //     // destructure result set
+    //     const { _array: checkInRecords }: any = resultSet.rows;
 
-        // update local state
-        setCheckInRecords(checkInRecords);
-      })
-      .catch((error: IError) => {
-        setError({
-          code: error.code,
-          message: error.message,
-        });
-      });
+    //     // update local state
+    //     setCheckInRecords(checkInRecords);
+    //   })
+    //   .catch((error: IError) => {
+    //     setError({
+    //       code: error.code,
+    //       message: error.message,
+    //     });
+    //   });
 
     Summit.getFeaturedSummits()
       .then((featuredSummits) => {
@@ -83,13 +84,9 @@ const HomeScreen = ({
       });
   }, []);
 
-  useEffect(() => {
-    // add event listener
-    const didFocus = navigation.addListener("focus", (payload) => {
-      // do something
-      console.log("focus", payload);
-      console.log("fetch latest check-ins?");
-
+  // focus effect hooks
+  useFocusEffect(
+    useCallback(() => {
       // fetch recent check-ins
       CheckIn.selectAll()
         .then((resultSet) => {
@@ -97,20 +94,15 @@ const HomeScreen = ({
           const { _array: recentCheckIns }: any = resultSet.rows;
 
           // update local state
-          // setRecentCheckIns(recentCheckIns);
-          console.log(recentCheckIns.length);
+          setRecentCheckIns(recentCheckIns as ICheckInResult[]);
         })
-        .catch((error: IError) => {
+        .catch((error) => {
           setError({
-            code: error.code,
             message: error.message,
           });
         });
-    });
-
-    // cleanup
-    return didFocus;
-  }, [navigation]);
+    }, [])
+  );
 
   const handleSummitPress = (item: ISummit) => {
     // destructure item
@@ -175,16 +167,16 @@ const HomeScreen = ({
           <Divider style={divider} />
           <View style={styles.section}>
             <Text style={sectionTitle}>Recent check-ins</Text>
-            {/* <FlatList
+            <FlatList
               ItemSeparatorComponent={() => (
                 <View style={{ width: separator.width }} />
               )}
-              data={checkInRecords}
+              data={recentCheckIns}
               decelerationRate={0}
               horizontal
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <HorizontalDetailsCard
+                <HorizontalCheckInCard
                   dimensions={{
                     height: horizontalDetailsCardDimensions.height,
                     width: horizontalDetailsCardDimensions.width,
@@ -197,7 +189,7 @@ const HomeScreen = ({
               snapToInterval={
                 horizontalDetailsCardDimensions.width + separator.width
               }
-            /> */}
+            />
           </View>
           <Divider style={divider} />
           <View style={styles.section}>

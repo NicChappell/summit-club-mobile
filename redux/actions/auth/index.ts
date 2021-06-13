@@ -16,36 +16,34 @@ export const checkAuthentication = (): AppThunk => async (dispatch) => {
   }
 };
 
-export const signIn = (authCredentials: IAuthCredentials): AppThunk => async (
-  dispatch
-) => {
-  try {
-    // submit credentials to authenticate user
-    const {
-      user,
-    }: firebase.auth.UserCredential = await firebase
-      .auth()
-      .signInWithEmailAndPassword(
-        authCredentials.email,
-        authCredentials.password
-      );
+export const signIn =
+  (authCredentials: IAuthCredentials): AppThunk =>
+  async (dispatch) => {
+    try {
+      // submit credentials to authenticate user
+      const { user }: firebase.auth.UserCredential = await firebase
+        .auth()
+        .signInWithEmailAndPassword(
+          authCredentials.email,
+          authCredentials.password
+        );
 
-    if (user) {
-      // set uid in async storage
-      await AsyncStorage.setItem("uid", user.uid);
+      if (user) {
+        // set uid in async storage
+        await AsyncStorage.setItem("uid", user.uid);
 
-      // authenticate user
-      dispatch({ type: SIGN_IN, payload: { uid: user.uid } });
+        // authenticate user
+        dispatch({ type: SIGN_IN, payload: { uid: user.uid } });
+      }
+    } catch (error) {
+      const payload: IError = {
+        code: error.code,
+        message: error.message,
+      };
+
+      dispatch({ type: SET_ERROR, payload });
     }
-  } catch (error) {
-    const payload: IError = {
-      code: error.code,
-      message: error.message,
-    };
-
-    dispatch({ type: SET_ERROR, payload });
-  }
-};
+  };
 
 export const signOut = (): AppThunk => async (dispatch) => {
   try {
@@ -67,33 +65,28 @@ export const signOut = (): AppThunk => async (dispatch) => {
   }
 };
 
-export const signUp = (authCredentials: IAuthCredentials): AppThunk => async (
-  dispatch
-) => {
-  try {
-    // submit credentials to create new user
-    const {
-      user,
-    }: firebase.auth.UserCredential = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(
-        authCredentials.email,
-        authCredentials.password
-      );
+export const signUp =
+  (authCredentials: IAuthCredentials): AppThunk =>
+  async (dispatch) => {
+    try {
+      // submit credentials to create new user
+      const { user }: firebase.auth.UserCredential = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(
+          authCredentials.email,
+          authCredentials.password
+        );
 
-    if (user) {
-      // set uid in async storage
-      await AsyncStorage.setItem("uid", user.uid);
+      if (user) {
+        // set uid in async storage
+        await AsyncStorage.setItem("uid", user.uid);
 
-      // authenticate user
-      dispatch({ type: SIGN_UP, payload: { uid: user.uid } });
+        // authenticate user
+        dispatch({ type: SIGN_UP, payload: { uid: user.uid } });
+      }
+    } catch (error) {
+      const payload = { message: error.message };
+
+      dispatch({ type: SET_ERROR, payload });
     }
-  } catch (error) {
-    const payload: IError = {
-      code: error.code,
-      message: error.message,
-    };
-
-    dispatch({ type: SET_ERROR, payload });
-  }
-};
+  };

@@ -29,6 +29,12 @@ import { IProfileScreen } from "./types";
 type Props = PropsFromRedux & IProfileScreen;
 
 const ProfileScreen = ({ error, navigation, route, user }: Props) => {
+  if (!user) {
+    return null;
+  }
+
+  console.log("user: ", user);
+
   // destructure user
   const { account, contact, settings } = user;
 

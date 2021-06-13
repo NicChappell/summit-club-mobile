@@ -50,7 +50,7 @@ export interface IUserSettings {
   /** The User's preferences */
   preferences: {
     /** Indicates check-in sharing preference */
-    shareUsers: boolean;
+    shareCheckIns: boolean;
   };
 }
 

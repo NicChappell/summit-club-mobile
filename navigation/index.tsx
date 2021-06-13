@@ -30,7 +30,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { IError } from "../common/types";
 import * as actions from "../redux/actions";
 import { RootState } from "../redux/reducers";
-import { IAuthState } from "../redux/reducers/children/authReducer/types";
 import {
   CheckIn,
   CheckOff,
@@ -262,7 +261,7 @@ const Navigator = ({
 
 const mapStateToProps = (state: RootState) => {
   return {
-    auth: state.auth as IAuthState,
+    auth: state.auth,
   };
 };
 

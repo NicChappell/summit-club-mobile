@@ -29,6 +29,10 @@ const SettingsScreen = ({ error, navigation, resetTour, route }: Props) => {
   const { settings } = route.params;
   console.log("settings: ", settings);
 
+  if (!settings) {
+    return null;
+  }
+
   // destructure settings
   const { permissions, preferences } = settings;
   console.log("permissions: ", permissions);

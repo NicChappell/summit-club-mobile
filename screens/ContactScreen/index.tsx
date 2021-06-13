@@ -18,6 +18,10 @@ const ContactScreen = ({ error, navigation, route }: Props) => {
   // destructure route params
   const { contact } = route.params;
 
+  if (!contact) {
+    return null;
+  }
+
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
 

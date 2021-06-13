@@ -10,9 +10,11 @@ export const clearError = (): AppThunk => async (dispatch) => {
   });
 };
 
-export const setError = (error: IError): AppThunk => async (dispatch) => {
-  dispatch({
-    type: SET_ERROR,
-    payload: { code: error.code, message: error.message },
-  });
-};
+export const setError =
+  (error: IError): AppThunk =>
+  async (dispatch) => {
+    dispatch({
+      type: SET_ERROR,
+      payload: { message: error.message },
+    });
+  };

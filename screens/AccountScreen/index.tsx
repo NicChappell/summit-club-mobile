@@ -24,6 +24,10 @@ const AccountScreen = ({ error, navigation, route }: Props) => {
   // destructure route params
   const { account } = route.params;
 
+  if (!account) {
+    return null;
+  }
+
   // state hooks
   const [disabled, setDisabled] = useState<boolean>(true);
   const [isDeleteVisible, setIsDeleteVisible] = useState<boolean>(false);
@@ -34,12 +38,12 @@ const AccountScreen = ({ error, navigation, route }: Props) => {
     <DismissKeyboard>
       <ScrollView style={styles.scrollView}>
         <DeleteAccountOverlay
-          username={account?.username}
+          username={account.username}
           visible={isDeleteVisible}
           setVisible={setIsDeleteVisible}
         />
         <ChangePasswordOverlay
-          password={"account?.password"}
+          password={"account.password"}
           visible={isChangeVisible}
           setVisible={setIsChangeVisible}
         />
@@ -60,7 +64,7 @@ const AccountScreen = ({ error, navigation, route }: Props) => {
             inputStyle={styles.inputStyle}
             label="Username"
             labelStyle={styles.labelStyle}
-            placeholder={account?.username}
+            placeholder={account.username}
           />
           <Input
             containerStyle={styles.input}

@@ -5,13 +5,7 @@ import {
   FirebaseQuery,
   FirebaseQuerySnapshot,
 } from "../Firebase";
-import {
-  CheckOffDocumentProperty,
-  CheckOffRecordProperty,
-  ICheckOffDocument,
-  ICheckOffRecord,
-  ICheckOffResult,
-} from "./types";
+import { ICheckOffDocument, ICheckOffRecord, ICheckOffResult } from "./types";
 
 class CheckOff {
   /** Add new document to checkOffs collection */
@@ -40,24 +34,7 @@ class CheckOff {
     });
   };
 
-  /** Delete existing record from check_off table */
-  static deleteRecord = (id: string): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // construct query
-        const sqlStatement = `DELETE FROM check_off WHERE id = "${id}";`;
-
-        // execute query and wait for result
-        await executeSql(sqlStatement);
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Delete existing record from checkOffs collection */
+  /** Delete existing document from checkOffs collection */
   static deleteDocument = (id: string): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -69,6 +46,23 @@ class CheckOff {
         await docRef.delete();
 
         // resolve snapshot
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  /** Delete existing record from check_off table */
+  static deleteRecord = (id: string): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // construct query
+        const sqlStatement = `DELETE FROM check_off WHERE id = "${id}";`;
+
+        // execute query and wait for result
+        await executeSql(sqlStatement);
+
         resolve();
       } catch (error) {
         reject(error);
@@ -277,10 +271,4 @@ class CheckOff {
 
 export default CheckOff;
 
-export {
-  CheckOffDocumentProperty,
-  CheckOffRecordProperty,
-  ICheckOffDocument,
-  ICheckOffRecord,
-  ICheckOffResult,
-};
+export { ICheckOffDocument, ICheckOffRecord, ICheckOffResult };

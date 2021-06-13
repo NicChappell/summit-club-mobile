@@ -5,13 +5,7 @@ import {
   FirebaseQuery,
   FirebaseQuerySnapshot,
 } from "../Firebase";
-import {
-  CheckInDocumentProperty,
-  CheckInRecordProperty,
-  ICheckInDocument,
-  ICheckInRecord,
-  ICheckInResult,
-} from "./types";
+import { ICheckInDocument, ICheckInRecord, ICheckInResult } from "./types";
 
 class CheckIn {
   /** Add new document to checkIns collection */
@@ -40,24 +34,7 @@ class CheckIn {
     });
   };
 
-  /** Delete existing record from check_in table */
-  static deleteRecord = (id: string): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // construct query
-        const sqlStatement = `DELETE FROM check_in WHERE id = "${id}";`;
-
-        // execute query and wait for result
-        await executeSql(sqlStatement);
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Delete existing record from checkIns collection */
+  /** Delete existing document from checkIns collection */
   static deleteDocument = (id: string): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -68,6 +45,23 @@ class CheckIn {
         await docRef.delete();
 
         // resolve snapshot
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  /** Delete existing record from check_in table */
+  static deleteRecord = (id: string): Promise<void> => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // construct query
+        const sqlStatement = `DELETE FROM check_in WHERE id = "${id}";`;
+
+        // execute query and wait for result
+        await executeSql(sqlStatement);
+
         resolve();
       } catch (error) {
         reject(error);
@@ -275,10 +269,4 @@ class CheckIn {
 
 export default CheckIn;
 
-export {
-  CheckInDocumentProperty,
-  CheckInRecordProperty,
-  ICheckInDocument,
-  ICheckInRecord,
-  ICheckInResult,
-};
+export { ICheckInDocument, ICheckInRecord, ICheckInResult };

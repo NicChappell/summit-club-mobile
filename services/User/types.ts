@@ -1,25 +1,5 @@
 import firebase from "firebase/app";
 
-/** User document properties */
-export type UserDocumentProperty =
-  | "id"
-  | "userId"
-  | "featureId"
-  | "createdAt";
-
-export type UserId = string;
-
-export interface IUser {
-  /** The User's ID */
-  id: UserId;
-  /** The User's account information */
-  account: IUserAccount;
-  /** The User's contact information */
-  contact: IUserContact;
-  /** The User's settings */
-  settings: IUserSettings;
-}
-
 export interface IUserAccount {
   /** The User's username */
   username: string;
@@ -48,6 +28,19 @@ export interface IUserContact {
   postalCode?: string;
 }
 
+export interface IUserDocument {
+  /** The User's ID */
+  id: UserId;
+  /** The User's account information */
+  account: IUserAccount;
+  /** The User's contact information */
+  contact: IUserContact;
+  /** The User's settings */
+  settings: IUserSettings;
+  /** Timestamp when the document was created measured in milliseconds */
+  createdAt: firebase.firestore.Timestamp;
+}
+
 export interface IUserSettings {
   /** The User's permissions */
   permissions: {
@@ -60,3 +53,5 @@ export interface IUserSettings {
     shareUsers: boolean;
   };
 }
+
+export type UserId = string;

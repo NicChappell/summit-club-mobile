@@ -1,22 +1,24 @@
-import { executeSql, ResultSet } from "../database";
-import { MOCK_USER } from "../../data/mocks";
+import {
+  FirebaseDocumentReference,
+  FirebaseQuery,
+  FirebaseQuerySnapshot,
+  usersCollectionRef,
+} from "../Firebase";
 import {
   UserId,
-  IUser,
   IUserAccount,
   IUserContact,
+  IUserDocument,
   IUserSettings,
 } from "./types";
 
 class User {
-  /** Add new document to checkIns collection */
-  static add = (
-    payload: Partial<ICheckInDocument>
-  ): Promise<ICheckInDocument> => {
+  /** Add new document to users collection */
+  static add = (payload: Partial<IUserDocument>): Promise<IUserDocument> => {
     return new Promise(async (resolve, reject) => {
       try {
         // execute query and wait for document reference
-        const documentRef = await checkInsCollectionRef.add(payload);
+        const documentRef = await usersCollectionRef.add(payload);
 
         // execute query and wait for snapshot
         const snapshot = await documentRef.get();
@@ -28,36 +30,19 @@ class User {
         };
 
         // resolve check-in document
-        resolve(checkInDocument as ICheckInDocument);
+        resolve(checkInDocument as IUserDocument);
       } catch (error) {
         reject(error);
       }
     });
   };
 
-  /** Delete existing record from check_in table */
-  static deleteRecord = (id: string): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // construct query
-        const sqlStatement = `DELETE FROM check_in WHERE id = "${id}";`;
-
-        // execute query and wait for result
-        await executeSql(sqlStatement);
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Delete existing record from checkIns collection */
+  /** Delete existing document from users collection */
   static deleteDocument = (id: string): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
         // get document reference
-        const docRef: FirebaseDocumentReference = checkInsCollectionRef.doc(id);
+        const docRef: FirebaseDocumentReference = usersCollectionRef.doc(id);
 
         // delete the document
         await docRef.delete();
@@ -70,14 +55,14 @@ class User {
     });
   };
 
-  /** Retrieve a document from checkIns collection */
+  /** Retrieve a document from users collection */
   static get = (
-    queryParams: Partial<ICheckInDocument>
+    queryParams: Partial<IUserDocument>
   ): Promise<FirebaseQuerySnapshot> => {
     return new Promise(async (resolve, reject) => {
       try {
         // construct query
-        let query: FirebaseQuery = checkInsCollectionRef;
+        let query: FirebaseQuery = usersCollectionRef;
 
         // convert params object into array of [key, value] pairs
         // add condition to query for each [key, value] pair
@@ -95,190 +80,8 @@ class User {
       }
     });
   };
-
-  /** Insert new record into check_in table */
-  static insert = (payload: ICheckInRecord): Promise<ResultSet> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const sqlStatement = `
-          INSERT OR REPLACE INTO check_in (
-            id,
-            user_id,
-            feature_id,
-            created_at
-          ) VALUES (
-            ?,?,?,?
-          );
-        `;
-
-        const args = [
-          payload.id,
-          payload.user_id,
-          payload.feature_id,
-          payload.created_at,
-        ];
-
-        const resultSet = await executeSql(sqlStatement, args);
-
-        resolve(resultSet);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Count check_in table rows */
-  static countRows = (): Promise<number> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const sqlStatement = `SELECT COUNT(*) FROM check_in;`;
-
-        const resultSet = await executeSql(sqlStatement);
-        // destructure result set
-        const {
-          rows: { _array },
-        }: any = resultSet;
-
-        // get count from ResultSet array
-        const count = _array[0]["COUNT(*)"];
-
-        resolve(count);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Create check_in table */
-  static createTable = (): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const sqlStatement = `
-          CREATE TABLE IF NOT EXISTS check_in (
-              id TEXT NOT NULL PRIMARY KEY,
-              user_id TEXT,
-              feature_id TEXT,
-              created_at INTEGER
-          );
-        `;
-
-        await executeSql(sqlStatement);
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Drop check_in table */
-  static dropTable = (): Promise<void> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const sqlStatement = `DROP TABLE IF EXISTS check_in;`;
-
-        await executeSql(sqlStatement);
-
-        resolve();
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Find all records in check_in table */
-  static selectAll = (): Promise<ResultSet> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const sqlStatement = `
-          SELECT
-            feature.class,
-            feature.continent,
-            feature.country,
-            feature.county,
-            check_in.created_at,
-            feature.id AS feature_id,
-            feature.feet,
-            check_in.id,
-            feature.latitude,
-            feature.longitude,
-            feature.meters,
-            feature.name,
-            feature.state,
-            check_in.user_id
-          FROM check_in
-          INNER JOIN feature ON feature.id = check_in.feature_id
-          ORDER BY check_in.created_at DESC
-          LIMIT 50;
-        `;
-
-        const resultSet = await executeSql(sqlStatement);
-
-        resolve(resultSet);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Find matching record in check_in table */
-  static selectWhere = (
-    queryParams: Partial<ICheckInRecord>
-  ): Promise<ResultSet> => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // convert params object into array of [key, value] pairs
-        // construct query condition using each [key, value] pair
-        const condition = Object.entries(queryParams)
-          .map((queryParam) => {
-            return `${queryParam[0]} = '${queryParam[1]}'`;
-          })
-          .join(" AND ");
-
-        const sqlStatement = `
-          SELECT
-            feature.class,
-            feature.continent,
-            feature.country,
-            feature.county,
-            check_in.created_at,
-            feature.id AS feature_id,
-            feature.feet,
-            check_in.id,
-            feature.latitude,
-            feature.longitude,
-            feature.meters,
-            feature.name,
-            feature.state,
-            check_in.user_id
-          FROM check_in
-          INNER JOIN feature ON feature.id = check_in.feature_id
-          WHERE ${condition}
-          ORDER BY check_in.created_at DESC
-          LIMIT 50;
-        `;
-
-        const resultSet = await executeSql(sqlStatement);
-
-        resolve(resultSet);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
-
-  /** Fetch User profile */
-  static get(uid: string): Promise<IUser> {
-    // TODO: FIREBASE QUERY
-
-    if (true) {
-      return Promise.resolve(MOCK_USER);
-    } else {
-      return Promise.reject(new Error("unable to process request"));
-    }
-  }
 }
 
 export default User;
 
-export { UserId, IUser, IUserAccount, IUserContact, IUserSettings };
+export { IUserAccount, IUserContact, IUserDocument, IUserSettings, UserId };

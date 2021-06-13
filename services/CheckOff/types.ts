@@ -1,20 +1,6 @@
 import firebase from "firebase/app";
 import { FeatureClassification } from "../Feature";
 
-/** CheckOff document properties */
-export type CheckOffDocumentProperty =
-  | "id"
-  | "userId"
-  | "featureId"
-  | "createdAt";
-
-/** CheckOff record properties */
-export type CheckOffRecordProperty =
-  | "id"
-  | "user_id"
-  | "feature_id"
-  | "created_at";
-
 export interface ICheckOffDocument {
   /** Uniquely identifies the CheckOff document */
   id: string;

@@ -10,16 +10,12 @@ export {
 
 export {
   default as CheckIn,
-  CheckInDocumentProperty,
-  CheckInRecordProperty,
   ICheckInDocument,
   ICheckInRecord,
   ICheckInResult,
 } from "./CheckIn";
 export {
   default as CheckOff,
-  CheckOffDocumentProperty,
-  CheckOffRecordProperty,
   ICheckOffDocument,
   ICheckOffRecord,
   ICheckOffResult,
@@ -60,7 +56,6 @@ export {
 export {
   default as User,
   UserId,
-  IUser,
   IUserAccount,
   IUserContact,
   IUserSettings,

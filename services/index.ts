@@ -2,6 +2,7 @@ export { database, executeSql, ResultSet } from "./database";
 export {
   checkOffsCollectionRef,
   featuresCollectionRef,
+  firebaseAuth,
   firebaseConfig,
   FirebaseDocumentReference,
   FirebaseQuery,

@@ -1,10 +1,8 @@
 import firebase from "firebase/app";
+import "firebase/auth";
 import "firebase/firestore";
-import {
-  FirebaseDocumentReference,
-  FirebaseQuery,
-  FirebaseQuerySnapshot,
-} from "./types";
+
+export * from "./types";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBfH1uBfoEZYkcVBCogobRYFFf_Azr6a2s",
@@ -22,7 +20,10 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-// set firestore collection refs
+// firebase auth service
+export const firebaseAuth = firebase.auth();
+
+// firestore collection refs
 export const checkInsCollectionRef = firebase
   .firestore()
   .collection("checkins");
@@ -36,5 +37,3 @@ export const featuresCollectionRef = firebase
   .firestore()
   .collection("features");
 export const usersCollectionRef = firebase.firestore().collection("users");
-
-export { FirebaseDocumentReference, FirebaseQuery, FirebaseQuerySnapshot };

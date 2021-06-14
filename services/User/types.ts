@@ -29,8 +29,6 @@ export interface IUserContact {
 }
 
 export interface IUserDocument {
-  /** The User's ID */
-  id: UserId;
   /** The User's account information */
   account: IUserAccount;
   /** The User's contact information */
@@ -55,3 +53,31 @@ export interface IUserSettings {
 }
 
 export type UserId = string;
+
+
+const adsf = {
+  account: {
+    username: "NicChappell"
+  },
+  contact: {
+    firstName: "Nic",
+    lastName: "Chappell",
+    email: "nic.chappell@gmail.com",
+    countryCode: "1",
+    phone: "4029685985",
+    streetAddress1: "971 Homer Circle",
+    streetAddress2: "",
+    city: "Lafayette",
+    province: "CO",
+    postalCode: "80026",
+  },
+  settings: {
+    permissions: {
+      location: true
+    },
+    preferences: {
+      shareCheckIns: true,
+    }
+  },
+  createdAt: 1
+}

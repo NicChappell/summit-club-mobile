@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Button, Card, Input } from "react-native-elements";
+import { Button, Input } from "react-native-elements";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { connect, ConnectedProps } from "react-redux";
 import { Formik } from "formik";
@@ -16,7 +16,6 @@ import { IAuthCredentials } from "../../common/types";
 import { signUpSchema } from "../../common/schemas";
 import {
   borderRadius4,
-  borderWidthReset,
   colors,
   inputBorder,
   inputContainer,
@@ -24,8 +23,6 @@ import {
   marginReset,
   paddingReset,
   paragraph,
-  shadow,
-  shadowReset,
 } from "../../common/styles";
 import { RootState } from "../../redux/reducers";
 import { ISignUpScreen } from "./types";
@@ -66,7 +63,7 @@ const SignUpScreen = ({ error, navigation, route, signUp }: Props) => {
           <View style={styles.section}>
             <Formik
               validationSchema={signUpSchema}
-              initialValues={{ email: "", password: "", terms: false }}
+              initialValues={{ email: "", password: "" }}
               onSubmit={handleSubmit}
             >
               {({

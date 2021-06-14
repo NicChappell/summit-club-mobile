@@ -24,5 +24,4 @@ export const signUpSchema = yup.object().shape({
     .string()
     .min(8, ({ min }) => `Password must be at least ${min} characters`)
     .required("Password is required"),
-  terms: yup.boolean().oneOf([true], "Must accept Terms and Conditions"),
 });

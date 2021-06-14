@@ -1,7 +1,6 @@
 import {
   FirebaseDocumentReference,
   FirebaseQuery,
-  FirebaseQuerySnapshot,
   usersCollectionRef,
 } from "../Firebase";
 import {
@@ -14,23 +13,13 @@ import {
 
 class User {
   /** Add new document to users collection */
-  static add = (payload: Partial<IUserDocument>): Promise<IUserDocument> => {
+  static add = (id: UserId, payload: IUserDocument): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
-        // execute query and wait for document reference
-        const documentRef = await usersCollectionRef.add(payload);
+        // execute query and wait for response
+        await usersCollectionRef.doc(id).set(payload);
 
-        // execute query and wait for snapshot
-        const snapshot = await documentRef.get();
-
-        // format check-in document
-        const checkInDocument = {
-          ...snapshot.data(),
-          id: documentRef.id,
-        };
-
-        // resolve check-in document
-        resolve(checkInDocument as IUserDocument);
+        resolve();
       } catch (error) {
         reject(error);
       }
@@ -44,10 +33,9 @@ class User {
         // get document reference
         const docRef: FirebaseDocumentReference = usersCollectionRef.doc(id);
 
-        // delete the document
+        // delete the document and wait for response
         await docRef.delete();
 
-        // resolve snapshot
         resolve();
       } catch (error) {
         reject(error);
@@ -56,25 +44,17 @@ class User {
   };
 
   /** Retrieve a document from users collection */
-  static get = (
-    queryParams: Partial<IUserDocument>
-  ): Promise<FirebaseQuerySnapshot> => {
+  static get = (id: string): Promise<IUserDocument> => {
     return new Promise(async (resolve, reject) => {
       try {
-        // construct query
-        let query: FirebaseQuery = usersCollectionRef;
-
-        // convert params object into array of [key, value] pairs
-        // add condition to query for each [key, value] pair
-        Object.entries(queryParams).forEach((queryParam) => {
-          query = query.where(queryParam[0], "==", queryParam[1]);
-        });
+        // execute query and wait for document reference
+        const documentRef = usersCollectionRef.doc(id);
 
         // execute query and wait for snapshot
-        const snapshot = await query.get();
+        const snapshot = await documentRef.get();
 
-        // resolve snapshot
-        resolve(snapshot);
+        // resolve user document
+        resolve({ ...snapshot.data() } as IUserDocument);
       } catch (error) {
         reject(error);
       }

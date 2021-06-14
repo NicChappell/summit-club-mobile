@@ -6,6 +6,8 @@ import { AppThunk } from "../../reducers";
 import { SET_ERROR } from "../error/types";
 import { SIGN_IN, SIGN_OUT, SIGN_UP } from "./types";
 
+import { User } from "../../../services";
+
 export const checkAuthentication = (): AppThunk => async (dispatch) => {
   // retrieve uid from async storage
   const uid = await AsyncStorage.getItem("uid");
@@ -80,6 +82,34 @@ export const signUp =
       if (user) {
         // set uid in async storage
         await AsyncStorage.setItem("uid", user.uid);
+
+        // asdf
+        await User.add(user.uid, {
+          account: {
+            username: "NicChappell",
+          },
+          contact: {
+            firstName: "Nic",
+            lastName: "Chappell",
+            email: "nic.chappell@gmail.com",
+            countryCode: "1",
+            phone: "4029685985",
+            streetAddress1: "971 Homer Circle",
+            streetAddress2: "",
+            city: "Lafayette",
+            province: "CO",
+            postalCode: "80026",
+          },
+          settings: {
+            permissions: {
+              location: true,
+            },
+            preferences: {
+              shareCheckIns: true,
+            },
+          },
+          createdAt: firebase.firestore.Timestamp.now(),
+        });
 
         // authenticate user
         dispatch({ type: SIGN_UP, payload: { uid: user.uid } });

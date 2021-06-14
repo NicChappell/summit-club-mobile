@@ -20,14 +20,11 @@ class CheckIn {
         // execute query and wait for snapshot
         const snapshot = await documentRef.get();
 
-        // format check-in document
-        const checkInDocument = {
+        // resolve check-in document
+        resolve({
           ...snapshot.data(),
           id: documentRef.id,
-        };
-
-        // resolve check-in document
-        resolve(checkInDocument as ICheckInDocument);
+        } as ICheckInDocument);
       } catch (error) {
         reject(error);
       }
@@ -41,10 +38,9 @@ class CheckIn {
         // get document reference
         const docRef: FirebaseDocumentReference = checkInsCollectionRef.doc(id);
 
-        // delete the document
+        // delete the document and wait for response
         await docRef.delete();
 
-        // resolve snapshot
         resolve();
       } catch (error) {
         reject(error);

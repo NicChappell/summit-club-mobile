@@ -83,6 +83,10 @@ const FeatureScreen = ({
   // destructure features
   const feature = features.feature;
 
+  if (!feature) {
+    return null;
+  }
+
   // destructure feature
   const geometry = feature?.geometry;
   const properties = feature?.properties;
